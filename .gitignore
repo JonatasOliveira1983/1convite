@@ -26,3 +26,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Bonus & Heavy Media Folders
+1Convite e Bônus/
+UpSell e DowSell Bonus/
+skill sites animados/

@@ -15,7 +15,7 @@ Super app cristão que integra a Palavra de Deus, interatividade, ferramentas de
 
 - **Bíblia Sagrada:** Leitura completa com pesquisa por texto, áudio, livros, capítulos e versículos. Dados importados do API da Bíblia on-line.
 - **Desafio do Dia:** Reflexão diária com código verbal, meditação guiada (áudio) e progresso em 365 dias.
-- **Conselheiros IA:** Hub interativo com personagens bíblicos guiados por ChatGPT (LWC). Jesus Cristo desbloqueado por padrão; outros conselheiros desbloqueáveis com moedas.
+- **LAYA — Sabedoria Bíblica & Oráculo em CPU:** Motor neural nativo e autônomo (sem necessidade de chaves de API externas, zero custo por token). Oferece busca semântica instantânea por emoções/situações de vida (Oráculo Bíblico) e acesso a Mentores Bíblicos Canônicos (Jesus Cristo, Salomão, Davi, Paulo, Moisés, Ester) com conselhos doutrinários, orações guiadas e desafios práticos.
 - **Trilhas de Crescimento:** Séries temáticas (ex: Gratidão, Oração, Perdão) com versículos, reflexões e ações práticas ao longo de vários dias.
 - **Trilha do Reino:** Plano de leitura bíblica cronológico em 18 ou 12 meses. Streak de dias seguidos, Talentos (moedas), devotionais diários, 1Convite Prático, mapa visual com 9 marcos de fé.
 - **Arcade Bíblico:**
@@ -84,7 +84,7 @@ Monorepo com dois serviços independentes deployados no Railway:
 | Frontend | React 19, Vite 5.4, Vanilla CSS, html2canvas |
 | Backend | Express 5, Node.js >=20 |
 | Banco | PostgreSQL 16 (Railway Plugin) |
-| IA | ChatGPT via `@opencoredev/loginwithchatgpt-server` |
+| IA | LAYA — Motor Neural Nativo em CPU (Zero APIs externas) |
 | Mobile | Capacitor 8 (Android, JDK 21) |
 | Deploy Frontend | Railway (npx serve, static files) |
 | Deploy Backend | Railway (Node.js) |
@@ -101,7 +101,6 @@ Monorepo com dois serviços independentes deployados no Railway:
 | `DATABASE_URL` | Sim | URL de conexão PostgreSQL (Railway injeta automaticamente) |
 | `FRONTEND_URL` | Sim | URL do frontend (ex: `https://1convite.com.br`) — usada no CORS |
 | `PORT` | Não | Porta do servidor (default: 3001, Railway define automaticamente) |
-| `LWC_SECRET` | Não | Secret para ChatGPT/LWC (tem fallback para dev) |
 
 ### Frontend (Railway)
 
@@ -253,8 +252,11 @@ npm run import-bible # Importa Bíblia (~31 mil versículos, standalone)
 | POST | `/api/v1/pagamentos/criar-preferencia` | Cria preferência de pagamento |
 | POST | `/api/v1/pagamentos/webhook` | Webhook de pagamento |
 | POST | `/api/v1/admin/definir-plano` | Define plano do usuário |
-| POST | `/api/v1/leads` | Registra lead da landing page |
-| POST | `/api/v1/chatgpt/*` | Rotas ChatGPT/LWC |
+| GET | `/api/v1/laya/mentores` | Lista mentores bíblicos canônicos |
+| GET | `/api/v1/laya/mentores/:id` | Detalhes e conselhos do mentor |
+| GET | `/api/v1/laya/mentor/:id/tema/:tema` | Conselho doutrinário de tema específico |
+| GET | `/api/v1/laya/temas` | Lista temas do Oráculo |
+| POST | `/api/v1/laya/consultar` | Oráculo semântico LAYA em CPU |
 | GET | `*` | SPA fallback (serve index.html) |
 
 ## Estrutura de Temas

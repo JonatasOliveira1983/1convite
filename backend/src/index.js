@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import https from 'https';
 import dotenv from 'dotenv';
-import { createChatGPTHandler } from '@opencoredev/loginwithchatgpt-server';
 import pool from './database/pool.js';
+import { LayaEngine, LAYA_MENTORES, LAYA_CONSELHOS, LAYA_ORACULO_TEMAS } from './services/layaEngine.js';
 
 dotenv.config();
 
@@ -33,100 +33,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const chatGptHandler = createChatGPTHandler({
-  secret: process.env.LWC_SECRET || 'a-very-stable-secret-for-development-1convite-32-chars-long!',
-  basePath: '/api/v1/chatgpt',
-  dangerouslyAllowTokenExport: true,
-  allowedOrigins,
-});
-
-async function toWebRequest(req) {
-  const protocol = req.protocol;
-  const host = req.get('host');
-  const originalUrl = req.originalUrl;
-  const url = `${protocol}://${host}${originalUrl}`;
-
-  const headers = new Headers();
-  for (const [key, value] of Object.entries(req.headers)) {
-    if (value) {
-      if (Array.isArray(value)) {
-        value.forEach(v => headers.append(key, v));
-      } else {
-        headers.set(key, value);
-      }
-    }
-  }
-
-  let body = null;
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    body = typeof req.body === 'object' ? JSON.stringify(req.body) : req.body;
-  }
-
-  return new Request(url, {
-    method: req.method,
-    headers,
-    body,
-  });
-}
-
-async function fromWebResponse(webRes, res) {
-  res.status(webRes.status);
-  webRes.headers.forEach((value, key) => {
-    res.setHeader(key, value);
-  });
-
-  if (webRes.body) {
-    const reader = webRes.body.getReader();
-    const decoder = new TextDecoder();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(value);
-    }
-    res.end();
-  } else {
-    res.end();
-  }
-}
-
-app.all('/api/v1/chatgpt/*splat', async (req, res) => {
-  console.log(`[ChatGPT Request] ${req.method} ${req.originalUrl}`);
-  try {
-    const webReq = await toWebRequest(req);
-    const webRes = await chatGptHandler.handler(webReq);
-    console.log(`[ChatGPT Request] Response: ${webRes.status}`);
-
-    if (!webRes.ok) {
-      const clone = webRes.clone();
-      const text = await clone.text();
-      console.warn(`[ChatGPT Request] Error response payload: ${text}`);
-    }
-
-    await fromWebResponse(webRes, res);
-  } catch (err) {
-    console.error('Erro no ChatGPT handler:', err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-// ── MIGRATIONS: criar tabelas se não existirem ──
-async function ensureTables() {
-  try {
-    const client = await pool.connect();
-    try {
-      const sql = readFileSync(join(__dirname, '../migrations/001_initial.sql'), 'utf-8');
-      await client.query(sql);
-      console.log('[DB] Tabelas criadas/verificadas com sucesso');
-    } finally {
-      client.release();
-    }
-  } catch (err) {
-    console.warn('[DB] Aviso: Não foi possível conectar ao banco PostgreSQL local (as rotas do servidor continuarão ativas):', err.message);
-  }
-}
 
 // Helper wrappers around pool.query (resilientes no dev local)
 const dbRun = async (query, params = []) => {
@@ -155,6 +63,31 @@ const dbAll = async (query, params = []) => {
     return [];
   }
 };
+
+// Instância do motor LAYA nativo
+const layaEngine = new LayaEngine(dbRun, dbGet, dbAll);
+
+// ── MIGRATIONS: criar tabelas se não existirem ──
+async function ensureTables() {
+  try {
+    const client = await pool.connect();
+    try {
+      const sql1 = readFileSync(join(__dirname, '../migrations/001_initial.sql'), 'utf-8');
+      await client.query(sql1);
+
+      const pathLayaSql = join(__dirname, '../migrations/002_laya_knowledge_base.sql');
+      if (existsSync(pathLayaSql)) {
+        const sql2 = readFileSync(pathLayaSql, 'utf-8');
+        await client.query(sql2);
+      }
+      console.log('[DB] Tabelas 1Convite & LAYA verificadas com sucesso');
+    } finally {
+      client.release();
+    }
+  } catch (err) {
+    console.warn('[DB] Aviso: Não foi possível conectar ao banco PostgreSQL local (as rotas do servidor continuarão ativas):', err.message);
+  }
+}
 
 // Seed data (runs only when tables are empty)
 async function seedData() {
@@ -747,6 +680,35 @@ Amém!"`,
       console.error('[Seed] Erro ao importar Bíblia:', err.message);
     }
   }
+
+  // Preenche base de mentores e temas da LAYA (se vazio)
+  try {
+    const mentoresCount = await dbGet('SELECT COUNT(*) as count FROM tb_laya_mentores');
+    if (mentoresCount && Number(mentoresCount.count) === 0) {
+      console.log('[Seed] Populando Mentores Bíblicos da LAYA...');
+      for (const m of LAYA_MENTORES) {
+        await dbRun(
+          'INSERT INTO tb_laya_mentores (id, nome, titulo, periodo, descricao, avatar, ordem, preco_desbloqueio, especialidades) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+          [m.id, m.nome, m.titulo, m.periodo, m.descricao, m.avatar, m.ordem, m.preco_desbloqueio, JSON.stringify(m.especialidades)]
+        );
+      }
+      for (const c of LAYA_CONSELHOS) {
+        await dbRun(
+          'INSERT INTO tb_laya_conselhos (mentor_id, tema, titulo, versiculo_referencia, texto_biblico, conselho_doutrinario, oracao_guiada, desafio_pratico) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+          [c.mentor_id, c.tema, c.titulo, c.versiculo_referencia, c.texto_biblico, c.conselho_doutrinario, c.oracao_guiada, c.desafio_pratico]
+        );
+      }
+      for (const o of LAYA_ORACULO_TEMAS) {
+        await dbRun(
+          'INSERT INTO tb_laya_oraculo_temas (slug, categoria, titulo, palavras_chave, promessa_biblica, versiculo_chave, direcionamento_laya, oracao_resposta, acao_pratica) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+          [o.slug, o.categoria, o.titulo, (o.palavras_chave || []).join(','), o.promessa_biblica, o.versiculo_chave, o.direcionamento_laya, o.oracao_resposta, o.acao_pratica]
+        );
+      }
+      console.log('[Seed] Base LAYA populada com sucesso!');
+    }
+  } catch (err) {
+    console.warn('[Seed] Aviso na base Laya (resiliente):', err.message);
+  }
 }
 
 let cachedBibleData = null;
@@ -788,6 +750,72 @@ const MOCK_CODE = {
   texto_meditacao: `🎙️ Roteiro de Oração Guiada: "A Oração de Ação de Graças e Propósito"\n\nPai, a Ti rendo graças. Obrigado porque o Senhor é bom e sempre me ouve. Capacita-me a ser bênção hoje. Em nome de Jesus, amém!`,
   url_audio_meditacao: '/piano.mp3'
 };
+
+// ---------------- ROTAS LAYA (SABEDORIA BÍBLICA & ORÁCULO EM CPU) ----------------
+
+// Listar todos os mentores bíblicos
+app.get('/api/v1/laya/mentores', async (req, res) => {
+  try {
+    const mentores = await layaEngine.getMentores();
+    res.json({ success: true, mentores });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Detalhes e conselhos de um mentor específico
+app.get('/api/v1/laya/mentores/:id', async (req, res) => {
+  try {
+    const mentor = await layaEngine.getMentorById(req.params.id);
+    if (!mentor) {
+      return res.status(404).json({ success: false, error: 'Mentor não encontrado.' });
+    }
+    const conselhos = await layaEngine.getConselhosDoMentor(req.params.id);
+    res.json({ success: true, mentor, conselhos });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Buscar conselho do mentor por tema
+app.get('/api/v1/laya/mentor/:id/tema/:tema', async (req, res) => {
+  try {
+    const conselho = await layaEngine.getConselho(req.params.id, req.params.tema);
+    if (!conselho) {
+      return res.status(404).json({ success: false, error: 'Conselho não encontrado para este tema.' });
+    }
+    res.json({ success: true, conselho });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Listar temas do Oráculo Laya
+app.get('/api/v1/laya/temas', async (req, res) => {
+  try {
+    const temas = await layaEngine.getTemasOraculo();
+    res.json({ success: true, temas });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Consulta semântica rápida no Oráculo Laya
+app.post('/api/v1/laya/consultar', async (req, res) => {
+  try {
+    const { texto, categoria } = req.body || {};
+    const consulta = await layaEngine.consultarOraculo(texto, categoria);
+    res.json({
+      success: true,
+      query: texto,
+      oraculo: consulta.resultado,
+      mentorSugerido: consulta.mentorSugerido,
+      matchScore: consulta.matchScore
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // ---------------- ROTAS DO CORE ----------------
 

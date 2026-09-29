@@ -4,10 +4,7 @@ import html2canvas from 'html2canvas';
 import LandingPage from './components/LandingPage/LandingPage';
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid } from './data/arcadeData';
 import TrailHome from './components/trail/TrailHome';
-
-
-
-
+import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal } from './data/layaData';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
   return (
@@ -623,22 +620,17 @@ function App() {
     }
   }, [enableCustomFontSize, fontSizeScale]);
 
-  // Login com ChatGPT
-  const [chatFontSize, setChatFontSize] = useState('md');
-  const [chatGptUser, setChatGptUser] = useState(null);
+  // ── LAYA ENGINE — SABEDORIA BÍBLICA & ORÁCULO EM CPU ──
   const [activeCounselor, setActiveCounselor] = useState(null);
   const [unlockedCounselors, setUnlockedCounselors] = useState(() => JSON.parse(localStorage.getItem('unlocked-counselors') || '["jesus"]'));
-  const [lwcState, setLwcState] = useState('unauthenticated');
-  const [lwcDeviceCode, setLwcDeviceCode] = useState(null);
-  const [lwcPollingActive, setLwcPollingActive] = useState(false);
-
-  // Chat IA
-  const [chatMessages, setChatMessages] = useState([
-    { role: 'assistant', content: 'Olá! Sou o Conselheiro Inteligente do 1Convite. Como posso te apoiar hoje em suas reflexões, relacionamentos ou espiritualidade?' }
-  ]);
-  const [chatInput, setChatInput] = useState('');
-  const [chatLoading, setChatLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [layaSubTab, setLayaSubTab] = useState('oraculo'); // 'oraculo' | 'mentores'
+  const [layaActiveCategory, setLayaActiveCategory] = useState('TODOS');
+  const [layaOraculoQuery, setLayaOraculoQuery] = useState('');
+  const [layaOraculoResult, setLayaOraculoResult] = useState(() => consultarOraculoLocal(''));
+  const [layaSelectedThemeSlug, setLayaSelectedThemeSlug] = useState('ansiedade-medo');
+  const [layaMentorTheme, setLayaMentorTheme] = useState('ansiedade');
+  const [layaCopied, setLayaCopied] = useState(false);
+  const [layaSearching, setLayaSearching] = useState(false);
 
   const [countdown, setCountdown] = useState(12);
   const [isCountdownActive, setIsCountdownActive] = useState(false);
@@ -1183,180 +1175,72 @@ function App() {
     return () => clearInterval(interval);
   }, [arcadeActiveGame, arcadeCharadasGameOver, arcadeCharadasFeedback, arcadeCharadasTimer, arcadeCharadasCurrent, arcadeCharadasList.length, arcadeDifficulty]);
 
-  // ── ChatGPT Integration & Chat IA ──────────────────────────
-  useEffect(() => {
-    fetch(`${API_BASE}/chatgpt/session`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.status === 'authenticated') {
-          setLwcState('authenticated');
-          setChatGptUser(data.user);
-        }
-      })
-      .catch(err => console.error('Erro ao verificar sessão do ChatGPT:', err));
-  }, [API_BASE]);
+  // ── LAYA ENGINE — INTEGRAÇÃO NATIVA (SEM APIS EXTERNAS) ──
+  const handleLayaConsultar = async (queryText = null, categoryFilter = null) => {
+    const q = queryText !== null ? queryText : layaOraculoQuery;
+    const cat = categoryFilter !== null ? categoryFilter : layaActiveCategory;
+    setLayaSearching(true);
 
-  const startLwcPolling = (intervalSeconds) => {
-    setLwcPollingActive(true);
-    const intervalMs = intervalSeconds * 1000;
-    
-    const poll = setInterval(async () => {
-      try {
-        const res = await fetch(`${API_BASE}/chatgpt/status`, { credentials: 'include' });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.status === 'authenticated') {
-            clearInterval(poll);
-            setLwcPollingActive(false);
-            setLwcState('authenticated');
-            setChatGptUser(data.user);
-            setLwcDeviceCode(null);
-          } else if (data.status === 'expired' || data.status === 'error') {
-            clearInterval(poll);
-            setLwcPollingActive(false);
-            setLwcState('unauthenticated');
-            setLwcDeviceCode(null);
-          }
-        }
-      } catch (err) {
-        console.error('Erro ao obter status do ChatGPT:', err);
-      }
-    }, intervalMs);
-
-    return () => clearInterval(poll);
-  };
-
-  const handleConnectChatGPT = async () => {
-    try {
-      setLwcState('pending');
-      const res = await fetch(`${API_BASE}/chatgpt/login`, { method: 'POST', credentials: 'include' });
-      if (res.ok) {
-        const data = await res.json();
-        setLwcDeviceCode(data);
-        startLwcPolling(data.interval || 5);
-      } else {
-        setLwcState('unauthenticated');
-        alert('Erro ao iniciar conexão com ChatGPT.');
-      }
-    } catch (err) {
-      setLwcState('unauthenticated');
-      console.error(err);
-    }
-  };
-
-  const handleDisconnectChatGPT = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/chatgpt/logout`, { method: 'POST', credentials: 'include' });
-      if (res.ok) {
-        setLwcState('unauthenticated');
-        setChatGptUser(null);
-        setLwcDeviceCode(null);
-      }
-    } catch (err) {
-      console.error('Erro ao desconectar ChatGPT:', err);
-    }
-  };
-
-  const parseStreamChunk = (chunk) => {
-    let text = '';
-    const lines = chunk.split('\n');
-    for (const line of lines) {
-      if (line.startsWith('data: ')) {
-        const dataStr = line.slice(6).trim();
-        if (dataStr === '[DONE]') continue;
-        try {
-          const data = JSON.parse(dataStr);
-          if (data.type === 'response.output_text.delta' && typeof data.delta === 'string') {
-            text += data.delta;
-          } else if (data.type === 'response.content_part.updated' || data.type === 'response.content_part.delta') {
-            if (data.part?.text) text += data.part.text;
-            else if (data.delta?.text) text += data.delta.text;
-          } else if (data.type === 'text_delta') {
-            text += data.text;
-          } else if (data.delta?.content) {
-            text += data.delta.content;
-          } else if (data.part?.type === 'text' && data.part.text) {
-            text += data.part.text;
-          } else if (data.choices?.[0]?.delta?.content) {
-            text += data.choices[0].delta.content;
-          }
-        } catch {
-          // Ignore
-        }
-      }
-    }
-    return text;
-  };
-
-  const handleSendChatMessage = async (e, customText = null) => {
-    if (e) e.preventDefault();
-    const textToSend = customText || chatInput;
-    if (!textToSend.trim() || chatLoading) return;
-
-    if (lwcState !== 'authenticated') {
-      alert('Conecte sua conta do ChatGPT na aba "Conta" para conversar com o Conselheiro IA.');
-      return;
-    }
-
-    const newUserMessage = { role: 'user', content: textToSend };
-    setChatMessages(prev => [...prev, newUserMessage]);
-    setChatInput('');
-    setChatLoading(true);
+    const localMatch = consultarOraculoLocal(q, cat === 'TODOS' ? null : cat);
+    setLayaOraculoResult(localMatch);
 
     try {
-      const history = chatMessages.concat(newUserMessage);
-      
-      const payload = {
-        stream: true,
-        instructions: 'Você é o Conselheiro Inteligente do aplicativo 1Convite. Seu objetivo é ajudar o usuário com aconselhamento de relacionamentos, paz interior, espiritualidade e ideias de convites/conexões intencionais (café, reflexões, jantares, tempo de qualidade). Seja caloroso, empático, bíblico e focado no momento presente (o Agora). Responda sempre em português do Brasil.',
-        input: history.map(msg => ({
-          role: msg.role,
-          content: [
-            { 
-              type: msg.role === 'user' ? 'input_text' : 'output_text', 
-              text: msg.content 
-            }
-          ]
-        }))
-      };
-
-      const res = await fetch(`${API_BASE}/chatgpt/responses`, {
+      const res = await fetch(`${API_BASE}/laya/consultar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        credentials: 'include'
+        body: JSON.stringify({ texto: q, categoria: cat === 'TODOS' ? null : cat }),
+        signal: AbortSignal.timeout(2500)
       });
-
-      if (!res.ok) {
-        throw new Error('Falha ao obter resposta do ChatGPT.');
-      }
-
-      setChatMessages(prev => [...prev, { role: 'assistant', content: '' }]);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let accumulatedText = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const newText = parseStreamChunk(chunk);
-        if (newText) {
-          accumulatedText += newText;
-          setChatMessages(prev => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { role: 'assistant', content: accumulatedText };
-            return updated;
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.oraculo) {
+          setLayaOraculoResult({
+            resultado: data.oraculo,
+            mentorSugerido: data.mentorSugerido,
+            matchScore: data.matchScore
           });
         }
       }
-    } catch (err) {
-      console.error(err);
-      setChatMessages(prev => [...prev, { role: 'assistant', content: 'Desculpe, ocorreu um erro ao obter a resposta.' }]);
+    } catch {
+      // Offline fallback perfeito já ativo com localMatch
     } finally {
-      setChatLoading(false);
+      setLayaSearching(false);
+    }
+  };
+
+  const handleSelectLayaTheme = (themeSlug) => {
+    const theme = LAYA_TEMAS_ORACULO.find(t => t.slug === themeSlug);
+    if (theme) {
+      setLayaSelectedThemeSlug(themeSlug);
+      handleLayaConsultar(theme.titulo, theme.categoria);
+    }
+  };
+
+  const handleUnlockLayaMentor = (mentor) => {
+    if (userCoins >= mentor.preco_desbloqueio) {
+      if (confirm(`Deseja desbloquear a mentoria de ${mentor.nome} por ${mentor.preco_desbloqueio} Talentos?`)) {
+        setUserCoins(prev => {
+          const val = prev - mentor.preco_desbloqueio;
+          localStorage.setItem('app-coins', val);
+          return val;
+        });
+        setUnlockedCounselors(prev => {
+          const arr = [...prev, mentor.id];
+          localStorage.setItem('unlocked-counselors', JSON.stringify(arr));
+          return arr;
+        });
+        setActiveCounselor(mentor.id);
+      }
+    } else {
+      alert(`Talentos insuficientes! Você tem ${userCoins} e precisa de ${mentor.preco_desbloqueio}. Complete o Desafio do Dia para ganhar mais.`);
+    }
+  };
+
+  const handleCopyLayaConselho = (text) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setLayaCopied(true);
+      setTimeout(() => setLayaCopied(false), 2500);
     }
   };
 
@@ -2375,7 +2259,7 @@ Importante: O JSON deve ser 100% válido.`;
                     activeSabadoBlock === 'descanso' ? 'O Botão do Descanso' :
                     'Trilha de Conhecimento'
                   )}
-                  {activeTab === 'chat' && 'Conselheiro IA'}
+                  {activeTab === 'chat' && 'LAYA • Sabedoria Bíblica'}
                   {activeTab === 'contatos' && 'Conexões & Contatos'}
                   {activeTab === 'conta' && 'Minha Conta'}
                   {activeTab === 'criar-card' && 'Studio de Cards'}
@@ -2714,10 +2598,10 @@ Importante: O JSON deve ser 100% válido.`;
                 },
                 { 
                   id: 'chat', 
-                  label: 'Conselheiro IA', 
+                  label: 'LAYA • Sabedoria', 
                   icon: (
                     <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )
                 },
@@ -2900,40 +2784,7 @@ Importante: O JSON deve ser 100% válido.`;
             {/* 1. REFLEXÃO DO DIA */}
             {activeSabadoBlock === 'reflexao' && codigoDia && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                
-                {codigoDia.dia_id > 7 && !codigoDia.texto_reflexao.includes('📖 HISTÓRIA CRISTÃ REAL') ? (
-                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '20px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🤖</div>
-                    <h3 style={{ margin: '0 0 8px 0', fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: '700' }}>Personalização por Inteligência Artificial</h3>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.5', marginBottom: '20px' }}>
-                      Você chegou ao Dia {codigoDia.dia_id}! Para este dia em diante, o aplicativo pode criar uma reflexão exclusiva contendo uma história cristã real histórica personalizada a custo zero de API.
-                    </p>
-
-                    {chatGptUser ? (
-                      aiGenerating ? (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '12px' }}>
-                          <div className="spinner" style={{ width: '32px', height: '32px', border: '3px solid var(--orange-light)', borderTopColor: 'var(--orange)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Escrevendo devocional com IA e buscando histórias cristãs reais na história...</span>
-                        </div>
-                      ) : (
-                        <button className="btn-primary" style={{ width: '100%', padding: '14px' }} onClick={generateDailyReflectionWithAI}>
-                          ✨ Enriquecer Devocional com IA
-                        </button>
-                      )
-                    ) : (
-                      <div style={{ background: 'var(--slate-bg)', padding: '16px', borderRadius: '16px', border: '1px dashed var(--slate-border)' }}>
-                        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px 0' }}>
-                          Conecte sua própria conta do ChatGPT gratuita nas Configurações para liberar o gerador inteligente.
-                        </p>
-                        <button className="btn-secondary" style={{ width: '100%', padding: '10px 16px', fontSize: '0.85rem' }} onClick={() => setActiveTab('conta')}>
-                          ⚙️ Conectar ChatGPT nas Configurações
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <>
-                    <div className="page-hero hero-sabado" style={{ borderRadius: '24px' }}>
+                <div className="page-hero hero-sabado" style={{ borderRadius: '24px' }}>
                       <div className="hero-orb" style={{ width: 160, height: 160, top: -40, right: -40 }} />
                       <div className="hero-content">
                         <div className={`pedagio-badge ${codigoDia.pilar_origem === 'PROPÓSITO_M2414' ? 'badge-proposito' : 'badge-recompensa'}`} style={{ background: 'rgba(255,255,255,0.20)', color: '#fff', border: '1px solid rgba(255,255,255,0.35)', marginBottom: '12px' }}>
@@ -2972,10 +2823,8 @@ Importante: O JSON deve ser 100% válido.`;
                         {codigoDia.texto_reflexao}
                       </p>
                     </div>
-                  </>
+                  </div>
                 )}
-              </div>
-            )}
 
             {/* 2. MEDITAÇÃO GUIADA */}
             {activeSabadoBlock === 'meditacao' && codigoDia && (
@@ -4158,168 +4007,645 @@ Importante: O JSON deve ser 100% válido.`;
           </div>
         )}
 
-        {/* ════════════ ABA CHAT IA ════════════ */}
+        {/* ════════════ ABA LAYA • SABEDORIA BÍBLICA & ORÁCULO ════════════ */}
         {activeTab === 'chat' && (
-          <div className="page-enter flex-column" style={{ height: 'calc(100vh - 76px)', justifyContent: 'space-between' }}>
-            {!activeCounselor ? (
-                /* GRID DE CONSELHEIROS */
-                <div style={{ flex: 1, overflowY: 'auto', padding: '24px', paddingBottom: '100px' }}>
-                  <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    <h2 style={{ fontSize: '1.8rem', color: 'var(--orange)', marginBottom: '8px' }}>Escolha seu Conselheiro</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Converse com personalidades históricas para guiar sua jornada.</p>
-                    <div style={{ marginTop: '16px', display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(245,158,11,0.15)', padding: '8px 20px', borderRadius: '30px', border: '1px solid var(--orange)' }}>
-                      <span style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>Seu saldo:</span>
-                      <span style={{ display:'inline-flex', alignItems:'center', gap:'6px', fontSize:'1.2rem', fontWeight:'bold', color:'var(--orange)' }}><ChaminhaCoin size={24}/> {userCoins}</span>
-                    </div>
-                  </div>
+          <div className="page-enter flex-column" style={{ height: 'calc(100vh - 76px)', overflowY: 'auto', padding: '16px', boxSizing: 'border-box', paddingBottom: '90px' }}>
+            
+            {/* Top Selector: Oráculo vs Mentores */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '20px',
+              gap: '12px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{
+                display: 'inline-flex',
+                background: 'rgba(255,255,255,0.06)',
+                borderRadius: '30px',
+                padding: '4px',
+                border: '1px solid var(--slate-border)'
+              }}>
+                <button
+                  onClick={() => { setLayaSubTab('oraculo'); setActiveCounselor(null); }}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: '24px',
+                    border: 'none',
+                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    background: layaSubTab === 'oraculo' ? 'var(--orange)' : 'transparent',
+                    color: layaSubTab === 'oraculo' ? '#fff' : 'var(--text-secondary)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  ✨ Oráculo Bíblico
+                </button>
+                <button
+                  onClick={() => setLayaSubTab('mentores')}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: '24px',
+                    border: 'none',
+                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    background: layaSubTab === 'mentores' ? 'var(--orange)' : 'transparent',
+                    color: layaSubTab === 'mentores' ? '#fff' : 'var(--text-secondary)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  👑 Mentores de Fé
+                </button>
+              </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-                    {COUNSELORS.map(counselor => {
-                      const isUnlocked = unlockedCounselors.includes(counselor.id);
-                      return (
-                        <div key={counselor.id} className="dashboard-card" style={{ position: 'relative', opacity: isUnlocked ? 1 : 0.8 }} onClick={() => {
-                          if (isUnlocked) {
-                            setActiveCounselor(counselor.id);
-                          } else {
-                            if (userCoins >= counselor.price) {
-                              if (confirm(`Deseja desbloquear ${counselor.name} por $<span style={{display:'inline-flex',alignItems:'center',gap:'4px'}}><ChaminhaCoin size={16}/> {counselor.price}</span>?`)) {
-                                setUserCoins(prev => {
-                                  const val = prev - counselor.price;
-                                  localStorage.setItem('app-coins', val);
-                                  return val;
-                                });
-                                setUnlockedCounselors(prev => {
-                                  const arr = [...prev, counselor.id];
-                                  localStorage.setItem('unlocked-counselors', JSON.stringify(arr));
-                                  return arr;
-                                });
-                              }
-                            } else {
-                              alert('Moedas insuficientes!');
-                            }
-                          }
-                        }}>
-                          {!isUnlocked && (
-                            <div style={{ position: 'absolute', top: 8, right: 8, background: 'var(--orange)', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 'bold' }}>
-                              {counselor.price} ⭐
-                            </div>
-                          )}
-                          <div className="dashboard-card-icon" style={{
-                            width: '50px', height: '50px', borderRadius: '50%', background: isUnlocked ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.05)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', margin: '0 auto',
-                            color: isUnlocked ? 'var(--orange)' : 'var(--text-secondary)', fontWeight: 'bold'
-                          }}>
-                            {counselor.name.substring(0,2).toUpperCase()}
-                          </div>
-                          
-                          <span className="dashboard-card-label" style={{ marginTop: '8px' }}>{counselor.name}</span>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: '1.2' }}>{counselor.title}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-            ) : (
-                lwcState !== 'authenticated' ? (
-                  <div className="flex-column gap-md align-center justify-center text-center" style={{ flex: 1, padding: '2rem', position: 'relative' }}>
-                    <button 
-                      onClick={() => setActiveCounselor(null)}
-                      style={{ position: 'absolute', top: '24px', left: '24px', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                    >
-                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                      Voltar
-                    </button>
-                    
-                    <div style={{ fontSize: '4.5rem', filter: 'drop-shadow(0 0 10px rgba(16, 185, 129, 0.2))' }}>
-                      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="1.5">
-                        <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-                        <circle cx="12" cy="5" r="2"></circle>
-                        <path d="M12 7v4"></path>
-                        <line x1="8" y1="16" x2="8" y2="16.01"></line>
-                        <line x1="16" y1="16" x2="16" y2="16.01"></line>
-                      </svg>
+              {/* Saldo de Moedas */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(245,158,11,0.12)',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                border: '1px solid var(--orange)'
+              }}>
+                <ChaminhaCoin size={20} />
+                <span style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--orange)' }}>{userCoins}</span>
+              </div>
+            </div>
+
+            {/* ──────── SUB-ABA 1: ORÁCULO BÍBLICO (BUSCA POR VIDA) ──────── */}
+            {layaSubTab === 'oraculo' && (
+              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {/* Hero / Introdução */}
+                <div className="glass-panel" style={{
+                  padding: '20px',
+                  borderRadius: '20px',
+                  background: 'linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(5,150,105,0.02) 100%)',
+                  border: '1px solid var(--slate-border)',
+                  position: 'relative'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '32px', height: '32px', borderRadius: '50%', background: 'var(--orange)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem'
+                    }}>
+                      ⚡
                     </div>
-                    <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>Conselheiro Bloqueado</h2>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '300px' }}>
-                      Você desbloqueou o conselheiro, mas para conversar com ele é necessário conectar sua conta do ChatGPT.
-                    </p>
-                    <button className="btn-primary" style={{ padding: '12px 24px', marginTop: '16px' }} onClick={() => setActiveTab('conta')}>
-                      Conectar ChatGPT Agora
-                    </button>
+                    <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: '800' }}>
+                      Oráculo Semântico LAYA
+                    </h3>
                   </div>
-                ) : (
-                  /* CHAT COM O CONSELHEIRO SELECIONADO */
-                  <div className="chat-container" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div className="chat-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <button 
-                          onClick={() => setActiveCounselor(null)}
-                          style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px' }}
-                        >
-                          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                        </button>
-                        <div style={{
-                          width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem',
-                          color: 'var(--text-primary)', fontWeight: 'bold'
-                        }}>
-                          {COUNSELORS.find(c => c.id === activeCounselor)?.name.substring(0,2).toUpperCase()}
-                        </div>
-                        <div>
-                          <strong style={{ display: 'block', fontSize: '0.95rem' }}>{COUNSELORS.find(c => c.id === activeCounselor)?.name}</strong>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                            ChatGPT ({chatGptUser?.plan?.toUpperCase() || 'SESSÃO'})
-                          </span>
-                        </div>
+                  <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                    Apresente a sua situação, angústia ou dúvida. O motor neural da LAYA busca a tríade bíblica exata em frações de segundo: promessa, oração e ação.
+                  </p>
+                </div>
+
+                {/* Input de Busca Semântica */}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleLayaConsultar(layaOraculoQuery);
+                  }}
+                  style={{ display: 'flex', gap: '8px' }}
+                >
+                  <input
+                    type="text"
+                    className="chat-input-field"
+                    placeholder="Ex: Estou com medo do futuro, com dívidas, briga no lar..."
+                    value={layaOraculoQuery}
+                    onChange={(e) => setLayaOraculoQuery(e.target.value)}
+                    style={{
+                      flex: 1,
+                      padding: '14px 16px',
+                      borderRadius: '16px',
+                      border: '1px solid var(--slate-border)',
+                      background: 'var(--white)',
+                      color: 'var(--text-primary)',
+                      fontSize: '0.95rem'
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    disabled={layaSearching}
+                    style={{
+                      padding: '0 20px',
+                      borderRadius: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {layaSearching ? 'Consultando...' : 'Consultar'}
+                  </button>
+                </form>
+
+                {/* Chips de Categorias de Vida */}
+                <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  overflowX: 'auto',
+                  paddingBottom: '4px',
+                  scrollbarWidth: 'none'
+                }}>
+                  {[
+                    { id: 'TODOS', label: 'Todos os Temas' },
+                    { id: 'EMOCAO', label: '🛡️ Emoções & Medo' },
+                    { id: 'VIDA_PRATICA', label: '💰 Finanças & Trabalho' },
+                    { id: 'RELACIONAMENTO', label: '❤️ Casamento & Família' },
+                    { id: 'ESPIRITUAL', label: '🧭 Propósito & Fé' }
+                  ].map(cat => (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setLayaActiveCategory(cat.id);
+                        handleLayaConsultar(layaOraculoQuery, cat.id);
+                      }}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '20px',
+                        border: '1px solid',
+                        borderColor: layaActiveCategory === cat.id ? 'var(--orange)' : 'var(--slate-border)',
+                        background: layaActiveCategory === cat.id ? 'rgba(16,185,129,0.15)' : 'transparent',
+                        color: layaActiveCategory === cat.id ? 'var(--orange)' : 'var(--text-secondary)',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        whiteSpace: 'nowrap',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Grid de Atalhos de Situações Reais */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                  {LAYA_TEMAS_ORACULO
+                    .filter(t => layaActiveCategory === 'TODOS' || t.categoria === layaActiveCategory)
+                    .map(tema => (
+                      <div
+                        key={tema.slug}
+                        onClick={() => handleSelectLayaTheme(tema.slug)}
+                        style={{
+                          padding: '12px 14px',
+                          borderRadius: '14px',
+                          border: layaSelectedThemeSlug === tema.slug ? '1.5px solid var(--orange)' : '1px solid var(--slate-border)',
+                          background: layaSelectedThemeSlug === tema.slug ? 'rgba(16,185,129,0.08)' : 'var(--white)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '4px',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        <span style={{ fontSize: '0.9rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                          {tema.titulo}
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                          {tema.versiculo_chave}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+
+                {/* CARD DE RESPOSTA DO ORÁCULO LAYA */}
+                {layaOraculoResult && layaOraculoResult.resultado && (
+                  <div className="glass-panel" style={{
+                    padding: '24px 20px',
+                    borderRadius: '20px',
+                    border: '1.5px solid var(--orange)',
+                    background: 'var(--white)',
+                    boxShadow: 'var(--shadow-md)',
+                    marginTop: '8px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '18px'
+                  }}>
+                    {/* Header do Card */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--slate-border)', paddingBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '800', textTransform: 'uppercase' }}>
+                          Revelação Bíblica • LAYA
+                        </span>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          {layaOraculoResult.resultado.categoria}
+                        </span>
                       </div>
                       
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: '0.75rem' }} onClick={() => {
-                          if (confirm('Deseja limpar o histórico do chat?')) {
-                            setChatMessages([{ role: 'assistant', content: `Olá! Sou ${COUNSELORS.find(c => c.id === activeCounselor)?.name}. Como posso te ajudar hoje?` }]);
-                          }
-                        }}>
-                          Limpar
-                        </button>
+                      <button
+                        onClick={() => handleCopyLayaConselho(
+                          `📖 ${layaOraculoResult.resultado.versiculo_chave}\n\n"${layaOraculoResult.resultado.promessa_biblica}"\n\n🕊️ DIRECIONAMENTO LAYA:\n${layaOraculoResult.resultado.direcionamento_laya}\n\n🙏 ORAÇÃO:\n${layaOraculoResult.resultado.oracao_resposta}\n\n🎯 AÇÃO:\n${layaOraculoResult.resultado.acao_pratica}`
+                        )}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: layaCopied ? 'var(--orange)' : 'var(--text-secondary)',
+                          fontSize: '0.82rem',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        {layaCopied ? '✓ Copiado!' : '📋 Copiar'}
+                      </button>
+                    </div>
+
+                    {/* Versículo Âncora */}
+                    <div style={{
+                      background: 'rgba(16,185,129,0.06)',
+                      padding: '16px',
+                      borderRadius: '16px',
+                      borderLeft: '4px solid var(--orange)'
+                    }}>
+                      <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase', marginBottom: '4px' }}>
+                        Versículo Âncora: {layaOraculoResult.resultado.versiculo_chave}
+                      </div>
+                      <p style={{ margin: 0, fontSize: '0.98rem', fontWeight: '600', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.5' }}>
+                        "{layaOraculoResult.resultado.promessa_biblica}"
+                      </p>
+                    </div>
+
+                    {/* Direcionamento LAYA */}
+                    <div>
+                      <h4 style={{ margin: '0 0 6px 0', fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        💡 Sabedoria & Direcionamento
+                      </h4>
+                      <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                        {layaOraculoResult.resultado.direcionamento_laya}
+                      </p>
+                    </div>
+
+                    {/* Oração de Poder */}
+                    <div style={{
+                      background: 'var(--slate-light)',
+                      padding: '16px',
+                      borderRadius: '16px',
+                      border: '1px solid var(--slate-border)'
+                    }}>
+                      <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        🙏 Oração de Alinhamento
+                      </h4>
+                      <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic' }}>
+                        "{layaOraculoResult.resultado.oracao_resposta}"
+                      </p>
+                    </div>
+
+                    {/* Ação Prática de Hoje */}
+                    <div style={{
+                      background: 'rgba(245,158,11,0.08)',
+                      padding: '14px 16px',
+                      borderRadius: '16px',
+                      border: '1px solid rgba(245,158,11,0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px'
+                    }}>
+                      <span style={{ fontSize: '1.4rem' }}>🎯</span>
+                      <div>
+                        <div style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
+                          Ação Prática de Hoje
+                        </div>
+                        <div style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: '500' }}>
+                          {layaOraculoResult.resultado.acao_pratica}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="chat-messages">
-                      {chatMessages.map((msg, index) => (
-                        <div key={index} className={`chat-bubble ${msg.role}`}>
-                          {msg.content}
-                        </div>
-                      ))}
-                      {chatLoading && (
-                        <div className="chat-bubble assistant">
-                          <div className="typing-indicator">
-                            <div className="typing-dot"></div><div className="typing-dot"></div><div className="typing-dot"></div>
+                    {/* Atalho para o Mentor Recomendado */}
+                    {layaOraculoResult.mentorSugerido && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingTop: '8px',
+                        borderTop: '1px solid var(--slate-border)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <img
+                            src={layaOraculoResult.mentorSugerido.avatar}
+                            alt={layaOraculoResult.mentorSugerido.nome}
+                            style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover' }}
+                          />
+                          <div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Mentor Bíblico Recomendado:</div>
+                            <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>{layaOraculoResult.mentorSugerido.nome}</strong>
                           </div>
                         </div>
-                      )}
-                      <div ref={messagesEndRef} />
+
+                        <button
+                          className="btn-secondary"
+                          onClick={() => {
+                            setLayaSubTab('mentores');
+                            setActiveCounselor(layaOraculoResult.mentorSugerido.id);
+                          }}
+                          style={{ padding: '8px 14px', fontSize: '0.8rem', borderRadius: '12px' }}
+                        >
+                          Ver Mentoria →
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ──────── SUB-ABA 2: MENTORES DE FÉ CANÔNICOS ──────── */}
+            {layaSubTab === 'mentores' && (
+              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {!activeCounselor ? (
+                  <>
+                    <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+                      <h2 style={{ fontSize: '1.5rem', color: 'var(--orange)', margin: '0 0 6px 0', fontWeight: '800' }}>
+                        Mentores Bíblicos Canônicos
+                      </h2>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', margin: 0 }}>
+                        Acesse conselhos doutrinários, orações e princípios de vida deixados pelos grandes homens e mulheres da Bíblia.
+                      </p>
                     </div>
 
-                    <div className="chat-input-area">
-                      <form onSubmit={handleSendChatMessage} className="chat-input-row">
-                        <input
-                          type="text"
-                          className="chat-input-field"
-                          placeholder="Fale com o Conselheiro..."
-                          value={chatInput}
-                          onChange={(e) => setChatInput(e.target.value)}
-                          disabled={chatLoading}
-                        />
-                        <button type="submit" className="chat-send-btn" disabled={chatLoading || !chatInput.trim()}>
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13"></line>
-                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                          </svg>
-                        </button>
-                      </form>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
+                      {LAYA_MENTORES.map(mentor => {
+                        const isUnlocked = unlockedCounselors.includes(mentor.id);
+                        return (
+                          <div
+                            key={mentor.id}
+                            className="dashboard-card"
+                            style={{
+                              position: 'relative',
+                              padding: '18px 14px',
+                              borderRadius: '20px',
+                              border: isUnlocked ? '1.5px solid var(--slate-border)' : '1px dashed var(--slate-border)',
+                              opacity: isUnlocked ? 1 : 0.85,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              textAlign: 'center',
+                              gap: '10px'
+                            }}
+                            onClick={() => {
+                              if (isUnlocked) {
+                                setActiveCounselor(mentor.id);
+                              } else {
+                                handleUnlockLayaMentor(mentor);
+                              }
+                            }}
+                          >
+                            {!isUnlocked && (
+                              <div style={{
+                                position: 'absolute', top: 10, right: 10,
+                                background: 'var(--orange)', color: '#fff',
+                                padding: '2px 8px', borderRadius: '10px',
+                                fontSize: '0.7rem', fontWeight: '800'
+                              }}>
+                                {mentor.preco_desbloqueio} ⭐
+                              </div>
+                            )}
+
+                            <div style={{
+                              width: '64px',
+                              height: '64px',
+                              borderRadius: '50%',
+                              overflow: 'hidden',
+                              border: '2px solid var(--orange)',
+                              boxShadow: 'var(--shadow-sm)'
+                            }}>
+                              <img
+                                src={mentor.avatar}
+                                alt={mentor.nome}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              />
+                            </div>
+
+                            <div>
+                              <strong style={{ display: 'block', fontSize: '0.98rem', color: 'var(--text-primary)' }}>
+                                {mentor.nome}
+                              </strong>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                                {mentor.titulo}
+                              </span>
+                            </div>
+
+                            {/* Tags de Especialidade */}
+                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                              {(mentor.especialidades || []).slice(0, 2).map(esp => (
+                                <span
+                                  key={esp}
+                                  style={{
+                                    fontSize: '0.65rem',
+                                    padding: '2px 6px',
+                                    background: 'var(--slate-light)',
+                                    borderRadius: '6px',
+                                    color: 'var(--text-secondary)'
+                                  }}
+                                >
+                                  {esp}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                  </div>
-                )
+                  </>
+                ) : (
+                  /* ── VISUALIZAÇÃO DO MENTOR SELECIONADO ── */
+                  (() => {
+                    const currentMentor = LAYA_MENTORES.find(m => m.id === activeCounselor) || LAYA_MENTORES[0];
+                    const mentorConselhos = LAYA_CONSELHOS.filter(c => c.mentor_id === currentMentor.id);
+                    const conselhoAtivo = mentorConselhos.find(c => c.tema === layaMentorTheme) || mentorConselhos[0] || LAYA_CONSELHOS[0];
+
+                    return (
+                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                        {/* Botão Voltar aos Mentores */}
+                        <button
+                          onClick={() => setActiveCounselor(null)}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--text-primary)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '4px 0',
+                            fontSize: '0.9rem',
+                            fontWeight: '600'
+                          }}
+                        >
+                          <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                          Voltar para Lista de Mentores
+                        </button>
+
+                        {/* Hero do Mentor */}
+                        <div className="glass-panel" style={{
+                          padding: '24px 20px',
+                          borderRadius: '24px',
+                          background: 'linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(5,150,105,0.03) 100%)',
+                          border: '1px solid var(--slate-border)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px'
+                        }}>
+                          <img
+                            src={currentMentor.avatar}
+                            alt={currentMentor.nome}
+                            style={{
+                              width: '74px',
+                              height: '74px',
+                              borderRadius: '50%',
+                              objectFit: 'cover',
+                              border: '3px solid var(--orange)',
+                              flexShrink: 0
+                            }}
+                          />
+                          <div>
+                            <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
+                              {currentMentor.periodo}
+                            </span>
+                            <h2 style={{ margin: '2px 0 4px 0', fontSize: '1.35rem', color: 'var(--text-primary)', fontWeight: '800' }}>
+                              {currentMentor.nome}
+                            </h2>
+                            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                              {currentMentor.descricao}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Seletor de Temas do Mentor */}
+                        <div>
+                          <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                            Selecione a Área de Orientação:
+                          </span>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            {mentorConselhos.map(c => (
+                              <button
+                                key={c.tema}
+                                onClick={() => setLayaMentorTheme(c.tema)}
+                                style={{
+                                  padding: '8px 16px',
+                                  borderRadius: '16px',
+                                  border: '1px solid',
+                                  borderColor: conselhoAtivo.tema === c.tema ? 'var(--orange)' : 'var(--slate-border)',
+                                  background: conselhoAtivo.tema === c.tema ? 'var(--orange)' : 'var(--white)',
+                                  color: conselhoAtivo.tema === c.tema ? '#fff' : 'var(--text-primary)',
+                                  fontSize: '0.85rem',
+                                  fontWeight: '700',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.15s ease'
+                                }}
+                              >
+                                {c.titulo}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Card do Conselho Canônico */}
+                        <div className="glass-panel" style={{
+                          padding: '24px 20px',
+                          borderRadius: '20px',
+                          border: '1.5px solid var(--slate-border)',
+                          background: 'var(--white)',
+                          boxShadow: 'var(--shadow-md)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '16px'
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '800' }}>
+                              📖 {conselhoAtivo.versiculo_referencia}
+                            </span>
+                            <button
+                              onClick={() => handleCopyLayaConselho(
+                                `👑 MENTORIA COM ${currentMentor.nome.toUpperCase()}\nTema: ${conselhoAtivo.titulo}\nVersículo: ${conselhoAtivo.versiculo_referencia}\n\n"${conselhoAtivo.texto_biblico}"\n\n🕊️ CONSELHO DOUTRINÁRIO:\n${conselhoAtivo.conselho_doutrinario}\n\n🙏 ORAÇÃO:\n${conselhoAtivo.oracao_guiada}\n\n🎯 DESAFIO PRÁTICO:\n${conselhoAtivo.desafio_pratico}`
+                              )}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: layaCopied ? 'var(--orange)' : 'var(--text-secondary)',
+                                fontSize: '0.82rem',
+                                fontWeight: '600',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              {layaCopied ? '✓ Copiado!' : '📋 Copiar'}
+                            </button>
+                          </div>
+
+                          {/* Texto Bíblico */}
+                          <div style={{
+                            background: 'rgba(16,185,129,0.05)',
+                            padding: '14px 16px',
+                            borderRadius: '14px',
+                            borderLeft: '4px solid var(--orange)'
+                          }}>
+                            <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.5' }}>
+                              "{conselhoAtivo.texto_biblico}"
+                            </p>
+                          </div>
+
+                          {/* Conselho Doutrinário */}
+                          <div>
+                            <h4 style={{ margin: '0 0 6px 0', fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+                              🕊️ Princípio Doutrinário
+                            </h4>
+                            <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                              {conselhoAtivo.conselho_doutrinario}
+                            </p>
+                          </div>
+
+                          {/* Oração Guiada */}
+                          <div style={{
+                            background: 'var(--slate-light)',
+                            padding: '16px',
+                            borderRadius: '16px',
+                            border: '1px solid var(--slate-border)'
+                          }}>
+                            <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+                              🙏 Oração com o Mentor
+                            </h4>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic' }}>
+                              "{conselhoAtivo.oracao_guiada}"
+                            </p>
+                          </div>
+
+                          {/* Desafio Prático */}
+                          <div style={{
+                            background: 'rgba(245,158,11,0.08)',
+                            padding: '14px 16px',
+                            borderRadius: '14px',
+                            border: '1px solid rgba(245,158,11,0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px'
+                          }}>
+                            <span style={{ fontSize: '1.3rem' }}>🎯</span>
+                            <div>
+                              <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
+                                Desafio Prático do Dia
+                              </div>
+                              <div style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: '500' }}>
+                                {conselhoAtivo.desafio_pratico}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()
+                )}
+              </div>
             )}
           </div>
         )}
@@ -4614,58 +4940,23 @@ Importante: O JSON deve ser 100% válido.`;
                 </div>
               </div>
 
-              {/* Integração com IA */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Conexão com Conselheiro IA</h3>
+              {/* LAYA Inteligência Bíblica */}
+              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left', color: 'var(--text-primary)' }}>LAYA • Inteligência Bíblica</h3>
                 </div>
                 
-                {lwcState === 'authenticated' ? (
-                  <div className="flex-column gap-sm">
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'var(--orange)', fontWeight: '600', fontSize: '0.95rem', margin: '4px 0' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
-                      IA Ativa ({chatGptUser?.plan ? chatGptUser.plan.toUpperCase() : 'FREE/PLUS'})
-                    </div>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'left' }}>
-                      Conta conectada: <strong>{chatGptUser?.email || 'Usuário ChatGPT'}</strong>. Você já pode conversar com o Conselheiro.
-                    </p>
-                    <button className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={handleDisconnectChatGPT}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                      Desconectar Conta
-                    </button>
-                  </div>
-                ) : lwcState === 'pending' && lwcDeviceCode ? (
-                  <div className="flex-column gap-sm">
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5', textAlign: 'left' }}>
-                      Abra o link abaixo e insira o seguinte código para autorizar o acesso:
-                    </p>
-                    <div className="lwc-code-box">{lwcDeviceCode.userCode}</div>
-                    <a 
-                      href={lwcDeviceCode.verificationUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="btn-primary" 
-                      style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', padding: '10px' }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                      Página de Verificação
-                    </a>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', textAlign: 'center' }}>
-                      Aguardando autorização... (Expira em 5 minutos)
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex-column gap-sm">
-                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px', lineHeight: '1.5', textAlign: 'left' }}>
-                      Conecte sua conta do ChatGPT para liberar o <strong>Conselheiro IA</strong> e <strong>Desafios Inteligentes</strong> customizados, sem custo extra para você ou para a plataforma.
-                    </p>
-                    <button className="btn-primary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={handleConnectChatGPT}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                      Conectar Conta IA
-                    </button>
-                  </div>
-                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: '700', fontSize: '0.92rem', margin: '4px 0' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                  Motor Neural Ativo & 100% Autônomo
+                </div>
+                
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.5', marginTop: '6px' }}>
+                  A LAYA opera integrada nativamente ao seu aplicativo com a Bíblia Sagrada completa e os Mentores Bíblicos. Não necessita de chaves externas, internet constante ou contas de terceiros.
+                </p>
               </div>
 
               {/* Alternância de Tema */}
