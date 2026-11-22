@@ -126,18 +126,18 @@ export default function LandingPage({ onEnterApp }) {
     }, { threshold: 0.05 });
     observer.observe(canvas);
 
-    // 36 partículas sutis flutuantes com cintilação suave
+    // 38 partículas sutis de folhas e centelhas sopradas pelo vento
     const particles = [];
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < 38; i++) {
       particles.push({
-        x: Math.random() * (canvas.clientWidth || 800),
-        y: Math.random() * (canvas.clientHeight || 500),
-        size: Math.random() * 2.2 + 0.8,
-        speedY: Math.random() * 0.4 + 0.15,
-        speedX: (Math.random() - 0.5) * 0.25,
+        x: Math.random() * (canvas.clientWidth || 1000),
+        y: Math.random() * (canvas.clientHeight || 600),
+        size: Math.random() * 2.6 + 1.0,
+        speedX: Math.random() * 1.1 + 0.5, // Brisa suave da esquerda para a direita
+        speedY: (Math.random() - 0.45) * 0.35,
         alpha: Math.random() * 0.65 + 0.2,
-        pulseSpeed: Math.random() * 0.025 + 0.01,
-        color: Math.random() > 0.4 ? 'rgba(249, 115, 22,' : 'rgba(30, 215, 96,'
+        pulseSpeed: Math.random() * 0.02 + 0.01,
+        color: Math.random() > 0.4 ? 'rgba(249, 115, 22,' : 'rgba(251, 191, 36,'
       });
     }
 
@@ -151,9 +151,9 @@ export default function LandingPage({ onEnterApp }) {
       ctx.clearRect(0, 0, w, h);
 
       for (let p of particles) {
-        p.y -= p.speedY;
-        p.x += Math.sin(p.y * 0.02) * 0.35 + p.speedX;
-        p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.008;
+        p.x += p.speedX;
+        p.y += Math.sin(p.x * 0.015) * 0.45 + p.speedY;
+        p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.006;
         const currentAlpha = Math.max(0.12, Math.min(0.85, p.alpha));
 
         const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
@@ -165,12 +165,13 @@ export default function LandingPage({ onEnterApp }) {
         ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
         ctx.fill();
 
-        if (p.y < -10) {
-          p.y = h + 10;
-          p.x = Math.random() * w;
+        // Se sair pela direita, recicla na esquerda (vento contínuo)
+        if (p.x > w + 20) {
+          p.x = -20;
+          p.y = Math.random() * h;
         }
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -327,14 +328,93 @@ export default function LandingPage({ onEnterApp }) {
         </div>
       </header>
 
-      {/* ── HERO BANNER: SPOTIFY THEATER CANVAS & LIVING BACKGROUND ── */}
+      {/* ── HERO BANNER: SPOTIFY THEATER CANVAS & LIVING BACKGROUND (ÁRVORE AO VENTO + SOL NO HORIZONTE) ── */}
       <section className="sp-hero">
-        {/* Fundo Vivo em Movimento Dinâmico (Orbes de Luz Líquida + Partículas de Sabedoria + Grain) */}
+        {/* Fundo Vivo em Movimento Dinâmico (Árvore ao Vento, Sol no Horizonte & Folhas) */}
         <div className="sp-living-bg" aria-hidden="true">
           <div className="sp-aurora-orb sp-orb-orange" />
           <div className="sp-aurora-orb sp-orb-green" />
           <div className="sp-aurora-orb sp-orb-amber" />
-          <div className="sp-aurora-orb sp-orb-deep" />
+
+          {/* Cenário Vetorial Minimalista: Árvore ao Vento & Sol no Horizonte */}
+          <div className="sp-landscape-scene">
+            <svg
+              className="sp-landscape-svg"
+              viewBox="0 0 1440 900"
+              preserveAspectRatio="xMidYMax slice"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(251, 146, 60, 0.45)"/>
+                  <stop offset="35%" stopColor="rgba(249, 115, 22, 0.22)"/>
+                  <stop offset="70%" stopColor="rgba(234, 88, 12, 0.08)"/>
+                  <stop offset="100%" stopColor="transparent"/>
+                </radialGradient>
+                <radialGradient id="sunCore" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFFBEB"/>
+                  <stop offset="35%" stopColor="#FCD34D"/>
+                  <stop offset="75%" stopColor="#F97316"/>
+                  <stop offset="100%" stopColor="#EA580C"/>
+                </radialGradient>
+                <radialGradient id="horizonGlow" cx="65%" cy="85%" r="65%">
+                  <stop offset="0%" stopColor="rgba(249, 115, 22, 0.32)"/>
+                  <stop offset="50%" stopColor="rgba(180, 83, 9, 0.12)"/>
+                  <stop offset="90%" stopColor="transparent"/>
+                </radialGradient>
+              </defs>
+
+              {/* Brilho Atmosférico do Horizonte */}
+              <rect width="1440" height="900" fill="url(#horizonGlow)" />
+
+              {/* O Sol no Horizonte - Centro Atmosférico */}
+              <g className="sp-sun-pulse">
+                <circle cx="720" cy="730" r="300" fill="url(#sunGlow)" />
+                <circle cx="720" cy="730" r="95" fill="url(#sunCore)" />
+              </g>
+
+              {/* Colina de Fundo com Profundidade */}
+              <path d="M0 790 Q 380 730, 720 755 T 1440 735 L 1440 900 L 0 900 Z" fill="#141418" opacity="0.88"/>
+
+              {/* Colina com Linha de Luz Dourada Solar */}
+              <path d="M0 825 Q 520 775, 960 795 T 1440 790 L 1440 900 L 0 900 Z" fill="#0c0d10"/>
+              <path d="M0 825 Q 520 775, 960 795 T 1440 790" fill="none" stroke="rgba(249, 115, 22, 0.35)" strokeWidth="1.8"/>
+
+              {/* A Árvore Minimalista Balançando ao Vento (Salmo 1:3) */}
+              <g className="sp-tree-group" transform="translate(670, 450)">
+                {/* Tronco & Estrutura com Balanço Suave de Pêndulo */}
+                <g className="sp-tree-sway-main">
+                  <path d="M 60 340 Q 75 220, 70 145 Q 65 80, 45 10 Q 55 5, 80 50 Q 95 125, 88 210 Q 85 265, 115 340 Z" fill="#08080a"/>
+                  <path d="M 70 145 Q 40 90, 10 75 Q 25 65, 60 105" fill="#08080a"/>
+                  <path d="M 75 105 Q 115 70, 155 60 Q 135 75, 85 120" fill="#08080a"/>
+                  <path d="M 55 65 Q 30 25, 0 15 Q 20 10, 50 45" fill="#08080a"/>
+
+                  {/* Galhos e Folhagens Balançando no Vento */}
+                  <g className="sp-tree-branches-sway">
+                    {/* Copa Esquerda */}
+                    <path d="M -10 40 C -55 20, -75 -25, -40 -55 C -10 -85, 45 -75, 65 -45 C 85 -10, 55 45, -10 40 Z" fill="#0c1710" opacity="0.95"/>
+                    <path d="M -10 40 C -55 20, -75 -25, -40 -55 C -10 -85, 45 -75, 65 -45 C 85 -10, 55 45, -10 40 Z" fill="none" stroke="rgba(249, 115, 22, 0.25)" strokeWidth="1"/>
+
+                    {/* Copa Centro/Superior */}
+                    <path d="M 40 -20 C 15 -75, 50 -130, 95 -120 C 140 -110, 170 -65, 150 -10 C 125 35, 65 25, 40 -20 Z" fill="#0f1f14" opacity="0.96"/>
+                    <path d="M 40 -20 C 15 -75, 50 -130, 95 -120 C 140 -110, 170 -65, 150 -10 C 125 35, 65 25, 40 -20 Z" fill="none" stroke="rgba(249, 115, 22, 0.32)" strokeWidth="1"/>
+
+                    {/* Copa Direita (inclinando suavemente na direção do vento) */}
+                    <path d="M 95 20 C 95 -35, 140 -75, 185 -65 C 230 -55, 250 -10, 225 35 C 190 75, 115 65, 95 20 Z" fill="#0a140d" opacity="0.95"/>
+                    <path d="M 95 20 C 95 -35, 140 -75, 185 -65 C 230 -55, 250 -10, 225 35 C 190 75, 115 65, 95 20 Z" fill="none" stroke="rgba(249, 115, 22, 0.2)" strokeWidth="1"/>
+
+                    {/* Folhagens Orgânicas Adicionais */}
+                    <circle cx="10" cy="-20" r="35" fill="#0b140e" opacity="0.92"/>
+                    <circle cx="75" cy="-65" r="46" fill="#101e14" opacity="0.92"/>
+                    <circle cx="140" cy="-15" r="42" fill="#0d1710" opacity="0.92"/>
+                    <circle cx="195" cy="15" r="32" fill="#09120b" opacity="0.92"/>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+
           <canvas ref={particlesCanvasRef} className="sp-particles-canvas" />
           <div className="sp-grain-overlay" />
         </div>
@@ -403,6 +483,16 @@ export default function LandingPage({ onEnterApp }) {
             </div>
           </div>
         </div>
+
+        {/* Indicador Suave para Explorar Abaixo (Garante que a Seção Seguinte Só Apareça ao Rolar) */}
+        <a href="#recursos" className="sp-scroll-indicator" aria-label="Rolar para baixo">
+          <span className="sp-scroll-text">Role para explorar</span>
+          <div className="sp-scroll-chevron">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 10l5 5 5-5"/>
+            </svg>
+          </div>
+        </a>
       </section>
 
       {/* ── SEÇÃO: OS 5 PILARES (ESTILO SHELF DO SPOTIFY) ── */}
