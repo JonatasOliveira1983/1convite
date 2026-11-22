@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,9 +48,27 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      - name: Prepare Named APK
+        run: |
+          cp frontend/android/app/build/outputs/apk/debug/app-debug.apk frontend/1convite.apk
+
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: 1convite-apk
-          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          path: frontend/1convite.apk
           retention-days: 30
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: latest
+          name: "1Convite App Android (Build Oficial)"
+          body: "Versão oficial compilada automaticamente via GitHub Actions do aplicativo 1Convite."
+          draft: false
+          prerelease: false
+          files: |
+            frontend/1convite.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
