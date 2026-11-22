@@ -7,6 +7,8 @@ import https from 'https';
 import dotenv from 'dotenv';
 import pool from './database/pool.js';
 import { LayaEngine, LAYA_MENTORES, LAYA_CONSELHOS, LAYA_ORACULO_TEMAS } from './services/layaEngine.js';
+import { ragService } from './services/ragService.js';
+import { mcpServer } from './services/mcpServer.js';
 
 dotenv.config();
 
@@ -749,6 +751,18 @@ async function loadBibleToMemory() {
     if (response.ok) {
       cachedBibleData = await response.json();
       console.log(`[Memory Bible] Bíblia ACF carregada na memória com sucesso! Total de livros: ${cachedBibleData.length}`);
+      // Indexação no RAG BM25
+      ragService.indexBible(cachedBibleData);
+    }
+    // Carregar termos teológicos no RAG
+    try {
+      const dictRes = await pool.query('SELECT termo, significado FROM tb_dicionario_teologico LIMIT 500');
+      if (dictRes.rows && dictRes.rows.length > 0) {
+        ragService.setTheologicalTerms(dictRes.rows);
+        console.log(`[RAG Service] ${dictRes.rows.length} termos teológicos carregados no RAG.`);
+      }
+    } catch (e) {
+      console.warn('[RAG Service] Aviso ao carregar termos teológicos:', e.message);
     }
   } catch (err) {
     console.warn('[Memory Bible] Não foi possível carregar a Bíblia da rede. Usando gerador local:', err.message);
@@ -1668,6 +1682,29 @@ app.post('/api/v1/leads', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ── MODEL CONTEXT PROTOCOL (MCP v2024-11-05) & RAG ──────────────────
+app.get('/api/v1/mcp/tools', (req, res) => {
+  res.json(mcpServer.listTools());
+});
+
+app.post('/api/v1/mcp/execute', async (req, res) => {
+  const { tool, arguments: args } = req.body || {};
+  if (!tool) {
+    return res.status(400).json({ status: 'error', error: 'Campo "tool" é obrigatório no payload' });
+  }
+  const result = await mcpServer.executeTool(tool, args || {});
+  res.json(result);
+});
+
+app.get('/api/v1/rag/search', async (req, res) => {
+  const { q, top_k } = req.query;
+  if (!q) {
+    return res.status(400).json({ error: 'Parâmetro "q" é obrigatório para busca RAG' });
+  }
+  const result = ragService.getHybridContext(q, parseInt(top_k) || 5);
+  res.json(result);
 });
 
 // Health check

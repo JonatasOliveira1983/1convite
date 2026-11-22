@@ -1,0 +1,17 @@
+{
+  "uri": "viking://1convite",
+  "name": "1Convite Hierarchical Context Database",
+  "version": "1.0.0",
+  "description": "Sistema de arquivos virtual de contexto do 1Convite compatível com OpenViking (ByteDance Volcengine). Organiza conhecimento, memórias, mentores e skills em camadas L0, L1 e L2.",
+  "layers": {
+    "L0": "Metadados estruturados e índices de rotas",
+    "L1": "Resumos executivos e sínteses contextuais",
+    "L2": "Dados profundos, versículos e histórico detalhado"
+  },
+  "root_directories": [
+    "viking://1convite/knowledge",
+    "viking://1convite/mentors",
+    "viking://1convite/memory",
+    "viking://1convite/skills"
+  ]
+}
