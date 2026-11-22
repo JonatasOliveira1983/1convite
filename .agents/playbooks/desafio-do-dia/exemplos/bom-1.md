@@ -1,0 +1,13 @@
+# Exemplo Aprovado: Dia 01
+
+```json
+{
+  "dia_id": 1,
+  "pilar_origem": "PROPÓSITO_M2414",
+  "codigo_verbal": "Código 01: O Reino começa no quintal da sua casa.",
+  "versiculo_chave": "E este evangelho do reino será pregado em todo o mundo como testemunho a todas as nações, então, virá o fim. - Mateus 24:14",
+  "texto_reflexao": "O evangelismo eficaz não começa em outra nação, mas no próximo contato que você fizer hoje. Note quem está ao seu redor no agora de Deus e faça uma conexão real. \n\n📖 HISTÓRIA CRISTÃ REAL:\nEdward Kimball era um simples professor voluntário de escola dominical. Em 1855, ele decidiu fazer uma conexão simples no quintal de sua casa: entrou na sapataria onde um jovem de 17 anos trabalhava para falar sobre Cristo. Esse jovem era Dwight L. Moody, que veio a pregar para milhões e fundou grandes instituições cristãs. O impacto mundial de Moody começou com a conexão intencional de Kimball em uma sapataria comum.",
+  "texto_meditacao": "🎙️ Roteiro de Oração Guiada: \"A Oração de Ação de Graças e Propósito\"\nDuração aproximada: 3 a 4 minutos\n\nTrilha de fundo sugerida: Tom suave, seguro e focado. Sem desespero, com tom de certeza e autoridade espiritual.\n\n🟢 1. O Ponto de Partida: Ação de Graças pelo Hoje\n(Tom de voz: Calmo, grato, pausado)\n\nRepita comigo em seu coração ou em alta voz:\n\n\"Pai, a Ti rendo graças.\nObrigado porque o Senhor é bom e sempre me ouve.\n(Pausa de 3 segundos)\nAgradeço pela oportunidade de despertar para mais este dia incrível.\nObrigado pelo ar nos meus pulmões, pelo pão na minha mesa e por esta nova chance de viver.\"\n\n🟡 2. O Alinhamento: Tudo o que Tenho é Suficiente\n(Inspirado na Multiplicação dos Pães - Marcos 6:41)\n\n\"Senhor, assim como Jesus não olhou para a escassez dos cinco pães e dois peixes, mas ergueu os olhos para o céu e deu graças... eu entrego nas Tuas mãos o que eu tenho hoje.\n(Pausa de 4 segundos)\nNão vou reclamar do que me falta. Eu abençoo o pouco ou o muito que está nas minhas mãos agora, sabendo que a Tua graça multiplica o meu esforço.\"\n\n🟠 3. O Propósito e o Mover no Agora\n(Tom de voz: Firme, consciente, de governo)\n\n\"Pai, o meu dia não será em vão.\nEu desperto hoje para trabalhar alinhado ao meu propósito e à visão do Teu Reino.\n(Pausa de 3 segundos)\nDá-me olhos para notar as pessoas ao meu redor.\nUsa a minha vida como um testemunho vivo. Que onde eu colocar as minhas mãos, haja bênção, sabedoria e multiplicação.\"\n\n🔴 4. A Selagem do Convite\n(Tom de voz: Decidido, pronto para a ação)\n\n\"Eu não andarei ansioso pelo amanhã.\nEu tomo posse da vitória e da paz que já foram conquistadas na cruz.\nEm nome de Jesus, o meu dia está abençoado.\nAmém!\"",
+  "url_audio_meditacao": "/piano.mp3"
+}
+```
