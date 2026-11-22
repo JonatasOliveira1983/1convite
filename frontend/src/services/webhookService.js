@@ -8,7 +8,7 @@ const isLocalhost = window.location.hostname === 'localhost' || window.location.
 
 const API_BASE = (isLocalhost && !isCapacitor)
   ? 'http://localhost:3001/api/v1'
-  : 'https://invigorating-expression-production-d4df.up.railway.app/api/v1';
+  : (import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1');
 
 export async function sendLeadWebhook(data) {
   const res = await fetch(`${API_BASE}/leads`, {

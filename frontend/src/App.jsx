@@ -1118,7 +1118,7 @@ function App() {
 
   const API_BASE = (isLocalhost && !isCapacitor)
     ? 'http://localhost:3001/api/v1' 
-    : 'https://invigorating-expression-production-d4df.up.railway.app/api/v1';
+    : (import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1');
 
   // ── TIMERS DOS JOGOS ──────────────────────────────────────
   // Timer do Quiz

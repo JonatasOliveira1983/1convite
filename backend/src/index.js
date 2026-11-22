@@ -22,13 +22,20 @@ const allowedOrigins = [
   'capacitor://localhost',
   'https://1convite.com.br',
   'https://www.1convite.com.br',
+  'https://1convite.pages.dev',
 ];
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
 }
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || origin.endsWith('.pages.dev') || origin.endsWith('.1convite.com.br')) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Permissivo para evitar bloqueios de clientes mobile/PWA
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -1671,13 +1678,24 @@ app.get('/api/v1/health', async (req, res) => {
   }
 });
 
-// Servir arquivos estáticos do React em produção
+// Servir arquivos estáticos do React em produção se compilado localmente
 const distPath = join(__dirname, '../../frontend/dist');
-app.use(express.static(distPath));
-
-app.get(/.*/, (req, res) => {
-  res.sendFile(join(distPath, 'index.html'));
-});
+const indexPath = join(distPath, 'index.html');
+if (existsSync(indexPath)) {
+  app.use(express.static(distPath));
+  app.get(/.*/, (req, res) => {
+    res.sendFile(indexPath);
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.json({
+      status: 'online',
+      service: '1Convite Backend API',
+      database: 'Turso LibSQL Cloud',
+      health: '/api/v1/health'
+    });
+  });
+}
 
 // Inicia o Servidor — cria tabelas, depois popula dados
 async function startServer() {
