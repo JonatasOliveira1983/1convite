@@ -124,7 +124,7 @@ class McpServer {
           if (verses.length === 0) {
             try {
               let sql = `SELECT livro_nome as livro, livro_abrev as abrev, capitulo, versiculo, texto, testamento 
-                         FROM tb_biblia_acf 
+                         FROM tb_biblia 
                          WHERE texto LIKE ? 
                          LIMIT ?`;
               const dbRes = await pool.query(sql, [`%${query}%`, k]);
@@ -217,7 +217,7 @@ class McpServer {
           const { termo } = args;
           let items = [];
           try {
-            const dbRes = await pool.query('SELECT * FROM tb_dicionario_teologico WHERE termo LIKE ? LIMIT 5', [`%${termo}%`]);
+            const dbRes = await pool.query('SELECT * FROM tb_dicionario WHERE termo LIKE ? LIMIT 5', [`%${termo}%`]);
             items = dbRes.rows || [];
           } catch (e) {
             console.warn('[MCP] Erro dicionario SQL:', e.message);
@@ -238,7 +238,7 @@ class McpServer {
           let dbStatus = 'desconectado';
           let versesDbCount = 0;
           try {
-            const check = await pool.query('SELECT COUNT(*) as total FROM tb_biblia_acf');
+            const check = await pool.query('SELECT COUNT(*) as total FROM tb_biblia');
             versesDbCount = parseInt(check.rows?.[0]?.total || check.rows?.[0]?.['COUNT(*)'] || 0);
             dbStatus = 'online';
           } catch (e) {

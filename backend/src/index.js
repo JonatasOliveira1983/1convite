@@ -756,7 +756,7 @@ async function loadBibleToMemory() {
     }
     // Carregar termos teológicos no RAG
     try {
-      const dictRes = await pool.query('SELECT termo, significado FROM tb_dicionario_teologico LIMIT 500');
+      const dictRes = await pool.query('SELECT termo, significado FROM tb_dicionario LIMIT 500');
       if (dictRes.rows && dictRes.rows.length > 0) {
         ragService.setTheologicalTerms(dictRes.rows);
         console.log(`[RAG Service] ${dictRes.rows.length} termos teológicos carregados no RAG.`);
