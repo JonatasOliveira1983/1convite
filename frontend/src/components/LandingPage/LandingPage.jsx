@@ -100,6 +100,90 @@ export default function LandingPage({ onEnterApp }) {
   const [selectedMentor, setSelectedMentor] = useState('salomao');
   const [downloadToast, setDownloadToast] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const particlesCanvasRef = React.useRef(null);
+
+  // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
+  React.useEffect(() => {
+    const canvas = particlesCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let isVisible = true;
+
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Observer para economizar 100% de CPU/bateria quando o usuário rolar a página
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    }, { threshold: 0.05 });
+    observer.observe(canvas);
+
+    // 36 partículas sutis flutuantes com cintilação suave
+    const particles = [];
+    for (let i = 0; i < 36; i++) {
+      particles.push({
+        x: Math.random() * (canvas.clientWidth || 800),
+        y: Math.random() * (canvas.clientHeight || 500),
+        size: Math.random() * 2.2 + 0.8,
+        speedY: Math.random() * 0.4 + 0.15,
+        speedX: (Math.random() - 0.5) * 0.25,
+        alpha: Math.random() * 0.65 + 0.2,
+        pulseSpeed: Math.random() * 0.025 + 0.01,
+        color: Math.random() > 0.4 ? 'rgba(249, 115, 22,' : 'rgba(30, 215, 96,'
+      });
+    }
+
+    const render = () => {
+      if (!isVisible) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      for (let p of particles) {
+        p.y -= p.speedY;
+        p.x += Math.sin(p.y * 0.02) * 0.35 + p.speedX;
+        p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.008;
+        const currentAlpha = Math.max(0.12, Math.min(0.85, p.alpha));
+
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+        grad.addColorStop(0, `${p.color} ${currentAlpha})`);
+        grad.addColorStop(1, `${p.color} 0)`);
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (p.y < -10) {
+          p.y = h + 10;
+          p.x = Math.random() * w;
+        }
+        if (p.x < -10) p.x = w + 10;
+        if (p.x > w + 10) p.x = -10;
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    animationFrameId = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resizeCanvas);
+      observer.disconnect();
+    };
+  }, []);
 
   React.useEffect(() => {
     const handler = (e) => {
@@ -243,9 +327,17 @@ export default function LandingPage({ onEnterApp }) {
         </div>
       </header>
 
-      {/* ── HERO BANNER: SPOTIFY THEATER CANVAS ── */}
+      {/* ── HERO BANNER: SPOTIFY THEATER CANVAS & LIVING BACKGROUND ── */}
       <section className="sp-hero">
-        <div className="sp-hero-ambient-glow" />
+        {/* Fundo Vivo em Movimento Dinâmico (Orbes de Luz Líquida + Partículas de Sabedoria + Grain) */}
+        <div className="sp-living-bg" aria-hidden="true">
+          <div className="sp-aurora-orb sp-orb-orange" />
+          <div className="sp-aurora-orb sp-orb-green" />
+          <div className="sp-aurora-orb sp-orb-amber" />
+          <div className="sp-aurora-orb sp-orb-deep" />
+          <canvas ref={particlesCanvasRef} className="sp-particles-canvas" />
+          <div className="sp-grain-overlay" />
+        </div>
         <div className="sp-container sp-hero-grid">
           <div className="sp-hero-copy">
             <div className="sp-pill-badge">

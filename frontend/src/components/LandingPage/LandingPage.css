@@ -152,24 +152,122 @@
   transform: scale(0.98);
 }
 
-/* ── HERO BANNER: THEATER CANVAS ── */
+/* ── HERO BANNER: THEATER CANVAS COM FUNDO VIVO EM MOVIMENTO (60FPS GPU) ── */
 .sp-hero {
   position: relative;
-  padding: 80px 0 60px;
+  padding: 85px 0 65px;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(249, 115, 22, 0.08) 0%, rgba(18, 18, 18, 0) 100%);
+  background: #121212;
 }
 
-.sp-hero-ambient-glow {
+/* Container do Fundo Vivo (Zero Peso, 100% Fluido) */
+.sp-living-bg {
   position: absolute;
-  top: -150px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(30, 215, 96, 0.05) 50%, transparent 70%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   pointer-events: none;
-  filter: blur(80px);
+  z-index: 1;
+}
+
+/* Orbes de Luz Aurora com Aceleração por GPU */
+.sp-aurora-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform, opacity;
+  opacity: 0.42;
+}
+
+/* Orb 1: Chama Solar / Laranja Radiante */
+.sp-orb-orange {
+  top: -120px;
+  left: 10%;
+  width: 620px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.42) 0%, rgba(234, 88, 12, 0.18) 55%, transparent 75%);
+  animation: orbDrift1 20s ease-in-out infinite alternate;
+}
+
+/* Orb 2: Verde Esmeralda Spotify Oficial */
+.sp-orb-green {
+  top: 30px;
+  right: 5%;
+  width: 580px;
+  height: 560px;
+  background: radial-gradient(circle, rgba(30, 215, 96, 0.32) 0%, rgba(16, 185, 129, 0.14) 55%, transparent 75%);
+  animation: orbDrift2 25s ease-in-out infinite alternate-reverse;
+}
+
+/* Orb 3: Âmbar Dourado Central */
+.sp-orb-amber {
+  top: 160px;
+  left: 35%;
+  width: 480px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.32) 0%, rgba(245, 158, 11, 0.12) 55%, transparent 75%);
+  animation: orbDrift3 17s ease-in-out infinite alternate;
+}
+
+/* Orb 4: Profundidade Safira Ardósia */
+.sp-orb-deep {
+  top: -80px;
+  right: 30%;
+  width: 520px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(30, 58, 138, 0.08) 55%, transparent 75%);
+  animation: orbDrift4 22s ease-in-out infinite alternate-reverse;
+}
+
+/* Canvas de Brasas / Partículas de Sabedoria */
+.sp-particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+/* Micro-Textura Grain Cinematográfica (Anti-Banding de Gradiente) */
+.sp-grain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  z-index: 3;
+}
+
+/* Animações Flutuantes Suaves e Contínuas */
+@keyframes orbDrift1 {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(70px, 50px, 0) scale(1.18) rotate(12deg); }
+  100% { transform: translate3d(-40px, 80px, 0) scale(0.92) rotate(-8deg); }
+}
+
+@keyframes orbDrift2 {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(-80px, -35px, 0) scale(1.15) rotate(-16deg); }
+  100% { transform: translate3d(35px, 60px, 0) scale(0.95) rotate(8deg); }
+}
+
+@keyframes orbDrift3 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-50px, 35px, 0) scale(1.22); }
+  100% { transform: translate3d(60px, -45px, 0) scale(0.88); }
+}
+
+@keyframes orbDrift4 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(45px, -25px, 0) scale(1.12); }
+  100% { transform: translate3d(-35px, 45px, 0) scale(0.94); }
 }
 
 .sp-hero-grid {
@@ -178,7 +276,7 @@
   align-items: center;
   gap: 48px;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .sp-pill-badge {
