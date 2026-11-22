@@ -105,17 +105,17 @@ export default function Onboarding({ onComplete }) {
   });
 
   const objetivos = [
-    { key: 'relacionamento', text: '💑 Fortalecer meu relacionamento / casamento' },
-    { key: 'paz', text: '🕊️ Reduzir ansiedade e cultivar paz interior' },
-    { key: 'espiritual', text: '📖 Crescimento espiritual e leitura bíblica' },
-    { key: 'conexoes', text: '🤝 Conectar intencionalmente com amigos e família' }
+    { key: 'relacionamento', text: 'Fortalecer meu relacionamento / casamento' },
+    { key: 'paz', text: 'Reduzir ansiedade e cultivar paz interior' },
+    { key: 'espiritual', text: 'Crescimento espiritual e leitura bíblica' },
+    { key: 'conexoes', text: 'Conectar intencionalmente com amigos e família' }
   ];
 
   const conexoes = [
-    { key: 'oracao', text: '🙏 Momentos diários de oração silenciosa' },
-    { key: 'leitura', text: '📖 Leitura e meditação em versículos' },
-    { key: 'conselheiro', text: '🤖 Conversas e reflexões com o Conselheiro IA' },
-    { key: 'pratica', text: '🚶 Praticar atitudes ativas de carinho e caridade' }
+    { key: 'oracao', text: 'Momentos diários de oração silenciosa' },
+    { key: 'leitura', text: 'Leitura e meditação em versículos' },
+    { key: 'conselheiro', text: 'Conversas e reflexões com a LAYA (IA Bíblica)' },
+    { key: 'pratica', text: 'Praticar atitudes ativas de carinho e caridade' }
   ];
 
   const handleNext = () => {
@@ -376,7 +376,7 @@ export default function Onboarding({ onComplete }) {
             <div style={{ margin: '15px 0', display: 'flex', justifyContent: 'center', position: 'relative' }}>
               <ChaminhaVideo size={100} />
               {/* Adicionar chapéu de festa por cima do vídeo */}
-              <div style={{ position: 'absolute', top: '-10px', fontSize: '2rem', transform: 'rotate(15deg)' }}>🎉</div>
+              
             </div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-primary)' }}>Tudo Pronto!</h2>
             <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
@@ -391,7 +391,7 @@ export default function Onboarding({ onComplete }) {
               fontSize: '0.85rem',
               color: 'var(--text-secondary)'
             }}>
-              💡 <strong>Dica:</strong> Se precisar mudar seus objetivos ou desativar lembretes, acesse o painel principal a qualquer momento.
+              <strong>Dica:</strong> Se precisar mudar seus objetivos ou desativar lembretes, acesse o painel principal a qualquer momento.
             </div>
             <button className="btn-primary" onClick={handleFinish} style={{ marginTop: '10px', width: '100%' }}>
               Entrar no Aplicativo

@@ -149,17 +149,17 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
       {/* Stats */}
       <div className="trail-stats">
         <div className="trail-stat">
-          <span className="trail-stat-icon">🔥</span>
+          <span className="trail-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2c1.1 4 4.5 6 4.5 10a6.5 6.5 0 0 1-13 0c0-4 3.4-6 4.5-10 1 2 2.5 3 4 0z"/></svg></span>
           <span className="trail-stat-value">{streak}</span>
           <span className="trail-stat-label">dias seguidos</span>
         </div>
         <div className="trail-stat">
-          <span className="trail-stat-icon">🪙</span>
+          <span className="trail-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="6"/></svg></span>
           <span className="trail-stat-value">{userCoins}</span>
           <span className="trail-stat-label">Talentos</span>
         </div>
         <div className="trail-stat">
-          <span className="trail-stat-icon">📖</span>
+          <span className="trail-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
           <span className="trail-stat-value">{currentDay}</span>
           <span className="trail-stat-label">de {totalDays}</span>
         </div>
@@ -193,7 +193,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
 
       {/* Current milestone badge */}
       <div className="trail-milestone-badge">
-        <span>{currentMilestone.icon}</span>
+        
         <span>{currentMilestone.name}</span>
       </div>
 
@@ -212,7 +212,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
           {/* Devotional */}
           <div className="trail-devotional">
             <div className="trail-devotional-header">
-              <span>🕯️</span> Reflexão do Dia
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight: 6}}><path d="M12 2c1.1 4 4.5 6 4.5 10a6.5 6.5 0 0 1-13 0c0-4 3.4-6 4.5-10 1 2 2.5 3 4 0z"/></svg> Reflexão do Dia
             </div>
             <p className="trail-devotional-text">{dayData.devotional}</p>
           </div>
@@ -220,7 +220,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
           {/* Action */}
           <div className="trail-action">
             <div className="trail-action-header">
-              <span>🤝</span> 1Convite Prático
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight: 6}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> 1Convite Prático
             </div>
             <p className="trail-action-text">{dayData.action}</p>
           </div>
@@ -231,7 +231,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
             className={`trail-complete-btn ${completedDays.includes(currentDay) ? 'completed' : ''}`}
             disabled={completedDays.includes(currentDay)}
           >
-            {completedDays.includes(currentDay) ? '✅ Dia Concluído!' : '📖 Marcar como Lido (+10 🪙)'}
+            {completedDays.includes(currentDay) ? 'Dia Concluído' : 'Marcar como Lido (+10 Talentos)'}
           </button>
         </div>
       )}
@@ -253,7 +253,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
             <React.Fragment key={dayNum}>
               {milestone && (
                 <div className="trail-map-milestone">
-                  <span className="trail-map-milestone-icon">{milestone.icon}</span>
+                  
                   <span className="trail-map-milestone-name">{milestone.name}</span>
                 </div>
               )}
@@ -262,7 +262,7 @@ export default function TrailHome({ onBack, userCoins, setUserCoins }) {
                 onClick={() => { playTrailClick(); setExpandedDay(expandedDay === dayNum ? null : dayNum); }}
               >
                 <div className="trail-map-day-dot">
-                  {isCompleted ? '✓' : dayNum}
+                  {isCompleted ? <svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='3'><polyline points='20 6 9 17 4 12'/></svg> : dayNum}
                 </div>
                 <div className="trail-map-day-info">
                   <span className="trail-map-day-reading">{day.reading}</span>

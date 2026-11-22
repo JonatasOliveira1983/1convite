@@ -204,12 +204,85 @@ function ChaminhaCoin({ size = 22, style = {} }) {
 }
 
 const LOJINHA_ITEMS = [
-  { id: 'font-premium-1', type: 'font', name: 'Fonte Cursiva Elegante', price: 200, icon: '🔤', desc: 'Desbloqueia uma linda fonte manuscrita no Studio de Cards.' },
-  { id: 'font-premium-2', type: 'font', name: 'Fonte Papiro Antigo', price: 300, icon: '📜', desc: 'Desbloqueia uma fonte estilo épico medieval.' },
-  { id: 'bg-premium-1', type: 'bg', name: 'Fundo Ouro Velho', price: 250, icon: '✨', desc: 'Textura premium dourada para fundos de cartões.' },
-  { id: 'bg-premium-2', type: 'bg', name: 'Fundo Jardim do Éden', price: 350, icon: '🌿', desc: 'Background com folhas vibrantes e luz celestial.' },
-  { id: 'sticker-1', type: 'sticker', name: 'Sticker: Pomba da Paz', price: 100, icon: '🕊️', desc: 'Adicione este selo aos seus convites.' },
-  { id: 'sticker-2', type: 'sticker', name: 'Sticker: Cruz Minimalista', price: 100, icon: '✝️', desc: 'Um toque clássico e elegante de fé.' }
+  { 
+    id: 'font-premium-1', 
+    type: 'font', 
+    name: 'Fonte Cursiva Elegante', 
+    price: 200, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="4 7 4 4 20 4 20 7"/>
+        <line x1="9" y1="20" x2="15" y2="20"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+      </svg>
+    ), 
+    desc: 'Desbloqueia uma linda fonte manuscrita no Studio de Cards.' 
+  },
+  { 
+    id: 'font-premium-2', 
+    type: 'font', 
+    name: 'Fonte Papiro Antigo', 
+    price: 300, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+    ), 
+    desc: 'Desbloqueia uma fonte estilo épico medieval.' 
+  },
+  { 
+    id: 'bg-premium-1', 
+    type: 'bg', 
+    name: 'Fundo Ouro Velho', 
+    price: 250, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    ), 
+    desc: 'Textura premium dourada para fundos de cartões.' 
+  },
+  { 
+    id: 'bg-premium-2', 
+    type: 'bg', 
+    name: 'Fundo Jardim do Éden', 
+    price: 350, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ), 
+    desc: 'Background com folhas vibrantes e luz celestial.' 
+  },
+  { 
+    id: 'sticker-1', 
+    type: 'sticker', 
+    name: 'Sticker: Pomba da Paz', 
+    price: 100, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+      </svg>
+    ), 
+    desc: 'Adicione este selo aos seus convites.' 
+  },
+  { 
+    id: 'sticker-2', 
+    type: 'sticker', 
+    name: 'Sticker: Cruz Minimalista', 
+    price: 100, 
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="2" x2="12" y2="22"/>
+        <line x1="5" y1="8" x2="19" y2="8"/>
+      </svg>
+    ), 
+    desc: 'Um toque clássico e elegante de fé.' 
+  }
 ];
 
 const COUNSELORS = [
@@ -1548,7 +1621,7 @@ function App() {
         playChime(528, 'sine', 1.8);
         setTimeout(() => playChime(432, 'sine', 2.0), 100);
         triggerHaptic([80, 50, 80]);
-        setBreathState('Desfrute Completo! ✨');
+        setBreathState('Desfrute Completo!');
         setBreathClass('');
         setIsBreathing(false);
         isBreathingActiveRef.current = false;
@@ -1566,7 +1639,7 @@ function App() {
           playChime(528, 'sine', 1.8);
           setTimeout(() => playChime(432, 'sine', 2.0), 100);
           triggerHaptic([80, 50, 80]);
-          setBreathState('Desfrute Completo! ✨');
+          setBreathState('Desfrute Completo!');
           setBreathClass('');
           setIsBreathing(false);
           isBreathingActiveRef.current = false;
@@ -1656,8 +1729,8 @@ Você deve responder EXCLUSIVAMENTE em formato JSON (sem formatação markdown f
 {
   "codigo_verbal": "Código ${codigoDia.dia_id}: [Escreva um título/código curto e impactante sobre relacionamento intencional, mesa, comunhão, desacelerar ou servir]",
   "versiculo_chave": "[Insira um versículo bíblico real e sua referência no formato Livro Capítulo:Versículo]",
-  "texto_reflexao": "[Escreva a reflexão prática do dia inspirada no versículo. Após a reflexão, insira duas quebras de linha e conte uma história real e verídica da história do cristianismo que exemplifique perfeitamente este tema (ex: biographies de heróis da fé, missionários, momentos de avivamento). Insira a história sob o título '📖 HISTÓRIA CRISTÃ REAL:\\n[sua história aqui]']",
-  "texto_meditacao": "[Escreva um Roteiro de Oração Guiada no Estilo de Jesus com cerca de 4 blocos. Use os seguintes títulos de blocos no roteiro: '🟢 1. O Ponto de Partida: Ação de Graças pelo Hoje' (Tom de voz: Calmo, grato, pausado), '🟡 2. O Alinhamento: Tudo o que Tenho é Suficiente', '🟠 3. O Propósito e o Mover no Agora' (Tom de voz: Firme, consciente, de governo), '🔴 4. A Selagem do Convite' (Tom de voz: Decidido, pronto para a ação). Insira marcadores de silêncio programados como '(Pausa de 3 segundos)' ou '(Pausa de 4 segundos)' de forma estratégica entre os parágrafos para simular pausas reais na leitura.]"
+  "texto_reflexao": "[Escreva a reflexão prática do dia inspirada no versículo. Após a reflexão, insira duas quebras de linha e conte uma história real e verídica da história do cristianismo que exemplifique perfeitamente este tema (ex: biographies de heróis da fé, missionários, momentos de avivamento). Insira a história sob o título 'HISTÓRIA CRISTÃ REAL:\\n[sua história aqui]']",
+  "texto_meditacao": "[Escreva um Roteiro de Oração Guiada no Estilo de Jesus com cerca de 4 blocos. Use os seguintes títulos de blocos no roteiro: 'Bloco 1. O Ponto de Partida: Ação de Graças pelo Hoje' (Tom de voz: Calmo, grato, pausado), 'Bloco 2. O Alinhamento: Tudo o que Tenho é Suficiente', 'Bloco 3. O Propósito e o Mover no Agora' (Tom de voz: Firme, consciente, de governo), 'Bloco 4. A Selagem do Convite' (Tom de voz: Decidido, pronto para a ação). Insira marcadores de silêncio programados como '(Pausa de 3 segundos)' ou '(Pausa de 4 segundos)' de forma estratégica entre os parágrafos para simular pausas reais na leitura.]"
 }
 
 Importante: O JSON deve ser 100% válido.`;
@@ -1715,10 +1788,10 @@ Importante: O JSON deve ser 100% válido.`;
   };
 
   const ambientTracks = [
-    { id: 'none', label: '🔕 Silêncio', url: '' },
-    { id: 'chuva', label: '🌧️ Chuva', url: '/rain.mp3' },
-    { id: 'mar', label: '🌊 Ondas', url: '/ocean.mp3' },
-    { id: 'piano', label: '🎹 Piano', url: '/piano.mp3' }
+    { id: 'none', label: 'Silêncio', url: '' },
+    { id: 'chuva', label: 'Chuva', url: '/rain.mp3' },
+    { id: 'mar', label: 'Ondas', url: '/ocean.mp3' },
+    { id: 'piano', label: 'Piano', url: '/piano.mp3' }
   ];
 
   useEffect(() => {
@@ -1781,7 +1854,7 @@ Importante: O JSON deve ser 100% válido.`;
       if (!line) continue;
       
       // Ignorar metadados de guia
-      if (line.startsWith('Roteiro de Meditação') || line.startsWith('Duração') || line.startsWith('Trilha de fundo') || line.startsWith('🟢') || line.startsWith('🟡') || line.startsWith('🟠') || line.startsWith('🔴')) {
+      if (line.startsWith('Roteiro de Meditação') || line.startsWith('Duração') || line.startsWith('Trilha de fundo') || line.startsWith('Bloco')) {
         continue;
       }
       
@@ -1943,7 +2016,7 @@ Importante: O JSON deve ser 100% válido.`;
       if (res.ok) {
         const data = await res.json();
         if (data.concluida) {
-          alert('Parabéns! Você concluiu os 30 dias desta Trilha de Crescimento! 🏆');
+          alert('Parabéns! Você concluiu os 30 dias desta Trilha de Crescimento! ');
         } else {
           alert('Devocional de hoje concluído! Avançando na trilha.');
         }
@@ -2053,7 +2126,7 @@ Importante: O JSON deve ser 100% válido.`;
             {countdown > 0 && <div className="timer-circle"><span style={{ animation: 'none' }}>{countdown}</span></div>}
             {pedagioErro && <p style={{ color: '#ef4444', textAlign: 'center' }}>{pedagioErro}</p>}
             <button className="btn-primary" onClick={destravarAgora} disabled={countdown > 0} style={{ maxWidth: 360 }}>
-              {countdown > 0 ? `⏳ Medite... (${countdown}s)` : '🔓 Destravar o Agora'}
+              {countdown > 0 ? `Medite... (${countdown}s)` : 'Destravar o Agora'}
             </button>
           </div>
         </div>
@@ -2098,7 +2171,7 @@ Importante: O JSON deve ser 100% válido.`;
               width: '10px', height: '10px', background: '#09090b', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
             }} />
-            🔥 <strong>Chaminha:</strong> "Leve o seu círculo de influência e devocionais diários para qualquer lugar instalando o app direto no celular!"
+            <strong>Chaminha:</strong> "Leve o seu círculo de influência e devocionais diários para qualquer lugar instalando o app direto no celular!"
           </div>
         </div>
 
@@ -2116,7 +2189,10 @@ Importante: O JSON deve ser 100% válido.`;
           {/* Instruções Android */}
           <div style={{ marginTop: '28px', textAlign: 'left' }}>
             <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-              🤖 Como instalar no seu Android:
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0818 12 8.0818c-1.8533 0-3.5902.3298-5.1368.8679L4.8409 5.4467a.4161.4161 0 0 0-.5677-.1521.4157.4157 0 0 0-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+              </svg>
+              Como instalar no seu Android:
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -2149,7 +2225,10 @@ Importante: O JSON deve ser 100% válido.`;
           {/* Instruções iOS */}
           <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'left' }}>
             <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-              🍎 Usuários de iPhone (iOS):
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.66-.82 1.11-1.96.99-3.1-.96.04-2.12.64-2.8 1.44-.59.69-1.12 1.83-.98 2.94 1.08.08 2.14-.56 2.79-1.28z"/>
+              </svg>
+              Usuários de iPhone (iOS):
             </h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45', margin: '0 0 12px 0' }}>
               O iOS não aceita instalações fora da loja oficial. Mas você pode instalar o app instantaneamente como um <strong>Atalho na Tela de Início</strong>:
@@ -2215,13 +2294,17 @@ Importante: O JSON deve ser 100% válido.`;
                 background: 'var(--slate-light)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                color: 'var(--text-primary)'
               }}
             >
               {profileAvatar ? (
                 <img src={profileAvatar} alt="Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
-                <span style={{ fontSize: '1.1rem' }}>👤</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
               )}
             </div>
 
@@ -2244,11 +2327,13 @@ Importante: O JSON deve ser 100% válido.`;
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                fontSize: '1.1rem'
+                color: 'var(--orange)'
               }}
               title="Assinatura Premium"
             >
-              💎
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/>
+              </svg>
             </div>
           </>
         ) : (
@@ -2339,7 +2424,11 @@ Importante: O JSON deve ser 100% válido.`;
                   }}
                   title="Ouvir Áudio do Capítulo"
                 >
-                  🎵
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                  </svg>
                 </button>
                 <button
                   style={{
@@ -2382,8 +2471,12 @@ Importante: O JSON deve ser 100% válido.`;
             gap: '16px',
             boxSizing: 'border-box'
           }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>
-              📝 {bibleSelectedBook.livro_nome} {bibleSelectedChapter}:{bibleSelectedVerse.versiculo}
+            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              {bibleSelectedBook.livro_nome} {bibleSelectedChapter}:{bibleSelectedVerse.versiculo}
             </h3>
             
             <textarea
@@ -2455,7 +2548,7 @@ Importante: O JSON deve ser 100% válido.`;
           <div className="bible-modal-overlay">
             <div className="bible-modal-header">
               <h3 style={{ margin: 0, fontSize: '1.05rem' }}>Selecione o Livro</h3>
-              <button className="btn-secondary" style={{ padding: '6px 14px', fontSize: '0.9rem' }} onClick={() => setBibleViewMode('reading')}>✕</button>
+              <button className="btn-secondary" style={{ padding: '6px 14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setBibleViewMode('reading')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div className="bible-modal-content">
 
@@ -2589,8 +2682,14 @@ Importante: O JSON deve ser 100% válido.`;
       {selectedDicionarioTermo && (
         <div className="dict-modal">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h3 style={{ color: 'var(--orange)', fontSize: '1.1rem', textTransform: 'capitalize' }}>📚 {selectedDicionarioTermo.termo}</h3>
-            <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: '0.8rem' }} onClick={() => setSelectedDicionarioTermo(null)}>✕ Fechar</button>
+            <h3 style={{ color: 'var(--orange)', fontSize: '1.1rem', textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              {selectedDicionarioTermo.termo}
+            </h3>
+            <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }} onClick={() => setSelectedDicionarioTermo(null)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Fechar</button>
           </div>
           <p style={{ fontSize: '0.92rem', lineHeight: '1.6', color: 'var(--text-primary)' }}>{selectedDicionarioTermo.significado}</p>
         </div>
@@ -2696,7 +2795,7 @@ Importante: O JSON deve ser 100% válido.`;
                 },
                 { 
                   id: 'lojinha', 
-                  label: 'Lojinha 🛒', 
+                  label: 'Lojinha', 
                   icon: (
                     <ChaminhaCoin size={36} />
                   )
@@ -2846,7 +2945,14 @@ Importante: O JSON deve ser 100% válido.`;
 
                     <div className="glass-panel orange-card" style={{ padding: '24px 20px', borderRadius: '20px', position: 'relative' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <h3 style={{ margin: 0, color: '#C2550A', fontSize: '1rem' }}>💡 Reflexão & Inspiração</h3>
+                        <h3 style={{ margin: 0, color: '#C2550A', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="9" y1="18" x2="15" y2="18"/>
+                            <line x1="10" y1="22" x2="14" y2="22"/>
+                            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+                          </svg>
+                          Reflexão & Inspiração
+                        </h3>
                         <button
                           onClick={speakReflection}
                           style={{
@@ -2865,7 +2971,17 @@ Importante: O JSON deve ser 100% válido.`;
                             boxShadow: 'var(--shadow-sm)'
                           }}
                         >
-                          {isNarrating ? '⏹️ Parar' : '🔊 Ouvir'}
+                          {isNarrating ? (
+                            <>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                              <span>Parar</span>
+                            </>
+                          ) : (
+                            <>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                              <span>Ouvir</span>
+                            </>
+                          )}
                         </button>
                       </div>
                       <p style={{ lineHeight: '1.8', fontSize: '1rem', color: 'var(--text-primary)', margin: 0, whiteSpace: 'pre-wrap', textAlign: 'left' }}>
@@ -2983,10 +3099,14 @@ Importante: O JSON deve ser 100% válido.`;
                         fontSize: '0.8rem',
                         fontWeight: 'bold',
                         cursor: 'pointer',
-                        transition: 'all 0.2s'
+                        transition: 'all 0.2s',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px'
                       }}
                     >
-                      📖 Roteiro
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                      <span>Roteiro</span>
                     </button>
 
                     {/* Botão Play/Pause Principal */}
@@ -3045,7 +3165,7 @@ Importante: O JSON deve ser 100% válido.`;
                         cursor: 'pointer'
                       }}
                     >
-                      ⏱️ {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Relax' : narrationRate === 0.95 ? 'Médio' : 'Rápido'}
+                      {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Relax' : narrationRate === 0.95 ? 'Médio' : 'Rápido'}
                     </button>
                   </div>
 
@@ -3062,7 +3182,7 @@ Importante: O JSON deve ser 100% válido.`;
                     marginBottom: '16px'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '0.82rem', color: '#9ca3af', fontWeight: 'bold' }}>🍃 Paisagem Sonora</span>
+                      <span style={{ fontSize: '0.82rem', color: '#9ca3af', fontWeight: 'bold' }}>Paisagem Sonora</span>
                       <span style={{ fontSize: '0.78rem', color: '#8b5cf6', fontWeight: 'bold' }}>
                         {activeAmbient === 'none' ? 'Silêncio' : activeAmbient === 'chuva' ? 'Chuva' : activeAmbient === 'mar' ? 'Ondas' : 'Piano'}
                       </span>
@@ -3094,7 +3214,7 @@ Importante: O JSON deve ser 100% válido.`;
                     {/* Volume de Fundo */}
                     {activeAmbient !== 'none' && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                        <span style={{ fontSize: '0.72rem', color: '#9ca3af' }}>🔊 Vol. Fundo:</span>
+                        <span style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Vol. Fundo:</span>
                         <input 
                           type="range" 
                           min="0.05" 
@@ -3129,7 +3249,11 @@ Importante: O JSON deve ser 100% válido.`;
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>🍞🕊️</div>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px', color: '#00f08f' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      </div>
                       <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: '700', lineHeight: '1.5', color: '#00f08f' }}>
                         Sua oração de ação de graças foi feita.
                       </p>
@@ -3166,7 +3290,7 @@ Importante: O JSON deve ser 100% válido.`;
                   )}
 
                   {/* Fallback de IA no dia > 7 */}
-                  {codigoDia.dia_id > 7 && !codigoDia.texto_reflexao.includes('📖 HISTÓRIA CRISTÃ REAL') && (
+                  {codigoDia.dia_id > 7 && !codigoDia.texto_reflexao.includes('HISTÓRIA CRISTÃ REAL') && (
                     <div style={{
                       marginTop: '16px',
                       background: 'rgba(239, 68, 68, 0.1)',
@@ -3178,7 +3302,7 @@ Importante: O JSON deve ser 100% válido.`;
                       lineHeight: '1.4',
                       zIndex: 1
                     }}>
-                      ⚠️ Esta oração está usando um roteiro genérico. Vá na aba "Reflexão do Dia" e clique em "Enriquecer com IA" para gerar um roteiro de oração completo e personalizado com história real.
+                      Aviso: Esta oração está usando um roteiro genérico. Vá na aba "Reflexão do Dia" e clique em "Enriquecer com IA" para gerar um roteiro de oração completo e personalizado com história real.
                     </div>
                   )}
 
@@ -3199,7 +3323,7 @@ Importante: O JSON deve ser 100% válido.`;
                       {/* Seleção de Técnica */}
                       <div style={{ textAlign: 'left', marginBottom: '20px' }}>
                         <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '8px' }}>
-                          🧘 Técnica de Respiração
+                          Técnica de Respiração
                         </label>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
                           {[
@@ -3237,7 +3361,7 @@ Importante: O JSON deve ser 100% válido.`;
                       <div style={{ textAlign: 'left', marginBottom: '24px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                           <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                            🔄 Duração do Exercício
+                            Duração do Exercício
                           </label>
                           <span style={{ fontSize: '0.82rem', color: 'var(--orange-dark)', fontWeight: '700' }}>
                             {breathRounds} Ciclos
@@ -3385,14 +3509,14 @@ Importante: O JSON deve ser 100% válido.`;
                             {trilhaAtiva.conteudo.reflexao}
                           </p>
                           <div className="glass-panel orange-card" style={{ padding: '14px', marginBottom: '18px', borderRadius: '14px' }}>
-                            <strong style={{ fontSize: '0.85rem', color: 'var(--orange-dark)', display: 'block', marginBottom: '4px' }}>🎯 AÇÃO PRÁTICA DO DIA:</strong>
+                            <strong style={{ fontSize: '0.85rem', color: 'var(--orange-dark)', display: 'block', marginBottom: '4px' }}>AÇÃO PRÁTICA DO DIA:</strong>
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>{trilhaAtiva.conteudo.acao_pratica}</p>
                           </div>
                         </>
                       )}
                       <div style={{ display: 'flex', gap: '10px' }}>
                         <button className="btn-primary" style={{ padding: '12px', borderRadius: '12px', flex: 2 }} onClick={completarDiaTrilha}>
-                          ✓ Concluir Ação de Hoje
+                          Concluir Ação de Hoje
                         </button>
                         <button className="btn-secondary" style={{ padding: '12px', borderRadius: '12px', flex: 1, background: '#FEE2E2', color: '#EF4444', border: '1px solid #FCA5A5' }} onClick={cancelarTrilha}>
                           Abandonar
@@ -3403,7 +3527,7 @@ Importante: O JSON deve ser 100% válido.`;
                 ) : (
                   listaTrilhas.length > 0 && (
                     <div className="glass-panel" style={{ padding: '20px', borderRadius: '20px' }}>
-                      <h3 style={{ marginBottom: '6px', fontSize: '1.15rem', fontWeight: '800' }}>🌱 Trilhas de Crescimento (30 Dias)</h3>
+                      <h3 style={{ marginBottom: '6px', fontSize: '1.15rem', fontWeight: '800' }}>Trilhas de Crescimento (30 Dias)</h3>
                       <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '20px', lineHeight: '1.4' }}>
                         Escolha uma trilha e receba uma porção diária de sabedoria teológica com ações práticas por 30 dias.
                       </p>
@@ -3522,7 +3646,7 @@ Importante: O JSON deve ser 100% válido.`;
             <div className="page-hero hero-biblia" style={{ paddingBottom: '44px' }}>
               <div className="hero-orb" style={{ width: 220, height: 220, top: -50, right: -60, background: 'rgba(249,115,22,0.20)' }} />
               <div className="hero-content">
-                <div className="hero-label">📖 Bíblia Sagrada</div>
+                <div className="hero-label">Bíblia Sagrada</div>
                 <div className="hero-title">{bibleSelectedBook.livro_nome}</div>
                 <div className="hero-sub">Capítulo {bibleSelectedChapter}</div>
               </div>
@@ -3586,15 +3710,15 @@ Importante: O JSON deve ser 100% válido.`;
                     <p style={{ fontStyle: 'italic', lineHeight: '1.80', fontSize: '1rem' }}>"{formatVerseText(v.texto)}"</p>
                     <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
                       <button className="btn-secondary" style={{ flex: 1, padding: '10px', fontSize: '0.85rem' }} onClick={() => copyToClipboard(`"${v.texto}" - ${v.livro_nome} ${v.capitulo}:${v.versiculo}`)}>
-                        📋 Copiar
+                        Copiar
                       </button>
                       <a
-                        href={`https://wa.me/?text=${encodeURIComponent(`*"${v.texto}"*\n_${v.livro_nome} ${v.capitulo}:${v.versiculo}_\n\n👉 *1Convite:* https://1convite.com.br`)}`}
+                        href={`https://wa.me/?text=${encodeURIComponent(`*"${v.texto}"*\n_${v.livro_nome} ${v.capitulo}:${v.versiculo}_\n\n*1Convite:* https://1convite.com.br`)}`}
                         target="_blank" rel="noopener noreferrer"
                         className="btn-primary"
                         style={{ flex: 2, padding: '10px', textAlign: 'center', textDecoration: 'none' }}
                       >
-                        📲 Enviar
+                        Enviar
                       </a>
                     </div>
                   </div>
@@ -3652,7 +3776,7 @@ Importante: O JSON deve ser 100% válido.`;
                                 alignItems: 'center',
                                 gap: '6px'
                               }}>
-                                <span>💬</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                                 <span>{comment}</span>
                               </div>
                             )}
@@ -3689,7 +3813,7 @@ Importante: O JSON deve ser 100% válido.`;
                           gap: '8px'
                         }}
                       >
-                        Concluir Capítulo (+10 🔥)
+                        Concluir Capítulo (+10 Chamas)
                       </button>
                     )}
                   </div>
@@ -3699,10 +3823,10 @@ Importante: O JSON deve ser 100% válido.`;
                   <div style={{ padding: '28px 20px', marginTop: '20px', borderTop: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.06)' }}>
                     <form onSubmit={searchBible} style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
                       <input type="text" className="input-field" placeholder="Buscar versículo (ex: amor, fé)..." value={bibleSearchQuery} onChange={e => setBibleSearchQuery(e.target.value)} />
-                      <button type="submit" className="btn-secondary" disabled={bibleLoading} style={{ flexShrink: 0, padding: '0 16px' }}>🔍</button>
+                      <button type="submit" className="btn-secondary" disabled={bibleLoading} style={{ flexShrink: 0, padding: '0 16px' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
                     </form>
                     {bibleError && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '12px' }}>{bibleError}</p>}
-                    <button className="btn-orange-outline" onClick={getRandomVerse}>🎲 Versículo Aleatório</button>
+                    <button className="btn-orange-outline" onClick={getRandomVerse}>Versículo Aleatório</button>
                   </div>
                 )}
               </>
@@ -3910,7 +4034,7 @@ Importante: O JSON deve ser 100% válido.`;
             <div className="page-hero hero-contatos">
               <div className="hero-orb" style={{ width: 200, height: 200, top: -40, left: -40, background: 'rgba(249,115,22,0.15)' }} />
               <div className="hero-content">
-                <div className="hero-label">👥 Mateus 24:14</div>
+                <div className="hero-label">Mateus 24:14</div>
                 <div className="hero-title">Meus Próximos</div>
                 <div className="hero-sub">{contatos.length} {contatos.length === 1 ? 'pessoa' : 'pessoas'} no seu círculo de influência</div>
               </div>
@@ -3921,7 +4045,7 @@ Importante: O JSON deve ser 100% válido.`;
               {contatos.filter(verificarAlerta48h).map(c => (
                 <div key={`alert-${c.id}`} className="glass-panel" style={{ padding: '14px 18px', marginBottom: '12px', borderColor: 'rgba(239,68,68,0.25)', background: 'rgba(254,242,242,0.80)' }}>
                   <p style={{ color: '#dc2626', fontWeight: '600', fontSize: '0.9rem' }}>
-                    ⚠️ Alerta: Você tem notado <strong>{c.nome}</strong> ({c.relacao})? Já se passaram 48h.
+                    Aviso: Você tem notado <strong>{c.nome}</strong> ({c.relacao})? Já se passaram 48h.
                   </p>
                 </div>
               ))}
@@ -3932,7 +4056,7 @@ Importante: O JSON deve ser 100% válido.`;
                 style={{ marginBottom: '16px' }}
                 onClick={() => setShowAddContato(!showAddContato)}
               >
-                {showAddContato ? '✕ Fechar Formulário' : '+ Adicionar Próximo'}
+                {showAddContato ? 'Fechar Formulário' : '+ Adicionar Próximo'}
               </button>
 
               {/* Form */}
@@ -3954,7 +4078,7 @@ Importante: O JSON deve ser 100% válido.`;
                       <span>Contato Prioritário <span style={{ color: '#A8A29E', fontSize: '0.85rem' }}>(alerta a cada 48h)</span></span>
                     </label>
                   </div>
-                  <button type="submit" className="btn-primary" style={{ marginTop: '4px' }}>✅ Salvar no Reino</button>
+                  <button type="submit" className="btn-primary" style={{ marginTop: '4px' }}>Salvar no Reino</button>
                 </form>
               )}
 
@@ -3978,7 +4102,7 @@ Importante: O JSON deve ser 100% válido.`;
                       width: '10px', height: '10px', background: 'var(--bg-app)', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
                       borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
                     }} />
-                    🔥 <strong>Chaminha:</strong> "Nenhum Próximo adicionado ainda! Adicione pessoas do seu convívio diário aqui para começar a notá-las e interagir com intenção!"
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-green, #1ED760)" strokeWidth="2" style={{display:"inline-block", verticalAlign:"middle", marginRight:4}}><path d="M12 2c1.1 4 4.5 6 4.5 10a6.5 6.5 0 0 1-13 0c0-4 3.4-6 4.5-10 1 2 2.5 3 4 0z"/></svg> <strong>Chaminha:</strong> "Nenhum Próximo adicionado ainda! Adicione pessoas do seu convívio diário aqui para começar a notá-las e interagir com intenção!"
                   </div>
                 </div>
               ) : (
@@ -3997,16 +4121,16 @@ Importante: O JSON deve ser 100% válido.`;
                           <div style={{ fontSize: '0.82rem', color: '#78716C', marginTop: '2px' }}>{c.relacao}</div>
                         </div>
                       </div>
-                      <button onClick={() => deletarContato(c.id)} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', fontSize: '1.1rem', padding: '4px' }}>🗑</button>
+                      <button onClick={() => deletarContato(c.id)} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', fontSize: '1.1rem', padding: '4px' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
                       <span style={{ fontSize: '0.75rem', color: '#A8A29E' }}>
                         Último: {c.ultimo_convite_timestamp > 0 ? new Date(c.ultimo_convite_timestamp).toLocaleDateString('pt-BR') : 'Nunca'}
                       </span>
                       <div style={{ display: 'flex', gap: '6px' }}>
-                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'mensagem')}>💬</button>
-                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'cafe')}>☕</button>
-                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'casa_igreja')}>🏠</button>
+                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'mensagem')}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'cafe')}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></button>
+                        <button className="btn-secondary" style={{ padding: '6px 10px', fontSize: '0.78rem', borderRadius: '10px' }} onClick={() => registrarAcao(c.id, 'casa_igreja')}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                       </div>
                     </div>
                   </div>
@@ -4016,7 +4140,7 @@ Importante: O JSON deve ser 100% válido.`;
               {user?.status_plano === 'FREE' && contatos.length >= 3 && (
                 <div className="glass-panel orange-card" style={{ textAlign: 'center', marginTop: '8px' }}>
                   <p style={{ marginBottom: '14px', fontWeight: '500' }}>Limite de 3 contatos no plano gratuito.</p>
-                  <button className="btn-primary" onClick={() => setActiveTab('upgrade')}>🔓 Desbloquear Ilimitados</button>
+                  <button className="btn-primary" onClick={() => setActiveTab('upgrade')}>Desbloquear Ilimitados</button>
                 </div>
               )}
             </div>
@@ -4028,7 +4152,7 @@ Importante: O JSON deve ser 100% válido.`;
           <div className="page-enter">
             <div className="page-hero hero-contatos" style={{ background: 'linear-gradient(135deg, #475569 0%, #64748B 100%)' }}>
               <div className="hero-content">
-                <div className="hero-label">📚 Jornada</div>
+                <div className="hero-label">Jornada</div>
                 <div className="hero-title">Histórico de Códigos</div>
                 <div className="hero-sub">Mural de revelações da sua caminhada</div>
               </div>
@@ -4037,14 +4161,14 @@ Importante: O JSON deve ser 100% válido.`;
             <div className="page-content" style={{ paddingTop: '4px' }}>
               {user?.status_plano === 'FREE' ? (
                 <div className="premium-lock-card" style={{ padding: '36px 24px' }}>
-                  <div className="premium-lock-icon">🔒</div>
+                  <div className="premium-lock-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                   <h4 style={{ margin: '8px 0 4px 0', fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>Mural Completo de Códigos</h4>
                   <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: '1.4' }}>Acesse a linha do tempo completa de todas as suas revelações e códigos diários destravados.</p>
-                  <button className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.9rem', width: 'auto' }} onClick={() => setActiveTab('upgrade')}>🔓 Destravar Histórico</button>
+                  <button className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.9rem', width: 'auto' }} onClick={() => setActiveTab('upgrade')}>Destravar Histórico</button>
                 </div>
               ) : (
                 <>
-                  <input type="text" className="input-field" placeholder="🔍 Pesquisar código, versículo..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} style={{ marginBottom: '16px' }} />
+                  <input type="text" className="input-field" placeholder="Pesquisar código, versículo..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} style={{ marginBottom: '16px' }} />
                   {historico
                     .filter(item => item.codigo_verbal.toLowerCase().includes(searchQuery.toLowerCase()) || item.versiculo_chave.toLowerCase().includes(searchQuery.toLowerCase()))
                     .map(item => (
@@ -4059,7 +4183,7 @@ Importante: O JSON deve ser 100% válido.`;
                     ))}
                   {historico.length === 0 && (
                     <div className="glass-panel" style={{ textAlign: 'center', padding: '40px 20px' }}>
-                      <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📅</div>
+                      <div style={{ display:"flex", justifyContent:"center", marginBottom: "10px" }}><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
                       <p>Nenhum código registrado ainda. Complete mais dias!</p>
                     </div>
                   )}
@@ -4103,7 +4227,7 @@ Importante: O JSON deve ser 100% válido.`;
                     transition: 'all 0.2s'
                   }}
                 >
-                  ✨ Oráculo Bíblico
+                  Oráculo Bíblico
                 </button>
                 <button
                   onClick={() => setLayaSubTab('mentores')}
@@ -4119,7 +4243,7 @@ Importante: O JSON deve ser 100% válido.`;
                     transition: 'all 0.2s'
                   }}
                 >
-                  👑 Mentores de Fé
+                  Mentores de Fé
                 </button>
               </div>
 
@@ -4155,7 +4279,7 @@ Importante: O JSON deve ser 100% válido.`;
                       width: '32px', height: '32px', borderRadius: '50%', background: 'var(--orange)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem'
                     }}>
-                      ⚡
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: '800' }}>
                       Oráculo Semântico LAYA
@@ -4218,10 +4342,10 @@ Importante: O JSON deve ser 100% válido.`;
                 }}>
                   {[
                     { id: 'TODOS', label: 'Todos os Temas' },
-                    { id: 'EMOCAO', label: '🛡️ Emoções & Medo' },
-                    { id: 'VIDA_PRATICA', label: '💰 Finanças & Trabalho' },
-                    { id: 'RELACIONAMENTO', label: '❤️ Casamento & Família' },
-                    { id: 'ESPIRITUAL', label: '🧭 Propósito & Fé' }
+                    { id: 'EMOCAO', label: 'Emoções & Medo' },
+                    { id: 'VIDA_PRATICA', label: 'Finanças & Trabalho' },
+                    { id: 'RELACIONAMENTO', label: 'Casamento & Família' },
+                    { id: 'ESPIRITUAL', label: 'Propósito & Fé' }
                   ].map(cat => (
                     <button
                       key={cat.id}
@@ -4303,7 +4427,7 @@ Importante: O JSON deve ser 100% válido.`;
                       
                       <button
                         onClick={() => handleCopyLayaConselho(
-                          `📖 ${layaOraculoResult.resultado.versiculo_chave}\n\n"${layaOraculoResult.resultado.promessa_biblica}"\n\n🕊️ DIRECIONAMENTO LAYA:\n${layaOraculoResult.resultado.direcionamento_laya}\n\n🙏 ORAÇÃO:\n${layaOraculoResult.resultado.oracao_resposta}\n\n🎯 AÇÃO:\n${layaOraculoResult.resultado.acao_pratica}`
+                          `${layaOraculoResult.resultado.versiculo_chave}\n\n"${layaOraculoResult.resultado.promessa_biblica}"\n\nDIRECIONAMENTO LAYA:\n${layaOraculoResult.resultado.direcionamento_laya}\n\nORAÇÃO:\n${layaOraculoResult.resultado.oracao_resposta}\n\nAÇÃO:\n${layaOraculoResult.resultado.acao_pratica}`
                         )}
                         style={{
                           background: 'transparent',
@@ -4317,7 +4441,7 @@ Importante: O JSON deve ser 100% válido.`;
                           gap: '4px'
                         }}
                       >
-                        {layaCopied ? '✓ Copiado!' : '📋 Copiar'}
+                        {layaCopied ? 'Copiado!' : 'Copiar'}
                       </button>
                     </div>
 
@@ -4339,7 +4463,7 @@ Importante: O JSON deve ser 100% válido.`;
                     {/* Direcionamento LAYA */}
                     <div>
                       <h4 style={{ margin: '0 0 6px 0', fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        💡 Sabedoria & Direcionamento
+                        Sabedoria & Direcionamento
                       </h4>
                       <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                         {layaOraculoResult.resultado.direcionamento_laya}
@@ -4354,7 +4478,7 @@ Importante: O JSON deve ser 100% válido.`;
                       border: '1px solid var(--slate-border)'
                     }}>
                       <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        🙏 Oração de Alinhamento
+                        Oração de Alinhamento
                       </h4>
                       <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic' }}>
                         "{layaOraculoResult.resultado.oracao_resposta}"
@@ -4371,7 +4495,7 @@ Importante: O JSON deve ser 100% válido.`;
                       alignItems: 'center',
                       gap: '12px'
                     }}>
-                      <span style={{ fontSize: '1.4rem' }}>🎯</span>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                       <div>
                         <div style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
                           Ação Prática de Hoje
@@ -4626,11 +4750,11 @@ Importante: O JSON deve ser 100% válido.`;
                         }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '800' }}>
-                              📖 {conselhoAtivo.versiculo_referencia}
+                              {conselhoAtivo.versiculo_referencia}
                             </span>
                             <button
                               onClick={() => handleCopyLayaConselho(
-                                `👑 MENTORIA COM ${currentMentor.nome.toUpperCase()}\nTema: ${conselhoAtivo.titulo}\nVersículo: ${conselhoAtivo.versiculo_referencia}\n\n"${conselhoAtivo.texto_biblico}"\n\n🕊️ CONSELHO DOUTRINÁRIO:\n${conselhoAtivo.conselho_doutrinario}\n\n🙏 ORAÇÃO:\n${conselhoAtivo.oracao_guiada}\n\n🎯 DESAFIO PRÁTICO:\n${conselhoAtivo.desafio_pratico}`
+                                `MENTORIA COM ${currentMentor.nome.toUpperCase()}\nTema: ${conselhoAtivo.titulo}\nVersículo: ${conselhoAtivo.versiculo_referencia}\n\n"${conselhoAtivo.texto_biblico}"\n\nCONSELHO DOUTRINÁRIO:\n${conselhoAtivo.conselho_doutrinario}\n\nORAÇÃO:\n${conselhoAtivo.oracao_guiada}\n\nDESAFIO PRÁTICO:\n${conselhoAtivo.desafio_pratico}`
                               )}
                               style={{
                                 background: 'transparent',
@@ -4641,7 +4765,7 @@ Importante: O JSON deve ser 100% válido.`;
                                 cursor: 'pointer'
                               }}
                             >
-                              {layaCopied ? '✓ Copiado!' : '📋 Copiar'}
+                              {layaCopied ? 'Copiado!' : 'Copiar'}
                             </button>
                           </div>
 
@@ -4660,7 +4784,7 @@ Importante: O JSON deve ser 100% válido.`;
                           {/* Conselho Doutrinário */}
                           <div>
                             <h4 style={{ margin: '0 0 6px 0', fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-primary)' }}>
-                              🕊️ Princípio Doutrinário
+                              Princípio Doutrinário
                             </h4>
                             <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                               {conselhoAtivo.conselho_doutrinario}
@@ -4675,7 +4799,7 @@ Importante: O JSON deve ser 100% válido.`;
                             border: '1px solid var(--slate-border)'
                           }}>
                             <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-primary)' }}>
-                              🙏 Oração com o Mentor
+                              Oração com o Mentor
                             </h4>
                             <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic' }}>
                               "{conselhoAtivo.oracao_guiada}"
@@ -4692,7 +4816,7 @@ Importante: O JSON deve ser 100% válido.`;
                             alignItems: 'center',
                             gap: '12px'
                           }}>
-                            <span style={{ fontSize: '1.3rem' }}>🎯</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                             <div>
                               <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
                                 Desafio Prático do Dia
@@ -4727,10 +4851,10 @@ Importante: O JSON deve ser 100% válido.`;
             <div className="page-content" style={{ paddingTop: '4px' }}>
               <div className="glass-panel dark-card" style={{ marginBottom: '16px' }}>
                 {[
-                  { icon: '🎧', feat: 'Meditações Guiadas', val: '365 áudios', desc: 'Um áudio por dia de alinhamento' },
-                  { icon: '👥', feat: 'Contatos Ilimitados', val: 'Sem limites', desc: 'Todo o seu círculo de influência' },
-                  { icon: '⚠️', feat: 'Alertas de Conexão', val: 'Automáticos', desc: 'Notificação a cada 48h por prioritário' },
-                  { icon: '📖', feat: 'Histórico Completo', val: 'Liberado', desc: 'Mural de todos os códigos' },
+                  { icon: 'audio', feat: 'Meditações Guiadas', val: '365 áudios', desc: 'Um áudio por dia de alinhamento' },
+                  { icon: 'users', feat: 'Contatos Ilimitados', val: 'Sem limites', desc: 'Todo o seu círculo de influência' },
+                  { icon: 'alert', feat: 'Alertas de Conexão', val: 'Automáticos', desc: 'Notificação a cada 48h por prioritário' },
+                  { icon: 'book', feat: 'Histórico Completo', val: 'Liberado', desc: 'Mural de todos os códigos' },
                 ].map(({ icon, feat, val, desc }) => (
                   <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                     <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{icon}</span>
@@ -4778,7 +4902,7 @@ Importante: O JSON deve ser 100% válido.`;
                 Ambiente de checkout seguro. Clique no botão abaixo para simular a aprovação instantânea do pagamento.
               </p>
               <button className="btn-primary" style={{ background: 'linear-gradient(135deg, #009ee3, #0088CC)' }} onClick={finalizarPagamentoSimulado}>
-                ⚡ Confirmar e Simular Aprovação
+                Confirmar e Simular Aprovação
               </button>
               <button className="btn-secondary" style={{ marginTop: '10px', width: '100%' }} onClick={() => setActiveTab('upgrade')}>Cancelar</button>
             </div>
@@ -4798,8 +4922,18 @@ Importante: O JSON deve ser 100% válido.`;
                   </label>
                 </div>
                 <h2 className="hero-title" style={{ fontSize: '1.4rem', marginBottom: '4px' }}>{profileName}</h2>
-                <span className={`pedagio-badge ${user?.status_plano === 'PREMIUM' ? 'badge-proposito' : 'badge-recompensa'}`}>
-                  {user?.status_plano === 'PREMIUM' ? '⭐ Membro Premium' : '🌱 Plano Gratuito (FREE)'}
+                <span className={`pedagio-badge ${user?.status_plano === 'PREMIUM' ? 'badge-proposito' : 'badge-recompensa'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  {user?.status_plano === 'PREMIUM' ? (
+                    <>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      <span>Membro Premium</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                      <span>Plano Gratuito</span>
+                    </>
+                  )}
                 </span>
               </div>
             </div>
@@ -5135,7 +5269,7 @@ Importante: O JSON deve ser 100% válido.`;
 
                 {user?.status_plano === 'FREE' ? (
                   <button className="btn-primary" style={{ width: '100%' }} onClick={() => setActiveTab('upgrade')}>
-                    ⚡ Fazer Upgrade para Premium
+                    Fazer Upgrade para Premium
                   </button>
                 ) : (
                   <button className="btn-secondary" style={{ width: '100%' }} onClick={() => setActiveTab('sabado')}>
@@ -5455,7 +5589,7 @@ Importante: O JSON deve ser 100% válido.`;
                       width: '10px', height: '10px', background: 'var(--bg-app)', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
                       borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
                     }} />
-                    🎮 <strong>Chaminha:</strong> "Vamos testar sua sabedoria? Escolha um jogo abaixo e ganhe muitas Chaminhas!"
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-green, #1ED760)" strokeWidth="2" style={{display:"inline-block", verticalAlign:"middle", marginRight:4}}><polygon points="5 3 19 12 5 21 5 3"/></svg> <strong>Chaminha:</strong> "Vamos testar sua sabedoria? Escolha um jogo abaixo e ganhe muitas Chaminhas!"
                   </div>
                 </div>
 
@@ -5536,7 +5670,7 @@ Importante: O JSON deve ser 100% válido.`;
                     }
                     setArcadeActiveGame(arcadeSelectedGame);
                   }} style={{ background: 'rgba(16,185,129,0.2)', border: '1px solid #10b981', color: '#fff', padding: '16px', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(16,185,129,0.4)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(16,185,129,0.2)'}>
-                    🌟 Fácil
+                    Nível Básico
                   </button>
 
                   {/* MÉDIO */}
@@ -5584,7 +5718,7 @@ Importante: O JSON deve ser 100% válido.`;
                     }
                     setArcadeActiveGame(arcadeSelectedGame);
                   }} style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid #ef4444', color: '#fff', padding: '16px', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239,68,68,0.4)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239,68,68,0.2)'}>
-                    🔥 Avançado (2x Recompensas)
+                    Nível Avançado (2x Recompensas)
                   </button>
                 </div>
                 <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', marginTop: '16px', cursor: 'pointer', textDecoration: 'underline' }}>
@@ -5627,7 +5761,7 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeQuizGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🏆</div>
+                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
                     <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Quiz Concluído!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação: <strong style={{ color: '#fff' }}>{arcadeQuizScore}</strong></p>
                     
@@ -5735,7 +5869,7 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeCharadasGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🎭</div>
+                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
                     <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Fim do Jogo!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação: <strong style={{ color: '#fff' }}>{arcadeCharadasScore}</strong></p>
                     
@@ -5768,7 +5902,7 @@ Importante: O JSON deve ser 100% válido.`;
 
                   {/* Dicas */}
                   <div className="glass-panel" style={{ padding: '30px 20px', textAlign: 'left', marginBottom: '24px', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: -20, right: -20, fontSize: '6rem', opacity: 0.05, transform: 'rotate(15deg)' }}>🤔</div>
+                    <div style={{ position: 'absolute', top: -20, right: -20, fontSize: '6rem', opacity: 0.05, transform: 'rotate(15deg)' }}></div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--orange)', fontWeight: 'bold', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>Quem Sou Eu? ({arcadeCharadasCurrent + 1}/{arcadeCharadasList.length})</div>
                     
                     <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -5876,7 +6010,7 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeForcaGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🏆</div>
+                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
                     <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Fim do Jogo!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação final: <strong style={{ color: '#fff' }}>{arcadeForcaScore}</strong></p>
                     
@@ -5902,7 +6036,7 @@ Importante: O JSON deve ser 100% válido.`;
                     <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
                     <div style={{ display: 'flex', gap: '16px' }}>
                       <div style={{ fontWeight: 'bold', color: 'var(--orange)', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⭐ {arcadeForcaScore}</div>
-                      <div style={{ fontWeight: 'bold', color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '6px 12px', borderRadius: '20px' }}>❤️ {maxMistakes - arcadeForcaMistakes}</div>
+                      <div style={{ fontWeight: 'bold', color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '6px 12px', borderRadius: '20px' }}>{maxMistakes - arcadeForcaMistakes}</div>
                     </div>
                   </div>
 
@@ -5936,10 +6070,10 @@ Importante: O JSON deve ser 100% válido.`;
                   {arcadeForcaFeedback && (
                     <div style={{ background: arcadeForcaFeedback === 'won' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', border: `2px solid ${arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444'}`, borderRadius: '16px', padding: '20px', textAlign: 'center', marginBottom: '24px' }}>
                       <h3 style={{ margin: '0 0 12px', color: arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444', fontSize: '1.4rem' }}>
-                        {arcadeForcaFeedback === 'won' ? 'Você Acertou! 🎉' : 'Você Perdeu! 😢'}
+                        {arcadeForcaFeedback === 'won' ? 'Você Acertou! ' : 'Você Perdeu! '}
                       </h3>
                       <button className="btn-primary" onClick={handleNextWord} style={{ padding: '12px 24px', fontSize: '1rem', borderRadius: '12px' }}>
-                        Próxima Palavra ➔
+                        Próxima Palavra
                       </button>
                     </div>
                   )}
@@ -6068,7 +6202,7 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeCacaGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🏆</div>
+                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
                     <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Parabéns!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Você encontrou todas as palavras e ganhou <strong style={{ color: '#fff' }}>50 moedas</strong> bônus!</p>
                     
@@ -6204,11 +6338,11 @@ Importante: O JSON deve ser 100% válido.`;
                   width: '10px', height: '10px', background: 'var(--bg-app)', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
                   borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
                 }} />
-                🔥 <strong>Chaminha:</strong> "Bem-vindo à minha Lojinha! Use suas Chaminhas para liberar fundos lindos e fontes incríveis!"
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-green, #1ED760)" strokeWidth="2" style={{display:"inline-block", verticalAlign:"middle", marginRight:4}}><path d="M12 2c1.1 4 4.5 6 4.5 10a6.5 6.5 0 0 1-13 0c0-4 3.4-6 4.5-10 1 2 2.5 3 4 0z"/></svg> <strong>Chaminha:</strong> "Bem-vindo à minha Lojinha! Use suas Chaminhas para liberar fundos lindos e fontes incríveis!"
               </div>
             </div>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <h2 style={{ fontSize: '2rem', color: 'var(--orange)', marginBottom: '8px' }}>Lojinha 1Convite 🛒</h2>
+              <h2 style={{ fontSize: '2rem', color: 'var(--orange)', marginBottom: '8px' }}>Lojinha 1Convite</h2>
               <p style={{ color: 'var(--text-secondary)' }}>Use suas moedas ganhas para desbloquear itens exclusivos para o Studio de Cards!</p>
               <div style={{ marginTop: '16px', display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(245,158,11,0.15)', padding: '12px 24px', borderRadius: '30px', border: '1px solid var(--orange)' }}>
                 <span style={{ fontSize: '1.2rem', color: 'var(--text-primary)' }}>Seu saldo:</span>
@@ -6237,7 +6371,7 @@ Importante: O JSON deve ser 100% válido.`;
                         ADQUIRIDO
                       </div>
                     )}
-                    <div style={{ fontSize: '2.2rem', textAlign: 'center', marginTop: isUnlocked ? '10px' : '0' }}>{item.icon}</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px', marginTop: isUnlocked ? '10px' : '0' }}>{item.icon}</div>
                     <h3 style={{ fontSize: '0.95rem', margin: 0, textAlign: 'center', color: 'var(--text-primary)', fontWeight: 'bold' }}>{item.name}</h3>
                     <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', textAlign: 'center', flex: 1, margin: 0, lineHeight: '1.3' }}>{item.desc}</p>
                     

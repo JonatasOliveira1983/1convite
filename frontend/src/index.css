@@ -485,15 +485,15 @@ body.dark-mode .app-header {
 }
 
 /* ═══════════════════════════════════════════════════
-   BUTTONS
+   BUTTONS — Spotify Pill Architecture
 ═══════════════════════════════════════════════════ */
 .btn-primary {
   background: var(--grad-orange);
   color: #fff;
   font-weight: 700;
   border: none;
-  padding: 14px 24px;
-  border-radius: 14px;
+  padding: 13px 26px;
+  border-radius: 500px;
   font-size: 0.95rem;
   font-family: inherit;
   cursor: pointer;
@@ -503,33 +503,34 @@ body.dark-mode .app-header {
   gap: 8px;
   width: 100%;
   box-shadow: var(--shadow-orange);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 12px 30px rgba(249,115,22,0.50);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(30, 215, 96, 0.45);
 }
 
-.btn-primary:active { transform: scale(0.97); box-shadow: none; }
+.btn-primary:active { transform: scale(0.98); box-shadow: none; }
 
 .btn-primary:disabled {
-  background: linear-gradient(135deg, #D1D5DB, #9CA3AF);
+  background: linear-gradient(135deg, #3E3E3E, #2A2A2A);
+  color: #7A7A7A;
   box-shadow: none;
   cursor: not-allowed;
   transform: none;
 }
 
 .btn-secondary {
-  background: rgba(255,255,255,0.80);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(8px);
-  color: var(--slate);
-  border: 1px solid rgba(255,255,255,0.60);
-  padding: 12px 20px;
-  border-radius: 12px;
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 12px 22px;
+  border-radius: 500px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1118,62 +1119,65 @@ body.dark-mode .app-header {
    DARK MODE (TEMA ESCURO - MIDNIGHT AMOLED)
 ═══════════════════════════════════════════════════ */
 body.dark-mode, .app-container.dark-mode, :root.dark-mode {
-  --bg-app:         #09090b !important; /* Midnight AMOLED zinc-950 */
-  --white:          #18181b !important; /* Zinc 900 */
-  --glass-bg:       rgba(24, 24, 27, 0.85);
-  --glass-border:   rgba(255, 255, 255, 0.05);
-  --glass-shadow:   0 12px 40px rgba(0, 0, 0, 0.6);
+  --bg-app:         #121212 !important; /* Spotify Canvas #121212 */
+  --white:          #181818 !important; /* Spotify Surface Card #181818 */
+  --glass-bg:       rgba(24, 24, 24, 0.92);
+  --glass-border:   rgba(255, 255, 255, 0.08);
+  --glass-shadow:   0 16px 48px rgba(0, 0, 0, 0.7);
 
-  /* Texto */
-  --text-primary:   #fafafa !important; /* Zinc 50 */
-  --text-secondary: #d4d4d8 !important; /* Zinc 300 */
-  --text-muted:     #71717a !important; /* Zinc 500 */
+  /* Texto Spotify Design System */
+  --text-primary:   #FFFFFF !important; /* 100% white */
+  --text-secondary: #B3B3B3 !important; /* Subdued #B3B3B3 */
+  --text-muted:     #6A6A6A !important; /* Muted #6A6A6A */
 
-  /* Verde esmeralda com glow neon */
-  --orange:         #10B981;
-  --orange-light:   rgba(16, 185, 129, 0.08);
-  --orange-mid:     rgba(16, 185, 129, 0.22);
-  --orange-glow:    rgba(16, 185, 129, 0.45);
+  /* Spotify Green */
+  --orange:         #1ED760;
+  --orange-dark:    #1db954;
+  --orange-light:   rgba(30, 215, 96, 0.10);
+  --orange-mid:     rgba(30, 215, 96, 0.22);
+  --orange-glow:    rgba(30, 215, 96, 0.40);
 
-  /* Ardósia (10%) no Dark Mode */
-  --slate:          #e4e4e7;
-  --slate-light:    rgba(255, 255, 255, 0.04);
+  /* Superfícies secundárias */
+  --slate:          #FFFFFF;
+  --slate-light:    rgba(255, 255, 255, 0.06);
   --slate-border:   rgba(255, 255, 255, 0.08);
 
-  background-color: #09090b !important;
-  color: #fafafa !important;
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
   color-scheme: dark;
 }
 
 body.dark-mode {
-  background-color: #030712 !important;
+  background-color: #121212 !important;
 }
 
 /* Forçar fundo nos containers principais no Dark Mode */
 body.dark-mode .app-container {
-  background-color: #030712 !important;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  background-color: #121212 !important;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
 }
 
 body.dark-mode .nav-tabs {
-  background: rgba(3, 7, 18, 0.90) !important;
-  border-top-color: rgba(255, 255, 255, 0.06) !important;
-  box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
+  background: rgba(18, 18, 18, 0.96) !important;
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.6);
 }
 
 body.dark-mode .input-field {
-  background: rgba(17, 24, 39, 0.9) !important;
-  color: #F9FAFB !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: #242424 !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 body.dark-mode .btn-secondary {
   background: rgba(255, 255, 255, 0.08) !important;
-  color: #F9FAFB !important;
+  color: #FFFFFF !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 500px !important;
 }
 body.dark-mode .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.15) !important;
+  transform: scale(1.03) !important;
 }
 
 body.dark-mode .premium-lock-card {
@@ -2371,32 +2375,30 @@ body.dark-mode .lwc-code-box {
   color: #fff;
 }
 
-/* ── Estilos do Dashboard Principal ── */
+/* ── Estilos do Dashboard Principal — Spotify DESIGN.md Spec ── */
 .dashboard-card {
   background-color: var(--white) !important;
   border: 1px solid var(--slate-border) !important;
-  border-radius: 20px !important;
-  padding: 24px 16px !important;
+  border-radius: 12px !important;
+  padding: 22px 16px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 12px !important;
   cursor: pointer !important;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-              border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   box-shadow: var(--shadow-sm) !important;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-4px) !important;
-  border-color: var(--orange) !important;
-  box-shadow: 0 10px 20px var(--orange-glow), var(--shadow-md) !important;
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: #1ED760 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25) !important;
 }
 
 .dashboard-card-icon {
-  color: var(--orange) !important;
+  color: #1ED760 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2404,24 +2406,31 @@ body.dark-mode .lwc-code-box {
 }
 
 .dashboard-card:hover .dashboard-card-icon {
-  transform: scale(1.1) rotate(2deg) !important;
+  transform: scale(1.1) !important;
 }
 
 .dashboard-card-label {
-  font-size: 0.9rem !important;
+  font-size: 0.92rem !important;
   font-weight: 700 !important;
   color: var(--text-primary) !important;
   text-align: center !important;
+  letter-spacing: -0.01em !important;
 }
 
-/* Suporte ao Modo Escuro para o Dashboard */
+/* Modo Escuro Oficial Spotify — Content-First Darkness */
 body.dark-mode .dashboard-card {
-  background-color: #1c1c1e !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  background-color: #181818 !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
 }
 
 body.dark-mode .dashboard-card:hover {
-  border-color: var(--orange) !important;
+  background-color: #242424 !important;
+  border-color: rgba(30, 215, 96, 0.45) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .dashboard-card-label {
+  color: #FFFFFF !important;
 }
 
 /* Ajuste fino no cabeçalho */
