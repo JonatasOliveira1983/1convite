@@ -2179,32 +2179,33 @@ Importante: O JSON deve ser 100% válido.`;
         <div className="glass-panel" style={{ maxWidth: '480px', width: '100%', padding: '28px 20px', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.02)', marginBottom: '24px', boxSizing: 'border-box' }}>
           
           {/* Botão de Download */}
-          <a href="/1convite.apk" download style={{ textDecoration: 'none' }}>
-            <button className="btn-primary" style={{ width: '100%', padding: '16px', fontSize: '1.05rem', background: 'var(--grad-orange)', color: '#fff', fontWeight: 'bold', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', boxShadow: 'var(--shadow-orange)' }}>
+          <a href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk" download style={{ textDecoration: 'none' }}>
+            <button className="btn-primary" style={{ width: '100%', padding: '16px', fontSize: '1.05rem', background: 'var(--grad-orange)', color: '#fff', fontWeight: 'bold', border: 'none', borderRadius: '500px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', boxShadow: 'var(--shadow-orange)' }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              Baixar Aplicativo Android (.APK)
+              Baixar o aplicativo
             </button>
           </a>
 
-          {/* Instruções Android */}
+          {/* Instruções de Instalação */}
           <div style={{ marginTop: '28px', textAlign: 'left' }}>
             <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0818 12 8.0818c-1.8533 0-3.5902.3298-5.1368.8679L4.8409 5.4467a.4161.4161 0 0 0-.5677-.1521.4157.4157 0 0 0-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                <path d="M12 18h.01"/>
               </svg>
-              Como instalar no seu Android:
+              Como instalar na área de trabalho do celular:
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>1</span>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Clique no botão acima para iniciar o download do arquivo <strong>1convite.apk</strong>.
+                  Clique no botão acima para iniciar o download do aplicativo.
                 </p>
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>2</span>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Quando concluir, clique no arquivo para abrir. Se surgir um alerta do sistema, toque em <strong>Configurações</strong>.
+                  Quando o download concluir, abra a notificação para fixar o aplicativo na sua tela inicial.
                 </p>
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -4976,7 +4977,7 @@ Importante: O JSON deve ser 100% válido.`;
                 </div>
               </div>
 
-              {/* Portal Institucional & APK Android */}
+              {/* Portal Institucional & Aplicativo */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -4984,10 +4985,10 @@ Importante: O JSON deve ser 100% válido.`;
                     <line x1="2" y1="12" x2="22" y2="12"></line>
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                   </svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Portal Institucional & APK Android</h3>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Portal Institucional & Aplicativo</h3>
                 </div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '14px', lineHeight: '1.4' }}>
-                  Acesse a apresentação oficial editorial do 1Convite e instale o aplicativo nativo para Android.
+                  Acesse a apresentação oficial editorial do 1Convite e instale o aplicativo oficial no seu celular.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <button 
@@ -5002,14 +5003,13 @@ Importante: O JSON deve ser 100% válido.`;
                     Ver Apresentação do 1Convite
                   </button>
                   <a 
-                    href="https://github.com/JonatasOliveira1983/1convite/releases" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                    href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk" 
+                    download
                     className="btn-secondary"
                     style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', textDecoration: 'none', boxSizing: 'border-box' }}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Baixar Aplicativo Android (.APK)
+                    Baixar o aplicativo
                   </a>
                 </div>
               </div>

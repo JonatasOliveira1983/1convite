@@ -1,6 +1,6 @@
 // ═════════════════════════════════════════════════════════════════
 // LAYA DATA — Sabedoria Bíblica, Mentores Canônicos & Oráculo
-// Suporte Nativo para APK, Zero Fricção, Alta Performance Offline
+// Suporte Nativo no Aplicativo, Zero Fricção, Alta Performance Offline
 // ═════════════════════════════════════════════════════════════════
 
 export const LAYA_MENTORES = [

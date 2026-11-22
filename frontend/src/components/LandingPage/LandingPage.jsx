@@ -58,11 +58,6 @@ const IconPalette = () => (
   </svg>
 );
 
-const IconAndroid = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0818 12 8.0818c-1.8533 0-3.5902.3298-5.1368.8679L4.8409 5.4467a.4161.4161 0 0 0-.5677-.1521.4157.4157 0 0 0-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
-  </svg>
-);
 
 const IconSmartphone = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -103,6 +98,43 @@ export default function LandingPage({ onEnterApp }) {
   const [leadObjective, setLeadObjective] = useState('crescimento');
   const [formStatus, setFormStatus] = useState('idle');
   const [selectedMentor, setSelectedMentor] = useState('salomao');
+  const [downloadToast, setDownloadToast] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  React.useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleDownloadApp = () => {
+    // 1. Se o navegador suporta instalação PWA direta na tela inicial, dispara o prompt
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('1Convite instalado na tela inicial');
+        }
+        setDeferredPrompt(null);
+      });
+    }
+
+    // 2. Dispara o download imediato do instalador do aplicativo para o dispositivo
+    const link = document.createElement('a');
+    link.href = 'https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk';
+    link.download = '1convite.apk';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // 3. Exibe confirmação visual de download e fixação na área de trabalho
+    setDownloadToast(true);
+    setTimeout(() => setDownloadToast(false), 8000);
+  };
 
   const mentores = [
     {
@@ -196,9 +228,9 @@ export default function LandingPage({ onEnterApp }) {
             <a href="#recursos">Recursos</a>
             <a href="#mentores">Mentores LAYA</a>
             <a href="#trilha">Trilha do Reino</a>
-            <a href="#download-apk" className="sp-pill-link">
-              <IconAndroid />
-              <span>APK Android</span>
+            <a href="#baixar-app" className="sp-pill-link">
+              <IconDownload />
+              <span>Baixar o aplicativo</span>
             </a>
           </nav>
 
@@ -236,10 +268,10 @@ export default function LandingPage({ onEnterApp }) {
                 <span>Iniciar Minha Jornada</span>
               </button>
 
-              <a href="#download-apk" className="sp-btn-cta-dark">
-                <IconAndroid />
-                <span>Instalar APK Android</span>
-              </a>
+              <button type="button" onClick={handleDownloadApp} className="sp-btn-cta-dark" style={{ cursor: 'pointer' }}>
+                <IconDownload />
+                <span>Baixar o aplicativo</span>
+              </button>
             </div>
 
             <div className="sp-hero-stats">
@@ -412,74 +444,83 @@ export default function LandingPage({ onEnterApp }) {
         </div>
       </section>
 
-      {/* ── SEÇÃO: DOWNLOAD DO APK ANDROID (PADRÃO SPOTIFY DEVICE INTEGRATION) ── */}
-      <section id="download-apk" className="sp-section">
+      {/* ── SEÇÃO: DOWNLOAD DO APLICATIVO OFICIAL ── */}
+      <section id="baixar-app" className="sp-section">
         <div className="sp-container">
           <div className="sp-download-box">
             <div className="sp-download-body">
               <div className="sp-download-header">
                 <div className="sp-icon-badge">
-                  <IconAndroid />
+                  <IconSmartphone />
                 </div>
                 <div>
-                  <span className="sp-kicker">INSTALAÇÃO NATIVA ANDROID</span>
-                  <h2 className="sp-download-title">Aplicativo Nativo 1Convite</h2>
+                  <span className="sp-kicker">INSTALAÇÃO NO SEU DISPOSITIVO</span>
+                  <h2 className="sp-download-title">Aplicativo Oficial 1Convite</h2>
                 </div>
               </div>
 
               <p className="sp-download-lead">
-                Tenha a experiência mais fluida com o binário oficial compilado para Android: áudio em segundo plano, carregamento instantâneo e Bíblia offline.
+                Tenha a experiência mais fluida com o aplicativo oficial: áudio em segundo plano, notificações diárias, carregamento instantâneo e acesso à Bíblia offline diretamente na área de trabalho do seu celular.
               </p>
 
               <div className="sp-steps-row">
                 <div className="sp-step-card">
                   <div className="sp-step-num">1</div>
                   <div className="sp-step-text">
-                    <strong>Baixar o APK</strong>
-                    <span>Arquivo oficial <code>1convite.apk</code> direto da nuvem.</span>
+                    <strong>Baixar o aplicativo</strong>
+                    <span>Toque no botão para fazer o download direto para o seu dispositivo.</span>
                   </div>
                 </div>
                 <div className="sp-step-card">
                   <div className="sp-step-num">2</div>
                   <div className="sp-step-text">
-                    <strong>Permitir Instalação</strong>
-                    <span>Abra o pacote no seu gerenciador de downloads.</span>
+                    <strong>Fixar na Área de Trabalho</strong>
+                    <span>Abra o arquivo baixado ou confirme a notificação para fixar na tela inicial.</span>
                   </div>
                 </div>
                 <div className="sp-step-card">
                   <div className="sp-step-num">3</div>
                   <div className="sp-step-text">
-                    <strong>Acesso Imediato</strong>
-                    <span>O ícone do 1Convite estará pronto na sua tela inicial.</span>
+                    <strong>Começar a Jornada</strong>
+                    <span>O ícone oficial da Chaminha estará pronto no seu celular.</span>
                   </div>
                 </div>
               </div>
 
               <div className="sp-download-actions">
-                <a
-                  href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={handleDownloadApp}
                   className="sp-btn-cta-green"
+                  style={{ cursor: 'pointer' }}
                 >
                   <IconDownload />
-                  <span>Download Direto (1convite.apk • 54MB)</span>
-                </a>
-
-                <a
-                  href="https://github.com/JonatasOliveira1983/1convite/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="sp-btn-cta-dark"
-                >
-                  <span>Histórico de Releases</span>
-                </a>
+                  <span>Baixar o aplicativo</span>
+                </button>
 
                 <button className="sp-btn-cta-dark" onClick={onEnterApp}>
                   <IconSmartphone />
-                  <span>Usar Versão Web PWA</span>
+                  <span>Acessar no Navegador</span>
                 </button>
               </div>
+
+              {downloadToast && (
+                <div className="sp-download-toast" style={{
+                  marginTop: '16px',
+                  padding: '12px 18px',
+                  borderRadius: '12px',
+                  background: 'rgba(30, 215, 96, 0.12)',
+                  border: '1px solid #1ED760',
+                  color: '#FFFFFF',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}>
+                  <IconCheck />
+                  <span>Download iniciado! Toque na notificação do seu celular para instalar na área de trabalho.</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -561,7 +602,7 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-footer-col">
               <h4>Plataforma</h4>
               <button className="sp-footer-link" onClick={onEnterApp}>Super App Web</button>
-              <a href="#download-apk" className="sp-footer-link">Aplicativo Android</a>
+              <a href="#baixar-app" className="sp-footer-link">Baixar o aplicativo</a>
               <a href="#recursos" className="sp-footer-link">Bíblia Sagrada ACF</a>
             </div>
 
