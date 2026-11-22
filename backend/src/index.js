@@ -72,20 +72,39 @@ async function ensureTables() {
   try {
     const client = await pool.connect();
     try {
-      const sql1 = readFileSync(join(__dirname, '../migrations/001_initial.sql'), 'utf-8');
-      await client.query(sql1);
+      const isTurso = pool.isTurso;
+      const file1 = isTurso ? '../migrations/001_initial_sqlite.sql' : '../migrations/001_initial.sql';
+      const file2 = isTurso ? '../migrations/002_laya_knowledge_base_sqlite.sql' : '../migrations/002_laya_knowledge_base.sql';
 
-      const pathLayaSql = join(__dirname, '../migrations/002_laya_knowledge_base.sql');
+      const runStatements = async (sqlText) => {
+        const cleanContent = sqlText
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          .replace(/--.*$/gm, '');
+
+        const statements = cleanContent
+          .split(';')
+          .map(s => s.trim())
+          .filter(s => s.length > 0);
+
+        for (const st of statements) {
+          if (st) await client.query(st);
+        }
+      };
+
+      const sql1 = readFileSync(join(__dirname, file1), 'utf-8');
+      await runStatements(sql1);
+
+      const pathLayaSql = join(__dirname, file2);
       if (existsSync(pathLayaSql)) {
         const sql2 = readFileSync(pathLayaSql, 'utf-8');
-        await client.query(sql2);
+        await runStatements(sql2);
       }
       console.log('[DB] Tabelas 1Convite & LAYA verificadas com sucesso');
     } finally {
       client.release();
     }
   } catch (err) {
-    console.warn('[DB] Aviso: Não foi possível conectar ao banco PostgreSQL local (as rotas do servidor continuarão ativas):', err.message);
+    console.warn('[DB] Aviso na verificação de tabelas:', err.message);
   }
 }
 

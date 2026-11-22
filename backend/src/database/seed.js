@@ -7,7 +7,7 @@ async function seed() {
 
     // Seed dictionary
     const dicCount = await client.query('SELECT COUNT(*) as count FROM tb_dicionario');
-    if (dicCount.rows[0].count === '0') {
+    if (Number(dicCount.rows[0]?.count || 0) === 0) {
       console.log('Populando dicionário teológico...');
       const termos = [
         ['Graça', 'Favor imerecido de Deus. É o que recebemos pela fé, não pelas obras.'],
@@ -37,7 +37,7 @@ async function seed() {
 
     // Seed growth tracks
     const trilhaCount = await client.query('SELECT COUNT(*) as count FROM tb_trilhas');
-    if (trilhaCount.rows[0].count === '0') {
+    if (Number(trilhaCount.rows[0]?.count || 0) === 0) {
       console.log('Populando Trilhas de Crescimento (30 dias para cada tema)...');
       const temas = ['Ansiedade', 'Família', 'Finanças', 'Propósito'];
       for (const tema of temas) {
