@@ -1,0 +1,9 @@
+PASTA DA MARCA 1CONVITE: COMO USAR
+
+1. Esta pasta (.agents/marca/) é a fonte única de verdade (SSOT) da identidade do 1Convite.
+2. Contém:
+   - marca.md: Quem somos, público, tom de voz pastoral e palavras obrigatórias/proibidas.
+   - cores.txt: Códigos hexadecimais oficiais (#F97316, #10B981, #09090B).
+   - logo.png e logomarca.png: Assets visuais em alta resolução.
+   - exemplo-de-design/: A régua visual de telas e layouts do app.
+   - pedido.txt: O prompt padrão para qualquer IA (Claude, ChatGPT, Antigravity) gerar materiais com a cara do 1Convite de primeira.

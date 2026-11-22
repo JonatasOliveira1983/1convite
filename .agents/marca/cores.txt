@@ -1,0 +1,15 @@
+CORES OFICIAIS DO 1CONVITE
+
+Cor principal (Chama / Ação / Energia): #F97316
+Cor de apoio (Reino / Vida / Crescimento): #10B981
+Cor de destaque secundário (Ouro / Talentos): #EAB308
+Cor de fundo Dark: #09090B
+Cor de superfície Dark (Cards): #18181B
+Cor de borda sutil: rgba(255, 255, 255, 0.08)
+Cor do texto principal: #FAFAF9
+Cor do texto secundário / apoio: #A1A1AA
+
+Regra de aplicação:
+- A cor principal (#F97316) entra na chama do logo, botões primários de ação e títulos de impacto.
+- A cor de apoio (#10B981) entra em status de sucesso, trilhas de crescimento e vida no Espírito.
+- Os cards mantêm o fundo escuro suave (#18181B) com tipografia em alto contraste (#FAFAF9).

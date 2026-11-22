@@ -1,0 +1,7 @@
+PEDIDO PRA COLAR NO CLAUDE / AGENTES (com a pasta .agents/marca/ adicionada)
+
+Crie [a proposta / o devocional / o card / a tela / o e-mail] seguindo rigorosamente a marca do 1Convite que está nesta pasta.
+Use o marca.md, as cores do cores.txt, o logo.png e o exemplo em exemplo-de-design como régua visual e de tom.
+Antes de começar, me pergunte o que faltar, uma pergunta por vez.
+
+[Descreva aqui o conteúdo específico: público-alvo, versículo, tema ou objetivo]
