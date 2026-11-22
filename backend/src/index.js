@@ -11,6 +11,7 @@ import { LayaEngine, LAYA_MENTORES, LAYA_CONSELHOS, LAYA_ORACULO_TEMAS } from '.
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
 const allowedOrigins = [
@@ -1395,9 +1396,10 @@ app.get('/api/v1/biblia/audio/:abrev/:capitulo', async (req, res) => {
   try {
     const { abrev, capitulo } = req.params;
     const capNumero = parseInt(capitulo, 10);
-    const host = req.get('host');
-    const protocol = req.protocol || 'http';
-    const backendUrl = host ? `${protocol}://${host}` : (process.env.BACKEND_URL || 'https://invigorating-expression-production-d4df.up.railway.app');
+    const host = req.get('host') || 'oneconvite.onrender.com';
+    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+    const protocol = isLocal ? 'http' : 'https';
+    const backendUrl = `${protocol}://${host}`;
 
     // 1. Fonte primária: beblia.bible
     let searchAbrev = abrev.toLowerCase();

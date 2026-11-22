@@ -1346,25 +1346,55 @@ function App() {
   useEffect(() => {
     if (activeTab !== 'biblia') return;
     const load = async () => {
-      try {
+      const bookAbrev = bibleSelectedBook?.livro_abrev || 'gn';
+      const capNum = bibleSelectedChapter || 1;
+      const cacheKey = `bible-cache-${bookAbrev}-${capNum}`;
+
+      // 1. Tenta carregar do cache local imediatamente para resposta instantânea
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setBibleVerses(parsed);
+            setBibleLoading(false);
+          }
+        } catch (e) {}
+      } else {
         setBibleLoading(true);
-        setBibleAudioPlaying(false);
-        setBibleAudioUrl('');
-        
-        const dc = await fetchJson(`${API_BASE}/biblia/capitulos/${bibleSelectedBook.livro_abrev}`);
+      }
+
+      setBibleAudioPlaying(false);
+      setBibleAudioUrl('');
+
+      try {
+        const dc = await fetchJson(`${API_BASE}/biblia/capitulos/${bookAbrev}`);
         if (dc) setBibleChaptersCount(dc.total || 50);
         
-        const verses = await fetchJson(`${API_BASE}/biblia/texto/${bibleSelectedBook.livro_abrev}/${bibleSelectedChapter}`);
-        if (verses) setBibleVerses(verses);
+        const verses = await fetchJson(`${API_BASE}/biblia/texto/${bookAbrev}/${capNum}`);
+        if (verses && Array.isArray(verses) && verses.length > 0) {
+          setBibleVerses(verses);
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(verses));
+          } catch (e) {}
+        }
 
-        // Carrega o áudio com fallback
-        const dataAudio = await fetchJson(`${API_BASE}/biblia/audio/${bibleSelectedBook.livro_abrev}/${bibleSelectedChapter}`);
+        // Carrega o áudio garantindo HTTPS para não haver bloqueio de Mixed Content
+        const dataAudio = await fetchJson(`${API_BASE}/biblia/audio/${bookAbrev}/${capNum}`);
         if (dataAudio) {
-          setBibleAudioUrl(dataAudio.proxy || dataAudio.url || '/piano.mp3');
+          let secureAudio = dataAudio.proxy || dataAudio.url || '/piano.mp3';
+          if (secureAudio.startsWith('http://')) {
+            secureAudio = secureAudio.replace('http://', 'https://');
+          }
+          setBibleAudioUrl(secureAudio);
         } else {
           setBibleAudioUrl('/piano.mp3');
         }
-      } catch (e) { console.error(e); } finally { setBibleLoading(false); }
+      } catch (e) {
+        console.error('[Bíblia] Erro ao carregar dados:', e);
+      } finally {
+        setBibleLoading(false);
+      }
     };
     load();
   }, [bibleSelectedBook, bibleSelectedChapter, activeTab]);
@@ -3486,8 +3516,18 @@ Importante: O JSON deve ser 100% válido.`;
                   <audio
                     ref={bibleAudioRef}
                     src={bibleAudioUrl}
+                    preload="metadata"
                     onTimeUpdate={onBibleAudioTimeUpdate}
                     onLoadedMetadata={onBibleAudioLoadedMetadata}
+                    onError={() => {
+                      console.warn('[Audio] Falha ao carregar narração, aplicando música instrumental suave...');
+                      if (bibleAudioUrl !== '/piano.mp3') {
+                        setBibleAudioUrl('/piano.mp3');
+                        if (bibleAudioPlaying && bibleAudioRef.current) {
+                          setTimeout(() => bibleAudioRef.current?.play().catch(() => {}), 200);
+                        }
+                      }
+                    }}
                     onEnded={() => {
                       // Auto-marcar capítulo como lido ao terminar o áudio
                       markChapterAsRead(bibleSelectedBook.livro_abrev, bibleSelectedChapter);
@@ -3545,8 +3585,11 @@ Importante: O JSON deve ser 100% válido.`;
               <>
                 {bibleLoading ? (
                   <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                    <div style={{ fontSize: '2rem', marginBottom: '12px', animation: 'spin 1.5s linear infinite', display: 'inline-block' }}>📖</div>
-                    <p style={{ color: '#A8A29E' }}>Carregando versículos...</p>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '20px', background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)', marginBottom: '14px' }}>
+                      <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--orange)', animation: 'pulse 1.2s ease-in-out infinite' }} />
+                      <span style={{ fontSize: '0.85rem', fontWeight: 500, color: darkMode ? '#e4e4e7' : '#44403c' }}>Acessando as Sagradas Escrituras</span>
+                    </div>
+                    <p style={{ color: darkMode ? '#71717a' : '#a8a29e', fontSize: '0.82rem' }}>Carregando {bibleSelectedBook?.livro_nome || 'Bíblia'} {bibleSelectedChapter}...</p>
                   </div>
                 ) : (
                   <div style={{ padding: '16px 20px 0' }}>
