@@ -15,6 +15,7 @@ import cafeSinteseData from './data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from './services/neuralAudioPlayer';
 import { TRILHAS_DATA, getTrilhaPorTema, getConteudoDiaTrilha } from './data/trilhasCrescimentoData';
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
+import appLogomarca from './assets/logomarca_oficial.png';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
   return (
@@ -2323,8 +2324,9 @@ Em nome de Jesus, Amém.`;
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '12px 16px',
-        height: '60px',
+        padding: '6px 16px',
+        minHeight: '62px',
+        height: '62px',
         boxSizing: 'border-box'
       }}>
         {activeTab === 'dashboard' ? (
@@ -2344,7 +2346,8 @@ Em nome de Jesus, Amém.`;
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: isCustomAvatar ? '0 2px 8px rgba(234, 179, 8, 0.35)' : '0 2px 8px rgba(16, 185, 129, 0.25)',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                flexShrink: 0
               }}
               title={isCustomAvatar ? "Minha Conta (Foto Personalizada)" : "Minha Conta • Toque para colocar sua foto"}
             >
@@ -2367,14 +2370,15 @@ Em nome de Jesus, Amém.`;
             </div>
 
             {/* Centro: Logomarca Oficial do App */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%', minWidth: 0 }}>
               <img 
-                src="/LOGOMARCA.png" 
+                src={appLogomarca} 
                 alt="1Convite" 
                 style={{ 
-                  height: '38px', 
-                  maxWidth: '165px',
+                  height: '48px', 
+                  maxHeight: '50px',
                   width: 'auto',
+                  maxWidth: '220px',
                   objectFit: 'contain',
                   cursor: 'pointer',
                   filter: darkMode ? 'drop-shadow(0 2px 10px rgba(249, 115, 22, 0.35))' : 'none',
@@ -2384,8 +2388,7 @@ Em nome de Jesus, Amém.`;
               />
             </div>
 
-
-{/* Direita: Diamante / Vouchers Premium */}
+            {/* Direita: Diamante / Vouchers Premium */}
             <div 
               onClick={() => setShowUpgradeModal(true)}
               style={{
@@ -2398,7 +2401,8 @@ Em nome de Jesus, Amém.`;
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                color: isPremiumUser ? '#FACC15' : 'var(--orange)'
+                color: isPremiumUser ? '#FACC15' : 'var(--orange)',
+                flexShrink: 0
               }}
               title={isPremiumUser ? 'Assinatura Premium Ativa' : 'Desbloquear Premium & Convites'}
             >
