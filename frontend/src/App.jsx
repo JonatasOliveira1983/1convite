@@ -2474,7 +2474,7 @@ Importante: O JSON deve ser 100% válido.`;
                   {activeTab === 'contatos' && 'Conexões & Contatos'}
                   {activeTab === 'conta' && 'Minha Conta'}
                   {activeTab === 'criar-card' && 'Studio de Cards'}
-                  {activeTab === 'arcade' && 'Jogos'}
+                  {activeTab === 'arcade' && 'Jogos & Kids'}
                   {activeTab === 'trail' && 'Trilha do Reino'}
                 </h2>
               )}
@@ -2913,17 +2913,6 @@ Importante: O JSON deve ser 100% válido.`;
                   )
                 },
                 { 
-                  id: 'kids', 
-                  label: '1Convite Kids', 
-                  isPremium: true,
-                  tag: 'INFANTIL',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )
-                },
-                { 
                   id: 'ebooks-premium', 
                   label: 'E-books & Livros', 
                   isPremium: true,
@@ -2931,6 +2920,18 @@ Importante: O JSON deve ser 100% válido.`;
                   icon: (
                     <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'arcade', 
+                  label: 'Jogos & Kids', 
+                  isPremium: true,
+                  tag: 'PREMIUM',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )
                 },
@@ -2951,16 +2952,6 @@ Importante: O JSON deve ser 100% válido.`;
                       <rect x="3" y="3" width="18" height="18" rx="3" ry="3" strokeLinecap="round" strokeLinejoin="round" />
                       <circle cx="8.5" cy="8.5" r="1.5" />
                       <polyline points="21 15 16 10 5 21" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'arcade', 
-                  label: 'Jogos', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )
                 },
@@ -5963,6 +5954,43 @@ Importante: O JSON deve ser 100% válido.`;
                     <div style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', marginTop: '4px', background: 'rgba(249,115,22,0.1)', padding: '4px 12px', borderRadius: '12px' }}>JOGAR</div>
                   </div>
 
+                  {/* CARD DESTAQUE HISTÓRIAS BÍBLICAS KIDS */}
+                  <div 
+                    className="glass-panel" 
+                    onClick={() => { setArcadeSelectedGame('historias-kids'); setArcadeActiveGame('historias-kids'); }} 
+                    style={{ 
+                      gridColumn: 'span 2', 
+                      cursor: 'pointer', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '16px', 
+                      padding: '18px', 
+                      borderRadius: '18px',
+                      background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(2, 132, 199, 0.08) 100%)',
+                      border: '1.5px solid rgba(14, 165, 233, 0.35)',
+                      transition: 'all 0.2s' 
+                    }}
+                  >
+                    <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 14px rgba(14, 165, 233, 0.35)' }}>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#0284C7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Espaço Infantil</span>
+                        <span style={{ fontSize: '0.62rem', background: '#0EA5E9', color: '#fff', padding: '1px 6px', borderRadius: '10px', fontWeight: '800' }}>KIDS</span>
+                      </div>
+                      <h3 style={{ margin: '0 0 2px', fontSize: '1.05rem', color: 'var(--text-primary)' }}>Histórias Bíblicas para Crianças</h3>
+                      <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Aventuras da fé com lições de vida para toda a família</p>
+                    </div>
+                    <div style={{ color: '#0284C7', fontWeight: 'bold' }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </div>
+                  </div>
+
                 </div>
               </>
             )}
@@ -6627,6 +6655,11 @@ Importante: O JSON deve ser 100% válido.`;
                 </div>
               );
             })()}
+
+            {/* Sub-Aba: Histórias Bíblicas Kids */}
+            {arcadeActiveGame === 'historias-kids' && (
+              <KidsView onBack={() => setArcadeActiveGame('lobby')} />
+            )}
           </div>
         )}
 
@@ -6765,13 +6798,6 @@ Importante: O JSON deve ser 100% válido.`;
         {/* ════════════ ABA BIBLIOTECA DO PREGADOR (PREMIUM) ════════════ */}
         {activeTab === 'biblioteca-pregador' && (
           <BibliotecaPregadorView 
-            onBack={() => setActiveTab('dashboard')} 
-          />
-        )}
-
-        {/* ════════════ ABA 1CONVITE KIDS ════════════ */}
-        {activeTab === 'kids' && (
-          <KidsView 
             onBack={() => setActiveTab('dashboard')} 
           />
         )}

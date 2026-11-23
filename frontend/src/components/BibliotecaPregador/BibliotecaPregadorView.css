@@ -1,10 +1,11 @@
-/* ── BIBLIOTECA DO PREGADOR ── */
+/* ── BIBLIOTECA DO PREGADOR (ESBOÇOS E SERMÕES) ── */
 .bp-container {
   padding: 16px 14px 40px;
   box-sizing: border-box;
   max-width: 480px;
   margin: 0 auto;
-  color: var(--text-primary);
+  color: var(--text-primary, #09090B);
+  transition: color 0.2s ease;
 }
 
 .bp-header {
@@ -18,13 +19,20 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+body.dark-mode .bp-back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 .bp-header-info {
@@ -35,16 +43,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
-  color: #60A5FA;
+  color: #1D4ED8;
   text-transform: uppercase;
   margin-bottom: 4px;
+}
+
+body.dark-mode .bp-pill {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #60A5FA;
 }
 
 .bp-pill-dot {
@@ -59,6 +73,11 @@
   font-weight: 800;
   margin: 0;
   letter-spacing: -0.02em;
+  color: #111827;
+}
+
+body.dark-mode .bp-title {
+  color: #FFFFFF;
 }
 
 /* Chips de Temas */
@@ -73,41 +92,61 @@
 .bp-theme-chip {
   padding: 6px 14px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary, #AAA);
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #4B5563;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s;
 }
 
+body.dark-mode .bp-theme-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #AAA;
+}
+
 .bp-theme-chip.active {
+  background: #EFF6FF;
+  border-color: #93C5FD;
+  color: #1D4ED8;
+}
+
+body.dark-mode .bp-theme-chip.active {
   background: rgba(59, 130, 246, 0.2);
   border-color: rgba(59, 130, 246, 0.4);
   color: #60A5FA;
-  font-weight: 700;
 }
 
+/* Lista de Sermões */
 .bp-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .bp-card {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 16px;
   padding: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+body.dark-mode .bp-card {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 .bp-card:hover {
-  border-color: rgba(59, 130, 246, 0.35);
   transform: translateY(-2px);
+  border-color: #60A5FA;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
 }
 
 .bp-card-top {
@@ -119,52 +158,89 @@
 
 .bp-theme-tag {
   font-size: 0.7rem;
-  font-weight: 700;
-  color: #60A5FA;
-  background: rgba(59, 130, 246, 0.12);
+  font-weight: 800;
+  color: #1D4ED8;
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
   padding: 2px 8px;
   border-radius: 6px;
 }
 
+body.dark-mode .bp-theme-tag {
+  color: #60A5FA;
+  background: rgba(59, 130, 246, 0.15);
+  border-color: transparent;
+}
+
 .bp-verse-tag {
   font-size: 0.75rem;
-  color: var(--text-muted, #888);
+  font-weight: 600;
+  color: #6B7280;
+}
+
+body.dark-mode .bp-verse-tag {
+  color: #9CA3AF;
 }
 
 .bp-card-title {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   margin: 0 0 8px;
-  color: #FFF;
+  color: #111827;
+  line-height: 1.35;
+}
+
+body.dark-mode .bp-card-title {
+  color: #FFFFFF;
 }
 
 .bp-card-preview {
-  font-size: 0.84rem;
-  color: #9CA3AF;
-  line-height: 1.5;
+  font-size: 0.86rem;
+  color: #4B5563;
+  line-height: 1.55;
   margin: 0 0 12px;
+}
+
+body.dark-mode .bp-card-preview {
+  color: #D1D5DB;
 }
 
 .bp-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #E5E7EB;
   padding-top: 10px;
-  font-size: 0.75rem;
-  color: var(--text-muted, #888);
+  font-size: 0.76rem;
+  color: #6B7280;
+}
+
+body.dark-mode .bp-card-footer {
+  border-top-color: rgba(255, 255, 255, 0.06);
+  color: #9CA3AF;
 }
 
 .bp-card-arrow {
+  color: #2563EB;
+}
+
+body.dark-mode .bp-card-arrow {
   color: #60A5FA;
 }
 
-/* Detail Card */
+/* ── VISUALIZAÇÃO COMPLETA DO SERMÃO ── */
 .bp-detail-card {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 20px;
-  padding: 22px 18px;
+  padding: 24px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .bp-detail-card {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
 }
 
 .bp-detail-top {
@@ -175,31 +251,43 @@
 }
 
 .bp-detail-title {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 800;
   margin: 0 0 20px;
-  color: #FFF;
+  color: #111827;
   line-height: 1.3;
 }
 
+body.dark-mode .bp-detail-title {
+  color: #FFFFFF;
+}
+
 .bp-section-block {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .bp-section-header {
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.82rem;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  color: #1D4ED8;
+  margin: 0 0 10px;
+}
+
+body.dark-mode .bp-section-header {
   color: #60A5FA;
-  margin: 0 0 8px;
 }
 
 .bp-text {
-  font-size: 0.9rem;
-  line-height: 1.65;
-  color: #D1D5DB;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: #1F2937;
   margin: 0;
+}
+
+body.dark-mode .bp-text {
+  color: #D1D5DB;
 }
 
 .bp-points-list {
@@ -211,60 +299,110 @@
 .bp-point-item {
   display: flex;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #F8FAFC;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+}
+
+body.dark-mode .bp-point-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .bp-point-num {
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #60A5FA;
-  background: rgba(59, 130, 246, 0.15);
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: #1D4ED8;
+  background: #DBEAFE;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
+body.dark-mode .bp-point-num {
+  color: #60A5FA;
+  background: rgba(59, 130, 246, 0.2);
+}
+
 .bp-point-title {
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-size: 0.94rem;
+  font-weight: 800;
   margin: 0 0 4px;
-  color: #FFF;
+  color: #111827;
+}
+
+body.dark-mode .bp-point-title {
+  color: #FFFFFF;
 }
 
 .bp-point-desc {
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: #9CA3AF;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: #4B5563;
   margin: 0;
 }
 
+body.dark-mode .bp-point-desc {
+  color: #D1D5DB;
+}
+
 .bp-illustration-box {
-  background: rgba(249, 115, 22, 0.05);
-  border-left: 3px solid #F97316;
-  border-radius: 0 12px 12px 0;
-  padding: 12px 14px;
+  background: #FFF7ED;
+  border-left: 4px solid #F97316;
+  border-radius: 0 14px 14px 0;
+  padding: 14px 16px;
+}
+
+body.dark-mode .bp-illustration-box {
+  background: rgba(249, 115, 22, 0.08);
 }
 
 .bp-illustration-box .bp-section-header {
+  color: #C2410C;
+}
+
+body.dark-mode .bp-illustration-box .bp-section-header {
   color: #FB923C;
 }
 
+.bp-illustration-box .bp-text {
+  color: #7C2D12;
+}
+
+body.dark-mode .bp-illustration-box .bp-text {
+  color: #FDBA74;
+}
+
 .bp-conclusion-box {
-  background: rgba(34, 197, 94, 0.05);
-  border-left: 3px solid #22C55E;
-  border-radius: 0 12px 12px 0;
-  padding: 12px 14px;
+  background: #F0FDF4;
+  border-left: 4px solid #22C55E;
+  border-radius: 0 14px 14px 0;
+  padding: 14px 16px;
+}
+
+body.dark-mode .bp-conclusion-box {
+  background: rgba(34, 197, 94, 0.08);
 }
 
 .bp-conclusion-box .bp-section-header {
+  color: #15803D;
+}
+
+body.dark-mode .bp-conclusion-box .bp-section-header {
   color: #4ADE80;
+}
+
+.bp-conclusion-box .bp-text {
+  color: #14532D;
+}
+
+body.dark-mode .bp-conclusion-box .bp-text {
+  color: #86EFAC;
 }
 
 .bp-share-btn {
@@ -273,84 +411,26 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px;
+  padding: 13px;
   border-radius: 12px;
-  border: none;
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #4ADE80;
-  font-weight: 700;
+  border: 1px solid #86EFAC;
+  background: #DCFCE7;
+  color: #15803D;
+  font-weight: 800;
   font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 10px;
+  margin-top: 14px;
+}
+
+body.dark-mode .bp-share-btn {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #4ADE80;
 }
 
 .bp-share-btn:hover {
   background: #22C55E;
   color: #FFF;
+  border-color: #22C55E;
 }
-
-/* ── SUPORTE AO MODO CLARO ── */
-body:not(.dark-mode) .bp-back-btn {
-  background: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #111827;
-}
-
-body:not(.dark-mode) .bp-tab-btn {
-  background: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #4B5563;
-}
-
-body:not(.dark-mode) .bp-tab-btn.active {
-  background: #EFF6FF;
-  border-color: #60A5FA;
-  color: #2563EB;
-}
-
-body:not(.dark-mode) .bp-esboco-card {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-}
-
-body:not(.dark-mode) .bp-esboco-title {
-  color: #111827;
-}
-
-body:not(.dark-mode) .bp-esboco-theme {
-  color: #4B5563;
-}
-
-body:not(.dark-mode) .bp-modal-content {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-}
-
-body:not(.dark-mode) .bp-modal-title {
-  color: #111827;
-}
-
-body:not(.dark-mode) .bp-close-modal {
-  background: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #111827;
-}
-
-body:not(.dark-mode) .bp-intro-text,
-body:not(.dark-mode) .bp-point-desc {
-  color: #374151;
-}
-
-body:not(.dark-mode) .bp-point-item {
-  background: #F9FAFB;
-  border-color: #E5E7EB;
-}
-
-body:not(.dark-mode) .bp-point-title {
-  color: #111827;
-}
-

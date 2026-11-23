@@ -1,79 +1,57 @@
 import React, { useState } from 'react';
+import { EBOOKS_DATA } from '../../data/ebooksData';
 import './BibliotecaEbooksView.css';
-
-const EBOOKS = [
-  {
-    id: 1,
-    title: 'As Parábolas de Jesus',
-    author: 'Estudos Canônicos',
-    badge: 'NOVO',
-    desc: 'Um mergulho aprofundado nas narrativas mais poderosas contadas pelo Mestre, desvendando seus significados espirituais e aplicações práticas para os dias de hoje.',
-    chapters: [
-      { title: 'O Semeador e os Quatro Solos', desc: 'Como o coração humano reage à semente da Palavra de Deus.' },
-      { title: 'O Filho Pródigo', desc: 'A revelação do amor incondicional do Pai e o resgate da comunhão.' },
-      { title: 'O Bom Samaritano', desc: 'O verdadeiro conceito de compaixão e amor ao próximo na prática.' },
-      { title: 'Os Talentos', desc: 'Fidelidade, mordomia cristã e multiplicação do que Deus nos confiou.' }
-    ]
-  },
-  {
-    id: 2,
-    title: 'Cristo como Centro das Escrituras',
-    author: 'Teologia Bíblica',
-    badge: 'ESSENCIAL',
-    desc: 'Descubra como cada livro da Bíblia, de Gênesis ao Apocalipse, aponta profética e tipologicamente para a pessoa, o sacrifício e o Reino de Jesus Cristo.',
-    chapters: [
-      { title: 'A Promessa em Gênesis 3:15', desc: 'O protoevangelho e a semente da mulher que esmaga a serpente.' },
-      { title: 'Tipologia no Tabernáculo', desc: 'Cada detalhe da arca, mesa e véu apontando para o Cordeiro.' },
-      { title: 'Os Salmos Messiânicos', desc: 'As dores da cruz e a glória da ressurreição profetizadas por Davi.' },
-      { title: 'O Cumprimento nos Evangelhos', desc: 'A plenitude dos tempos e a consumação da salvação.' }
-    ]
-  },
-  {
-    id: 3,
-    title: 'O Poder da Oração do Salmo 91',
-    author: 'Edificação Diária',
-    badge: 'PROTEÇÃO',
-    desc: 'O manual de refúgio espiritual e oração de proteção para o seu lar. Aprenda a habitar no esconderijo do Altíssimo e descansar sob a sombra do Onipotente.',
-    chapters: [
-      { title: 'O Esconderijo do Altíssimo', desc: 'O que significa habitar e fazer morada na presença de Deus.' },
-      { title: 'Livramento do Laço do Passarinheiro', desc: 'Como Deus desfaz as armadilhas invisíveis montadas contra sua vida.' },
-      { title: 'Mil Cairão ao Teu Lado', desc: 'A promessa da imunidade espiritual e o escudo da verdade.' },
-      { title: 'Aos Seus Anjos Dará Ordens', desc: 'O ministério angelical em favor dos que temem ao Senhor.' }
-    ]
-  },
-  {
-    id: 4,
-    title: 'Tesouros do Conhecimento Bíblico',
-    author: 'Cultura & Contexto',
-    badge: 'HISTÓRIA',
-    desc: 'Um guia completo sobre a geografia, os costumes, o hebraico e o grego bíblico para você compreender as entrelinhas dos textos sagrados.',
-    chapters: [
-      { title: 'Costumes e Tradições no Oriente Médio', desc: 'Entenda os pactos, alianças e banquetes nos tempos bíblicos.' },
-      { title: 'Palavras Hebraicas de Poder', desc: 'Shalom, Hesed, Ruach e Elohim explicados no original.' },
-      { title: 'Geografia dos Lugares Sagrados', desc: 'Jerusalém, o Mar da Galileia e as rotas dos apóstolos.' }
-    ]
-  },
-  {
-    id: 5,
-    title: 'Apocalipse Revelado',
-    author: 'Escatologia & Esperança',
-    badge: 'PROFÉTICO',
-    desc: 'O livro da revelação explicado sem medo e com foco na vitória final de Jesus Cristo e no estabelecimento da Nova Jerusalém.',
-    chapters: [
-      { title: 'As Sete Igrejas da Ásia', desc: 'Exortações, elogios e alertas espirituais para a igreja de hoje.' },
-      { title: 'O Cordeiro e os Sete Selos', desc: 'A soberania do Leão da Tribo de Judá sobre a história.' },
-      { title: 'A Nova Jerusalém e o Fim das Dores', desc: 'A restauração de todas as coisas e a eternidade com Deus.' }
-    ]
-  }
-];
 
 export default function BibliotecaEbooksView({ onBack }) {
   const [selectedEbook, setSelectedEbook] = useState(null);
+  const [readingChapter, setReadingChapter] = useState(null);
+  const [fontSize, setFontSize] = useState(16); // 14, 16, 18, 20
+
+  const handleOpenBook = (book) => {
+    setSelectedEbook(book);
+    setReadingChapter(null);
+  };
+
+  const handleOpenChapter = (chapter) => {
+    setReadingChapter(chapter);
+  };
+
+  const handleNextChapter = () => {
+    if (!selectedEbook || !readingChapter) return;
+    const currentIndex = selectedEbook.chapters.findIndex(c => c.id === readingChapter.id);
+    if (currentIndex < selectedEbook.chapters.length - 1) {
+      setReadingChapter(selectedEbook.chapters[currentIndex + 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrevChapter = () => {
+    if (!selectedEbook || !readingChapter) return;
+    const currentIndex = selectedEbook.chapters.findIndex(c => c.id === readingChapter.id);
+    if (currentIndex > 0) {
+      setReadingChapter(selectedEbook.chapters[currentIndex - 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="eb-container animate-fade-in">
+      {/* ── TOPO / HEADER ── */}
       <header className="eb-header">
-        <button onClick={() => selectedEbook ? setSelectedEbook(null) : onBack()} className="eb-back-btn" aria-label="Voltar">
+        <button 
+          onClick={() => {
+            if (readingChapter) {
+              setReadingChapter(null);
+            } else if (selectedEbook) {
+              setSelectedEbook(null);
+            } else {
+              onBack();
+            }
+          }} 
+          className="eb-back-btn" 
+          aria-label="Voltar"
+          title="Voltar"
+        >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
@@ -82,20 +60,42 @@ export default function BibliotecaEbooksView({ onBack }) {
         <div className="eb-header-info">
           <div className="eb-pill">
             <span className="eb-pill-dot" />
-            <span>BIBLIOTECA PREMIUM</span>
+            <span>BIBLIOTECA DIGITAL PREMIUM</span>
           </div>
-          <h1 className="eb-title">E-books & Livros Digitais</h1>
+          <h1 className="eb-title">
+            {readingChapter ? selectedEbook.title : (selectedEbook ? selectedEbook.title : 'E-books & Livros')}
+          </h1>
         </div>
 
-        <div style={{ width: 40 }} />
+        <div style={{ width: 40, display: 'flex', justifyContent: 'flex-end' }}>
+          {readingChapter && (
+            <div className="eb-font-controls">
+              <button 
+                onClick={() => setFontSize(prev => Math.max(13, prev - 2))}
+                className="eb-font-btn"
+                title="Diminuir tamanho da letra"
+              >
+                A-
+              </button>
+              <button 
+                onClick={() => setFontSize(prev => Math.min(24, prev + 2))}
+                className="eb-font-btn"
+                title="Aumentar tamanho da letra"
+              >
+                A+
+              </button>
+            </div>
+          )}
+        </div>
       </header>
 
-      {!selectedEbook ? (
-        <div className="eb-grid">
-          {EBOOKS.map(b => (
+      {/* ── ESTADO 1: LISTA DE E-BOOKS DISPONÍVEIS ── */}
+      {!selectedEbook && (
+        <div className="eb-grid animate-fade-in">
+          {EBOOKS_DATA.map(b => (
             <div 
               key={b.id} 
-              onClick={() => setSelectedEbook(b)}
+              onClick={() => handleOpenBook(b)}
               className="eb-card"
             >
               <div className="eb-card-header">
@@ -105,8 +105,9 @@ export default function BibliotecaEbooksView({ onBack }) {
               <h3 className="eb-card-title">{b.title}</h3>
               <p className="eb-card-desc">{b.desc}</p>
               <div className="eb-card-footer">
-                <span>{b.chapters.length} capítulos disponíveis</span>
-                <div className="eb-card-arrow">
+                <span className="eb-cap-count">{b.chapters.length} capítulos liberados</span>
+                <div className="eb-card-action">
+                  <span>Ler Agora</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6" />
                   </svg>
@@ -115,7 +116,10 @@ export default function BibliotecaEbooksView({ onBack }) {
             </div>
           ))}
         </div>
-      ) : (
+      )}
+
+      {/* ── ESTADO 2: SUMÁRIO E DETALHES DO LIVRO SELECIONADO ── */}
+      {selectedEbook && !readingChapter && (
         <article className="eb-detail-view animate-fade-in">
           <div className="eb-detail-badge-row">
             <span className="eb-badge">{selectedEbook.badge}</span>
@@ -125,14 +129,28 @@ export default function BibliotecaEbooksView({ onBack }) {
           <h2 className="eb-detail-title">{selectedEbook.title}</h2>
           <p className="eb-detail-intro">{selectedEbook.desc}</p>
 
-          <h3 className="eb-chapters-title">Capítulos & Estudos</h3>
+          <div className="eb-chapters-header">
+            <h3 className="eb-chapters-title">Capítulos & Estudos Completos</h3>
+            <span className="eb-touch-hint">Toque para ler</span>
+          </div>
+
           <div className="eb-chapters-list">
             {selectedEbook.chapters.map((ch, idx) => (
-              <div key={idx} className="eb-chapter-item">
+              <div 
+                key={idx} 
+                onClick={() => handleOpenChapter(ch)}
+                className="eb-chapter-item"
+              >
                 <div className="eb-chapter-num">{idx + 1}</div>
-                <div>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <h4 className="eb-chapter-name">{ch.title}</h4>
-                  <p className="eb-chapter-desc">{ch.desc}</p>
+                  <p className="eb-chapter-desc">{ch.intro}</p>
+                </div>
+                <div className="eb-chapter-read-btn">
+                  <span>Ler</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
                 </div>
               </div>
             ))}
@@ -150,6 +168,79 @@ export default function BibliotecaEbooksView({ onBack }) {
             </svg>
             <span>Recomendar Livro no WhatsApp</span>
           </button>
+        </article>
+      )}
+
+      {/* ── ESTADO 3: LEITOR COMPLETO DO CAPÍTULO ── */}
+      {selectedEbook && readingChapter && (
+        <article className="eb-reader-view animate-fade-in" style={{ fontSize: `${fontSize}px` }}>
+          <div className="eb-reader-meta">
+            <span className="eb-reader-tag">Capítulo {readingChapter.id} de {selectedEbook.chapters.length}</span>
+            <span className="eb-reader-bookname">{selectedEbook.title}</span>
+          </div>
+
+          <h2 className="eb-reader-title">{readingChapter.title}</h2>
+
+          {/* Versículo de Abertura */}
+          {readingChapter.verse && (
+            <div className="eb-reader-verse-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+              </svg>
+              <blockquote className="eb-reader-verse-text">{readingChapter.verse}</blockquote>
+            </div>
+          )}
+
+          {/* Introdução ao Capítulo */}
+          <p className="eb-reader-intro-text">{readingChapter.intro}</p>
+
+          {/* Texto Integral */}
+          <div className="eb-reader-body">
+            {readingChapter.content.split('\n\n').map((paragraph, idx) => (
+              <p key={idx} className="eb-reader-paragraph">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Aplicação Prática Devocional */}
+          {readingChapter.application && (
+            <div className="eb-reader-app-box">
+              <div className="eb-reader-app-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>Aplicação Prática para sua Vida</span>
+              </div>
+              <p className="eb-reader-app-text">{readingChapter.application}</p>
+            </div>
+          )}
+
+          {/* Navegação Entre Capítulos */}
+          <div className="eb-reader-nav-footer">
+            <button 
+              onClick={handlePrevChapter} 
+              disabled={selectedEbook.chapters.findIndex(c => c.id === readingChapter.id) === 0}
+              className="eb-nav-btn"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+              <span>Capítulo Anterior</span>
+            </button>
+
+            <button 
+              onClick={handleNextChapter} 
+              disabled={selectedEbook.chapters.findIndex(c => c.id === readingChapter.id) === selectedEbook.chapters.length - 1}
+              className="eb-nav-btn primary"
+            >
+              <span>Próximo Capítulo</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
         </article>
       )}
     </div>

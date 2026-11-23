@@ -4,7 +4,8 @@
   box-sizing: border-box;
   max-width: 480px;
   margin: 0 auto;
-  color: var(--text-primary);
+  color: var(--text-primary, #09090B);
+  transition: color 0.2s ease;
 }
 
 .mv-header {
@@ -18,13 +19,20 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+body.dark-mode .mv-back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 .mv-header-info {
@@ -35,16 +43,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(236, 72, 153, 0.12);
-  border: 1px solid rgba(236, 72, 153, 0.25);
+  background: #FDF2F8;
+  border: 1px solid #FBCFE8;
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
-  color: #F472B6;
+  color: #BE185D;
   text-transform: uppercase;
   margin-bottom: 4px;
+}
+
+body.dark-mode .mv-pill {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: rgba(236, 72, 153, 0.35);
+  color: #F472B6;
 }
 
 .mv-pill-dot {
@@ -59,17 +73,27 @@
   font-weight: 800;
   margin: 0;
   letter-spacing: -0.02em;
+  color: #111827;
+}
+
+body.dark-mode .mv-title {
+  color: #FFFFFF;
 }
 
 /* Tabs */
 .mv-tabs-nav {
   display: flex;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: #F3F4F6;
   padding: 4px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid #E5E7EB;
   margin-bottom: 20px;
+}
+
+body.dark-mode .mv-tabs-nav {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .mv-tab-btn {
@@ -78,49 +102,80 @@
   border-radius: 10px;
   border: none;
   background: transparent;
-  color: var(--text-secondary, #AAA);
+  color: #4B5563;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.mv-tab-btn.active {
-  background: rgba(236, 72, 153, 0.2);
-  color: #F472B6;
-  font-weight: 700;
+body.dark-mode .mv-tab-btn {
+  color: #AAA;
 }
 
+.mv-tab-btn.active {
+  background: #FFFFFF;
+  color: #BE185D;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+body.dark-mode .mv-tab-btn.active {
+  background: rgba(236, 72, 153, 0.25);
+  color: #F472B6;
+  box-shadow: none;
+}
+
+/* Card Versículo Destaque */
 .mv-quote-card {
-  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
-  border: 1px solid rgba(236, 72, 153, 0.25);
+  background: #FDF2F8;
+  border: 1px solid #FBCFE8;
+  border-left: 4px solid #EC4899;
   border-radius: 16px;
   padding: 18px;
   margin-bottom: 22px;
   text-align: center;
 }
 
+body.dark-mode .mv-quote-card {
+  background: rgba(236, 72, 153, 0.1);
+  border-color: rgba(236, 72, 153, 0.3);
+}
+
 .mv-quote-verse {
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-style: italic;
-  line-height: 1.5;
-  color: #FBCFE8;
+  line-height: 1.6;
+  color: #831843;
+  font-weight: 700;
   margin: 0 0 8px;
 }
 
+body.dark-mode .mv-quote-verse {
+  color: #FBCFE8;
+  font-weight: 500;
+}
+
 .mv-quote-ref {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #EC4899;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #BE185D;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+}
+
+body.dark-mode .mv-quote-ref {
+  color: #F472B6;
 }
 
 .mv-section-title {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0 0 14px;
-  color: #FFF;
+  color: #111827;
+}
+
+body.dark-mode .mv-section-title {
+  color: #FFFFFF;
 }
 
 .mv-habits-list {
@@ -134,24 +189,36 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: 14px;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.2s;
 }
 
+body.dark-mode .mv-habit-item {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
 .mv-habit-item.done {
-  border-color: rgba(236, 72, 153, 0.4);
-  background: rgba(236, 72, 153, 0.06);
+  border-color: #F472B6;
+  background: #FDF2F8;
+}
+
+body.dark-mode .mv-habit-item.done {
+  border-color: rgba(236, 72, 153, 0.45);
+  background: rgba(236, 72, 153, 0.1);
 }
 
 .mv-habit-check {
   width: 24px;
   height: 24px;
   border-radius: 7px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid #D1D5DB;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,83 +227,150 @@
   transition: all 0.2s;
 }
 
-.mv-habit-check.checked {
+body.dark-mode .mv-habit-check {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.mv-habit-item.done .mv-habit-check {
   background: #EC4899;
   border-color: #EC4899;
 }
 
-.mv-habit-label {
-  font-size: 0.88rem;
-  font-weight: 500;
+.mv-habit-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+}
+
+body.dark-mode .mv-habit-text {
   color: #E5E7EB;
 }
 
-.mv-wisdom-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 16px;
+.mv-habit-item.done .mv-habit-text {
+  color: #831843;
+  text-decoration: line-through;
+  opacity: 0.85;
 }
 
-.mv-wisdom-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+body.dark-mode .mv-habit-item.done .mv-habit-text {
   color: #F472B6;
-  margin: 0 0 6px;
 }
 
-.mv-wisdom-body {
-  font-size: 0.86rem;
+/* Devocional do dia no rodapé */
+.mv-principle-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-mode .mv-principle-card {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.mv-principle-header {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #BE185D;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+body.dark-mode .mv-principle-header {
+  color: #F472B6;
+}
+
+.mv-principle-verse {
+  font-size: 0.92rem;
+  font-style: italic;
+  color: #111827;
   line-height: 1.6;
-  color: #9CA3AF;
+  margin: 0 0 8px;
+}
+
+body.dark-mode .mv-principle-verse {
+  color: #FFFFFF;
+}
+
+.mv-principle-desc {
+  font-size: 0.86rem;
+  color: #4B5563;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* Prayers */
-.mv-prayer-top {
+body.dark-mode .mv-principle-desc {
+  color: #D1D5DB;
+}
+
+/* ── ABA 2: CADERNO DE ORAÇÕES ── */
+.mv-prayers-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.mv-prayer-sub {
-  font-size: 0.72rem;
-  color: var(--text-muted, #888);
+  margin-bottom: 14px;
 }
 
 .mv-add-prayer-btn {
   padding: 6px 12px;
   border-radius: 10px;
-  background: rgba(236, 72, 153, 0.2);
-  border: 1px solid rgba(236, 72, 153, 0.35);
-  color: #F472B6;
+  background: #FDF2F8;
+  border: 1px solid #FBCFE8;
+  color: #BE185D;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+body.dark-mode .mv-add-prayer-btn {
+  background: rgba(236, 72, 153, 0.2);
+  border-color: rgba(236, 72, 153, 0.35);
+  color: #F472B6;
+}
+
+.mv-add-prayer-btn:hover {
+  background: #EC4899;
+  color: #FFF;
 }
 
 .mv-new-prayer-box {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
   margin-bottom: 18px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .mv-new-prayer-box {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .mv-input,
 .mv-textarea {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
   border-radius: 10px;
   padding: 10px 12px;
+  color: #111827;
+  font-size: 0.88rem;
+}
+
+body.dark-mode .mv-input,
+body.dark-mode .mv-textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
-  font-size: 0.85rem;
 }
 
 .mv-form-btns {
@@ -248,7 +382,7 @@
 .mv-cancel-btn {
   background: transparent;
   border: none;
-  color: #AAA;
+  color: #6B7280;
   font-size: 0.78rem;
   cursor: pointer;
   padding: 6px 10px;
@@ -258,29 +392,40 @@
   background: #EC4899;
   border: none;
   color: #FFF;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.78rem;
   border-radius: 8px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   cursor: pointer;
 }
 
 .mv-prayers-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .mv-prayer-card {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-mode .mv-prayer-card {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .mv-prayer-card.answered {
+  border-color: #86EFAC;
+  background: #F0FDF4;
+}
+
+body.dark-mode .mv-prayer-card.answered {
   border-color: rgba(34, 197, 94, 0.3);
-  background: rgba(34, 197, 94, 0.04);
+  background: rgba(34, 197, 94, 0.06);
 }
 
 .mv-prayer-card-header {
@@ -291,48 +436,72 @@
 }
 
 .mv-prayer-title {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.94rem;
+  font-weight: 800;
   margin: 0;
+  color: #111827;
+}
+
+body.dark-mode .mv-prayer-title {
   color: #FFF;
 }
 
 .mv-answer-tag {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 800;
   padding: 3px 8px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid #D1D5DB;
   background: transparent;
-  color: #AAA;
+  color: #6B7280;
   cursor: pointer;
 }
 
 .mv-answer-tag.is-answered {
+  background: #DCFCE7;
+  border-color: #86EFAC;
+  color: #15803D;
+}
+
+body.dark-mode .mv-answer-tag.is-answered {
   background: rgba(34, 197, 94, 0.15);
   border-color: rgba(34, 197, 94, 0.4);
   color: #4ADE80;
 }
 
 .mv-prayer-desc {
-  font-size: 0.82rem;
-  color: #9CA3AF;
+  font-size: 0.85rem;
+  color: #4B5563;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* Proverbs 31 */
+body.dark-mode .mv-prayer-desc {
+  color: #D1D5DB;
+}
+
+/* ── ABA 3: PROVÉRBIOS 31 ── */
 .mv-proverbs-card {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 16px;
-  padding: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-mode .mv-proverbs-card {
+  background: #18181C;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .mv-proverbs-header {
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 1.1rem;
+  font-weight: 900;
   margin: 0 0 16px;
+  color: #BE185D;
+}
+
+body.dark-mode .mv-proverbs-header {
   color: #F472B6;
 }
 
@@ -343,8 +512,12 @@
 }
 
 .mv-mark-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid #E5E7EB;
   padding-bottom: 12px;
+}
+
+body.dark-mode .mv-mark-row {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
 .mv-mark-row:last-child {
@@ -353,102 +526,24 @@
 }
 
 .mv-mark-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #FFF;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #111827;
   display: block;
   margin-bottom: 4px;
 }
 
+body.dark-mode .mv-mark-title {
+  color: #FFF;
+}
+
 .mv-mark-desc {
-  font-size: 0.82rem;
-  color: #9CA3AF;
+  font-size: 0.85rem;
+  color: #4B5563;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* ── SUPORTE AO MODO CLARO ── */
-body:not(.dark-mode) .mv-back-btn {
-  background: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #111827;
+body.dark-mode .mv-mark-desc {
+  color: #D1D5DB;
 }
-
-body:not(.dark-mode) .mv-tab-btn {
-  background: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #4B5563;
-}
-
-body:not(.dark-mode) .mv-tab-btn.active {
-  background: #FDF2F8;
-  border-color: #F472B6;
-  color: #DB2777;
-}
-
-body:not(.dark-mode) .mv-habit-item {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  color: #111827;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-body:not(.dark-mode) .mv-habit-item.done {
-  background: #FDF2F8;
-  border-color: #F472B6;
-}
-
-body:not(.dark-mode) .mv-habit-check {
-  border-color: #D1D5DB;
-  color: #111827;
-}
-
-body:not(.dark-mode) .mv-habit-text {
-  color: #111827;
-}
-
-body:not(.dark-mode) .mv-new-prayer-box {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-body:not(.dark-mode) .mv-input,
-body:not(.dark-mode) .mv-textarea {
-  background: #F9FAFB;
-  border-color: #E5E7EB;
-  color: #111827;
-}
-
-body:not(.dark-mode) .mv-prayer-card {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-body:not(.dark-mode) .mv-prayer-title {
-  color: #111827;
-}
-
-body:not(.dark-mode) .mv-prayer-desc {
-  color: #4B5563;
-}
-
-body:not(.dark-mode) .mv-proverbs-card {
-  background: #FFFFFF;
-  border-color: #E5E7EB;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-body:not(.dark-mode) .mv-mark-title {
-  color: #111827;
-}
-
-body:not(.dark-mode) .mv-mark-desc {
-  color: #4B5563;
-}
-
-body:not(.dark-mode) .mv-mark-row {
-  border-bottom-color: #E5E7EB;
-}
-
