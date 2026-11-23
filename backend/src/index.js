@@ -41,7 +41,8 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -860,30 +861,115 @@ app.post('/api/v1/laya/consultar', async (req, res) => {
 
 // ---------------- ROTAS DO CORE ----------------
 
+// Helper resiliente: Obter ou criar usuário na tabela tb_usuarios por uuid ou email
+const getOrCreateUser = async (uuid, email, nome, avatar) => {
+  try {
+    // 1. Tentar localizar por uuid
+    if (uuid) {
+      const uByUuid = await dbGet('SELECT * FROM tb_usuarios WHERE uuid = $1', [uuid]);
+      if (uByUuid) {
+        if (email && !uByUuid.email) {
+          await dbRun('UPDATE tb_usuarios SET email = $1 WHERE uuid = $2', [email, uuid]);
+          uByUuid.email = email;
+        }
+        return uByUuid;
+      }
+    }
+
+    // 2. Tentar localizar por email
+    if (email) {
+      const uByEmail = await dbGet('SELECT * FROM tb_usuarios WHERE email = $1', [email]);
+      if (uByEmail) {
+        if (uuid && uByEmail.uuid !== uuid) {
+          await dbRun('UPDATE tb_usuarios SET uuid = $1 WHERE email = $2', [uuid, email]);
+          uByEmail.uuid = uuid;
+        }
+        return uByEmail;
+      }
+    }
+
+    // 3. Se nenhum uuid/email informado e existir algum usuário na tabela, retorna o mais recente
+    if (!uuid && !email) {
+      const single = await dbGet('SELECT * FROM tb_usuarios ORDER BY id DESC LIMIT 1');
+      if (single) return single;
+    }
+
+    // 4. Criar novo usuário registrado no banco de dados
+    const finalUuid = uuid || ('usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10));
+    const finalNome = nome || 'Membro Convidado';
+    const finalEmail = email || null;
+    const finalAvatar = avatar || null;
+
+    await dbRun(
+      `INSERT INTO tb_usuarios (uuid, email, nome, avatar, genero, status_plano, dia_atual, checkpoint_completado) 
+       VALUES ($1, $2, $3, $4, 'homem', 'FREE', 1, 0)`,
+      [finalUuid, finalEmail, finalNome, finalAvatar]
+    );
+
+    const created = await dbGet('SELECT * FROM tb_usuarios WHERE uuid = $1', [finalUuid]);
+    return created || {
+      uuid: finalUuid,
+      email: finalEmail,
+      nome: finalNome,
+      avatar: finalAvatar,
+      genero: 'homem',
+      status_plano: 'FREE',
+      dia_atual: 1,
+      checkpoint_completado: 0
+    };
+  } catch (err) {
+    console.warn('[DB getOrCreateUser Warning]:', err.message);
+    return localUser;
+  }
+};
+
 // Obter dados do usuário e progresso
 app.get('/api/v1/usuario', async (req, res) => {
   try {
-    const user = await dbGet('SELECT * FROM tb_usuario_progresso LIMIT 1');
+    const userUuid = req.headers['x-user-uuid'] || req.query.uuid;
+    const userEmail = req.headers['x-user-email'] || req.query.email;
+    const user = await getOrCreateUser(userUuid, userEmail);
     res.json(user || localUser);
   } catch (err) {
     res.json(localUser);
   }
 });
 
-// Atualizar dados de perfil do usuário manualmente
+// Atualizar dados de perfil do usuário (nome, email, avatar, genero)
 app.post('/api/v1/usuario/perfil', async (req, res) => {
   try {
-    const { nome, email, avatar } = req.body;
+    const userUuid = req.headers['x-user-uuid'] || req.body.uuid;
+    const { nome, email, avatar, genero } = req.body;
+
+    const user = await getOrCreateUser(userUuid, email, nome, avatar);
+
+    if (user && user.uuid) {
+      await dbRun(
+        `UPDATE tb_usuarios 
+         SET nome = COALESCE($1, nome), 
+             email = COALESCE($2, email), 
+             avatar = COALESCE($3, avatar), 
+             genero = COALESCE($4, genero),
+             updated_at = datetime('now')
+         WHERE uuid = $5 OR (email IS NOT NULL AND email = $6)`,
+        [nome, email, avatar, genero, user.uuid, email]
+      );
+    }
+
+    // Compatibilidade com tb_usuario_progresso legada
     await dbRun(
-      'UPDATE tb_usuario_progresso SET nome = $1, email = $2, avatar = $3',
+      'UPDATE tb_usuario_progresso SET nome = COALESCE($1, nome), email = COALESCE($2, email), avatar = COALESCE($3, avatar)',
       [nome, email, avatar]
     );
+
     if (nome) localUser.nome = nome;
     if (email) localUser.email = email;
     if (avatar) localUser.avatar = avatar;
-    const updated = await dbGet('SELECT * FROM tb_usuario_progresso LIMIT 1');
-    res.json(updated || localUser);
+
+    const updated = await dbGet('SELECT * FROM tb_usuarios WHERE uuid = $1', [user?.uuid || userUuid]);
+    res.json(updated || { ...localUser, ...req.body });
   } catch (err) {
+    console.error('Erro em /usuario/perfil:', err);
     res.json({ ...localUser, ...req.body });
   }
 });
@@ -891,18 +977,29 @@ app.post('/api/v1/usuario/perfil', async (req, res) => {
 // Autenticação / Sincronização com o Google Sign-In
 app.post('/api/v1/auth/google', async (req, res) => {
   try {
+    const userUuid = req.headers['x-user-uuid'] || req.body.uuid;
     const { nome, email, avatar } = req.body;
 
-    await dbRun(
-      'UPDATE tb_usuario_progresso SET nome = $1, email = $2, avatar = $3',
-      [nome, email, avatar]
-    );
+    const user = await getOrCreateUser(userUuid, email, nome, avatar);
+
+    if (user && user.uuid) {
+      await dbRun(
+        `UPDATE tb_usuarios 
+         SET nome = COALESCE($1, nome), 
+             email = COALESCE($2, email), 
+             avatar = COALESCE($3, avatar), 
+             updated_at = datetime('now')
+         WHERE uuid = $4 OR email = $5`,
+        [nome, email, avatar, user.uuid, email]
+      );
+    }
+
     if (nome) localUser.nome = nome;
     if (email) localUser.email = email;
     if (avatar) localUser.avatar = avatar;
 
-    const user = await dbGet('SELECT * FROM tb_usuario_progresso LIMIT 1');
-    res.json({ success: true, user: user || localUser });
+    const updatedUser = await dbGet('SELECT * FROM tb_usuarios WHERE uuid = $1 OR email = $2', [user?.uuid || userUuid, email]);
+    res.json({ success: true, user: updatedUser || localUser });
   } catch (err) {
     res.json({ success: true, user: { ...localUser, ...req.body } });
   }
@@ -911,9 +1008,13 @@ app.post('/api/v1/auth/google', async (req, res) => {
 // Obter código do dia atual do usuário
 app.get('/api/v1/codigo-dia', async (req, res) => {
   try {
-    const user = (await dbGet('SELECT * FROM tb_usuario_progresso LIMIT 1')) || localUser;
-    const code = (await dbGet('SELECT * FROM tb_matriz_diaria WHERE dia_id = $1', [user.dia_atual])) || { ...MOCK_CODE, dia_id: user.dia_atual };
-    res.json({ user, code });
+    const userUuid = req.headers['x-user-uuid'] || req.query.uuid;
+    const userEmail = req.headers['x-user-email'] || req.query.email;
+    const user = await getOrCreateUser(userUuid, userEmail);
+
+    const diaAtual = user.dia_atual || 1;
+    const code = (await dbGet('SELECT * FROM tb_matriz_diaria WHERE dia_id = $1', [diaAtual])) || { ...MOCK_CODE, dia_id: diaAtual };
+    res.json({ user: user || localUser, code });
   } catch (err) {
     res.json({ user: localUser, code: { ...MOCK_CODE, dia_id: localUser.dia_atual } });
   }

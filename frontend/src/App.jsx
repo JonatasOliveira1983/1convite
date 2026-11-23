@@ -15,7 +15,55 @@ import cafeSinteseData from './data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from './services/neuralAudioPlayer';
 import { TRILHAS_DATA, getTrilhaPorTema, getConteudoDiaTrilha } from './data/trilhasCrescimentoData';
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
-import appLogomarca from './assets/logomarca_oficial.png';
+import appLogomarcaLight from './assets/logomarca_oficial.png';
+import appLogomarcaDark from './assets/logomarca_dark.png';
+
+// ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
+function getUserUuid() {
+  try {
+    let id = localStorage.getItem('1convite_user_uuid');
+    if (!id) {
+      id = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem('1convite_user_uuid', id);
+    }
+    return id;
+  } catch (e) {
+    return 'usr_guest';
+  }
+}
+
+// ═══ COMPRESSOR DE AVATAR CLIENT-SIDE (ANTI-OVERFLOW & ALTA PERFORMANCE) ═══
+function compressAvatarImage(file, maxSize = 360, quality = 0.88) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxSize) {
+            height = Math.round((height * maxSize) / width);
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = Math.round((width * maxSize) / height);
+            height = maxSize;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
   return (
@@ -1098,22 +1146,35 @@ function App() {
   const handleAvatarUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Avatar = reader.result;
-        setProfileAvatar(base64Avatar);
+      try {
+        const compressedAvatar = await compressAvatarImage(file, 360, 0.88);
+        setProfileAvatar(compressedAvatar);
         setIsCustomAvatar(true);
-        localStorage.setItem('1convite_custom_avatar', base64Avatar);
-        localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+        try {
+          localStorage.setItem('1convite_custom_avatar', compressedAvatar);
+          localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+        } catch (lsErr) {
+          console.warn('LocalStorage limit:', lsErr);
+        }
         setProfileSavedMsg('Foto de perfil atualizada com sucesso!');
         setTimeout(() => setProfileSavedMsg(''), 4000);
         
-        // Sincroniza com o servidor
+        // Sincroniza imediatamente com o banco de dados dos usuários (Turso)
+        const userUuid = getUserUuid();
         try {
           const res = await fetch(`${API_BASE}/usuario/perfil`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: profileName, email: profileEmail, avatar: base64Avatar })
+            headers: { 
+              'Content-Type': 'application/json',
+              'x-user-uuid': userUuid
+            },
+            body: JSON.stringify({ 
+              uuid: userUuid,
+              nome: profileName, 
+              email: profileEmail, 
+              avatar: compressedAvatar,
+              genero: userGender 
+            })
           });
           if (res.ok) {
             const data = await res.json();
@@ -1122,8 +1183,9 @@ function App() {
         } catch (err) {
           console.log('Salvo localmente no dispositivo');
         }
-      };
-      reader.readAsDataURL(file);
+      } catch (err) {
+        console.error('Erro ao processar e comprimir avatar:', err);
+      }
     }
   };
 
@@ -1147,17 +1209,34 @@ function App() {
     setProfileAvatar(av);
     setProfileSavedMsg('Foto redefinida para o avatar padrão.');
     setTimeout(() => setProfileSavedMsg(''), 3000);
+
+    const userUuid = getUserUuid();
+    fetch(`${API_BASE}/usuario/perfil`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-user-uuid': userUuid },
+      body: JSON.stringify({ uuid: userUuid, avatar: av, genero: userGender })
+    }).catch(() => {});
   };
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     localStorage.setItem('1convite_user_name', profileName);
     localStorage.setItem('1convite_user_email', profileEmail);
+    const userUuid = getUserUuid();
     try {
       const res = await fetch(`${API_BASE}/usuario/perfil`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome: profileName, email: profileEmail, avatar: profileAvatar })
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-uuid': userUuid
+        },
+        body: JSON.stringify({ 
+          uuid: userUuid,
+          nome: profileName, 
+          email: profileEmail, 
+          avatar: profileAvatar,
+          genero: userGender 
+        })
       });
       if (res.ok) {
         const data = await res.json();
@@ -1485,14 +1564,52 @@ function App() {
   // ── Dados iniciais ──────────────────────────────────────────
   const loadAppData = async () => {
     try {
-      const d = await fetchJson(`${API_BASE}/codigo-dia`);
+      const userUuid = getUserUuid();
+      const d = await fetchJson(`${API_BASE}/codigo-dia`, {
+        headers: {
+          'x-user-uuid': userUuid,
+          'x-user-email': profileEmail
+        }
+      });
       if (d) {
         setUser(d.user); 
         setCodigoDia(d.code);
         if (d.user) {
-          setProfileName(d.user.nome || 'Membro Convidado');
-          setProfileEmail(d.user.email || 'membro@1convite.com');
-          setProfileAvatar(d.user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80');
+          if (d.user.nome && d.user.nome !== 'Membro Convidado') {
+            setProfileName(d.user.nome);
+            localStorage.setItem('1convite_user_name', d.user.nome);
+          }
+          if (d.user.email && d.user.email !== 'membro@1convite.com') {
+            setProfileEmail(d.user.email);
+            localStorage.setItem('1convite_user_email', d.user.email);
+          }
+
+          // Blindagem de foto do perfil:
+          // 1. Se o usuário enviou uma foto própria (local), preserva sem exceção
+          const localCustom = localStorage.getItem('1convite_custom_avatar');
+          const hasUploadedCustom = localStorage.getItem('1convite_custom_avatar_uploaded') === 'true';
+
+          if (hasUploadedCustom && localCustom) {
+            setProfileAvatar(localCustom);
+            setIsCustomAvatar(true);
+            // Sincroniza em background se o banco estiver sem ela
+            if (!d.user.avatar || d.user.avatar.includes('unsplash')) {
+              fetch(`${API_BASE}/usuario/perfil`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-user-uuid': userUuid },
+                body: JSON.stringify({ uuid: userUuid, avatar: localCustom, nome: profileName, email: profileEmail })
+              }).catch(() => {});
+            }
+          } else if (d.user.avatar && !d.user.avatar.includes('unsplash')) {
+            setProfileAvatar(d.user.avatar);
+            setIsCustomAvatar(true);
+            localStorage.setItem('1convite_custom_avatar', d.user.avatar);
+            localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+          } else {
+            const gender = localStorage.getItem('1convite_user_gender') || userGender || 'homem';
+            setProfileAvatar(getDefaultAvatar(gender));
+            setIsCustomAvatar(false);
+          }
         }
         if (d.user && !d.user.checkpoint_completado) { setActiveTab('pedagio'); if (!pedagioIniciado) iniciarPedagio(); }
         else {
@@ -2369,10 +2486,10 @@ Em nome de Jesus, Amém.`;
               )}
             </div>
 
-            {/* Centro: Logomarca Oficial do App */}
+            {/* Centro: Logomarca Oficial do App (Adaptativa para Modo Claro e Escuro) */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%', minWidth: 0 }}>
               <img 
-                src={appLogomarca} 
+                src={darkMode ? appLogomarcaDark : appLogomarcaLight} 
                 alt="1Convite" 
                 style={{ 
                   height: '48px', 
