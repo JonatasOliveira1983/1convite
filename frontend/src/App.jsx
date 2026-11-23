@@ -17,6 +17,9 @@ import { TRILHAS_DATA, getTrilhaPorTema, getConteudoDiaTrilha } from './data/tri
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
 import appLogomarcaLight from './assets/logomarca_oficial.png';
 import appLogomarcaDark from './assets/logomarca_dark.png';
+import banner1 from './assets/banners/1.png';
+import banner2 from './assets/banners/2.png';
+import banner3 from './assets/banners/3.png';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -853,7 +856,7 @@ function App() {
   const [isPaying, setIsPaying] = useState(false);
 
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const carouselImages = ['/Imagens/1.png', '/Imagens/2.png', '/Imagens/3.png'];
+  const carouselImages = [banner1, banner2, banner3];
 
   const [showLanding, setShowLanding] = useState(() => {
     if (typeof window === 'undefined') return false;
