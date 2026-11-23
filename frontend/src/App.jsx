@@ -11,6 +11,7 @@ import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPr
 import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooksView';
 import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
 import cafeData from './data/cafe_com_deus_365.json';
+import { TRILHAS_DATA, getTrilhaPorTema, getConteudoDiaTrilha } from './data/trilhasCrescimentoData';
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
@@ -698,18 +699,30 @@ function App() {
     const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
     if (ptVoices.length === 0) return null;
 
-    const maleKeywords = ['daniel', 'antonio', 'felipe', 'antónio', 'ricardo', 'helio', 'thiago', 'antônio'];
-    const femaleKeywords = ['maria', 'francisca', 'luciana', 'joana', 'helena', 'zira', 'google', 'lecia', 'solene'];
+    // Prioriza vozes naturais/neurais de alta fidelidade
+    const naturalPtVoices = ptVoices.filter(v => 
+      v.name.includes('Natural') || 
+      v.name.includes('Neural') || 
+      v.name.includes('Online') || 
+      v.name.toLowerCase().includes('google português')
+    );
+
+    const targetList = naturalPtVoices.length > 0 ? naturalPtVoices : ptVoices;
+
+    const maleKeywords = ['daniel', 'antonio', 'felipe', 'antónio', 'ricardo', 'helio', 'thiago', 'antônio', 'francisco', 'jorge'];
+    const femaleKeywords = ['francisca', 'luciana', 'maria', 'joana', 'helena', 'zira', 'google', 'lecia', 'solene', 'thaisa', 'leticia'];
 
     if (gender === 'masculino') {
-      const maleVoice = ptVoices.find(v => maleKeywords.some(keyword => v.name.toLowerCase().includes(keyword)));
+      const maleVoice = targetList.find(v => maleKeywords.some(keyword => v.name.toLowerCase().includes(keyword))) ||
+                        ptVoices.find(v => maleKeywords.some(keyword => v.name.toLowerCase().includes(keyword)));
       if (maleVoice) return maleVoice;
     } else {
-      const femaleVoice = ptVoices.find(v => femaleKeywords.some(keyword => v.name.toLowerCase().includes(keyword)));
+      const femaleVoice = targetList.find(v => femaleKeywords.some(keyword => v.name.toLowerCase().includes(keyword))) ||
+                          ptVoices.find(v => femaleKeywords.some(keyword => v.name.toLowerCase().includes(keyword)));
       if (femaleVoice) return femaleVoice;
     }
 
-    return ptVoices.find(v => v.name.includes('Natural')) || ptVoices.find(v => v.name.includes('Google')) || ptVoices[0];
+    return targetList[0] || ptVoices[0];
   };
   const [showOnboarding, setShowOnboarding] = useState(() => !localStorage.getItem('onboarding-completed'));
 
@@ -1482,13 +1495,22 @@ function App() {
   };
 
   const loadTrilhaStatus = async () => {
+    // Carrega lista base de trilhas
+    setListaTrilhas(['Ansiedade', 'Família', 'Finanças', 'Propósito']);
+    
+    // Tenta primeiro carregar do localStorage
+    const savedTrilha = localStorage.getItem('1convite_trilha_ativa');
+    if (savedTrilha) {
+      try {
+        const parsed = JSON.parse(savedTrilha);
+        if (parsed && parsed.ativa) setTrilhaAtiva(parsed);
+      } catch (e) {}
+    }
+
     try {
-      const listData = await fetchJson(`${API_BASE}/trilhas/lista`);
-      if (listData) setListaTrilhas(listData);
-      
       const dataAtiva = await fetchJson(`${API_BASE}/trilhas/ativa`);
-      if (dataAtiva) setTrilhaAtiva(dataAtiva.ativa ? dataAtiva : null);
-    } catch (e) { console.error(e); }
+      if (dataAtiva && dataAtiva.ativa) setTrilhaAtiva(dataAtiva);
+    } catch (e) { /* modo offline */ }
   };
 
   const loadBibleBooks = async () => {
@@ -1769,10 +1791,16 @@ function App() {
       setIsNarrating(false);
       return;
     }
-    const texto = `${codigoDia.codigo_verbal}. Versículo chave: ${codigoDia.versiculo_chave}. Reflexão: ${codigoDia.texto_reflexao.replace(/\n/g, ' ')}`;
+    const title = todayMeditation?.title || codigoDia?.codigo_verbal || 'Reflexão do Dia';
+    const verse = todayMeditation?.verse || codigoDia?.versiculo_chave || '';
+    const body = todayMeditation?.body || codigoDia?.texto_reflexao || '';
+    const cleanBody = body.replace(/\n\n+/g, '. ').replace(/\n/g, ' ');
+    const texto = `${title}. ${verse}. Reflexão: ${cleanBody}`;
+
     const utterance = new SpeechSynthesisUtterance(texto);
     utterance.lang = 'pt-BR';
-    utterance.rate = voiceSpeed * 1.05;
+    utterance.rate = 0.90;
+    utterance.pitch = 0.98;
 
     if ('speechSynthesis' in window) {
       const voice = getBestVoiceForGender(voiceGender);
@@ -1901,6 +1929,30 @@ Importante: O JSON deve ser 100% válido.`;
     }
   };
 
+  const getTodayMeditationPrayerScript = () => {
+    const title = todayMeditation?.title || 'Comunhão Sagrada';
+    const verse = todayMeditation?.verse || '';
+    const prayer = todayMeditation?.prayer || 'Senhor Deus, abençoa este dia em Tua doce presença.';
+
+    return `Respire fundo... e silencie as preocupações do mundo por alguns instantes.
+(Pausa de 4 segundos)
+Pai celestial de infinita graça, nesta manhã eu Te agradeço pelo dom da vida e pelas Tuas misericórdias que se renovam hoje sobre nós.
+(Pausa de 3 segundos)
+A Tua Palavra nos lembra hoje a promessa de: ${title}.
+(Pausa de 2 segundos)
+Nas Escrituras Sagradas está escrito: ${verse}.
+(Pausa de 4 segundos)
+${prayer}
+(Pausa de 4 segundos)
+Que a Tua paz, que excede todo o entendimento humano, guarde o meu coração e a minha mente ao longo de todo este dia.
+(Pausa de 3 segundos)
+Consagro a Ti cada decisão, cada encontro e cada palavra que sair dos meus lábios.
+(Pausa de 3 segundos)
+Usa a minha vida como um canal de bênção e esperança para abençoar o meu próximo com o amor de Cristo.
+(Pausa de 3 segundos)
+Em nome de Jesus, Amém.`;
+  };
+
   const toggleMeditationTTS = () => {
     if (!('speechSynthesis' in window)) {
       alert('Narração de voz não disponível no navegador.');
@@ -1912,7 +1964,7 @@ Importante: O JSON deve ser 100% válido.`;
       return;
     }
 
-    const rawText = codigoDia.texto_meditacao || 'Respire fundo... e concentre-se.';
+    const rawText = getTodayMeditationPrayerScript();
     
     // Parser profissional: extrai pausas programadas e tons de voz
     const lines = rawText.split('\n');
@@ -1965,7 +2017,7 @@ Importante: O JSON deve ser 100% válido.`;
         totalSecs += seg.duration / 1000;
       } else {
         const wc = seg.text.split(' ').length;
-        totalSecs += Math.max(3.5, Math.round((wc * 0.65) / seg.rate));
+        totalSecs += Math.max(3.5, Math.round((wc * 0.72) / (seg.rate || 1)));
       }
     });
 
@@ -2011,8 +2063,8 @@ Importante: O JSON deve ser 100% válido.`;
       } else {
         const utterance = new SpeechSynthesisUtterance(seg.text);
         utterance.lang = 'pt-BR';
-        utterance.rate = seg.rate * voiceSpeed;
-        utterance.pitch = 0.95;
+        utterance.rate = (seg.rate || 0.88) * 0.95;
+        utterance.pitch = 0.98;
 
         if ('speechSynthesis' in window) {
           const voice = getBestVoiceForGender(voiceGender);
@@ -2024,7 +2076,7 @@ Importante: O JSON deve ser 100% válido.`;
         utterance.onend = () => {
           meditationTimeoutRef.current = setTimeout(() => {
             playSegment(index + 1);
-          }, 800);
+          }, 600);
         };
 
         utterance.onerror = () => {
@@ -2059,59 +2111,53 @@ Importante: O JSON deve ser 100% válido.`;
     }
   };
 
-  // ── Trilhas de Crescimento ──────────────────────────────────
-  const iniciarTrilha = async (tema) => {
-    try {
-      setTrilhaLoading(true);
-      const res = await fetch(`${API_BASE}/trilhas/iniciar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tema })
+  // ── Trilhas de Crescimento (Ansiedade, Família, Finanças, Propósito) ────
+  const iniciarTrilha = (tema) => {
+    setTrilhaLoading(true);
+    const conteudoDia1 = getConteudoDiaTrilha(tema, 1);
+    const trilhaObj = {
+      ativa: true,
+      tema: tema,
+      dia_progresso: 1,
+      conteudo: conteudoDia1
+    };
+    setTrilhaAtiva(trilhaObj);
+    localStorage.setItem('1convite_trilha_ativa', JSON.stringify(trilhaObj));
+    setTrilhaLoading(false);
+  };
+
+  const completarDiaTrilha = () => {
+    if (!trilhaAtiva) return;
+    const proxDia = trilhaAtiva.dia_progresso + 1;
+    if (proxDia > 30) {
+      alert('Glória a Deus! Você concluiu com vitória todos os 30 dias desta Trilha de Crescimento!');
+      setUserCoins(prev => {
+        const n = prev + 50;
+        localStorage.setItem('app-coins', n);
+        return n;
       });
-      if (res.ok) {
-        alert(`Trilha de ${tema} iniciada com sucesso!`);
-        await loadTrilhaStatus();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setTrilhaLoading(false);
+      cancelarTrilha(false);
+      return;
     }
+    const proxConteudo = getConteudoDiaTrilha(trilhaAtiva.tema, proxDia);
+    const novaTrilha = {
+      ...trilhaAtiva,
+      dia_progresso: proxDia,
+      conteudo: proxConteudo
+    };
+    setTrilhaAtiva(novaTrilha);
+    localStorage.setItem('1convite_trilha_ativa', JSON.stringify(novaTrilha));
+    setUserCoins(prev => {
+      const n = prev + 15;
+      localStorage.setItem('app-coins', n);
+      return n;
+    });
   };
 
-  const completarDiaTrilha = async () => {
-    try {
-      setTrilhaLoading(true);
-      const res = await fetch(`${API_BASE}/trilhas/completar-dia`, { method: 'POST' });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.concluida) {
-          alert('Parabéns! Você concluiu os 30 dias desta Trilha de Crescimento! ');
-        } else {
-          alert('Devocional de hoje concluído! Avançando na trilha.');
-        }
-        await loadTrilhaStatus();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setTrilhaLoading(false);
-    }
-  };
-
-  const cancelarTrilha = async () => {
-    if (!confirm('Deseja realmente cancelar a trilha ativa? Seu progresso será perdido.')) return;
-    try {
-      setTrilhaLoading(true);
-      const res = await fetch(`${API_BASE}/trilhas/cancelar`, { method: 'POST' });
-      if (res.ok) {
-        await loadTrilhaStatus();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setTrilhaLoading(false);
-    }
+  const cancelarTrilha = (confirmar = true) => {
+    if (confirmar && !confirm('Deseja realmente trocar ou reiniciar a trilha ativa?')) return;
+    setTrilhaAtiva(null);
+    localStorage.removeItem('1convite_trilha_ativa');
   };
 
   // ── Dicionário Teológico ─────────────────────────────────────
@@ -3131,78 +3177,258 @@ Importante: O JSON deve ser 100% válido.`;
             )}
 
             {/* 1. REFLEXÃO DO DIA */}
-            {activeSabadoBlock === 'reflexao' && codigoDia && (
+            {activeSabadoBlock === 'reflexao' && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="page-hero hero-sabado" style={{ borderRadius: '24px' }}>
-                      <div className="hero-orb" style={{ width: 160, height: 160, top: -40, right: -40 }} />
-                      <div className="hero-content">
-                        <div className={`pedagio-badge ${codigoDia.pilar_origem === 'PROPÓSITO_M2414' ? 'badge-proposito' : 'badge-recompensa'}`} style={{ background: 'rgba(255,255,255,0.20)', color: '#fff', border: '1px solid rgba(255,255,255,0.35)', marginBottom: '12px' }}>
-                          {codigoDia.pilar_origem === 'PROPÓSITO_M2414' ? 'Mateus 24:14' : 'Apocalipse 3:21'} — Código de Hoje
-                        </div>
-                        <div className="hero-title" style={{ fontSize: '1.25rem', lineHeight: '1.4' }}>"{codigoDia.codigo_verbal}"</div>
-                        <div className="hero-sub">{codigoDia.versiculo_chave}</div>
-                      </div>
-                    </div>
+                {/* Barra de Navegação Interna */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <button
+                    onClick={() => {
+                      if (window.speechSynthesis) window.speechSynthesis.cancel();
+                      setIsNarrating(false);
+                      setActiveSabadoBlock('menu');
+                    }}
+                    style={{
+                      background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                      border: darkMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
+                      borderRadius: '12px',
+                      padding: '8px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: '700',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Voltar ao Menu</span>
+                  </button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: '700', color: 'var(--orange-dark)' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Dia {todayMeditation?.day || todayDayNumber} de 365</span>
+                  </div>
+                </div>
 
-                    <div className="glass-panel orange-card" style={{ padding: '24px 20px', borderRadius: '20px', position: 'relative' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <h3 style={{ margin: 0, color: '#C2550A', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="9" y1="18" x2="15" y2="18"/>
-                            <line x1="10" y1="22" x2="14" y2="22"/>
-                            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
-                          </svg>
-                          Reflexão & Inspiração
-                        </h3>
-                        <button
-                          onClick={speakReflection}
-                          style={{
-                            padding: '8px 16px',
-                            borderRadius: '12px',
-                            border: '1.5px solid var(--orange)',
-                            background: isNarrating ? 'var(--orange)' : 'var(--orange-light)',
-                            color: isNarrating ? '#ffffff' : 'var(--orange-dark)',
-                            fontSize: '0.82rem',
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            transition: 'all 0.2s',
-                            boxShadow: 'var(--shadow-sm)'
-                          }}
-                        >
-                          {isNarrating ? (
-                            <>
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
-                              <span>Parar</span>
-                            </>
-                          ) : (
-                            <>
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                              <span>Ouvir</span>
-                            </>
-                          )}
-                        </button>
+                {/* Hero Card da Reflexão do Dia */}
+                <div style={{
+                  background: darkMode 
+                    ? 'linear-gradient(135deg, #1c1408 0%, #2a1a06 50%, #151007 100%)' 
+                    : 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 50%, #FEF3C7 100%)',
+                  borderRadius: '24px',
+                  padding: '24px 20px',
+                  border: darkMode ? '1px solid rgba(249, 115, 22, 0.3)' : '1.5px solid rgba(249, 115, 22, 0.25)',
+                  boxShadow: darkMode ? '0 10px 30px rgba(0,0,0,0.4)' : '0 8px 24px rgba(249, 115, 22, 0.12)',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}>
+                  {/* Selo Devocional Diário */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      background: darkMode ? 'rgba(249, 115, 22, 0.2)' : 'rgba(249, 115, 22, 0.15)',
+                      color: 'var(--orange-dark)',
+                      padding: '5px 12px',
+                      borderRadius: '20px',
+                      fontSize: '0.75rem',
+                      fontWeight: '800',
+                      letterSpacing: '0.5px',
+                      textTransform: 'uppercase',
+                      border: '1px solid rgba(249, 115, 22, 0.3)'
+                    }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                      Café com Deus • {getTodayDateFormatted()}
+                    </span>
+
+                    <button
+                      onClick={speakReflection}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: '12px',
+                        border: '1.5px solid var(--orange)',
+                        background: isNarrating ? 'var(--orange)' : (darkMode ? 'rgba(249,115,22,0.15)' : '#ffffff'),
+                        color: isNarrating ? '#ffffff' : 'var(--orange-dark)',
+                        fontSize: '0.8rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.2s',
+                        boxShadow: '0 2px 8px rgba(249,115,22,0.15)'
+                      }}
+                    >
+                      {isNarrating ? (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                          <span>Pausar Áudio</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                          <span>Ouvir Reflexão</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Título Principal */}
+                  <h2 style={{
+                    fontSize: '1.35rem',
+                    fontWeight: '900',
+                    lineHeight: '1.3',
+                    margin: '0 0 14px 0',
+                    color: darkMode ? '#F8FAFC' : '#1E293B'
+                  }}>
+                    {todayMeditation?.title || codigoDia?.codigo_verbal}
+                  </h2>
+
+                  {/* Versículo-Chave com Aspas */}
+                  <div style={{
+                    background: darkMode ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.7)',
+                    borderLeft: '4px solid var(--orange)',
+                    padding: '12px 14px',
+                    borderRadius: '0 12px 12px 0',
+                    marginBottom: '6px'
+                  }}>
+                    <p style={{
+                      fontSize: '0.92rem',
+                      fontStyle: 'italic',
+                      lineHeight: '1.5',
+                      margin: 0,
+                      color: darkMode ? '#E2E8F0' : '#475569'
+                    }}>
+                      "{todayMeditation?.verse || codigoDia?.versiculo_chave}"
+                    </p>
+                  </div>
+                </div>
+
+                {/* Conteúdo Completo da Reflexão Devocional */}
+                <div style={{
+                  background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
+                  borderRadius: '24px',
+                  padding: '24px 20px',
+                  border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+                  boxShadow: 'var(--shadow-sm)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', color: 'var(--orange-dark)' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800' }}>Alimento para o Coração</h3>
+                  </div>
+
+                  <p style={{
+                    fontSize: '1rem',
+                    lineHeight: '1.8',
+                    color: 'var(--text-primary)',
+                    margin: '0 0 20px 0',
+                    whiteSpace: 'pre-wrap',
+                    textAlign: 'left'
+                  }}>
+                    {todayMeditation?.body || codigoDia?.texto_reflexao}
+                  </p>
+
+                  {/* Caixa de Oração / Aplicação Prática */}
+                  {(todayMeditation?.prayer || codigoDia?.texto_meditacao) && (
+                    <div style={{
+                      background: darkMode ? 'rgba(249, 115, 22, 0.08)' : '#FFFBEB',
+                      border: darkMode ? '1px solid rgba(249, 115, 22, 0.2)' : '1px solid #FDE68A',
+                      padding: '16px',
+                      borderRadius: '16px',
+                      marginTop: '16px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--orange-dark)' }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <strong style={{ fontSize: '0.88rem' }}>Oração de Entrega do Dia:</strong>
                       </div>
-                      <p style={{ lineHeight: '1.8', fontSize: '1rem', color: 'var(--text-primary)', margin: 0, whiteSpace: 'pre-wrap', textAlign: 'left' }}>
-                        {codigoDia.texto_reflexao}
+                      <p style={{
+                        fontSize: '0.92rem',
+                        fontStyle: 'italic',
+                        lineHeight: '1.6',
+                        color: darkMode ? '#F1F5F9' : '#78350F',
+                        margin: 0
+                      }}>
+                        "{todayMeditation?.prayer || codigoDia?.texto_meditacao}"
                       </p>
                     </div>
-                  </div>
-                )}
+                  )}
 
-            {/* 2. MEDITAÇÃO GUIADA */}
-            {activeSabadoBlock === 'meditacao' && codigoDia && (
+                  {/* Botão de Conexão com a Oração Guiada */}
+                  <div style={{ marginTop: '22px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <button
+                      onClick={() => {
+                        if (window.speechSynthesis) window.speechSynthesis.cancel();
+                        setIsNarrating(false);
+                        setActiveSabadoBlock('meditacao');
+                      }}
+                      className="btn-primary"
+                      style={{
+                        padding: '14px 20px',
+                        borderRadius: '16px',
+                        fontSize: '0.95rem',
+                        fontWeight: '800',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        boxShadow: '0 4px 16px rgba(249, 115, 22, 0.35)'
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                      <span>Fazer a Oração Guiada de Hoje</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 2. ORAÇÃO GUIADA */}
+            {activeSabadoBlock === 'meditacao' && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <audio ref={ambientAudioRef} />
-                
+
+                {/* Barra de Navegação Interna */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <button
+                    onClick={() => {
+                      if (window.speechSynthesis) window.speechSynthesis.cancel();
+                      setMeditationPlaying(false);
+                      if (ambientAudioRef.current) ambientAudioRef.current.pause();
+                      setActiveSabadoBlock('menu');
+                    }}
+                    style={{
+                      background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                      border: darkMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
+                      borderRadius: '12px',
+                      padding: '8px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: '700',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Voltar ao Menu</span>
+                  </button>
+                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#8B5CF6' }}>
+                    Alinhamento & Blindagem Espiritual
+                  </span>
+                </div>
+
+                {/* Card Principal da Oração Guiada (Adaptativo Claro / Escuro) */}
                 <div style={{
-                  background: 'linear-gradient(135deg, #0f0a1c 0%, #05030a 100%)',
-                  padding: '24px',
+                  background: darkMode
+                    ? 'linear-gradient(145deg, #100c22 0%, #191238 60%, #0d0a1b 100%)'
+                    : 'linear-gradient(145deg, #FFFFFF 0%, #F5F3FF 50%, #EDE9FE 100%)',
+                  padding: '24px 20px',
                   borderRadius: '24px',
-                  border: '1px solid rgba(139, 92, 246, 0.15)',
-                  boxShadow: 'var(--shadow-lg)',
+                  border: darkMode ? '1px solid rgba(139, 92, 246, 0.25)' : '1.5px solid rgba(139, 92, 246, 0.25)',
+                  boxShadow: darkMode ? '0 12px 35px rgba(0,0,0,0.5)' : '0 10px 30px rgba(139, 92, 246, 0.12)',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
@@ -3217,88 +3443,110 @@ Importante: O JSON deve ser 100% válido.`;
                     left: '-50%',
                     width: '200%',
                     height: '200%',
-                    background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 60%)',
+                    background: darkMode
+                      ? 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)'
+                      : 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 65%)',
                     animation: meditationPlaying ? 'pulse 8s infinite ease-in-out' : 'none',
                     pointerEvents: 'none',
                     zIndex: 0
                   }} />
 
-                  {/* Ilustração Personalizada Premium do Calm/Headspace */}
+                  {/* Ilustração / Vídeo Meditativo */}
                   <div style={{
                     width: '100%',
                     maxWidth: '220px',
                     aspectRatio: '1',
                     borderRadius: '20px',
                     overflow: 'hidden',
-                    marginBottom: '20px',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    marginBottom: '18px',
+                    boxShadow: darkMode ? '0 8px 30px rgba(0,0,0,0.6)' : '0 8px 24px rgba(139, 92, 246, 0.2)',
+                    border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1.5px solid rgba(139, 92, 246, 0.25)',
                     position: 'relative',
                     zIndex: 1
                   }}>
-                    <video 
+                    <video
                       ref={meditationVideoRef}
-                      src="/Imagens/oraçãoguiada.mp4" 
-                      loop 
-                      muted 
+                      src="/Imagens/oraçãoguiada.mp4"
+                      loop
+                      muted
                       playsInline
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        filter: meditationPlaying ? 'none' : 'grayscale(30%) contrast(90%)',
+                        filter: meditationPlaying ? 'none' : 'grayscale(25%) contrast(95%)',
                         transition: 'filter 0.5s ease'
                       }}
                     />
                   </div>
 
-                  <h3 style={{ margin: '0 0 4px 0', fontSize: '1.25rem', fontWeight: '800', color: '#f8fafc', zIndex: 1 }}>
-                    Oração do Dia {codigoDia.dia_id}
+                  <h3 style={{
+                    margin: '0 0 6px 0',
+                    fontSize: '1.25rem',
+                    fontWeight: '900',
+                    color: darkMode ? '#F8FAFC' : '#1E1B4B',
+                    zIndex: 1
+                  }}>
+                    {todayMeditation?.title || `Oração do Dia ${todayDayNumber}`}
                   </h3>
-                  <span style={{ fontSize: '0.8rem', color: '#a78bfa', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px', zIndex: 1 }}>
-                    {codigoDia.pilar_origem === 'PROPÓSITO_M2414' ? 'Pilar Mateus 24:14' : 'Pilar Apocalipse 3:21'}
+
+                  <span style={{
+                    fontSize: '0.8rem',
+                    color: '#8B5CF6',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.8px',
+                    marginBottom: '18px',
+                    zIndex: 1
+                  }}>
+                    {todayMeditation?.verse || 'Dia ' + (todayMeditation?.day || todayDayNumber) + ' de 365'}
                   </span>
 
                   {/* Controle de Progresso */}
                   <div style={{ width: '100%', marginBottom: '20px', zIndex: 1 }}>
-                    <div 
-                      style={{ 
-                        height: '6px', 
-                        width: '100%', 
-                        background: 'rgba(255, 255, 255, 0.1)', 
+                    <div style={{
+                      height: '6px',
+                      width: '100%',
+                      background: darkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(139, 92, 246, 0.15)',
+                      borderRadius: '3px',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        width: `${(meditationCurrentTime / (meditationDuration || 1)) * 100}%`,
+                        background: 'linear-gradient(90deg, #A855F7 0%, #7C3AED 100%)',
                         borderRadius: '3px',
-                        position: 'relative'
-                      }}
-                    >
-                      <div 
-                        style={{ 
-                          height: '100%', 
-                          width: `${(meditationCurrentTime / (meditationDuration || 1)) * 100}%`, 
-                          background: 'linear-gradient(90deg, #c084fc 0%, #8b5cf6 100%)', 
-                          borderRadius: '3px',
-                          transition: 'width 0.25s linear'
-                        }} 
-                      />
+                        transition: 'width 0.25s linear'
+                      }} />
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#9ca3af', marginTop: '6px' }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      fontSize: '0.78rem',
+                      color: darkMode ? '#94A3B8' : '#64748B',
+                      marginTop: '6px',
+                      fontWeight: '600'
+                    }}>
                       <span>{formatTime(meditationCurrentTime)}</span>
                       <span>{formatTime(meditationDuration)}</span>
                     </div>
                   </div>
 
-                  {/* Painel de Controles Flexíveis */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px', zIndex: 1 }}>
-                    {/* Botão de Transcrição */}
-                    <button 
+                  {/* Painel de Controles */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', zIndex: 1 }}>
+                    {/* Botão de Transcrição / Roteiro */}
+                    <button
                       onClick={() => setShowMeditationLyrics(!showMeditationLyrics)}
                       style={{
-                        background: showMeditationLyrics ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        padding: '8px 14px',
+                        background: showMeditationLyrics
+                          ? (darkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)')
+                          : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                        border: '1.5px solid rgba(139, 92, 246, 0.3)',
+                        padding: '10px 16px',
                         borderRadius: '20px',
-                        color: showMeditationLyrics ? '#c084fc' : '#e2e8f0',
-                        fontSize: '0.8rem',
-                        fontWeight: 'bold',
+                        color: darkMode ? '#E2E8F0' : '#4C1D95',
+                        fontSize: '0.82rem',
+                        fontWeight: '800',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
                         display: 'inline-flex',
@@ -3306,103 +3554,102 @@ Importante: O JSON deve ser 100% válido.`;
                         gap: '6px'
                       }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                       <span>Roteiro</span>
                     </button>
 
                     {/* Botão Play/Pause Principal */}
-                    <button 
-                      onClick={toggleMeditationTTS} 
+                    <button
+                      onClick={toggleMeditationTTS}
                       style={{
-                        width: '54px',
-                        height: '54px',
+                        width: '60px',
+                        height: '60px',
                         borderRadius: '50%',
-                        background: '#8b5cf6',
+                        background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)',
                         border: 'none',
-                        color: '#ffffff',
+                        color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
-                        boxShadow: '0 4px 20px rgba(139, 92, 246, 0.4)',
+                        boxShadow: '0 6px 24px rgba(139, 92, 246, 0.45)',
                         transition: 'transform 0.2s',
-                        transform: 'scale(1)',
+                        transform: 'scale(1)'
                       }}
                       onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
                       onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
                       {meditationPlaying ? (
-                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                           <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
                         </svg>
                       ) : (
-                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '3px' }}>
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '3px' }}>
                           <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
                         </svg>
                       )}
                     </button>
 
                     {/* Velocidade da Narração */}
-                    <button 
+                    <button
                       onClick={() => {
                         const rates = [0.75, 0.82, 0.95, 1.05];
                         const nextIndex = (rates.indexOf(narrationRate) + 1) % rates.length;
                         setNarrationRate(rates[nextIndex]);
                         if (meditationPlaying) {
-                          // Reinicia com a nova velocidade
                           window.speechSynthesis.cancel();
                           setMeditationPlaying(false);
                           setTimeout(() => toggleMeditationTTS(), 100);
                         }
                       }}
                       style={{
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        padding: '8px 12px',
+                        background: darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                        border: '1.5px solid rgba(139, 92, 246, 0.3)',
+                        padding: '10px 14px',
                         borderRadius: '20px',
-                        color: '#cbd5e1',
-                        fontSize: '0.8rem',
-                        fontWeight: 'bold',
+                        color: darkMode ? '#CBD5E1' : '#4C1D95',
+                        fontSize: '0.82rem',
+                        fontWeight: '800',
                         cursor: 'pointer'
                       }}
                     >
-                      {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Relax' : narrationRate === 0.95 ? 'Médio' : 'Rápido'}
+                      {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Sereno' : narrationRate === 0.95 ? 'Normal' : 'Rápido'}
                     </button>
                   </div>
 
-                  {/* Som Ambiente de Fundo (Padrão Calm) */}
+                  {/* Som Ambiente de Fundo (Paisagem Sonora) */}
                   <div style={{
                     width: '100%',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.05)',
+                    background: darkMode ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.6)',
+                    border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(139, 92, 246, 0.2)',
                     padding: '16px',
-                    borderRadius: '16px',
+                    borderRadius: '18px',
                     boxSizing: 'border-box',
                     textAlign: 'left',
                     zIndex: 1,
-                    marginBottom: '16px'
+                    marginBottom: '14px'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '0.82rem', color: '#9ca3af', fontWeight: 'bold' }}>Paisagem Sonora</span>
-                      <span style={{ fontSize: '0.78rem', color: '#8b5cf6', fontWeight: 'bold' }}>
-                        {activeAmbient === 'none' ? 'Silêncio' : activeAmbient === 'chuva' ? 'Chuva' : activeAmbient === 'mar' ? 'Ondas' : 'Piano'}
+                      <span style={{ fontSize: '0.82rem', color: darkMode ? '#94A3B8' : '#64748B', fontWeight: '800' }}>Paisagem Sonora</span>
+                      <span style={{ fontSize: '0.78rem', color: '#8B5CF6', fontWeight: '800' }}>
+                        {activeAmbient === 'none' ? 'Silêncio' : activeAmbient === 'chuva' ? 'Chuva de Paz' : activeAmbient === 'mar' ? 'Ondas do Mar' : 'Piano Devocional'}
                       </span>
                     </div>
 
-                    {/* Chips do Seletor */}
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
                       {ambientTracks.map(track => (
                         <button
                           key={track.id}
                           onClick={() => setActiveAmbient(track.id)}
                           style={{
-                            background: activeAmbient === track.id ? '#8b5cf6' : 'rgba(255,255,255,0.05)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: activeAmbient === track.id ? '#8B5CF6' : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                            border: '1px solid',
+                            borderColor: activeAmbient === track.id ? '#8B5CF6' : (darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'),
                             borderRadius: '12px',
                             padding: '6px 12px',
-                            color: activeAmbient === track.id ? '#ffffff' : '#9ca3af',
+                            color: activeAmbient === track.id ? '#FFFFFF' : (darkMode ? '#CBD5E1' : '#475569'),
                             fontSize: '0.75rem',
-                            fontWeight: '600',
+                            fontWeight: '700',
                             cursor: 'pointer',
                             transition: 'all 0.2s'
                           }}
@@ -3412,244 +3659,371 @@ Importante: O JSON deve ser 100% válido.`;
                       ))}
                     </div>
 
-                    {/* Volume de Fundo */}
                     {activeAmbient !== 'none' && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                        <span style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Vol. Fundo:</span>
-                        <input 
-                          type="range" 
-                          min="0.05" 
-                          max="0.4" 
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '0.72rem', color: darkMode ? '#94A3B8' : '#64748B', fontWeight: '600' }}>Volume do Fundo:</span>
+                        <input
+                          type="range"
+                          min="0.05"
+                          max="0.4"
                           step="0.05"
                           value={ambientVolume}
                           onChange={(e) => setAmbientVolume(parseFloat(e.target.value))}
-                          style={{ flex: 1, accentColor: '#8b5cf6', cursor: 'pointer' }}
+                          style={{ flex: 1, accentColor: '#8B5CF6', cursor: 'pointer' }}
                         />
                       </div>
                     )}
-
-
                   </div>
 
-                  {/* Mensagem de Conclusão da Oração de Ação de Graças */}
+                  {/* Mensagem de Conclusão da Oração */}
                   {meditationCompleted && (
-                    <div 
-                      className="animate-fade-in" 
-                      style={{
-                        marginTop: '4px',
-                        marginBottom: '16px',
-                        background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(0, 240, 143, 0.15))',
-                        border: '1px solid rgba(0, 240, 143, 0.3)',
-                        padding: '18px',
-                        borderRadius: '16px',
-                        color: '#f8fafc',
-                        zIndex: 1,
-                        boxShadow: '0 4px 15px rgba(0, 240, 143, 0.1)',
-                        textAlign: 'center',
-                        width: '100%',
-                        boxSizing: 'border-box'
-                      }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px', color: '#00f08f' }}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12"/>
-                        </svg>
+                    <div className="animate-fade-in" style={{
+                      marginTop: '4px',
+                      marginBottom: '16px',
+                      background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(30, 215, 96, 0.15))',
+                      border: '1.5px solid rgba(30, 215, 96, 0.4)',
+                      padding: '18px',
+                      borderRadius: '18px',
+                      zIndex: 1,
+                      textAlign: 'center',
+                      width: '100%',
+                      boxSizing: 'border-box'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px', color: '#1ED760' }}>
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                       </div>
-                      <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: '700', lineHeight: '1.5', color: '#00f08f' }}>
-                        Sua oração de ação de graças foi feita.
+                      <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800', color: '#1ED760' }}>
+                        Sua oração de blindagem e gratidão foi elevada.
                       </p>
-                      <p style={{ margin: '6px 0 0 0', fontSize: '0.85rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-                        Agora, qual é o seu pão a ser compartilhado hoje? Quem você vai abençoar com o seu "1Convite" agora?
+                      <p style={{ margin: '8px 0 0 0', fontSize: '0.85rem', color: darkMode ? '#CBD5E1' : '#334155', lineHeight: '1.5' }}>
+                        Agora, qual é o seu pão espiritual a ser compartilhado hoje? Quem você vai alcançar com o seu 1Convite agora?
                       </p>
                     </div>
                   )}
 
-                  {/* Transcrição da Meditação */}
+                  {/* Transcrição da Oração Guiada */}
                   {showMeditationLyrics && (
                     <div className="animate-fade-in" style={{
-                      padding: '16px',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      border: '1px solid rgba(255, 255, 255, 0.05)',
-                      borderRadius: '16px',
+                      padding: '18px',
+                      background: darkMode ? 'rgba(0, 0, 0, 0.35)' : '#FFFFFF',
+                      border: darkMode ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(139, 92, 246, 0.2)',
+                      borderRadius: '18px',
                       width: '100%',
                       textAlign: 'left',
                       boxSizing: 'border-box',
                       zIndex: 1
                     }}>
+                      <h4 style={{ margin: '0 0 10px 0', fontSize: '0.85rem', fontWeight: '800', color: '#8B5CF6', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        Roteiro da Oração do Dia
+                      </h4>
                       <p style={{
-                        fontSize: '0.9rem',
-                        color: '#cbd5e1',
-                        lineHeight: '1.75',
+                        fontSize: '0.92rem',
+                        color: darkMode ? '#E2E8F0' : '#334155',
+                        lineHeight: '1.8',
                         margin: 0,
                         whiteSpace: 'pre-wrap',
-                        maxHeight: '150px',
+                        maxHeight: '200px',
                         overflowY: 'auto'
                       }}>
-                        {codigoDia.texto_meditacao}
+                        {getTodayMeditationPrayerScript()}
                       </p>
                     </div>
                   )}
-
-                  {/* Fallback de IA no dia > 7 */}
-                  {codigoDia.dia_id > 7 && !codigoDia.texto_reflexao.includes('HISTÓRIA CRISTÃ REAL') && (
-                    <div style={{
-                      marginTop: '16px',
-                      background: 'rgba(239, 68, 68, 0.1)',
-                      border: '1px dashed rgba(239, 68, 68, 0.25)',
-                      padding: '12px',
-                      borderRadius: '14px',
-                      fontSize: '0.8rem',
-                      color: '#fca5a5',
-                      lineHeight: '1.4',
-                      zIndex: 1
-                    }}>
-                      Aviso: Esta oração está usando um roteiro genérico. Vá na aba "Reflexão do Dia" e clique em "Enriquecer com IA" para gerar um roteiro de oração completo e personalizado com história real.
-                    </div>
-                  )}
-
                 </div>
               </div>
             )}
+
             {/* 3. O BOTÃO DO DESCANSO */}
             {activeSabadoBlock === 'descanso' && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="glass-panel" style={{ padding: '28px 24px', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, var(--white) 0%, var(--slate-bg) 100%)' }}>
-                  
-                  {!isBreathing ? (
-                    <div className="animate-fade-in" style={{ marginBottom: '24px' }}>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: '0 0 20px 0' }}>
-                        Desacelere os batimentos cardíacos, relaxe a mente e traga seu foco de volta para o Aqui e Agora.
-                      </p>
-                      
-                      {/* Seleção de Técnica */}
-                      <div style={{ textAlign: 'left', marginBottom: '20px' }}>
-                        <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '8px' }}>
-                          Técnica de Respiração
-                        </label>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-                          {[
-                            { id: 'simple', label: 'Micro-Pausa', desc: '4-4-4' },
-                            { id: 'box', label: 'Box Breath', desc: '4-4-4-4' },
-                            { id: 'relax', label: 'Relaxar', desc: '4-7-8' }
-                          ].map(t => (
-                            <button
-                              key={t.id}
-                              onClick={() => setBreathTechnique(t.id)}
-                              style={{
-                                padding: '10px 6px',
-                                borderRadius: '12px',
-                                border: '1.5px solid',
-                                borderColor: breathTechnique === t.id ? 'var(--orange)' : 'var(--slate-border)',
-                                background: breathTechnique === t.id ? 'var(--orange-light)' : 'var(--white)',
-                                color: breathTechnique === t.id ? 'var(--orange-dark)' : 'var(--text-primary)',
-                                cursor: 'pointer',
-                                fontSize: '0.8rem',
-                                fontWeight: '700',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                transition: 'all 0.2s'
-                              }}
-                            >
-                              <span>{t.label}</span>
-                              <span style={{ fontSize: '0.65rem', fontWeight: '600', opacity: 0.7, marginTop: '2px' }}>{t.desc}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                {/* Barra de Navegação Interna */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <button
+                    onClick={() => {
+                      pararRespiracao();
+                      setActiveSabadoBlock('menu');
+                    }}
+                    style={{
+                      background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                      border: darkMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
+                      borderRadius: '12px',
+                      padding: '8px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: '700',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Voltar ao Menu</span>
+                  </button>
+                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--orange-dark)' }}>
+                    Pausa Restauradora & Aquietamento
+                  </span>
+                </div>
 
-                      {/* Seleção de Ciclos */}
-                      <div style={{ textAlign: 'left', marginBottom: '24px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                            Duração do Exercício
-                          </label>
-                          <span style={{ fontSize: '0.82rem', color: 'var(--orange-dark)', fontWeight: '700' }}>
-                            {breathRounds} Ciclos
-                          </span>
-                        </div>
-                        <input
-                          type="range"
-                          min="3"
-                          max="15"
-                          step="1"
-                          value={breathRounds}
-                          onChange={(e) => setBreathRounds(parseInt(e.target.value, 10))}
-                          style={{ width: '100%', accentColor: 'var(--orange)', cursor: 'pointer' }}
-                        />
+                {/* Card Educativo e Explicativo do Descanso */}
+                {!isBreathing && (
+                  <div style={{
+                    background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
+                    borderRadius: '24px',
+                    padding: '22px 20px',
+                    border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <div style={{
+                        width: '36px', height: '36px', borderRadius: '10px',
+                        background: 'rgba(249, 115, 22, 0.15)',
+                        color: 'var(--orange-dark)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                      }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0"/></svg>
+                      </div>
+                      <div>
+                        <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+                          Como Funciona o Aquietamento?
+                        </h3>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                          "Aquietai-vos e sabei que Eu sou Deus." — Salmo 46:10
+                        </span>
                       </div>
                     </div>
-                  ) : (
-                    <div className="animate-fade-in" style={{ marginBottom: '20px' }}>
-                      <span className="section-chip" style={{ background: 'var(--orange-light)', color: 'var(--orange-dark)', fontWeight: 'bold', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem' }}>
+
+                    <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: '0 0 18px 0' }}>
+                      Quando você desacelera a respiração de forma rítmica, seu cérebro envia um sinal ao nervo vago, reduzindo o cortisol em minutos, diminuindo a frequência cardíaca e abrindo espaço mental para ouvir a voz de Deus sem a interferência da ansiedade.
+                    </p>
+
+                    {/* Explicação e Seleção das 3 Técnicas */}
+                    <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '10px' }}>
+                      Escolha a Técnica de Respiração:
+                    </label>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '18px' }}>
+                      {[
+                        {
+                          id: 'simple',
+                          label: 'Micro-Pausa Rápida (4-4-4)',
+                          tempo: 'Inspira 4s • Segura 4s • Expira 4s',
+                          beneficio: 'Ideal para o meio do dia. Desativa o estresse instantâneo e renova o foco mental.'
+                        },
+                        {
+                          id: 'box',
+                          label: 'Box Breathing / Quadrada (4-4-4-4)',
+                          tempo: 'Inspira 4s • Segura 4s • Expira 4s • Vazio 4s',
+                          beneficio: 'Técnica de alta performance. Neutraliza a ansiedade e traz equilíbrio imediato ao sistema nervoso.'
+                        },
+                        {
+                          id: 'relax',
+                          label: 'Relaxamento Profundo (4-7-8)',
+                          tempo: 'Inspira 4s • Segura 7s • Expira 8s',
+                          beneficio: 'Técnica calmante milenar. Ideal para momentos de angústia, oração noturna e preparo para o sono.'
+                        }
+                      ].map(t => {
+                        const isSelected = breathTechnique === t.id;
+                        return (
+                          <div
+                            key={t.id}
+                            onClick={() => setBreathTechnique(t.id)}
+                            style={{
+                              padding: '14px 16px',
+                              borderRadius: '16px',
+                              border: '1.5px solid',
+                              borderColor: isSelected ? 'var(--orange)' : (darkMode ? 'rgba(255,255,255,0.08)' : '#E2E8F0'),
+                              background: isSelected
+                                ? (darkMode ? 'rgba(249, 115, 22, 0.15)' : '#FFF7ED')
+                                : (darkMode ? 'rgba(255,255,255,0.02)' : '#F8FAFC'),
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              gap: '12px'
+                            }}
+                          >
+                            <div style={{
+                              width: '18px', height: '18px', borderRadius: '50%',
+                              border: isSelected ? '5px solid var(--orange)' : '2px solid var(--text-secondary)',
+                              marginTop: '2px',
+                              boxSizing: 'border-box'
+                            }} />
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                                <strong style={{ fontSize: '0.9rem', color: isSelected ? 'var(--orange-dark)' : 'var(--text-primary)' }}>
+                                  {t.label}
+                                </strong>
+                              </div>
+                              <div style={{ fontSize: '0.76rem', color: isSelected ? 'var(--orange)' : 'var(--text-secondary)', fontWeight: '700', marginTop: '2px' }}>
+                                {t.tempo}
+                              </div>
+                              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.4' }}>
+                                {t.beneficio}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Duração / Ciclos */}
+                    <div style={{ marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '700' }}>
+                          Duração do Exercício:
+                        </span>
+                        <span style={{ fontSize: '0.88rem', color: 'var(--orange-dark)', fontWeight: '800' }}>
+                          {breathRounds} Ciclos (~{Math.round(breathRounds * (breathTechnique === 'relax' ? 19 : breathTechnique === 'box' ? 16 : 12))}s)
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="3"
+                        max="15"
+                        step="1"
+                        value={breathRounds}
+                        onChange={(e) => setBreathRounds(parseInt(e.target.value, 10))}
+                        style={{ width: '100%', accentColor: 'var(--orange)', cursor: 'pointer' }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Painel Central do Círculo de Respiração (Imersivo) */}
+                <div style={{
+                  background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
+                  borderRadius: '24px',
+                  padding: '30px 20px',
+                  border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+                  boxShadow: 'var(--shadow-sm)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center'
+                }}>
+                  {isBreathing && (
+                    <div className="animate-fade-in" style={{ marginBottom: '16px' }}>
+                      <span style={{
+                        background: darkMode ? 'rgba(249, 115, 22, 0.2)' : '#FFEDD5',
+                        color: 'var(--orange-dark)',
+                        fontWeight: '800',
+                        padding: '6px 16px',
+                        borderRadius: '20px',
+                        fontSize: '0.82rem'
+                      }}>
                         Ciclo {currentRound} de {breathRounds}
                       </span>
                     </div>
                   )}
 
-                  {/* Círculo Interativo com Animação */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '30px 0' }}>
-                    <div
-                      className={`breath-circle ${breathClass}`}
-                      onClick={!isBreathing ? iniciarRespiracao : undefined}
-                      style={{
-                        border: '2px solid',
-                        borderColor: isBreathing ? (breathClass === 'inhaling' ? '#2563EB' : breathClass === 'holding' ? 'var(--orange)' : breathClass === 'holding-empty' ? '#8b5cf6' : 'rgba(0, 240, 143, 0.4)') : 'var(--orange-light)',
-                        boxShadow: isBreathing ? '0 10px 30px rgba(0,0,0,0.08)' : 'var(--shadow-md)',
-                        background: !isBreathing ? 'var(--white)' : undefined,
-                        cursor: isBreathing ? 'default' : 'pointer',
-                        width: '160px',
-                        height: '160px',
+                  {/* Círculo Interativo com Animação e Estados Suaves */}
+                  <div
+                    className={`breath-circle ${breathClass}`}
+                    onClick={!isBreathing ? iniciarRespiracao : undefined}
+                    style={{
+                      border: '3px solid',
+                      borderColor: isBreathing
+                        ? (breathClass === 'inhaling' ? '#3B82F6' : breathClass === 'holding' ? 'var(--orange)' : breathClass === 'holding-empty' ? '#8B5CF6' : '#10B981')
+                        : 'var(--orange)',
+                      boxShadow: isBreathing
+                        ? (breathClass === 'inhaling' ? '0 0 35px rgba(59, 130, 246, 0.35)' : breathClass === 'holding' ? '0 0 35px rgba(249, 115, 22, 0.35)' : '0 0 35px rgba(16, 185, 129, 0.35)')
+                        : '0 8px 24px rgba(249, 115, 22, 0.2)',
+                      background: !isBreathing
+                        ? (darkMode ? 'rgba(249, 115, 22, 0.1)' : '#FFF7ED')
+                        : (darkMode ? 'rgba(0,0,0,0.3)' : '#FFFFFF'),
+                      cursor: isBreathing ? 'default' : 'pointer',
+                      width: '190px',
+                      height: '190px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      transition: 'all 0.5s ease-in-out',
+                      position: 'relative'
+                    }}
+                  >
+                    {isBreathing && (
+                      <div style={{
+                        position: 'absolute',
+                        top: -6, left: -6, right: -6, bottom: -6,
                         borderRadius: '50%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        transition: 'all 3s ease-in-out',
-                        position: 'relative'
-                      }}
-                    >
-                      {/* Pulse Ring Decorativo */}
-                      {isBreathing && (
-                        <div style={{
-                          position: 'absolute',
-                          top: 0, left: 0, right: 0, bottom: 0,
-                          borderRadius: '50%',
-                          border: '2px solid',
-                          borderColor: breathClass === 'inhaling' ? 'rgba(37, 99, 235, 0.4)' : 'rgba(249, 115, 22, 0.4)',
-                          animation: 'pulse 2s infinite ease-in-out',
-                          pointerEvents: 'none'
-                        }} />
-                      )}
+                        border: '2px dashed',
+                        borderColor: breathClass === 'inhaling' ? 'rgba(59, 130, 246, 0.5)' : 'rgba(249, 115, 22, 0.5)',
+                        animation: 'spin 12s linear infinite',
+                        pointerEvents: 'none'
+                      }} />
+                    )}
 
-                      <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        {breathState}
-                      </span>
-                      {isBreathing && (
-                        <span style={{ fontSize: '1.8rem', fontWeight: '900', color: 'var(--orange-dark)', marginTop: '4px' }}>
-                          {breathTimer}s
-                        </span>
-                      )}
-                    </div>
+                    <span style={{
+                      fontSize: '1rem',
+                      fontWeight: '900',
+                      color: 'var(--text-primary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.8px',
+                      padding: '0 10px'
+                    }}>
+                      {breathState}
+                    </span>
 
                     {isBreathing && (
+                      <span style={{ fontSize: '2.2rem', fontWeight: '900', color: 'var(--orange-dark)', marginTop: '4px' }}>
+                        {breathTimer}s
+                      </span>
+                    )}
+
+                    {!isBreathing && (
+                      <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--orange-dark)', marginTop: '6px' }}>
+                        Toque para Começar
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Botões de Ação */}
+                  <div style={{ marginTop: '24px', width: '100%', maxWidth: '300px' }}>
+                    {isBreathing ? (
                       <button
                         onClick={pararRespiracao}
-                        className="btn-secondary"
                         style={{
-                          marginTop: '24px',
-                          padding: '10px 24px',
-                          borderRadius: '20px',
-                          fontSize: '0.85rem',
-                          fontWeight: '700',
-                          border: '1.5px solid var(--slate-border)',
+                          width: '100%',
+                          padding: '12px 24px',
+                          borderRadius: '16px',
+                          fontSize: '0.9rem',
+                          fontWeight: '800',
+                          border: darkMode ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E2E8F0',
                           cursor: 'pointer',
-                          background: 'var(--white)',
-                          color: 'var(--text-secondary)',
-                          boxShadow: 'var(--shadow-sm)'
+                          background: darkMode ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
+                          color: 'var(--text-primary)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px'
                         }}
                       >
-                        ⏹️ Parar Exercício
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                        <span>Parar Exercício</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={iniciarRespiracao}
+                        className="btn-primary"
+                        style={{
+                          width: '100%',
+                          padding: '14px 24px',
+                          borderRadius: '16px',
+                          fontSize: '0.95rem',
+                          fontWeight: '800',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '10px',
+                          boxShadow: '0 4px 16px rgba(249, 115, 22, 0.35)'
+                        }}
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <span>Iniciar Respiração Guiada</span>
                       </button>
                     )}
                   </div>
@@ -3657,183 +4031,353 @@ Importante: O JSON deve ser 100% válido.`;
               </div>
             )}
 
-            {/* 4. TRILHA DE CONHECIMENTO */}
+            {/* 4. TRILHA TEMÁTICA (30 DIAS) */}
             {activeSabadoBlock === 'trilha' && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                
-                {/* Trilha Ativa */}
+                {/* Barra de Navegação Interna */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <button
+                    onClick={() => setActiveSabadoBlock('menu')}
+                    style={{
+                      background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                      border: darkMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
+                      borderRadius: '12px',
+                      padding: '8px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: '700',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Voltar ao Menu</span>
+                  </button>
+                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#10B981' }}>
+                    Jornada de 30 Dias de Sabedoria
+                  </span>
+                </div>
+
+                {/* Seletor Rápido de Trilhas (Navegação Instantânea entre as 4) */}
+                <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  overflowX: 'auto',
+                  paddingBottom: '4px',
+                  scrollbarWidth: 'none'
+                }}>
+                  {['Ansiedade', 'Família', 'Finanças', 'Propósito'].map(tema => {
+                    const isCurrent = trilhaAtiva && trilhaAtiva.tema === tema;
+                    return (
+                      <button
+                        key={tema}
+                        onClick={() => iniciarTrilha(tema)}
+                        style={{
+                          flexShrink: 0,
+                          padding: '8px 14px',
+                          borderRadius: '14px',
+                          border: isCurrent ? '1.5px solid #10B981' : (darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E2E8F0'),
+                          background: isCurrent
+                            ? (darkMode ? 'rgba(16, 185, 129, 0.2)' : '#ECFDF5')
+                            : (darkMode ? 'rgba(255,255,255,0.04)' : '#FFFFFF'),
+                          color: isCurrent ? '#10B981' : 'var(--text-secondary)',
+                          fontSize: '0.82rem',
+                          fontWeight: '800',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <span>Trilha de {tema}</span>
+                        {isCurrent && <span style={{ fontSize: '0.7rem', background: '#10B981', color: '#fff', padding: '2px 6px', borderRadius: '8px' }}>Ativa</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Exibição da Trilha Selecionada / Ativa */}
                 {trilhaAtiva ? (
-                  <div className="trilha-active-panel" style={{ margin: 0, padding: 0, borderRadius: '20px', overflow: 'hidden' }}>
+                  <div style={{
+                    background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
+                    border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}>
                     {/* Imagem de Topo Temática da Trilha */}
-                    <div style={{
-                      width: '100%',
-                      height: '140px',
-                      position: 'relative'
-                    }}>
-                      <img 
+                    <div style={{ width: '100%', height: '150px', position: 'relative' }}>
+                      <img
                         src={
-                          trilhaAtiva.tema === 'Ansiedade' ? 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80' :
-                          trilhaAtiva.tema === 'Família' ? 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80' :
-                          trilhaAtiva.tema === 'Finanças' ? 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=600&q=80' :
-                          'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80'
-                        } 
+                          trilhaAtiva.tema === 'Ansiedade' ? 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=700&q=80' :
+                          trilhaAtiva.tema === 'Família' ? 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=700&q=80' :
+                          trilhaAtiva.tema === 'Finanças' ? 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=700&q=80' :
+                          'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80'
+                        }
                         alt={trilhaAtiva.tema}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                       <div style={{
                         position: 'absolute',
                         bottom: 0, left: 0, right: 0,
-                        background: 'linear-gradient(to top, rgba(15, 10, 28, 0.9), transparent)',
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
                         padding: '16px 20px',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'flex-end'
                       }}>
                         <div>
-                          <span style={{ fontSize: '0.7rem', color: '#a78bfa', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Jornada Ativa</span>
-                          <h4 style={{ margin: '2px 0 0 0', fontSize: '1.2rem', fontWeight: '800', color: '#ffffff' }}>Trilha de {trilhaAtiva.tema}</h4>
+                          <span style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            Trilha Ativa de 30 Dias
+                          </span>
+                          <h4 style={{ margin: '2px 0 0 0', fontSize: '1.25rem', fontWeight: '900', color: '#FFFFFF' }}>
+                            Trilha de {trilhaAtiva.tema}
+                          </h4>
                         </div>
-                        <span style={{ fontSize: '0.8rem', fontWeight: '800', background: 'rgba(255,255,255,0.15)', padding: '4px 10px', borderRadius: '12px', color: '#fff', backdropFilter: 'blur(4px)' }}>
+                        <span style={{
+                          fontSize: '0.82rem',
+                          fontWeight: '800',
+                          background: 'rgba(255,255,255,0.2)',
+                          padding: '4px 12px',
+                          borderRadius: '12px',
+                          color: '#FFFFFF',
+                          backdropFilter: 'blur(6px)'
+                        }}>
                           Dia {trilhaAtiva.dia_progresso}/30
                         </span>
                       </div>
                     </div>
 
+                    {/* Barra de Progresso Visual dos 30 Dias */}
+                    <div style={{ padding: '16px 20px 0 20px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <span>Progresso da Jornada</span>
+                        <span>{Math.round((trilhaAtiva.dia_progresso / 30) * 100)}% Concluído</span>
+                      </div>
+                      <div style={{ height: '8px', background: darkMode ? 'rgba(255,255,255,0.1)' : '#E2E8F0', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{
+                          width: `${(trilhaAtiva.dia_progresso / 30) * 100}%`,
+                          height: '100%',
+                          background: 'linear-gradient(90deg, #10B981 0%, #059669 100%)',
+                          borderRadius: '4px',
+                          transition: 'width 0.4s ease'
+                        }} />
+                      </div>
+                    </div>
+
+                    {/* Conteúdo da Lição do Dia */}
                     <div style={{ padding: '20px' }}>
                       {trilhaAtiva.conteudo && (
                         <>
-                          <h3 style={{ fontSize: '1.15rem', marginBottom: '8px', fontWeight: 'bold' }}>{trilhaAtiva.conteudo.titulo}</h3>
-                          <p style={{ fontStyle: 'italic', marginBottom: '12px', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                            "{trilhaAtiva.conteudo.versiculo}"
-                          </p>
-                          <p style={{ marginBottom: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                            <span style={{
+                              background: darkMode ? 'rgba(16, 185, 129, 0.2)' : '#ECFDF5',
+                              color: '#10B981',
+                              fontWeight: '800',
+                              fontSize: '0.75rem',
+                              padding: '4px 10px',
+                              borderRadius: '12px'
+                            }}>
+                              Lição de Hoje
+                            </span>
+                          </div>
+
+                          <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', fontWeight: '900', color: 'var(--text-primary)' }}>
+                            {trilhaAtiva.conteudo.titulo}
+                          </h3>
+
+                          <div style={{
+                            background: darkMode ? 'rgba(255,255,255,0.03)' : '#F8FAFC',
+                            borderLeft: '4px solid #10B981',
+                            padding: '10px 14px',
+                            borderRadius: '0 12px 12px 0',
+                            marginBottom: '16px'
+                          }}>
+                            <p style={{ fontStyle: 'italic', margin: 0, fontSize: '0.9rem', color: darkMode ? '#CBD5E1' : '#475569', lineHeight: '1.5' }}>
+                              "{trilhaAtiva.conteudo.versiculo}"
+                            </p>
+                          </div>
+
+                          <p style={{ marginBottom: '18px', fontSize: '0.95rem', lineHeight: '1.8', color: 'var(--text-primary)' }}>
                             {trilhaAtiva.conteudo.reflexao}
                           </p>
-                          <div className="glass-panel orange-card" style={{ padding: '14px', marginBottom: '18px', borderRadius: '14px' }}>
-                            <strong style={{ fontSize: '0.85rem', color: 'var(--orange-dark)', display: 'block', marginBottom: '4px' }}>AÇÃO PRÁTICA DO DIA:</strong>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>{trilhaAtiva.conteudo.acao_pratica}</p>
+
+                          {/* Card Dourado de Ação Prática */}
+                          <div style={{
+                            background: darkMode ? 'rgba(249, 115, 22, 0.1)' : '#FFFBEB',
+                            border: darkMode ? '1.5px solid rgba(249, 115, 22, 0.3)' : '1.5px solid #FDE68A',
+                            padding: '16px',
+                            marginBottom: '20px',
+                            borderRadius: '16px'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: 'var(--orange-dark)' }}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                              <strong style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                Ação Prática do Dia (+15 Chaminhas):
+                              </strong>
+                            </div>
+                            <p style={{ fontSize: '0.92rem', color: darkMode ? '#F1F5F9' : '#78350F', margin: 0, lineHeight: '1.5', fontWeight: '500' }}>
+                              {trilhaAtiva.conteudo.acao_pratica}
+                            </p>
                           </div>
                         </>
                       )}
+
                       <div style={{ display: 'flex', gap: '10px' }}>
-                        <button className="btn-primary" style={{ padding: '12px', borderRadius: '12px', flex: 2 }} onClick={completarDiaTrilha}>
-                          Concluir Ação de Hoje
+                        <button
+                          className="btn-primary"
+                          style={{
+                            padding: '14px',
+                            borderRadius: '14px',
+                            flex: 2,
+                            fontWeight: '800',
+                            fontSize: '0.92rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                            boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)'
+                          }}
+                          onClick={completarDiaTrilha}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          <span>Concluir Ação de Hoje</span>
                         </button>
-                        <button className="btn-secondary" style={{ padding: '12px', borderRadius: '12px', flex: 1, background: '#FEE2E2', color: '#EF4444', border: '1px solid #FCA5A5' }} onClick={cancelarTrilha}>
+                        <button
+                          className="btn-secondary"
+                          style={{
+                            padding: '14px',
+                            borderRadius: '14px',
+                            flex: 1,
+                            background: darkMode ? 'rgba(239, 68, 68, 0.15)' : '#FEE2E2',
+                            color: '#EF4444',
+                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                            fontWeight: '700',
+                            fontSize: '0.85rem'
+                          }}
+                          onClick={cancelarTrilha}
+                        >
                           Abandonar
                         </button>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  listaTrilhas.length > 0 && (
-                    <div className="glass-panel" style={{ padding: '20px', borderRadius: '20px' }}>
-                      <h3 style={{ marginBottom: '6px', fontSize: '1.15rem', fontWeight: '800' }}>Trilhas de Crescimento (30 Dias)</h3>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '20px', lineHeight: '1.4' }}>
-                        Escolha uma trilha e receba uma porção diária de sabedoria teológica com ações práticas por 30 dias.
-                      </p>
-                      
-                      <div style={{ 
-                        display: 'grid', 
-                        gridTemplateColumns: 'repeat(2, 1fr)', 
-                        gap: '16px' 
-                      }} className="lp-grid-mobile-single">
-                        {listaTrilhas.map(tema => {
-                          let detail = { desc: '', icon: null, color: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)' };
-                          
-                          if (tema === 'Ansiedade') {
-                            detail = { 
-                              desc: 'Controle o estresse em uma jornada de paz.', 
-                              icon: (
-                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                              ), 
-                              color: 'rgba(14, 165, 233, 0.1)', 
-                              border: 'rgba(14, 165, 233, 0.2)' 
-                            };
-                          } else if (tema === 'Família') {
-                            detail = { 
-                              desc: 'Harmonia, perdão e laços fortes no seu lar.', 
-                              icon: (
-                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                              ), 
-                              color: 'rgba(244, 63, 94, 0.1)', 
-                              border: 'rgba(244, 63, 94, 0.2)' 
-                            };
-                          } else if (tema === 'Finanças') {
-                            detail = { 
-                              desc: 'Princípios bíblicos de mordomia.', 
-                              icon: (
-                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                              ), 
-                              color: 'rgba(16, 185, 129, 0.1)', 
-                              border: 'rgba(16, 185, 129, 0.2)' 
-                            };
-                          } else if (tema === 'Propósito') {
-                            detail = { 
-                              desc: 'Descubra e ative seus dons para governar.', 
-                              icon: (
-                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                              ), 
-                              color: 'rgba(139, 92, 246, 0.1)', 
-                              border: 'rgba(139, 92, 246, 0.2)' 
-                            };
-                          }
-                          
-                          return (
-                            <div 
-                              key={tema} 
-                              className="dashboard-card animate-fade-in" 
-                              onClick={() => iniciarTrilha(tema)} 
-                              style={{ 
-                                padding: '20px 16px', 
-                                borderRadius: '18px', 
-                                display: 'flex', 
-                                flexDirection: 'column',
-                                gap: '12px',
-                                alignItems: 'flex-start', 
-                                cursor: 'pointer', 
-                                border: `1.5px solid ${detail.border}`,
-                                backgroundColor: 'var(--white)',
-                                transition: 'all 0.2s ease',
-                                textAlign: 'left',
-                                boxSizing: 'border-box'
-                              }}
-                            >
-                              <div style={{ 
-                                color: tema === 'Ansiedade' ? '#0ea5e9' : tema === 'Família' ? '#f43f5e' : tema === 'Finanças' ? '#10b981' : '#8b5cf6',
-                                background: detail.color,
-                                padding: '10px',
-                                borderRadius: '12px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}>
-                                {detail.icon}
-                              </div>
-                              <div style={{ flex: 1 }}>
-                                <strong style={{ fontSize: '0.95rem', color: 'var(--text-primary)', display: 'block' }}>
-                                  Trilha de {tema}
-                                </strong>
-                                <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.4' }}>
-                                  {detail.desc}
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )
-                )}
+                  /* Painel para Escolher uma das 4 Trilhas */
+                  <div style={{
+                    background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
+                    padding: '24px 20px',
+                    borderRadius: '24px',
+                    border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}>
+                    <h3 style={{ marginBottom: '6px', fontSize: '1.15rem', fontWeight: '900', color: 'var(--text-primary)' }}>
+                      Escolha Sua Trilha de Crescimento (30 Dias)
+                    </h3>
+                    <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '20px', lineHeight: '1.5' }}>
+                      Cada trilha entrega 30 doses diárias de sabedoria teológica aplicada com uma ação prática para transformar sua rotina.
+                    </p>
 
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }} className="lp-grid-mobile-single">
+                      {[
+                        {
+                          tema: 'Ansiedade',
+                          desc: 'Paz que excede o entendimento. Controle o estresse e descanse em Deus.',
+                          icon: (
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                          ),
+                          color: '#0EA5E9',
+                          bg: 'rgba(14, 165, 233, 0.12)',
+                          border: 'rgba(14, 165, 233, 0.25)'
+                        },
+                        {
+                          tema: 'Família',
+                          desc: 'Harmonia, perdão, autoridade espiritual e laços inabaláveis no seu lar.',
+                          icon: (
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                          ),
+                          color: '#F43F5E',
+                          bg: 'rgba(244, 63, 94, 0.12)',
+                          border: 'rgba(244, 63, 94, 0.25)'
+                        },
+                        {
+                          tema: 'Finanças',
+                          desc: 'Mordomia cristã, prosperidade com propósito e quebra de escassez.',
+                          icon: (
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          ),
+                          color: '#10B981',
+                          bg: 'rgba(16, 185, 129, 0.12)',
+                          border: 'rgba(16, 185, 129, 0.25)'
+                        },
+                        {
+                          tema: 'Propósito',
+                          desc: 'Ativação de chamado, autoridade espiritual e governança para sua vida.',
+                          icon: (
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                          ),
+                          color: '#8B5CF6',
+                          bg: 'rgba(139, 92, 246, 0.12)',
+                          border: 'rgba(139, 92, 246, 0.25)'
+                        }
+                      ].map(item => (
+                        <div
+                          key={item.tema}
+                          onClick={() => iniciarTrilha(item.tema)}
+                          style={{
+                            padding: '18px 16px',
+                            borderRadius: '18px',
+                            border: `1.5px solid ${item.border}`,
+                            background: darkMode ? 'rgba(255,255,255,0.02)' : '#FFFFFF',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px'
+                          }}
+                        >
+                          <div style={{
+                            width: '42px', height: '42px', borderRadius: '12px',
+                            background: item.bg, color: item.color,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                          }}>
+                            {item.icon}
+                          </div>
+                          <div>
+                            <strong style={{ fontSize: '0.98rem', color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
+                              Trilha de {item.tema}
+                            </strong>
+                            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+                              {item.desc}
+                            </p>
+                          </div>
+                          <span style={{
+                            marginTop: 'auto',
+                            fontSize: '0.75rem',
+                            fontWeight: '800',
+                            color: item.color,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}>
+                            Iniciar 30 Dias →
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
