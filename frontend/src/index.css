@@ -1116,6 +1116,85 @@ body.dark-mode .app-header {
 }
 
 /* ═══════════════════════════════════════════════════
+   PLAQUINHAS DE ALTO PADRÃO (BADGES SOFISTICADAS)
+═══════════════════════════════════════════════════ */
+.gold-premium-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FFE894 0%, #D4AF37 40%, #AA771C 75%, #FDE047 100%);
+  border: 1px solid #DFBA4E;
+  color: #382400 !important;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  z-index: 2;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+.gold-premium-badge svg {
+  color: #382400;
+  flex-shrink: 0;
+}
+
+.gold-premium-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Plaquinha Infantil (Azul Céu Sofisticado) */
+.badge-kids-cyan {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #BAE6FD 0%, #38BDF8 50%, #0284C7 100%);
+  border: 1px solid #7DD3FC;
+  color: #082F49 !important;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  z-index: 2;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Plaquinha 365 Dias (Bronze / Laranja Acolhedor) */
+.badge-cafe-orange {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FED7AA 0%, #FB923C 50%, #EA580C 100%);
+  border: 1px solid #FDBA74;
+  color: #431407 !important;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  z-index: 2;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════
    ADAPTAÇÃO DE TEMA (CLARO / ESCURO) — NOVOS MÓDULOS
 ═══════════════════════════════════════════════════ */
 .cafe-home-card {

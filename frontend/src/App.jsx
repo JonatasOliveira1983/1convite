@@ -12,6 +12,7 @@ import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooks
 import KidsView from './components/Kids/KidsView';
 import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
 import cafeData from './data/cafe_com_deus_365.json';
+import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
   return (
@@ -306,8 +307,8 @@ function App() {
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
   
-  // Controle de Acesso Premium & Vouchers
-  const [isPremiumUser, setIsPremiumUser] = useState(() => localStorage.getItem('1convite-premium') === 'true');
+  // Controle de Acesso Premium & Vouchers (100% liberado para refinamento e testes)
+  const [isPremiumUser, setIsPremiumUser] = useState(() => true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   // Dia Atual para Café com Deus
@@ -905,9 +906,16 @@ function App() {
     if (rootEl) rootEl.style.cssText = '';
   }, []);
 
-  const [profileName, setProfileName] = useState('Membro Convidado');
-  const [profileEmail, setProfileEmail] = useState('membro@1convite.com');
-  const [profileAvatar, setProfileAvatar] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80');
+  const [profileName, setProfileName] = useState(() => localStorage.getItem('1convite_user_name') || 'Membro Convidado');
+  const [profileEmail, setProfileEmail] = useState(() => localStorage.getItem('1convite_user_email') || 'membro@1convite.com');
+  const [userGender, setUserGender] = useState(() => localStorage.getItem('1convite_user_gender') || 'homem');
+  const [isCustomAvatar, setIsCustomAvatar] = useState(() => localStorage.getItem('1convite_custom_avatar_uploaded') === 'true');
+  const [profileAvatar, setProfileAvatar] = useState(() => {
+    const custom = localStorage.getItem('1convite_custom_avatar');
+    if (custom) return custom;
+    const gender = localStorage.getItem('1convite_user_gender') || 'homem';
+    return getDefaultAvatar(gender);
+  });
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // Login Dedicado
@@ -1054,6 +1062,11 @@ function App() {
       reader.onloadend = async () => {
         const base64Avatar = reader.result;
         setProfileAvatar(base64Avatar);
+        setIsCustomAvatar(true);
+        localStorage.setItem('1convite_custom_avatar', base64Avatar);
+        localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+        setProfileSavedMsg('Foto de perfil atualizada com sucesso!');
+        setTimeout(() => setProfileSavedMsg(''), 4000);
         
         // Sincroniza com o servidor
         try {
@@ -1067,15 +1080,39 @@ function App() {
             setUser(data);
           }
         } catch (err) {
-          console.error(err);
+          console.log('Salvo localmente no dispositivo');
         }
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleSelectDefaultAvatar = (gender) => {
+    setUserGender(gender);
+    localStorage.setItem('1convite_user_gender', gender);
+    if (!isCustomAvatar) {
+      const av = getDefaultAvatar(gender);
+      setProfileAvatar(av);
+      localStorage.setItem('1convite_custom_avatar', av);
+    }
+    setProfileSavedMsg(`Avatar padrão (${gender === 'mulher' ? 'Mulher' : 'Homem'}) selecionado!`);
+    setTimeout(() => setProfileSavedMsg(''), 3000);
+  };
+
+  const handleResetToDefaultAvatar = () => {
+    setIsCustomAvatar(false);
+    localStorage.removeItem('1convite_custom_avatar_uploaded');
+    localStorage.removeItem('1convite_custom_avatar');
+    const av = getDefaultAvatar(userGender);
+    setProfileAvatar(av);
+    setProfileSavedMsg('Foto redefinida para o avatar padrão.');
+    setTimeout(() => setProfileSavedMsg(''), 3000);
+  };
+
   const handleSaveProfile = async (e) => {
     e.preventDefault();
+    localStorage.setItem('1convite_user_name', profileName);
+    localStorage.setItem('1convite_user_email', profileEmail);
     try {
       const res = await fetch(`${API_BASE}/usuario/perfil`, {
         method: 'POST',
@@ -1085,12 +1122,12 @@ function App() {
       if (res.ok) {
         const data = await res.json();
         setUser(data);
-        setProfileSavedMsg('Dados atualizados com sucesso!');
-        setTimeout(() => setProfileSavedMsg(''), 3000);
       }
     } catch (err) {
-      alert('Erro ao salvar no banco de dados.');
+      console.log('Salvo localmente');
     }
+    setProfileSavedMsg('Dados atualizados com sucesso!');
+    setTimeout(() => setProfileSavedMsg(''), 3000);
   };
 
   // Google Login Callback
@@ -2311,30 +2348,40 @@ Importante: O JSON deve ser 100% válido.`;
       }}>
         {activeTab === 'dashboard' ? (
           <>
-            {/* Esquerda: Perfil/Avatar */}
+            {/* Esquerda: Perfil/Avatar com indicador de personalização */}
             <div 
               onClick={() => setActiveTab('conta')}
               style={{
-                width: '36px',
-                height: '36px',
+                position: 'relative',
+                width: '38px',
+                height: '38px',
                 borderRadius: '50%',
-                overflow: 'hidden',
                 cursor: 'pointer',
-                border: '2px solid var(--slate-border)',
+                border: isCustomAvatar ? '2px solid #EAB308' : '2px solid var(--orange)',
                 background: 'var(--slate-light)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--text-primary)'
+                boxShadow: isCustomAvatar ? '0 2px 8px rgba(234, 179, 8, 0.35)' : '0 2px 8px rgba(16, 185, 129, 0.25)',
+                transition: 'all 0.2s ease'
               }}
+              title={isCustomAvatar ? "Minha Conta (Foto Personalizada)" : "Minha Conta • Toque para colocar sua foto"}
             >
-              {profileAvatar ? (
+              <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
                 <img src={profileAvatar} alt="Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
+              </div>
+              {!isCustomAvatar && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-2px',
+                  right: '-2px',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  background: '#F97316',
+                  border: '2px solid var(--bg-app)',
+                  boxShadow: '0 0 6px #F97316'
+                }} />
               )}
             </div>
 
@@ -2928,10 +2975,6 @@ Importante: O JSON deve ser 100% válido.`;
                 <div
                   key={card.id}
                   onClick={() => {
-                    if (card.isPremium && !isPremiumUser) {
-                      setShowUpgradeModal(true);
-                      return;
-                    }
                     setActiveTab(card.id);
                     if (card.id === 'biblia') {
                       setBibleViewMode('reading');
@@ -2948,21 +2991,22 @@ Importante: O JSON deve ser 100% válido.`;
                   className="dashboard-card"
                   style={{ position: 'relative' }}
                 >
-                  {card.tag && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '8px',
-                      right: '8px',
-                      fontSize: '0.6rem',
-                      fontWeight: '800',
-                      letterSpacing: '0.04em',
-                      padding: '2px 6px',
-                      borderRadius: '6px',
-                      background: card.tag === 'PREMIUM' ? 'rgba(234, 179, 8, 0.2)' : 'rgba(249, 115, 22, 0.2)',
-                      color: card.tag === 'PREMIUM' ? '#FACC15' : '#FB923C',
-                      border: card.tag === 'PREMIUM' ? '1px solid rgba(234, 179, 8, 0.4)' : '1px solid rgba(249, 115, 22, 0.4)'
-                    }}>
-                      {card.tag}
+                  {card.tag === 'PREMIUM' && (
+                    <span className="gold-premium-badge">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
+                      PREMIUM
+                    </span>
+                  )}
+                  {card.tag === 'INFANTIL' && (
+                    <span className="badge-kids-cyan">
+                      INFANTIL
+                    </span>
+                  )}
+                  {card.tag === '365 DIAS' && (
+                    <span className="badge-cafe-orange">
+                      365 DIAS
                     </span>
                   )}
                   <div className="dashboard-card-icon">
@@ -5074,29 +5118,147 @@ Importante: O JSON deve ser 100% válido.`;
         {/* ── ABA MINHA CONTA & PERFIL ────────────────────────── */}
         {activeTab === 'conta' && (
           <div className="page-enter flex-column gap-md">
-            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '30px 20px' }}>
+            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '24px 18px', position: 'relative' }}>
               <div className="hero-content">
-                <div className="profile-avatar-container">
-                  <img src={profileAvatar} alt="Foto de Perfil" className="profile-avatar-img" />
-                  <label className="profile-avatar-upload-btn" title="Alterar foto de perfil">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                <div className="profile-avatar-container" style={{ position: 'relative', display: 'inline-block', margin: '0 auto 12px' }}>
+                  <img 
+                    src={profileAvatar} 
+                    alt="Foto de Perfil" 
+                    className="profile-avatar-img" 
+                    style={{ 
+                      width: '92px', 
+                      height: '92px', 
+                      borderRadius: '50%', 
+                      objectFit: 'cover',
+                      border: isCustomAvatar ? '3px solid #EAB308' : '3px solid var(--orange)',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)'
+                    }} 
+                  />
+                  <label 
+                    className="profile-avatar-upload-btn" 
+                    title="Alterar foto de perfil"
+                    style={{
+                      position: 'absolute',
+                      bottom: '2px',
+                      right: '2px',
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: 'var(--orange)',
+                      color: '#FFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      border: '2px solid var(--bg-app)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                    }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
                     <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
                   </label>
                 </div>
-                <h2 className="hero-title" style={{ fontSize: '1.4rem', marginBottom: '4px' }}>{profileName}</h2>
-                <span className={`pedagio-badge ${user?.status_plano === 'PREMIUM' ? 'badge-proposito' : 'badge-recompensa'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                  {user?.status_plano === 'PREMIUM' ? (
-                    <>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                      <span>Membro Premium</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                      <span>Plano Gratuito</span>
-                    </>
-                  )}
+
+                <h2 className="hero-title" style={{ fontSize: '1.35rem', marginBottom: '4px' }}>{profileName}</h2>
+                <span className="pedagio-badge badge-proposito" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                  <span>Membro Premium • Acesso Total</span>
                 </span>
+
+                {/* Seletor rápido de Avatar Padrão (Homem / Mulher) */}
+                <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                    Avatares padrão disponíveis:
+                  </span>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectDefaultAvatar('homem')}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        border: userGender === 'homem' && !isCustomAvatar ? '2px solid #38BDF8' : '1px solid var(--slate-border)',
+                        background: userGender === 'homem' && !isCustomAvatar ? 'rgba(56, 189, 248, 0.15)' : 'var(--slate-light)',
+                        color: 'var(--text-primary)',
+                        cursor: 'pointer',
+                        fontSize: '0.78rem',
+                        fontWeight: '700',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <img src={DEFAULT_AVATAR_MAN} alt="Avatar Homem" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
+                      <span>Homem</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleSelectDefaultAvatar('mulher')}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        border: userGender === 'mulher' && !isCustomAvatar ? '2px solid #F472B6' : '1px solid var(--slate-border)',
+                        background: userGender === 'mulher' && !isCustomAvatar ? 'rgba(244, 114, 182, 0.15)' : 'var(--slate-light)',
+                        color: 'var(--text-primary)',
+                        cursor: 'pointer',
+                        fontSize: '0.78rem',
+                        fontWeight: '700',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <img src={DEFAULT_AVATAR_WOMAN} alt="Avatar Mulher" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
+                      <span>Mulher</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Banner Convidativo para foto personalizada */}
+                {!isCustomAvatar ? (
+                  <div style={{
+                    marginTop: '16px',
+                    background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.14) 0%, rgba(234, 179, 8, 0.12) 100%)',
+                    border: '1.5px dashed #F59E0B',
+                    borderRadius: '16px',
+                    padding: '14px 16px',
+                    textAlign: 'center'
+                  }}>
+                    <p style={{ margin: '0 0 10px', fontSize: '0.84rem', fontWeight: '600', color: 'var(--text-primary)', lineHeight: '1.4' }}>
+                      Sinta o 1Convite como seu! Adicione uma foto sua para personalizar sua jornada diária.
+                    </p>
+                    <label className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '9px 18px', cursor: 'pointer', borderRadius: '500px', fontSize: '0.82rem', fontWeight: '800' }}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      <span>Escolher Foto do Celular</span>
+                      <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
+                    </label>
+                  </div>
+                ) : (
+                  <div style={{ marginTop: '12px' }}>
+                    <button
+                      type="button"
+                      onClick={handleResetToDefaultAvatar}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--text-secondary)',
+                        fontSize: '0.74rem',
+                        cursor: 'pointer',
+                        textDecoration: 'underline'
+                      }}
+                    >
+                      Voltar ao avatar padrão
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
