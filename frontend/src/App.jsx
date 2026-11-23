@@ -2373,10 +2373,12 @@ Em nome de Jesus, Amém.`;
                 alt="1Convite" 
                 style={{ 
                   height: '38px', 
-                  maxWidth: '160px',
+                  maxWidth: '165px',
+                  width: 'auto',
                   objectFit: 'contain',
                   cursor: 'pointer',
-                  filter: darkMode ? 'drop-shadow(0 2px 8px rgba(249, 115, 22, 0.25))' : 'none'
+                  filter: darkMode ? 'drop-shadow(0 2px 10px rgba(249, 115, 22, 0.35))' : 'none',
+                  transition: 'transform 0.2s ease'
                 }} 
                 onClick={() => setActiveTab('dashboard')}
               />
