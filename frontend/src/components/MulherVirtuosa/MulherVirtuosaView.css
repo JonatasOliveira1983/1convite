@@ -1,0 +1,368 @@
+/* ── ESPAÇO MULHER VIRTUOSA ── */
+.mv-container {
+  padding: 16px 14px 40px;
+  box-sizing: border-box;
+  max-width: 480px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+.mv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mv-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mv-header-info {
+  text-align: center;
+}
+
+.mv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(236, 72, 153, 0.12);
+  border: 1px solid rgba(236, 72, 153, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #F472B6;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mv-pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #EC4899;
+}
+
+.mv-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Tabs */
+.mv-tabs-nav {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 20px;
+}
+
+.mv-tab-btn {
+  flex: 1;
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #AAA);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mv-tab-btn.active {
+  background: rgba(236, 72, 153, 0.2);
+  color: #F472B6;
+  font-weight: 700;
+}
+
+.mv-quote-card {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border: 1px solid rgba(236, 72, 153, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.mv-quote-verse {
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: #FBCFE8;
+  margin: 0 0 8px;
+}
+
+.mv-quote-ref {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #EC4899;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mv-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #FFF;
+}
+
+.mv-habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.mv-habit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mv-habit-item.done {
+  border-color: rgba(236, 72, 153, 0.4);
+  background: rgba(236, 72, 153, 0.06);
+}
+
+.mv-habit-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFF;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.mv-habit-check.checked {
+  background: #EC4899;
+  border-color: #EC4899;
+}
+
+.mv-habit-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #E5E7EB;
+}
+
+.mv-wisdom-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.mv-wisdom-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #F472B6;
+  margin: 0 0 6px;
+}
+
+.mv-wisdom-body {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+/* Prayers */
+.mv-prayer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mv-prayer-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted, #888);
+}
+
+.mv-add-prayer-btn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(236, 72, 153, 0.35);
+  color: #F472B6;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mv-new-prayer-box {
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mv-input,
+.mv-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #FFF;
+  font-size: 0.85rem;
+}
+
+.mv-form-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.mv-cancel-btn {
+  background: transparent;
+  border: none;
+  color: #AAA;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.mv-save-btn {
+  background: #EC4899;
+  border: none;
+  color: #FFF;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.mv-prayers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mv-prayer-card {
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.mv-prayer-card.answered {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.04);
+}
+
+.mv-prayer-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.mv-prayer-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0;
+  color: #FFF;
+}
+
+.mv-answer-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: #AAA;
+  cursor: pointer;
+}
+
+.mv-answer-tag.is-answered {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #4ADE80;
+}
+
+.mv-prayer-desc {
+  font-size: 0.82rem;
+  color: #9CA3AF;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Proverbs 31 */
+.mv-proverbs-card {
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.mv-proverbs-header {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0 0 16px;
+  color: #F472B6;
+}
+
+.mv-marks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mv-mark-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.mv-mark-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.mv-mark-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFF;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.mv-mark-desc {
+  font-size: 0.82rem;
+  color: #9CA3AF;
+  margin: 0;
+  line-height: 1.5;
+}

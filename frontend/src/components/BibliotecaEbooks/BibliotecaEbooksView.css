@@ -1,0 +1,235 @@
+/* ── BIBLIOTECA DE E-BOOKS ── */
+.eb-container {
+  padding: 16px 14px 40px;
+  box-sizing: border-box;
+  max-width: 480px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+.eb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.eb-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.eb-header-info {
+  text-align: center;
+}
+
+.eb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FACC15;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.eb-pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #EAB308;
+}
+
+.eb-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.eb-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eb-card {
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.eb-card:hover {
+  border-color: rgba(234, 179, 8, 0.35);
+  transform: translateY(-2px);
+}
+
+.eb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.eb-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(234, 179, 8, 0.15);
+  color: #FACC15;
+}
+
+.eb-author {
+  font-size: 0.72rem;
+  color: var(--text-muted, #888);
+}
+
+.eb-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: #FFF;
+}
+
+.eb-card-desc {
+  font-size: 0.84rem;
+  color: #9CA3AF;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.eb-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+}
+
+.eb-card-arrow {
+  color: #FACC15;
+}
+
+/* Detail View */
+.eb-detail-view {
+  background: #18181C;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px 18px;
+}
+
+.eb-detail-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.eb-detail-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+  color: #FFF;
+  line-height: 1.3;
+}
+
+.eb-detail-intro {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #9CA3AF;
+  margin: 0 0 24px;
+}
+
+.eb-chapters-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0 0 14px;
+  color: #FACC15;
+}
+
+.eb-chapters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.eb-chapter-item {
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.eb-chapter-num {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #FACC15;
+  background: rgba(234, 179, 8, 0.15);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.eb-chapter-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #FFF;
+}
+
+.eb-chapter-desc {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+.eb-share-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ADE80;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.eb-share-btn:hover {
+  background: #22C55E;
+  color: #FFF;
+}

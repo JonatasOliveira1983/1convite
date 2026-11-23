@@ -5,6 +5,13 @@ import LandingPage from './components/LandingPage/LandingPage';
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid } from './data/arcadeData';
 import TrailHome from './components/trail/TrailHome';
 import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal } from './data/layaData';
+import CafeComDeusView from './components/CafeComDeus/CafeComDeusView';
+import MulherVirtuosaView from './components/MulherVirtuosa/MulherVirtuosaView';
+import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPregadorView';
+import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooksView';
+import KidsView from './components/Kids/KidsView';
+import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
+import cafeData from './data/cafe_com_deus_365.json';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
 function RewardPopup({ amount, title, message, onClose }) {
   return (
@@ -298,6 +305,21 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
+  
+  // Controle de Acesso Premium & Vouchers
+  const [isPremiumUser, setIsPremiumUser] = useState(() => localStorage.getItem('1convite-premium') === 'true');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  // Dia Atual para Café com Deus
+  const getDayOfYear = () => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.max(1, Math.min(365, Math.floor(diff / oneDay)));
+  };
+  const todayDayNumber = getDayOfYear();
+  const todayMeditation = cafeData.find(item => item.day === todayDayNumber) || cafeData[0];
   
   // --- RESTORED ARCADE STATES ---
   const [arcadeActiveGame, setArcadeActiveGame] = useState('lobby');
@@ -2315,22 +2337,22 @@ Importante: O JSON deve ser 100% válido.`;
             </h1>
 
 
-{/* Direita: Diamante Premium */}
+{/* Direita: Diamante / Vouchers Premium */}
             <div 
-              onClick={() => setActiveTab('conta')}
+              onClick={() => setShowUpgradeModal(true)}
               style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: 'var(--orange-light)',
-                border: '1px solid var(--orange)',
+                background: isPremiumUser ? 'rgba(234, 179, 8, 0.2)' : 'var(--orange-light)',
+                border: isPremiumUser ? '1.5px solid #EAB308' : '1px solid var(--orange)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                color: 'var(--orange)'
+                color: isPremiumUser ? '#FACC15' : 'var(--orange)'
               }}
-              title="Assinatura Premium"
+              title={isPremiumUser ? 'Assinatura Premium Ativa' : 'Desbloquear Premium & Convites'}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/>
@@ -2704,7 +2726,7 @@ Importante: O JSON deve ser 100% válido.`;
           <div className="page-enter animate-fade-in" style={{ padding: '16px', boxSizing: 'border-box' }}>
             
             {/* Carrossel no topo */}
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '16px' }}>
               <div className="carousel-container">
                 <div className="carousel-wrapper" style={{ transform: `translateX(-${carouselIndex * 100}%)` }}>
                   {carouselImages.map((src, idx) => (
@@ -2719,11 +2741,70 @@ Importante: O JSON deve ser 100% válido.`;
               </div>
             </div>
 
-            {/* Grid de 2 Colunas */}
+            {/* CARD DESTAQUE CAFÉ COM DEUS (365 MEDITAÇÕES DIÁRIAS) */}
+            <div 
+              onClick={() => setActiveTab('cafe-com-deus')}
+              className="animate-fade-in"
+              style={{
+                background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.16) 0%, rgba(24, 24, 28, 0.95) 100%)',
+                border: '1.5px solid rgba(249, 115, 22, 0.35)',
+                borderRadius: '18px',
+                padding: '14px 16px',
+                marginBottom: '18px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                boxShadow: '0 8px 24px rgba(249, 115, 22, 0.12)',
+                transition: 'all 0.25s ease'
+              }}
+            >
+              <div style={{
+                width: '46px',
+                height: '46px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#FFF',
+                flexShrink: 0,
+                boxShadow: '0 4px 14px rgba(249, 115, 22, 0.35)'
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                  <line x1="6" y1="1" x2="6" y2="4" />
+                  <line x1="10" y1="1" x2="10" y2="4" />
+                  <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#FB923C', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    Café com Deus • Dia {todayDayNumber}
+                  </span>
+                  <span style={{ fontSize: '0.62rem', background: '#22C55E', color: '#FFF', padding: '1px 6px', borderRadius: '10px', fontWeight: '800' }}>HOJE</span>
+                </div>
+                <h4 style={{ margin: '0 0 2px', fontSize: '0.94rem', fontWeight: '800', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {todayMeditation.title}
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.78rem', color: '#9CA3AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {todayMeditation.verse}
+                </p>
+              </div>
+              <div style={{ color: '#FB923C', flexShrink: 0 }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Grid de Módulos */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '16px',
+              gap: '14px',
               paddingBottom: '20px'
             }}>
               {[
@@ -2731,7 +2812,7 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'biblia', 
                   label: 'Bíblia Sagrada', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   )
@@ -2740,8 +2821,22 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'sabado', 
                   label: 'Desafio do Dia', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'cafe-com-deus', 
+                  label: 'Café com Deus',
+                  tag: '365 DIAS',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                      <line x1="6" y1="1" x2="6" y2="4" strokeLinecap="round" />
+                      <line x1="10" y1="1" x2="10" y2="4" strokeLinecap="round" />
+                      <line x1="14" y1="1" x2="14" y2="4" strokeLinecap="round" />
                     </svg>
                   )
                 },
@@ -2749,8 +2844,52 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'chat', 
                   label: 'LAYA • Sabedoria', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'mulher-virtuosa', 
+                  label: 'Mulher Virtuosa', 
+                  isPremium: true,
+                  tag: 'PREMIUM',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'biblioteca-pregador', 
+                  label: 'Biblioteca do Pregador', 
+                  isPremium: true,
+                  tag: 'PREMIUM',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'kids', 
+                  label: '1Convite Kids', 
+                  isPremium: true,
+                  tag: 'INFANTIL',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )
+                },
+                { 
+                  id: 'ebooks-premium', 
+                  label: 'E-books & Livros', 
+                  isPremium: true,
+                  tag: 'PREMIUM',
+                  icon: (
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   )
                 },
@@ -2758,18 +2897,8 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'contatos', 
                   label: 'Conexões & Contatos', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'conta', 
-                  label: 'Aparência & Configs', 
-                  icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   )
                 },
@@ -2777,7 +2906,7 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'criar-card', 
                   label: 'Criar Card', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <rect x="3" y="3" width="18" height="18" rx="3" ry="3" strokeLinecap="round" strokeLinejoin="round" />
                       <circle cx="8.5" cy="8.5" r="1.5" />
                       <polyline points="21 15 16 10 5 21" strokeLinecap="round" strokeLinejoin="round" />
@@ -2788,7 +2917,7 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'arcade', 
                   label: 'Jogos', 
                   icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -2798,23 +2927,17 @@ Importante: O JSON deve ser 100% válido.`;
                   id: 'lojinha', 
                   label: 'Lojinha', 
                   icon: (
-                    <ChaminhaCoin size={36} />
-                  )
-                },
-                { 
-                  id: 'trail', 
-                  label: 'Trilha do Reino', 
-                  icon: (
-                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                    </svg>
+                    <ChaminhaCoin size={32} />
                   )
                 }
               ].map(card => (
                 <div
                   key={card.id}
                   onClick={() => {
+                    if (card.isPremium && !isPremiumUser) {
+                      setShowUpgradeModal(true);
+                      return;
+                    }
                     setActiveTab(card.id);
                     if (card.id === 'biblia') {
                       setBibleViewMode('reading');
@@ -2827,10 +2950,27 @@ Importante: O JSON deve ser 100% válido.`;
                       setCardSelectedText('');
                       setCardCategory('bomdia');
                     }
-
                   }}
                   className="dashboard-card"
+                  style={{ position: 'relative' }}
                 >
+                  {card.tag && (
+                    <span style={{
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      fontSize: '0.6rem',
+                      fontWeight: '800',
+                      letterSpacing: '0.04em',
+                      padding: '2px 6px',
+                      borderRadius: '6px',
+                      background: card.tag === 'PREMIUM' ? 'rgba(234, 179, 8, 0.2)' : 'rgba(249, 115, 22, 0.2)',
+                      color: card.tag === 'PREMIUM' ? '#FACC15' : '#FB923C',
+                      border: card.tag === 'PREMIUM' ? '1px solid rgba(234, 179, 8, 0.4)' : '1px solid rgba(249, 115, 22, 0.4)'
+                    }}>
+                      {card.tag}
+                    </span>
+                  )}
                   <div className="dashboard-card-icon">
                     {card.icon}
                   </div>
@@ -2839,6 +2979,33 @@ Importante: O JSON deve ser 100% válido.`;
                   </span>
                 </div>
               ))}
+            </div>
+
+            {/* BOTÃO LARGO TRILHA DO REINO */}
+            <div
+              onClick={() => setActiveTab('trail')}
+              className="dashboard-card"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                padding: '16px',
+                marginBottom: '20px',
+                background: 'linear-gradient(135deg, rgba(30, 215, 96, 0.12) 0%, rgba(20, 20, 24, 0.95) 100%)',
+                border: '1px solid rgba(30, 215, 96, 0.3)',
+                cursor: 'pointer'
+              }}
+            >
+              <div style={{ color: 'var(--sp-green, #1ED760)' }}>
+                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                </svg>
+              </div>
+              <span style={{ fontSize: '0.98rem', fontWeight: '800', color: '#FFF' }}>
+                Trilha do Reino • 365 Dias
+              </span>
             </div>
           </div>
         )}
@@ -6421,7 +6588,59 @@ Importante: O JSON deve ser 100% válido.`;
           </div>
         )}
 
+        {/* ════════════ ABA MINI-APP: CAFÉ COM DEUS (365 DIAS) ════════════ */}
+        {activeTab === 'cafe-com-deus' && (
+          <CafeComDeusView 
+            onBack={() => setActiveTab('dashboard')} 
+            isPremium={isPremiumUser}
+            onOpenUpgrade={() => setShowUpgradeModal(true)}
+          />
+        )}
+
+        {/* ════════════ ABA ESPAÇO MULHER VIRTUOSA (PREMIUM) ════════════ */}
+        {activeTab === 'mulher-virtuosa' && (
+          <MulherVirtuosaView 
+            onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
+        {/* ════════════ ABA BIBLIOTECA DO PREGADOR (PREMIUM) ════════════ */}
+        {activeTab === 'biblioteca-pregador' && (
+          <BibliotecaPregadorView 
+            onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
+        {/* ════════════ ABA 1CONVITE KIDS ════════════ */}
+        {activeTab === 'kids' && (
+          <KidsView 
+            onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
+        {/* ════════════ ABA E-BOOKS & LIVROS DIGITAIS (PREMIUM) ════════════ */}
+        {activeTab === 'ebooks-premium' && (
+          <BibliotecaEbooksView 
+            onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
       </main>
+
+      {/* ════════════ MODAL DE UPGRADE & RESGATE DE VOUCHER ════════════ */}
+      <UpgradeVoucherModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onActivatePremium={(code) => {
+          setIsPremiumUser(true);
+          try {
+            localStorage.setItem('1convite-premium', 'true');
+            localStorage.setItem('1convite-voucher-used', code);
+          } catch (e) {
+            console.error(e);
+          }
+        }}
+      />
     </div>
   );
 }
