@@ -66,6 +66,25 @@ function RewardPopup({ amount, title, message, onClose }) {
   );
 }
 
+// ═══ COMPONENTE CHAMINHA FIXO (MASCOTE OFICIAL) ═══
+function ChaminhaFixo({ size = 80, style = {}, className = '' }) {
+  return (
+    <img 
+      src="/mascote-chaminha.png" 
+      alt="Mascote Chaminha" 
+      className={className}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        objectFit: 'contain',
+        display: 'inline-block',
+        filter: 'drop-shadow(0 6px 16px rgba(249, 115, 22, 0.3))',
+        ...style
+      }} 
+    />
+  );
+}
+
 // ═══ COMPONENTE CHAMINHA COIN ═══
 
 // ═══ COMPONENTE CHAMINHA VIDEO (MASCOTE 3D) ═══
@@ -2347,10 +2366,21 @@ Em nome de Jesus, Amém.`;
               )}
             </div>
 
-            {/* Centro: Título do App */}
-            <h1 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>
-              1Convite
-            </h1>
+            {/* Centro: Logomarca Oficial do App */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img 
+                src="/LOGOMARCA.png" 
+                alt="1Convite" 
+                style={{ 
+                  height: '38px', 
+                  maxWidth: '160px',
+                  objectFit: 'contain',
+                  cursor: 'pointer',
+                  filter: darkMode ? 'drop-shadow(0 2px 8px rgba(249, 115, 22, 0.25))' : 'none'
+                }} 
+                onClick={() => setActiveTab('dashboard')}
+              />
+            </div>
 
 
 {/* Direita: Diamante / Vouchers Premium */}
@@ -6543,7 +6573,8 @@ Em nome de Jesus, Amém.`;
 
             {/* ════════════ TELA DE DIFICULDADE (ALTO CONTRASTE) ════════════ */}
             {arcadeActiveGame === 'difficulty' && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '24px', padding: '20px 10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '20px', padding: '20px 10px' }}>
+                <ChaminhaFixo size={110} style={{ animation: 'bounceChaminha 1s infinite alternate ease-in-out' }} />
                 <div style={{ textAlign: 'center' }}>
                   <h2 style={{ color: 'var(--orange)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 6px' }}>Selecione o Nível</h2>
                   <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
@@ -6551,6 +6582,7 @@ Em nome de Jesus, Amém.`;
                     {arcadeSelectedGame === 'quiz' && 'Responda no tempo e acumule Chaminhas!'}
                     {arcadeSelectedGame === 'forca' && 'Adivinhe as letras sem errar o boneco!'}
                     {arcadeSelectedGame === 'cacapalavras' && 'Procure os termos sagrados na grade!'}
+                    {arcadeSelectedGame === 'memoria' && 'Encontre os pares sagrados da Arca de Noé!'}
                   </p>
                 </div>
 
@@ -6721,9 +6753,9 @@ Em nome de Jesus, Amém.`;
 
               if (arcadeQuizGameOver) {
                 return (
-                  <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(249,115,22,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: 'var(--orange)' }}>
-                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                  <div style={{ textAlign: 'center', paddingTop: '30px' }}>
+                    <div style={{ marginBottom: '16px' }}>
+                      <ChaminhaFixo size={120} style={{ animation: 'bounceChaminha 0.8s infinite alternate ease-in-out' }} />
                     </div>
                     <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Quiz Concluído!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
@@ -6833,9 +6865,9 @@ Em nome de Jesus, Amém.`;
 
               if (arcadeCharadasGameOver) {
                 return (
-                  <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(219,39,119,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#db2777' }}>
-                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                  <div style={{ textAlign: 'center', paddingTop: '30px' }}>
+                    <div style={{ marginBottom: '16px' }}>
+                      <ChaminhaFixo size={120} style={{ animation: 'bounceChaminha 0.8s infinite alternate ease-in-out' }} />
                     </div>
                     <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Parabéns!</h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
