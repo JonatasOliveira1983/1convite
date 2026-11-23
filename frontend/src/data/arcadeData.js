@@ -192,16 +192,27 @@ export const ARCADE_QUIZ_QUESTIONS = [
   }
 ];
 
-// ═══════ CHARADAS - QUEM SOU EU ═══════
+// ═══════ CHARADAS - QUEM SOU EU (ADIVINHA KIDS & BÍBLIA) ═══════
 // Formato: { clues: string[], options: string[4], answer: number, difficulty: 'facil'|'medio'|'avancado' }
 export const ARCADE_CHARADAS_QUESTIONS = [
-  // ── FÁCIL ──
+  // ── FÁCIL / KIDS (Personagens Bíblicos Famosos para Crianças) ──
   {
     clues: [
-      'Fui rei de Israel e era jovem quando ungido.',
-      'Matei um gigante com uma pedra.',
-      'Tocava harpa e escrevi muitos Salmos.',
-      'Cometi um grande pecado com Bate-Seba.'
+      'Deus mandou eu construir um grande barco de madeira.',
+      'Coloquei casais de todos os animais para salvá-los.',
+      'Choveu durante 40 dias e 40 noites no dilúvio.',
+      'Soltei uma pomba que voltou com um ramo de oliveira.'
+    ],
+    options: ['Moisés', 'Noé', 'Abraão', 'Ló'],
+    answer: 1,
+    difficulty: 'facil'
+  },
+  {
+    clues: [
+      'Eu era um jovem pastor de ovelhas que amava a Deus.',
+      'Toquei harpa para acalmar o rei Saul.',
+      'Enfrentei o gigante Golias apenas com uma funda e uma pedra.',
+      'Mais tarde me tornei o maior rei de Israel.'
     ],
     options: ['Salomão', 'Davi', 'Saul', 'Josué'],
     answer: 1,
@@ -209,10 +220,21 @@ export const ARCADE_CHARADAS_QUESTIONS = [
   },
   {
     clues: [
-      'Sou profeta que fugiu de Deus.',
-      'Fui engolido por um grande peixe.',
-      'Preguei em Nínive contra a vontade.',
-      'Meu livro tem apenas 4 capítulos.'
+      'Deus me chamou para libertar o povo hebreu do Egito.',
+      'Quando eu era bebê, fui colocado em um cestinho no rio Nilo.',
+      'Estendi meu cajado e o Mar Vermelho se abriu.',
+      'Recebi as tábuas dos Dez Mandamentos no Monte Sinai.'
+    ],
+    options: ['Aarão', 'Josué', 'Moisés', 'Gideão'],
+    answer: 2,
+    difficulty: 'facil'
+  },
+  {
+    clues: [
+      'Tentei fugir de Deus entrando em um navio para Társis.',
+      'Uma grande tempestade se levantou no mar.',
+      'Fui engolido por um grande peixe e fiquei 3 dias na barriga dele.',
+      'O peixe me cuspiu na praia e fui pregar em Nínive.'
     ],
     options: ['Jeremias', 'Isaías', 'Jonas', 'Elias'],
     answer: 2,
@@ -220,35 +242,57 @@ export const ARCADE_CHARADAS_QUESTIONS = [
   },
   {
     clues: [
-      'Fui a primeira mulher criada.',
-      'Lata da costa de Adão.',
-      'Fui tentada pela serpente no Éden.',
-      'Sou a mãe de toda a humanidade.'
+      'Orava a Deus com a janela aberta três vezes ao dia.',
+      'Homens invejosos fizeram uma lei para proibir de orar.',
+      'Fui jogado na cova dos leões famintos por obedecer a Deus.',
+      'Deus enviou o Seu anjo que fechou a boca dos leões.'
     ],
-    options: ['Sara', 'Eva', 'Lilith', 'Rebeca'],
+    options: ['Daniel', 'Ezequiel', 'José', 'Samuel'],
+    answer: 0,
+    difficulty: 'facil'
+  },
+  {
+    clues: [
+      'Recebi do Senhor uma força incrível em meus cabelos.',
+      'Venci um leão feroz apenas com as minhas mãos.',
+      'Fui juiz de Israel e defendi meu povo contra os filisteus.',
+      'Fui traído por Dalila que descobriu o segredo da minha força.'
+    ],
+    options: ['Gideão', 'Sansão', 'Baraque', 'Jefté'],
     answer: 1,
     difficulty: 'facil'
   },
   {
     clues: [
-      'Liderei o povo de Israel para fora do Egito.',
-      'Recebi os Dez Mandamentos no Sinai.',
-      'Atravessei o Mar Vermelho.',
-      'Meu nome significa "tirado das águas".'
+      'Fui criado do pó da terra pelas próprias mãos de Deus.',
+      'Vivi no lindo Jardim do Éden.',
+      'Deus me deu a alegre tarefa de dar nome a todos os bichos.',
+      'Fui o primeiro ser humano a viver na Terra.'
     ],
-    options: ['Josué', 'Aarão', 'Moisés', 'Caleb'],
+    options: ['Sete', 'Caim', 'Adão', 'Noé'],
     answer: 2,
     difficulty: 'facil'
   },
   {
     clues: [
-      'Fui o primeiro homem criado.',
-      'Nome significa "barro" em hebraico.',
-      'Fui colocado no Jardim do Éden.',
-      'Deus me deu a tarefa de dar nomes aos animais.'
+      'Fui a primeira mulher criada por Deus com muito amor.',
+      'Vivi no Paraíso do Éden ao lado de Adão.',
+      'Fui enganada pela serpente e comi do fruto proibido.',
+      'Sou a mãe de todos os viventes da Terra.'
     ],
-    options: ['Sete', 'Caim', 'Adão', 'Noé'],
-    answer: 2,
+    options: ['Sara', 'Eva', 'Rebeca', 'Raquel'],
+    answer: 1,
+    difficulty: 'facil'
+  },
+  {
+    clues: [
+      'Meu pai Jacó me deu uma túnica especial cheia de cores.',
+      'Tive sonhos proféticos sobre feixes de trigo e estrelas.',
+      'Fui vendido por meus irmãos mas Deus sempre esteve comigo.',
+      'Interpretei os sonhos do Faraó e virei governador do Egito.'
+    ],
+    options: ['Benjamim', 'José', 'Judá', 'Ruben'],
+    answer: 1,
     difficulty: 'facil'
   },
 
@@ -546,4 +590,28 @@ export function generateCacaPalavrasGrid(wordList, gridSize = 10, maxWords = 6) 
   }
 
   return { grid, words: placedWords };
+}
+
+// ═══════ JOGO DA MEMÓRIA BÍBLICO (ARCA DE NOÉ & SÍMBOLOS SAGRADOS) ═══════
+export const ARCADE_MEMORIA_CARDS = [
+  { id: 'arca', name: 'Arca de Noé', verse: 'Gênesis 6:14', color: '#b45309', bgLight: '#FEF3C7', bgDark: 'rgba(180, 83, 9, 0.25)', iconType: 'boat' },
+  { id: 'pomba', name: 'Pomba da Paz', verse: 'Gênesis 8:11', color: '#0284c7', bgLight: '#E0F2FE', bgDark: 'rgba(2, 132, 199, 0.25)', iconType: 'dove' },
+  { id: 'cordeiro', name: 'Cordeiro de Deus', verse: 'João 1:29', color: '#16a34a', bgLight: '#DCFCE7', bgDark: 'rgba(22, 163, 74, 0.25)', iconType: 'sheep' },
+  { id: 'harpa', name: 'Harpa de Davi', verse: '1 Samuel 16:23', color: '#d97706', bgLight: '#FEF3C7', bgDark: 'rgba(217, 119, 6, 0.25)', iconType: 'music' },
+  { id: 'peixe', name: 'Peixe de Jonas', verse: 'Jonas 1:17', color: '#0891b2', bgLight: '#CFFAFE', bgDark: 'rgba(8, 145, 178, 0.25)', iconType: 'fish' },
+  { id: 'tabuas', name: '10 Mandamentos', verse: 'Êxodo 20:1', color: '#7c3aed', bgLight: '#EDE9FE', bgDark: 'rgba(124, 58, 237, 0.25)', iconType: 'book' },
+  { id: 'cruz', name: 'Cruz da Redenção', verse: '1 Coríntios 1:18', color: '#dc2626', bgLight: '#FEE2E2', bgDark: 'rgba(220, 38, 38, 0.25)', iconType: 'cross' },
+  { id: 'pao', name: 'Pão da Vida', verse: 'João 6:35', color: '#ea580c', bgLight: '#FFEDD5', bgDark: 'rgba(234, 88, 12, 0.25)', iconType: 'sun' }
+];
+
+export function generateMemoriaDeck() {
+  const cards = [];
+  ARCADE_MEMORIA_CARDS.forEach(card => {
+    // Par 1
+    cards.push({ uniqueId: `${card.id}-1`, cardId: card.id, name: card.name, verse: card.verse, color: card.color, bgLight: card.bgLight, bgDark: card.bgDark, iconType: card.iconType });
+    // Par 2
+    cards.push({ uniqueId: `${card.id}-2`, cardId: card.id, name: card.name, verse: card.verse, color: card.color, bgLight: card.bgLight, bgDark: card.bgDark, iconType: card.iconType });
+  });
+  // Embaralha aleatoriamente
+  return cards.sort(() => Math.random() - 0.5);
 }

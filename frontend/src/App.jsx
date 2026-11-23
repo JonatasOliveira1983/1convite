@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Onboarding from './components/Onboarding';
 import html2canvas from 'html2canvas';
 import LandingPage from './components/LandingPage/LandingPage';
-import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid } from './data/arcadeData';
+import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid, generateMemoriaDeck } from './data/arcadeData';
 import TrailHome from './components/trail/TrailHome';
 import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal } from './data/layaData';
 import CafeComDeusView from './components/CafeComDeus/CafeComDeusView';
 import MulherVirtuosaView from './components/MulherVirtuosa/MulherVirtuosaView';
 import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPregadorView';
 import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooksView';
-import KidsView from './components/Kids/KidsView';
 import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
 import cafeData from './data/cafe_com_deus_365.json';
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
@@ -359,6 +358,11 @@ function App() {
   const [arcadeCacaSelected, setArcadeCacaSelected] = useState([]);
   const [arcadeCacaScore, setArcadeCacaScore] = useState(0);
   const [arcadeCacaGameOver, setArcadeCacaGameOver] = useState(false);
+  const [arcadeMemoriaCards, setArcadeMemoriaCards] = useState([]);
+  const [arcadeMemoriaFlipped, setArcadeMemoriaFlipped] = useState([]);
+  const [arcadeMemoriaMatched, setArcadeMemoriaMatched] = useState([]);
+  const [arcadeMemoriaMoves, setArcadeMemoriaMoves] = useState(0);
+  const [arcadeMemoriaGameOver, setArcadeMemoriaGameOver] = useState(false);
   // --- END RESTORED ARCADE STATES ---
 
   const [user, setUser] = useState(null);
@@ -5872,122 +5876,156 @@ Importante: O JSON deve ser 100% válido.`;
             {arcadeActiveGame === 'lobby' && (
               <>
                 {/* Cabeçalho do Arcade com ChaminhaCoin */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div className="arcade-header-card">
                   <div>
-                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text-primary)' }}>Seu Progresso</h2>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Divirta-se e aprenda!</span>
+                    <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>Seu Progresso</h2>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Divirta-se e aprenda a Palavra!</span>
                   </div>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '12px', border: '1px solid rgba(249,115,22,0.2)' }}>
-                      <ChaminhaCoin size={20} />
-                      <strong style={{ color: 'var(--orange)', fontSize: '1.1rem' }}>{userCoins}</strong>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(249,115,22,0.12)', padding: '6px 14px', borderRadius: '12px', border: '1.5px solid rgba(249,115,22,0.3)' }}>
+                      <ChaminhaCoin size={22} />
+                      <strong style={{ color: 'var(--orange)', fontSize: '1.15rem' }}>{userCoins}</strong>
                     </div>
                   </div>
                 </div>
 
-                {/* Chaminha no lobby de jogos com layout horizontal */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginBottom: '32px', padding: '0 12px' }}>
-                  <ChaminhaVideo size={80} style={{ flexShrink: 0 }} />
+                {/* Chaminha no lobby de jogos */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginBottom: '28px', padding: '0 8px' }}>
+                  <ChaminhaVideo size={76} style={{ flexShrink: 0 }} />
                   <div className="glass-panel animate-fade-in" style={{
-                    padding: '12px 18px',
+                    padding: '14px 18px',
                     borderRadius: '16px',
-                    fontSize: '0.9rem',
-                    color: 'var(--text-secondary)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    fontSize: '0.92rem',
+                    color: 'var(--text-primary)',
+                    border: '1.5px solid var(--border-color, rgba(255, 255, 255, 0.1))',
                     position: 'relative',
-                    maxWidth: '360px',
-                    background: 'rgba(255, 255, 255, 0.02)'
+                    maxWidth: '380px',
+                    background: darkMode ? 'rgba(24, 24, 27, 0.85)' : '#ffffff',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
                   }}>
-                    <div style={{
-                      position: 'absolute', top: '50%', left: '-6px', transform: 'translateY(-50%) rotate(45deg)',
-                      width: '10px', height: '10px', background: 'var(--bg-app)', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
-                    }} />
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-green, #1ED760)" strokeWidth="2" style={{display:"inline-block", verticalAlign:"middle", marginRight:4}}><polygon points="5 3 19 12 5 21 5 3"/></svg> <strong>Chaminha:</strong> "Vamos testar sua sabedoria? Escolha um jogo abaixo e ganhe muitas Chaminhas!"
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-green, #10B981)" strokeWidth="2.5" style={{ display: "inline-block", verticalAlign: "middle", marginRight: 6 }}>
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    <strong>Chaminha:</strong> "Escolha um jogo bíblico abaixo para testar sua sabedoria e ganhar muitas Chaminhas!"
                   </div>
                 </div>
 
-                {/* Lista de Jogos */}
+                {/* Grade dos 5 Jogos Unificados */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
                   
-                  <div className="glass-panel" onClick={() => { setArcadeSelectedGame('quiz'); setArcadeActiveGame('difficulty'); }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', gap: '12px', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 8px 16px rgba(124, 58, 237, 0.3)' }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  {/* Jogo 1: Quiz Bíblico */}
+                  <div className="arcade-game-card" onClick={() => { setArcadeSelectedGame('quiz'); setArcadeActiveGame('difficulty'); }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px', boxShadow: '0 6px 14px rgba(124, 58, 237, 0.35)' }}>
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
                     </div>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Quiz Bíblico</h3>
-                      <p style={{ margin: '6px 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Teste seus conhecimentos</p>
+                      <h3 className="arcade-card-title">Quiz Bíblico</h3>
+                      <p className="arcade-card-subtitle">Perguntas e respostas</p>
                     </div>
-                    <div style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', marginTop: '4px', background: 'rgba(249,115,22,0.1)', padding: '4px 12px', borderRadius: '12px' }}>JOGAR</div>
+                    <div className="arcade-play-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      JOGAR
+                    </div>
                   </div>
 
-                  <div className="glass-panel" onClick={() => { setArcadeSelectedGame('cacapalavras'); setArcadeActiveGame('difficulty'); }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', gap: '12px', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #059669, #10b981)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 8px 16px rgba(5, 150, 105, 0.3)' }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  {/* Jogo 2: Caça-Palavras */}
+                  <div className="arcade-game-card" onClick={() => { setArcadeSelectedGame('cacapalavras'); setArcadeActiveGame('difficulty'); }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(135deg, #059669, #10b981)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px', boxShadow: '0 6px 14px rgba(5, 150, 105, 0.35)' }}>
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <line x1="11" y1="8" x2="11" y2="14" />
+                        <line x1="8" y1="11" x2="14" y2="11" />
+                      </svg>
                     </div>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Caça Palavras</h3>
-                      <p style={{ margin: '6px 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Encontre os termos</p>
+                      <h3 className="arcade-card-title">Caça Palavras</h3>
+                      <p className="arcade-card-subtitle">Encontre termos sagrados</p>
                     </div>
-                    <div style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', marginTop: '4px', background: 'rgba(249,115,22,0.1)', padding: '4px 12px', borderRadius: '12px' }}>JOGAR</div>
+                    <div className="arcade-play-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      JOGAR
+                    </div>
                   </div>
 
-                  <div className="glass-panel" onClick={() => { setArcadeSelectedGame('charadas'); setArcadeActiveGame('difficulty'); }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', gap: '12px', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #db2777, #f43f5e)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 8px 16px rgba(219, 39, 119, 0.3)' }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  {/* Jogo 3: Quem Sou Eu? (Adivinha Kids & Bíblia) */}
+                  <div className="arcade-game-card" onClick={() => { setArcadeSelectedGame('charadas'); setArcadeActiveGame('difficulty'); }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(135deg, #db2777, #f43f5e)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px', boxShadow: '0 6px 14px rgba(219, 39, 119, 0.35)' }}>
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
                     </div>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Quem Sou Eu?</h3>
-                      <p style={{ margin: '6px 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Adivinhe o personagem</p>
+                      <h3 className="arcade-card-title">Quem Sou Eu?</h3>
+                      <p className="arcade-card-subtitle">Adivinha Kids & Bíblia</p>
                     </div>
-                    <div style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', marginTop: '4px', background: 'rgba(249,115,22,0.1)', padding: '4px 12px', borderRadius: '12px' }}>JOGAR</div>
+                    <div className="arcade-play-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      JOGAR
+                    </div>
                   </div>
 
-                  <div className="glass-panel" onClick={() => { setArcadeSelectedGame('forca'); setArcadeActiveGame('difficulty'); }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', gap: '12px', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #d97706, #f59e0b)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', boxShadow: '0 8px 16px rgba(217, 119, 6, 0.3)' }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h14"/><path d="M9 22V2"/><path d="M9 2h6"/><path d="M15 2v4"/><circle cx="15" cy="8" r="2"/></svg>
+                  {/* Jogo 4: Forca Bíblica */}
+                  <div className="arcade-game-card" onClick={() => { setArcadeSelectedGame('forca'); setArcadeActiveGame('difficulty'); }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(135deg, #d97706, #f59e0b)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px', boxShadow: '0 6px 14px rgba(217, 119, 6, 0.35)' }}>
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 22h14" />
+                        <path d="M9 22V2" />
+                        <path d="M9 2h6" />
+                        <path d="M15 2v4" />
+                        <circle cx="15" cy="8" r="2" />
+                      </svg>
                     </div>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Forca Bíblica</h3>
-                      <p style={{ margin: '6px 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Adivinhe a palavra</p>
+                      <h3 className="arcade-card-title">Forca Bíblica</h3>
+                      <p className="arcade-card-subtitle">Adivinhe a palavra secreta</p>
                     </div>
-                    <div style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', marginTop: '4px', background: 'rgba(249,115,22,0.1)', padding: '4px 12px', borderRadius: '12px' }}>JOGAR</div>
+                    <div className="arcade-play-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      JOGAR
+                    </div>
                   </div>
 
-                  {/* CARD DESTAQUE HISTÓRIAS BÍBLICAS KIDS */}
+                  {/* Jogo 5: Jogo da Memória Bíblico (Arca de Noé & Símbolos) */}
                   <div 
-                    className="glass-panel" 
-                    onClick={() => { setArcadeSelectedGame('historias-kids'); setArcadeActiveGame('historias-kids'); }} 
-                    style={{ 
-                      gridColumn: 'span 2', 
-                      cursor: 'pointer', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '16px', 
-                      padding: '18px', 
-                      borderRadius: '18px',
-                      background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(2, 132, 199, 0.08) 100%)',
-                      border: '1.5px solid rgba(14, 165, 233, 0.35)',
-                      transition: 'all 0.2s' 
+                    className="arcade-game-card" 
+                    onClick={() => {
+                      setArcadeSelectedGame('memoria');
+                      setArcadeMemoriaCards(generateMemoriaDeck());
+                      setArcadeMemoriaFlipped([]);
+                      setArcadeMemoriaMatched([]);
+                      setArcadeMemoriaMoves(0);
+                      setArcadeMemoriaGameOver(false);
+                      setArcadeActiveGame('memoria');
                     }}
+                    style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'left', padding: '18px 20px', gap: '16px' }}
                   >
-                    <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 14px rgba(14, 165, 233, 0.35)' }}>
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <div style={{ width: '64px', height: '64px', borderRadius: '18px', background: 'linear-gradient(135deg, #0284c7, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 6px 16px rgba(2, 132, 199, 0.35)' }}>
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="3" width="9" height="13" rx="2" />
+                        <rect x="13" y="8" width="9" height="13" rx="2" />
+                        <path d="M6 7h1" />
+                        <path d="M17 12h1" />
                       </svg>
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
-                        <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#0284C7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Espaço Infantil</span>
-                        <span style={{ fontSize: '0.62rem', background: '#0EA5E9', color: '#fff', padding: '1px 6px', borderRadius: '10px', fontWeight: '800' }}>KIDS</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#10B981', color: '#fff', padding: '2px 8px', borderRadius: '8px', letterSpacing: '0.05em' }}>NOVO</span>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--orange)' }}>ARCA DE NOÉ</span>
                       </div>
-                      <h3 style={{ margin: '0 0 2px', fontSize: '1.05rem', color: 'var(--text-primary)' }}>Histórias Bíblicas para Crianças</h3>
-                      <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Aventuras da fé com lições de vida para toda a família</p>
+                      <h3 className="arcade-card-title" style={{ fontSize: '1.15rem' }}>Jogo da Memória</h3>
+                      <p className="arcade-card-subtitle" style={{ margin: 0 }}>Encontre os pares dos animais e símbolos sagrados</p>
                     </div>
-                    <div style={{ color: '#0284C7', fontWeight: 'bold' }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M9 18l6-6-6-6" />
-                      </svg>
+                    <div className="arcade-play-badge" style={{ margin: 0 }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      JOGAR
                     </div>
                   </div>
 
@@ -5995,12 +6033,22 @@ Importante: O JSON deve ser 100% válido.`;
               </>
             )}
 
+            {/* ════════════ TELA DE DIFICULDADE (ALTO CONTRASTE) ════════════ */}
             {arcadeActiveGame === 'difficulty' && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '24px', padding: '24px' }}>
-                <h2 style={{ color: 'var(--orange)', fontSize: '1.5rem', marginBottom: '8px' }}>Selecione a Dificuldade</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '300px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '24px', padding: '20px 10px' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <h2 style={{ color: 'var(--orange)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 6px' }}>Selecione o Nível</h2>
+                  <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                    {arcadeSelectedGame === 'charadas' && 'Adivinhe os personagens das histórias bíblicas!'}
+                    {arcadeSelectedGame === 'quiz' && 'Responda no tempo e acumule Chaminhas!'}
+                    {arcadeSelectedGame === 'forca' && 'Adivinhe as letras sem errar o boneco!'}
+                    {arcadeSelectedGame === 'cacapalavras' && 'Procure os termos sagrados na grade!'}
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', maxWidth: '340px' }}>
                   
-                  {/* FÁCIL */}
+                  {/* NÍVEL BÁSICO / KIDS */}
                   <button onClick={() => {
                     setArcadeDifficulty('facil');
                     if (arcadeSelectedGame === 'quiz') {
@@ -6020,11 +6068,29 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeForcaCurrent(0); setArcadeForcaScore(0); setArcadeForcaGameOver(false); setArcadeForcaGuesses([]); setArcadeForcaMistakes(0); setArcadeForcaFeedback(null);
                     }
                     setArcadeActiveGame(arcadeSelectedGame);
-                  }} style={{ background: 'rgba(16,185,129,0.2)', border: '1px solid #10b981', color: '#fff', padding: '16px', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(16,185,129,0.4)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(16,185,129,0.2)'}>
-                    Nível Básico
+                  }} style={{
+                    background: darkMode ? 'rgba(16, 185, 129, 0.15)' : '#ecfdf5',
+                    border: '2px solid #10b981',
+                    color: darkMode ? '#34d399' : '#065f46',
+                    padding: '16px 20px',
+                    borderRadius: '16px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.12)',
+                    transition: 'all 0.2s'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '1.15rem', fontWeight: 800 }}>
+                        {arcadeSelectedGame === 'charadas' ? 'Nível Kids / Básico' : 'Nível Básico'}
+                      </span>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                    </div>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600, opacity: 0.9 }}>
+                      {arcadeSelectedGame === 'charadas' ? 'Personagens famosos (Noé, Davi, Moisés, Jonas...)' : 'Perfeito para crianças e iniciantes'}
+                    </span>
                   </button>
 
-                  {/* MÉDIO */}
+                  {/* NÍVEL MÉDIO */}
                   <button onClick={() => {
                     setArcadeDifficulty('medio');
                     if (arcadeSelectedGame === 'quiz') {
@@ -6044,11 +6110,27 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeForcaCurrent(0); setArcadeForcaScore(0); setArcadeForcaGameOver(false); setArcadeForcaGuesses([]); setArcadeForcaMistakes(0); setArcadeForcaFeedback(null);
                     }
                     setArcadeActiveGame(arcadeSelectedGame);
-                  }} style={{ background: 'rgba(245,158,11,0.2)', border: '1px solid #f59e0b', color: '#fff', padding: '16px', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(245,158,11,0.4)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(245,158,11,0.2)'}>
-                    ⭐ Médio
+                  }} style={{
+                    background: darkMode ? 'rgba(245, 158, 11, 0.15)' : '#fffbeb',
+                    border: '2px solid #f59e0b',
+                    color: darkMode ? '#fbbf24' : '#92400e',
+                    padding: '16px 20px',
+                    borderRadius: '16px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.12)',
+                    transition: 'all 0.2s'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '1.15rem', fontWeight: 800 }}>Nível Médio</span>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600, opacity: 0.9 }}>
+                      {arcadeSelectedGame === 'charadas' ? 'Heróis da Fé e histórias marcantes' : 'Desafio equilibrado para quem estuda a Bíblia'}
+                    </span>
                   </button>
 
-                  {/* AVANÇADO */}
+                  {/* NÍVEL AVANÇADO */}
                   <button onClick={() => {
                     setArcadeDifficulty('avancado');
                     if (arcadeSelectedGame === 'quiz') {
@@ -6068,16 +6150,36 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeForcaCurrent(0); setArcadeForcaScore(0); setArcadeForcaGameOver(false); setArcadeForcaGuesses([]); setArcadeForcaMistakes(0); setArcadeForcaFeedback(null);
                     }
                     setArcadeActiveGame(arcadeSelectedGame);
-                  }} style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid #ef4444', color: '#fff', padding: '16px', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239,68,68,0.4)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239,68,68,0.2)'}>
-                    Nível Avançado (2x Recompensas)
+                  }} style={{
+                    background: darkMode ? 'rgba(239, 68, 68, 0.15)' : '#fef2f2',
+                    border: '2px solid #ef4444',
+                    color: darkMode ? '#f87171' : '#991b1b',
+                    padding: '16px 20px',
+                    borderRadius: '16px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.12)',
+                    transition: 'all 0.2s'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '1.15rem', fontWeight: 800 }}>Nível Avançado</span>
+                      <span style={{ fontSize: '0.72rem', background: '#ef4444', color: '#fff', padding: '2px 8px', borderRadius: '8px', fontWeight: 800 }}>2x MOEDAS</span>
+                    </div>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600, opacity: 0.9 }}>
+                      {arcadeSelectedGame === 'charadas' ? 'Profetas, mestres e detalhes profundos' : 'Para profundos conhecedores da Palavra'}
+                    </span>
                   </button>
+
                 </div>
-                <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', marginTop: '16px', cursor: 'pointer', textDecoration: 'underline' }}>
-                  Voltar
+
+                <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" style={{ width: 'auto', height: 'auto', padding: '10px 20px', borderRadius: '12px', gap: '8px' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                  <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Voltar ao Lobby</span>
                 </button>
               </div>
             )}
 
+            {/* ════════════ JOGO 1: QUIZ BÍBLICO ════════════ */}
             {arcadeActiveGame === 'quiz' && (() => {
               const q = arcadeQuizList[arcadeQuizCurrentQuestion];
               
@@ -6106,15 +6208,19 @@ Importante: O JSON deve ser 100% válido.`;
                   } else {
                     setArcadeQuizGameOver(true);
                   }
-                }, 2000);
+                }, 1800);
               };
 
               if (arcadeQuizGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
-                    <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Quiz Concluído!</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação: <strong style={{ color: '#fff' }}>{arcadeQuizScore}</strong></p>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(249,115,22,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: 'var(--orange)' }}>
+                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Quiz Concluído!</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
+                      Sua pontuação final: <strong style={{ color: 'var(--text-primary)' }}>{arcadeQuizScore} pontos</strong>
+                    </p>
                     
                     <button className="btn-primary" onClick={() => {
                       setArcadeActiveGame('lobby');
@@ -6123,7 +6229,7 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeQuizGameOver(false);
                       const resetTime = arcadeDifficulty === 'facil' ? 30 : (arcadeDifficulty === 'avancado' ? 7 : 15);
                       setArcadeQuizTimer(resetTime);
-                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '12px', width: '100%' }}>
+                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '14px', width: '100%', maxWidth: '340px' }}>
                       Voltar ao Lobby
                     </button>
                   </div>
@@ -6133,50 +6239,49 @@ Importante: O JSON deve ser 100% válido.`;
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                   {/* Header do Jogo */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
-                    <div style={{ display: 'flex', gap: '16px' }}>
-                      <div style={{ fontWeight: 'bold', color: 'var(--orange)', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⭐ {arcadeQuizScore}</div>
-                      <div style={{ fontWeight: 'bold', color: '#10b981', background: 'rgba(16,185,129,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⏱️ {arcadeQuizTimer}s</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" aria-label="Voltar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                    </button>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--orange)', background: 'rgba(249,115,22,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(249,115,22,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {arcadeQuizScore}
+                      </div>
+                      <div style={{ fontWeight: 800, color: arcadeQuizTimer <= 5 ? '#ef4444' : '#10b981', background: arcadeQuizTimer <= 5 ? 'rgba(239,68,68,0.12)' : 'rgba(16,185,129,0.12)', padding: '6px 14px', borderRadius: '20px', border: `1px solid ${arcadeQuizTimer <= 5 ? 'rgba(239,68,68,0.25)' : 'rgba(16,185,129,0.25)'}`, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        {arcadeQuizTimer}s
+                      </div>
                     </div>
                   </div>
 
                   {/* Pergunta */}
-                  <div className="glass-panel" style={{ padding: '30px 20px', textAlign: 'center', marginBottom: '24px' }}>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--orange)', fontWeight: 'bold', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Pergunta {arcadeQuizCurrentQuestion + 1} de {arcadeQuizList.length}</div>
-                    <h3 style={{ margin: 0, fontSize: '1.3rem', lineHeight: '1.4', color: 'var(--text-primary)' }}>{q?.question}</h3>
+                  <div className="arcade-question-card">
+                    <div style={{ fontSize: '0.82rem', color: 'var(--orange)', fontWeight: 800, marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      Pergunta {arcadeQuizCurrentQuestion + 1} de {arcadeQuizList.length}
+                    </div>
+                    <h3 style={{ margin: 0, fontSize: '1.25rem', lineHeight: '1.4', fontWeight: 800, color: 'var(--text-primary)' }}>{q?.question}</h3>
                   </div>
 
                   {/* Alternativas */}
                   <div style={{ display: 'grid', gap: '12px' }}>
                     {q?.options.map((opt, idx) => {
-                      let bgColor = 'rgba(255,255,255,0.05)';
-                      let borderColor = 'rgba(255,255,255,0.1)';
-                      
+                      let statusClass = '';
                       if (arcadeQuizFeedback) {
-                        if (idx === q.answer) {
-                          bgColor = 'rgba(16,185,129,0.2)'; // verde (correto)
-                          borderColor = '#10b981';
-                        } else if (arcadeQuizFeedback === 'wrong' && idx !== q.answer) {
-                          bgColor = 'rgba(239,68,68,0.1)'; // vermelho (errado)
-                        }
+                        if (idx === q.answer) statusClass = 'correct';
+                        else if (arcadeQuizFeedback === 'wrong' && idx !== q.answer) statusClass = 'wrong';
                       }
 
                       return (
-                        <button key={idx} onClick={() => handleAnswer(idx)} disabled={!!arcadeQuizFeedback}
-                          style={{
-                            background: bgColor,
-                            border: `2px solid ${borderColor}`,
-                            padding: '18px 20px',
-                            borderRadius: '16px',
-                            color: 'var(--text-primary)',
-                            fontSize: '1.05rem',
-                            fontWeight: '600',
-                            textAlign: 'left',
-                            cursor: arcadeQuizFeedback ? 'default' : 'pointer',
-                            transition: 'all 0.2s'
-                          }}
+                        <button 
+                          key={idx} 
+                          onClick={() => handleAnswer(idx)} 
+                          disabled={!!arcadeQuizFeedback}
+                          className={`arcade-option-btn ${statusClass}`}
                         >
+                          <span style={{ display: 'inline-block', width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(0,0,0,0.06)', textAlign: 'center', lineHeight: '28px', marginRight: '10px', fontSize: '0.85rem' }}>
+                            {String.fromCharCode(65 + idx)}
+                          </span>
                           {opt}
                         </button>
                       );
@@ -6186,6 +6291,7 @@ Importante: O JSON deve ser 100% válido.`;
               );
             })()}
 
+            {/* ════════════ JOGO 2: QUEM SOU EU? (ADIVINHA KIDS & BÍBLIA) ════════════ */}
             {arcadeActiveGame === 'charadas' && (() => {
               const q = arcadeCharadasList[arcadeCharadasCurrent];
               
@@ -6194,7 +6300,7 @@ Importante: O JSON deve ser 100% válido.`;
                 
                 if (index === q.answer) {
                   setArcadeCharadasFeedback('correct');
-                  setArcadeCharadasScore(prev => prev + 15); // Mais pontos por ser mais difícil
+                  setArcadeCharadasScore(prev => prev + 15);
                   setUserCoins(prev => {
                     const multiplier = arcadeDifficulty === 'avancado' ? 2 : 1;
                     const newCoins = prev + (10 * multiplier);
@@ -6214,22 +6320,26 @@ Importante: O JSON deve ser 100% válido.`;
                   } else {
                     setArcadeCharadasGameOver(true);
                   }
-                }, 2000);
+                }, 1800);
               };
 
               if (arcadeCharadasGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
-                    <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Fim do Jogo!</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação: <strong style={{ color: '#fff' }}>{arcadeCharadasScore}</strong></p>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(219,39,119,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#db2777' }}>
+                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Parabéns!</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
+                      Sua pontuação: <strong style={{ color: 'var(--text-primary)' }}>{arcadeCharadasScore} pontos</strong>
+                    </p>
                     
                     <button className="btn-primary" onClick={() => {
                       setArcadeActiveGame('lobby');
                       setArcadeCharadasCurrent(0);
                       setArcadeCharadasScore(0);
                       setArcadeCharadasGameOver(false);
-                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '12px', width: '100%' }}>
+                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '14px', width: '100%', maxWidth: '340px' }}>
                       Voltar ao Lobby
                     </button>
                   </div>
@@ -6239,26 +6349,33 @@ Importante: O JSON deve ser 100% válido.`;
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                   {/* Header do Jogo */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
-                    <div style={{ display: 'flex', gap: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" aria-label="Voltar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                    </button>
+                    <div style={{ display: 'flex', gap: '12px' }}>
                       {arcadeCharadasTimer !== null && (
-                        <div style={{ fontWeight: 'bold', color: arcadeCharadasTimer <= 3 ? '#ef4444' : '#fff', background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '20px', transition: 'color 0.3s' }}>
-                          ⏱ {arcadeCharadasTimer}s
+                        <div style={{ fontWeight: 800, color: arcadeCharadasTimer <= 3 ? '#ef4444' : 'var(--text-primary)', background: darkMode ? 'rgba(255,255,255,0.1)' : '#f3f4f6', padding: '6px 14px', borderRadius: '20px', border: '1px solid var(--border-color, #e5e7eb)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                          {arcadeCharadasTimer}s
                         </div>
                       )}
-                      <div style={{ fontWeight: 'bold', color: 'var(--orange)', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⭐ {arcadeCharadasScore}</div>
+                      <div style={{ fontWeight: 800, color: 'var(--orange)', background: 'rgba(249,115,22,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(249,115,22,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {arcadeCharadasScore}
+                      </div>
                     </div>
                   </div>
 
                   {/* Dicas */}
-                  <div className="glass-panel" style={{ padding: '30px 20px', textAlign: 'left', marginBottom: '24px', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: -20, right: -20, fontSize: '6rem', opacity: 0.05, transform: 'rotate(15deg)' }}></div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--orange)', fontWeight: 'bold', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>Quem Sou Eu? ({arcadeCharadasCurrent + 1}/{arcadeCharadasList.length})</div>
+                  <div className="arcade-question-card" style={{ textAlign: 'left', padding: '24px 20px' }}>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--orange)', fontWeight: 800, marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.06em', textAlign: 'center' }}>
+                      Quem Sou Eu? ({arcadeCharadasCurrent + 1} de {arcadeCharadasList.length})
+                    </div>
                     
-                    <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <ul style={{ margin: 0, paddingLeft: '22px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {q?.clues.map((clue, idx) => (
-                        <li key={idx} style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: '1.4' }}>{clue}</li>
+                        <li key={idx} style={{ fontSize: '1.05rem', color: 'var(--text-primary)', lineHeight: '1.45', fontWeight: 600 }}>{clue}</li>
                       ))}
                     </ul>
                   </div>
@@ -6266,32 +6383,19 @@ Importante: O JSON deve ser 100% válido.`;
                   {/* Alternativas */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                     {q?.options.map((opt, idx) => {
-                      let bgColor = 'rgba(255,255,255,0.05)';
-                      let borderColor = 'rgba(255,255,255,0.1)';
-                      
+                      let statusClass = '';
                       if (arcadeCharadasFeedback) {
-                        if (idx === q.answer) {
-                          bgColor = 'rgba(16,185,129,0.2)'; // verde
-                          borderColor = '#10b981';
-                        } else if (arcadeCharadasFeedback === 'wrong' && idx !== q.answer) {
-                          bgColor = 'rgba(239,68,68,0.1)'; // vermelho
-                        }
+                        if (idx === q.answer) statusClass = 'correct';
+                        else if (arcadeCharadasFeedback === 'wrong' && idx !== q.answer) statusClass = 'wrong';
                       }
 
                       return (
-                        <button key={idx} onClick={() => handleAnswer(idx)} disabled={!!arcadeCharadasFeedback}
-                          style={{
-                            background: bgColor,
-                            border: `2px solid ${borderColor}`,
-                            padding: '16px',
-                            borderRadius: '16px',
-                            color: 'var(--text-primary)',
-                            fontSize: '1rem',
-                            fontWeight: '600',
-                            textAlign: 'center',
-                            cursor: arcadeCharadasFeedback ? 'default' : 'pointer',
-                            transition: 'all 0.2s'
-                          }}
+                        <button 
+                          key={idx} 
+                          onClick={() => handleAnswer(idx)} 
+                          disabled={!!arcadeCharadasFeedback}
+                          className={`arcade-option-btn ${statusClass}`}
+                          style={{ textAlign: 'center', padding: '16px 12px' }}
                         >
                           {opt}
                         </button>
@@ -6302,11 +6406,11 @@ Importante: O JSON deve ser 100% válido.`;
               );
             })()}
 
+            {/* ════════════ JOGO 3: FORCA BÍBLICA (MODO CLARO E ESCURO 100% NÍTIDO) ════════════ */}
             {arcadeActiveGame === 'forca' && (() => {
               const currentWordObj = arcadeForcaList[arcadeForcaCurrent];
               const word = currentWordObj ? currentWordObj.word.toUpperCase() : '';
               
-              // Verifica se a palavra inteira já foi adivinhada
               const isWordGuessed = word && word.split('').every(char => char === ' ' || arcadeForcaGuesses.includes(char));
               const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
               
@@ -6321,14 +6425,12 @@ Importante: O JSON deve ser 100% válido.`;
                 if (!word.includes(letter)) {
                   setArcadeForcaMistakes(prev => {
                     const newMistakes = prev + 1;
-                    // Verifica se perdeu após esta tentativa
                     if (newMistakes >= maxMistakes) {
                       setTimeout(() => setArcadeForcaFeedback('lost'), 600);
                     }
                     return newMistakes;
                   });
                 } else {
-                  // Verifica se ganhou após esta tentativa
                   const updatedWord = word.split('');
                   const willBeGuessed = updatedWord.every(char => char === ' ' || newGuesses.includes(char));
                   if (willBeGuessed) {
@@ -6339,7 +6441,7 @@ Importante: O JSON deve ser 100% válido.`;
 
               const handleNextWord = () => {
                 if (arcadeForcaFeedback === 'won') {
-                  setArcadeForcaScore(prev => prev + 20); // 20 pontos por acertar a palavra
+                  setArcadeForcaScore(prev => prev + 20);
                   setUserCoins(prev => {
                     const multiplier = arcadeDifficulty === 'avancado' ? 2 : 1;
                     const newCoins = prev + (15 * multiplier);
@@ -6361,9 +6463,13 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeForcaGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
-                    <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Fim do Jogo!</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Sua pontuação final: <strong style={{ color: '#fff' }}>{arcadeForcaScore}</strong></p>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(217,119,6,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#d97706' }}>
+                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Fim do Jogo!</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
+                      Sua pontuação final: <strong style={{ color: 'var(--text-primary)' }}>{arcadeForcaScore} pontos</strong>
+                    </p>
                     
                     <button className="btn-primary" onClick={() => {
                       setArcadeActiveGame('lobby');
@@ -6373,7 +6479,7 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeForcaGuesses([]);
                       setArcadeForcaMistakes(0);
                       setArcadeForcaFeedback(null);
-                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '12px', width: '100%' }}>
+                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '14px', width: '100%', maxWidth: '340px' }}>
                       Voltar ao Lobby
                     </button>
                   </div>
@@ -6383,22 +6489,34 @@ Importante: O JSON deve ser 100% válido.`;
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                   {/* Header do Jogo */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
-                    <div style={{ display: 'flex', gap: '16px' }}>
-                      <div style={{ fontWeight: 'bold', color: 'var(--orange)', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⭐ {arcadeForcaScore}</div>
-                      <div style={{ fontWeight: 'bold', color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '6px 12px', borderRadius: '20px' }}>{maxMistakes - arcadeForcaMistakes}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" aria-label="Voltar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                    </button>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--orange)', background: 'rgba(249,115,22,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(249,115,22,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {arcadeForcaScore}
+                      </div>
+                      <div style={{ fontWeight: 800, color: '#ef4444', background: 'rgba(239,68,68,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(239,68,68,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        {maxMistakes - arcadeForcaMistakes} vidas
+                      </div>
                     </div>
                   </div>
 
-                  {/* Dica */}
-                  <div className="glass-panel" style={{ padding: '20px', textAlign: 'center', marginBottom: '24px' }}>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--orange)', fontWeight: 'bold', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dica da Palavra</div>
-                    <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text-primary)' }}>"{currentWordObj?.tip}"</h3>
+                  {/* Dica da Palavra */}
+                  <div className="arcade-tip-panel">
+                    <div style={{ fontSize: '0.82rem', color: 'var(--orange)', fontWeight: 800, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      Dica da Palavra ({arcadeForcaCurrent + 1} de {arcadeForcaList.length})
+                    </div>
+                    <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                      "{currentWordObj?.tip}"
+                    </h3>
                   </div>
 
                   {/* Palavra Oculta */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', marginBottom: '32px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', marginBottom: '28px' }}>
                     {word.split('').map((char, idx) => {
                       if (char === ' ') return <div key={idx} style={{ width: '100%', height: '8px' }}></div>;
                       const isRevealed = arcadeForcaGuesses.includes(char) || arcadeForcaFeedback === 'lost';
@@ -6406,10 +6524,11 @@ Importante: O JSON deve ser 100% válido.`;
                       
                       return (
                         <div key={idx} style={{
-                          width: '40px', height: '50px', borderBottom: '3px solid var(--text-primary)',
+                          width: '40px', height: '52px', 
+                          borderBottom: `3.5px solid ${darkMode ? '#ffffff' : '#111827'}`,
                           display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-                          fontSize: '1.8rem', fontWeight: 'bold', paddingBottom: '4px',
-                          color: isMissed ? '#ef4444' : 'var(--text-primary)'
+                          fontSize: '1.85rem', fontWeight: 900, paddingBottom: '4px',
+                          color: isMissed ? '#ef4444' : (darkMode ? '#ffffff' : '#111827')
                         }}>
                           {isRevealed ? char : ''}
                         </div>
@@ -6419,17 +6538,21 @@ Importante: O JSON deve ser 100% válido.`;
 
                   {/* Feedback Modal / Overlay */}
                   {arcadeForcaFeedback && (
-                    <div style={{ background: arcadeForcaFeedback === 'won' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', border: `2px solid ${arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444'}`, borderRadius: '16px', padding: '20px', textAlign: 'center', marginBottom: '24px' }}>
-                      <h3 style={{ margin: '0 0 12px', color: arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444', fontSize: '1.4rem' }}>
-                        {arcadeForcaFeedback === 'won' ? 'Você Acertou! ' : 'Você Perdeu! '}
+                    <div style={{ 
+                      background: arcadeForcaFeedback === 'won' ? (darkMode ? 'rgba(16,185,129,0.2)' : '#ecfdf5') : (darkMode ? 'rgba(239,68,68,0.2)' : '#fef2f2'), 
+                      border: `2px solid ${arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444'}`, 
+                      borderRadius: '16px', padding: '18px', textAlign: 'center', marginBottom: '20px' 
+                    }}>
+                      <h3 style={{ margin: '0 0 10px', color: arcadeForcaFeedback === 'won' ? '#10b981' : '#ef4444', fontSize: '1.35rem', fontWeight: 800 }}>
+                        {arcadeForcaFeedback === 'won' ? 'Parabéns, você acertou!' : 'Que pena, você esgotou as vidas!'}
                       </h3>
-                      <button className="btn-primary" onClick={handleNextWord} style={{ padding: '12px 24px', fontSize: '1rem', borderRadius: '12px' }}>
+                      <button className="btn-primary" onClick={handleNextWord} style={{ padding: '10px 24px', fontSize: '0.95rem', borderRadius: '12px' }}>
                         Próxima Palavra
                       </button>
                     </div>
                   )}
 
-                  {/* Teclado Virtual */}
+                  {/* Teclado Virtual (100% Legível no Modo Claro e Escuro) */}
                   {!arcadeForcaFeedback && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '6px' }}>
                       {ALPHABET.map((letter) => {
@@ -6437,28 +6560,16 @@ Importante: O JSON deve ser 100% válido.`;
                         const isCorrect = isGuessed && word.includes(letter);
                         const isWrong = isGuessed && !word.includes(letter);
                         
-                        let bgColor = 'rgba(255,255,255,0.08)';
-                        let borderColor = 'rgba(255,255,255,0.1)';
-                        let opacity = 1;
-                        
-                        if (isCorrect) {
-                          bgColor = 'rgba(16,185,129,0.2)';
-                          borderColor = '#10b981';
-                        } else if (isWrong) {
-                          bgColor = 'rgba(239,68,68,0.1)';
-                          borderColor = '#ef4444';
-                          opacity = 0.5;
-                        }
+                        let keyClass = '';
+                        if (isCorrect) keyClass = 'correct';
+                        else if (isWrong) keyClass = 'wrong';
 
                         return (
-                          <button key={letter} onClick={() => handleGuess(letter)} disabled={isGuessed}
-                            style={{
-                              width: '42px', height: '48px', borderRadius: '10px',
-                              background: bgColor, border: `1px solid ${borderColor}`,
-                              color: '#fff', fontSize: '1.1rem', fontWeight: 'bold',
-                              cursor: isGuessed ? 'default' : 'pointer', opacity,
-                              display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}
+                          <button 
+                            key={letter} 
+                            onClick={() => handleGuess(letter)} 
+                            disabled={isGuessed}
+                            className={`forca-key ${keyClass}`}
                           >
                             {letter}
                           </button>
@@ -6470,6 +6581,7 @@ Importante: O JSON deve ser 100% válido.`;
               );
             })()}
 
+            {/* ════════════ JOGO 4: CAÇA-PALAVRAS BÍBLICO ════════════ */}
             {arcadeActiveGame === 'cacapalavras' && (() => {
               const size = Math.sqrt(arcadeCacaGrade.length) || 10;
               
@@ -6478,21 +6590,17 @@ Importante: O JSON deve ser 100% válido.`;
                 
                 let newSelected = [...arcadeCacaSelected];
                 
-                // Se já tem duas selecionadas, reseta e começa nova seleção
                 if (newSelected.length === 2) {
                   newSelected = [{ id, r, c, char }];
                 } else if (newSelected.length === 1) {
-                  // Segundo clique - tenta fechar a palavra
                   newSelected.push({ id, r, c, char });
                   
-                  // Verifica se forma reta
                   const first = newSelected[0];
                   const second = newSelected[1];
                   
                   const rDiff = second.r - first.r;
                   const cDiff = second.c - first.c;
                   
-                  // Deve ser horizontal, vertical ou diagonal
                   const absR = Math.abs(rDiff);
                   const absC = Math.abs(cDiff);
                   if (first.r === second.r || first.c === second.c || absR === absC) {
@@ -6514,12 +6622,10 @@ Importante: O JSON deve ser 100% válido.`;
                       }
                     }
                     
-                    // Checa se a palavra (ou o reverso dela) está na lista
                     const normalize = s => s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
                     const wordObj = arcadeCacaWords.find(w => normalize(w.word) === formedWord || normalize(w.word) === formedWord.split('').reverse().join(''));
                     
                     if (wordObj && !wordObj.found) {
-                      // Achou!
                       const newFound = [...arcadeCacaFound, ...formedIndices];
                       setArcadeCacaFound(newFound);
                       
@@ -6528,7 +6634,7 @@ Importante: O JSON deve ser 100% válido.`;
                       
                       const allFound = newWords.every(w => w.found);
                       if (allFound) {
-                        setArcadeCacaScore(prev => prev + 50); // 50 pontos bônus
+                        setArcadeCacaScore(prev => prev + 50);
                         setUserCoins(prev => {
                           const multiplier = arcadeDifficulty === 'avancado' ? 2 : 1;
                           const newCoins = prev + (50 * multiplier);
@@ -6540,10 +6646,8 @@ Importante: O JSON deve ser 100% válido.`;
                     }
                   }
                   
-                  // Reseta seleção após tentar formar (com pequeno delay visual)
                   setTimeout(() => setArcadeCacaSelected([]), 400);
                 } else {
-                  // Primeiro clique
                   newSelected = [{ id, r, c, char }];
                 }
                 
@@ -6553,9 +6657,13 @@ Importante: O JSON deve ser 100% válido.`;
               if (arcadeCacaGameOver) {
                 return (
                   <div style={{ textAlign: 'center', paddingTop: '40px' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '16px' }}></div>
-                    <h2 style={{ fontSize: '1.8rem', margin: '0 0 8px', color: 'var(--orange)' }}>Parabéns!</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '30px' }}>Você encontrou todas as palavras e ganhou <strong style={{ color: '#fff' }}>50 moedas</strong> bônus!</p>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(5,150,105,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#059669' }}>
+                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Parabéns!</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '30px' }}>
+                      Você encontrou todas as palavras e ganhou <strong style={{ color: 'var(--text-primary)' }}>50 ChaminhaCoins</strong>!
+                    </p>
                     
                     <button className="btn-primary" onClick={() => {
                       setArcadeActiveGame('lobby');
@@ -6564,7 +6672,7 @@ Importante: O JSON deve ser 100% válido.`;
                       setArcadeCacaFound([]);
                       setArcadeCacaSelected([]);
                       setArcadeCacaGameOver(false);
-                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '12px', width: '100%' }}>
+                    }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '14px', width: '100%', maxWidth: '340px' }}>
                       Voltar ao Lobby
                     </button>
                   </div>
@@ -6574,16 +6682,21 @@ Importante: O JSON deve ser 100% válido.`;
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                   {/* Header do Jogo */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
-                    <div style={{ display: 'flex', gap: '16px' }}>
-                      <div style={{ fontWeight: 'bold', color: 'var(--orange)', background: 'rgba(249,115,22,0.1)', padding: '6px 12px', borderRadius: '20px' }}>⭐ {arcadeCacaWords.filter(w => w.found).length}/{arcadeCacaWords.length}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                    <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" aria-label="Voltar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                    </button>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--orange)', background: 'rgba(249,115,22,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(249,115,22,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {arcadeCacaWords.filter(w => w.found).length} / {arcadeCacaWords.length}
+                      </div>
                     </div>
                   </div>
 
                   {/* Instrução */}
-                  <div style={{ textAlign: 'center', marginBottom: '16px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                    Clique na primeira e depois na última letra de uma palavra para selecioná-la.
+                  <div style={{ textAlign: 'center', marginBottom: '14px', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                    Toque na 1ª e na última letra da palavra para selecioná-la
                   </div>
 
                   {/* Grade */}
@@ -6591,26 +6704,28 @@ Importante: O JSON deve ser 100% válido.`;
                     display: 'grid', 
                     gridTemplateColumns: `repeat(${size}, 1fr)`, 
                     gap: '4px', 
-                    background: 'rgba(0,0,0,0.2)', 
+                    background: darkMode ? 'rgba(0,0,0,0.3)' : '#f3f4f6', 
+                    border: `1.5px solid ${darkMode ? 'rgba(255,255,255,0.1)' : '#d1d5db'}`,
                     padding: '8px', 
                     borderRadius: '16px',
-                    marginBottom: '24px'
+                    marginBottom: '20px'
                   }}>
                     {arcadeCacaGrade.map((cell) => {
                       const isFound = arcadeCacaFound.includes(cell.id);
                       const isSelected = arcadeCacaSelected.some(s => s.id === cell.id);
                       
-                      let bgColor = 'rgba(255,255,255,0.05)';
-                      let color = 'var(--text-secondary)';
-                      let fontWeight = 'normal';
+                      let cellBg = darkMode ? 'rgba(255,255,255,0.06)' : '#ffffff';
+                      let cellColor = darkMode ? '#ffffff' : '#111827';
+                      let cellWeight = 700;
                       
                       if (isFound) {
-                        bgColor = 'var(--orange)';
-                        color = '#fff';
-                        fontWeight = 'bold';
+                        cellBg = '#f97316';
+                        cellColor = '#ffffff';
+                        cellWeight = 900;
                       } else if (isSelected) {
-                        bgColor = 'rgba(16,185,129,0.5)';
-                        color = '#fff';
+                        cellBg = '#10b981';
+                        cellColor = '#ffffff';
+                        cellWeight = 900;
                       }
 
                       return (
@@ -6622,13 +6737,15 @@ Importante: O JSON deve ser 100% válido.`;
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            background: bgColor,
-                            color,
-                            fontWeight,
+                            background: cellBg,
+                            color: cellColor,
+                            fontWeight: cellWeight,
                             borderRadius: '8px',
                             cursor: 'pointer',
-                            fontSize: '1.2rem',
-                            userSelect: 'none'
+                            fontSize: size > 12 ? '1rem' : '1.15rem',
+                            userSelect: 'none',
+                            boxShadow: isFound || isSelected ? '0 2px 6px rgba(0,0,0,0.2)' : 'none',
+                            transition: 'all 0.15s ease'
                           }}
                         >
                           {cell.char}
@@ -6638,15 +6755,17 @@ Importante: O JSON deve ser 100% válido.`;
                   </div>
 
                   {/* Lista de Palavras */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
                     {arcadeCacaWords.map((w, idx) => (
                       <div key={idx} style={{ 
-                        padding: '6px 16px', 
+                        padding: '6px 14px', 
                         borderRadius: '20px', 
-                        background: w.found ? 'rgba(249,115,22,0.2)' : 'rgba(255,255,255,0.05)',
-                        color: w.found ? 'var(--orange)' : 'var(--text-secondary)',
+                        background: w.found ? (darkMode ? 'rgba(249,115,22,0.2)' : '#ffedd5') : (darkMode ? 'rgba(255,255,255,0.08)' : '#ffffff'),
+                        border: `1px solid ${w.found ? '#f97316' : (darkMode ? 'rgba(255,255,255,0.1)' : '#d1d5db')}`,
+                        color: w.found ? '#ea580c' : (darkMode ? '#ffffff' : '#1f2937'),
                         textDecoration: w.found ? 'line-through' : 'none',
-                        fontWeight: w.found ? 'bold' : 'normal'
+                        fontWeight: 700,
+                        fontSize: '0.82rem'
                       }}>
                         {w.word}
                       </div>
@@ -6656,10 +6775,205 @@ Importante: O JSON deve ser 100% válido.`;
               );
             })()}
 
-            {/* Sub-Aba: Histórias Bíblicas Kids */}
-            {arcadeActiveGame === 'historias-kids' && (
-              <KidsView onBack={() => setArcadeActiveGame('lobby')} />
-            )}
+            {/* ════════════ JOGO 5: JOGO DA MEMÓRIA BÍBLICO (ARCA DE NOÉ) ════════════ */}
+            {arcadeActiveGame === 'memoria' && (() => {
+              const handleCardClick = (index) => {
+                if (arcadeMemoriaFlipped.length === 2) return;
+                if (arcadeMemoriaFlipped.includes(index)) return;
+                const clickedCard = arcadeMemoriaCards[index];
+                if (arcadeMemoriaMatched.includes(clickedCard.cardId)) return;
+
+                const newFlipped = [...arcadeMemoriaFlipped, index];
+                setArcadeMemoriaFlipped(newFlipped);
+
+                if (newFlipped.length === 2) {
+                  setArcadeMemoriaMoves(prev => prev + 1);
+                  const firstCard = arcadeMemoriaCards[newFlipped[0]];
+                  const secondCard = arcadeMemoriaCards[newFlipped[1]];
+
+                  if (firstCard.cardId === secondCard.cardId) {
+                    const newMatched = [...arcadeMemoriaMatched, firstCard.cardId];
+                    setArcadeMemoriaMatched(newMatched);
+                    setArcadeMemoriaFlipped([]);
+
+                    if (newMatched.length === 8) {
+                      setUserCoins(prev => {
+                        const newCoins = prev + 25;
+                        localStorage.setItem('app-coins', newCoins);
+                        return newCoins;
+                      });
+                      setTimeout(() => setArcadeMemoriaGameOver(true), 600);
+                    }
+                  } else {
+                    setTimeout(() => {
+                      setArcadeMemoriaFlipped([]);
+                    }, 850);
+                  }
+                }
+              };
+
+              const renderIcon = (type, color) => {
+                if (type === 'boat') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M2 19h20M4 19l2-7h12l2 7M12 4v8M12 4l5 3-5 3" />
+                    </svg>
+                  );
+                }
+                if (type === 'dove') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 4a5 5 0 0 1 5 5c0 3.5-3 6-7 9-4-3-7-5.5-7-9a5 5 0 0 1 9-2.5" />
+                      <path d="M14 9l4-3M16 11l4-1" />
+                    </svg>
+                  );
+                }
+                if (type === 'sheep') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="9" cy="12" r="3.5" /><circle cx="15" cy="12" r="3.5" /><circle cx="12" cy="9" r="3.5" /><circle cx="12" cy="15" r="3.5" />
+                    </svg>
+                  );
+                }
+                if (type === 'music') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+                    </svg>
+                  );
+                }
+                if (type === 'fish') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.46-3.44 6-7 6s-7.56-2.54-8.5-6z" />
+                      <path d="M18 12l4-3v6z" /><circle cx="9.5" cy="10.5" r="1" fill={color} />
+                    </svg>
+                  );
+                }
+                if (type === 'book') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                  );
+                }
+                if (type === 'cross') {
+                  return (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="2" x2="12" y2="22" /><line x1="7" y1="8" x2="17" y2="8" />
+                    </svg>
+                  );
+                }
+                return (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  </svg>
+                );
+              };
+
+              if (arcadeMemoriaGameOver) {
+                return (
+                  <div style={{ textAlign: 'center', paddingTop: '40px' }}>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(2,132,199,0.15)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#0284c7' }}>
+                      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px', color: 'var(--orange)' }}>Glória a Deus!</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '8px' }}>
+                      Você salvou todos os símbolos da Arca em <strong style={{ color: 'var(--text-primary)' }}>{arcadeMemoriaMoves} tentativas</strong>!
+                    </p>
+                    <p style={{ color: '#10b981', fontSize: '1rem', fontWeight: 700, marginBottom: '30px' }}>
+                      +25 ChaminhaCoins adicionadas à sua conta!
+                    </p>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+                      <button className="btn-primary" onClick={() => {
+                        setArcadeMemoriaCards(generateMemoriaDeck());
+                        setArcadeMemoriaFlipped([]);
+                        setArcadeMemoriaMatched([]);
+                        setArcadeMemoriaMoves(0);
+                        setArcadeMemoriaGameOver(false);
+                      }} style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '14px', width: '100%', maxWidth: '340px' }}>
+                        Jogar Novamente
+                      </button>
+                      <button onClick={() => setArcadeActiveGame('lobby')} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', padding: '10px 20px', cursor: 'pointer', fontWeight: 700, textDecoration: 'underline' }}>
+                        Voltar ao Lobby
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  {/* Header do Jogo */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                    <button onClick={() => setArcadeActiveGame('lobby')} className="arcade-back-btn" aria-label="Voltar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                    </button>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--text-primary)', background: darkMode ? 'rgba(255,255,255,0.08)' : '#f3f4f6', padding: '6px 14px', borderRadius: '20px', border: '1px solid var(--border-color, #e5e7eb)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                        {arcadeMemoriaMoves} tentativas
+                      </div>
+                      <div style={{ fontWeight: 800, color: '#10b981', background: 'rgba(16,185,129,0.12)', padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.25)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        {arcadeMemoriaMatched.length} / 8 pares
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Instrução */}
+                  <div style={{ textAlign: 'center', marginBottom: '16px', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                    Encontre os 8 pares dos animais e símbolos sagrados da Arca
+                  </div>
+
+                  {/* Grade 4x4 de Cartas */}
+                  <div className="memoria-grid">
+                    {arcadeMemoriaCards.map((card, idx) => {
+                      const isFlipped = arcadeMemoriaFlipped.includes(idx);
+                      const isMatched = arcadeMemoriaMatched.includes(card.cardId);
+                      const isOpen = isFlipped || isMatched;
+
+                      return (
+                        <div 
+                          key={card.uniqueId} 
+                          className="memoria-card-container"
+                          onClick={() => handleCardClick(idx)}
+                        >
+                          <div className={`memoria-card-inner ${isOpen ? 'flipped' : ''}`}>
+                            {/* Frente da Carta (Oculta) */}
+                            <div className="memoria-card-front">
+                              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--orange, #f97316)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 6v12M6 12h12" />
+                              </svg>
+                            </div>
+
+                            {/* Verso da Carta (Revelada) */}
+                            <div 
+                              className="memoria-card-back"
+                              style={{
+                                background: darkMode ? card.bgDark : card.bgLight,
+                                borderColor: isMatched ? '#10b981' : card.color
+                              }}
+                            >
+                              {renderIcon(card.iconType, card.color)}
+                              <span style={{ fontSize: '0.72rem', fontWeight: 800, color: darkMode ? '#ffffff' : '#111827', marginTop: '4px', textAlign: 'center', lineHeight: 1.1 }}>
+                                {card.name}
+                              </span>
+                              <span style={{ fontSize: '0.58rem', fontWeight: 600, color: card.color, marginTop: '2px' }}>
+                                {card.verse}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
           </div>
         )}
 
