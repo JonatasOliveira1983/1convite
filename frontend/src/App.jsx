@@ -817,7 +817,7 @@ function App() {
   // ── LAYA ENGINE — SABEDORIA BÍBLICA & ORÁCULO EM CPU ──
   const [activeCounselor, setActiveCounselor] = useState(null);
   const [unlockedCounselors, setUnlockedCounselors] = useState(() => JSON.parse(localStorage.getItem('unlocked-counselors') || '["jesus"]'));
-  const [layaSubTab, setLayaSubTab] = useState('oraculo'); // 'oraculo' | 'mentores'
+  const [layaSubTab, setLayaSubTab] = useState('mentores'); // 'mentores' | 'oraculo'
   const [layaActiveCategory, setLayaActiveCategory] = useState('TODOS');
   const [layaOraculoQuery, setLayaOraculoQuery] = useState('');
   const [layaOraculoResult, setLayaOraculoResult] = useState(() => consultarOraculoLocal(''));
@@ -2571,7 +2571,7 @@ Em nome de Jesus, Amém.`;
                     activeSabadoBlock === 'descanso' ? 'O Botão do Descanso' :
                     'Trilha de Conhecimento'
                   )}
-                  {activeTab === 'chat' && 'LAYA • Sabedoria Bíblica'}
+                  {activeTab === 'chat' && 'Mentores Bíblicos'}
                   {activeTab === 'contatos' && 'Conexões & Contatos'}
                   {activeTab === 'conta' && 'Minha Conta'}
                   {activeTab === 'criar-card' && 'Studio de Cards'}
@@ -2984,7 +2984,7 @@ Em nome de Jesus, Amém.`;
                 },
                 { 
                   id: 'chat', 
-                  label: 'LAYA • Sabedoria', 
+                  label: 'Mentores Bíblicos', 
                   icon: (
                     <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" strokeLinecap="round" strokeLinejoin="round" />
@@ -4911,7 +4911,7 @@ Em nome de Jesus, Amém.`;
               {/* Form */}
               {showAddContato && (
                 <form onSubmit={handleAddContato} className="glass-panel" style={{ marginBottom: '16px' }}>
-                  <h3 style={{ marginBottom: '16px' }}>🆕 Novo Contato</h3>
+                  <h3 style={{ marginBottom: '16px' }}>Novo Contato</h3>
                   {contatoErro && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '12px' }}>{contatoErro}</p>}
                   <div className="input-group">
                     <label>Nome Completo</label>
@@ -5063,22 +5063,6 @@ Em nome de Jesus, Amém.`;
                 border: '1px solid var(--slate-border)'
               }}>
                 <button
-                  onClick={() => { setLayaSubTab('oraculo'); setActiveCounselor(null); }}
-                  style={{
-                    padding: '8px 18px',
-                    borderRadius: '24px',
-                    border: 'none',
-                    fontWeight: '700',
-                    fontSize: '0.88rem',
-                    cursor: 'pointer',
-                    background: layaSubTab === 'oraculo' ? 'var(--orange)' : 'transparent',
-                    color: layaSubTab === 'oraculo' ? '#fff' : 'var(--text-secondary)',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  Oráculo Bíblico
-                </button>
-                <button
                   onClick={() => setLayaSubTab('mentores')}
                   style={{
                     padding: '8px 18px',
@@ -5092,7 +5076,23 @@ Em nome de Jesus, Amém.`;
                     transition: 'all 0.2s'
                   }}
                 >
-                  Mentores de Fé
+                  Mentores Bíblicos
+                </button>
+                <button
+                  onClick={() => { setLayaSubTab('oraculo'); setActiveCounselor(null); }}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: '24px',
+                    border: 'none',
+                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    background: layaSubTab === 'oraculo' ? 'var(--orange)' : 'transparent',
+                    color: layaSubTab === 'oraculo' ? '#fff' : 'var(--text-secondary)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  Discernimento Bíblico
                 </button>
               </div>
 
@@ -5131,11 +5131,11 @@ Em nome de Jesus, Amém.`;
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: '800' }}>
-                      Oráculo Semântico LAYA
+                      Discernimento Bíblico
                     </h3>
                   </div>
                   <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                    Apresente a sua situação, angústia ou dúvida. O motor neural da LAYA busca a tríade bíblica exata em frações de segundo: promessa, oração e ação.
+                    Apresente a sua situação, angústia ou dúvida. Encontre a tríade bíblica em frações de segundo: promessa, oração e ação fundamentadas nas Escrituras.
                   </p>
                 </div>
 
@@ -5267,7 +5267,7 @@ Em nome de Jesus, Amém.`;
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--slate-border)', paddingBottom: '12px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '800', textTransform: 'uppercase' }}>
-                          Revelação Bíblica • LAYA
+                          Revelação Bíblica
                         </span>
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                           {layaOraculoResult.resultado.categoria}
@@ -5276,7 +5276,7 @@ Em nome de Jesus, Amém.`;
                       
                       <button
                         onClick={() => handleCopyLayaConselho(
-                          `${layaOraculoResult.resultado.versiculo_chave}\n\n"${layaOraculoResult.resultado.promessa_biblica}"\n\nDIRECIONAMENTO LAYA:\n${layaOraculoResult.resultado.direcionamento_laya}\n\nORAÇÃO:\n${layaOraculoResult.resultado.oracao_resposta}\n\nAÇÃO:\n${layaOraculoResult.resultado.acao_pratica}`
+                          `${layaOraculoResult.resultado.versiculo_chave}\n\n"${layaOraculoResult.resultado.promessa_biblica}"\n\nDIRECIONAMENTO BÍBLICO:\n${layaOraculoResult.resultado.direcionamento_laya}\n\nORAÇÃO:\n${layaOraculoResult.resultado.oracao_resposta}\n\nAÇÃO:\n${layaOraculoResult.resultado.acao_pratica}`
                         )}
                         style={{
                           background: 'transparent',
@@ -5441,9 +5441,11 @@ Em nome de Jesus, Amém.`;
                                 position: 'absolute', top: 10, right: 10,
                                 background: 'var(--orange)', color: '#fff',
                                 padding: '2px 8px', borderRadius: '10px',
-                                fontSize: '0.7rem', fontWeight: '800'
+                                fontSize: '0.7rem', fontWeight: '800',
+                                display: 'flex', alignItems: 'center', gap: '3px'
                               }}>
-                                {mentor.preco_desbloqueio} ⭐
+                                <span>{mentor.preco_desbloqueio}</span>
+                                <ChaminhaCoin size={12} />
                               </div>
                             )}
 
@@ -6140,13 +6142,13 @@ Em nome de Jesus, Amém.`;
                 </div>
               </div>
 
-              {/* LAYA Inteligência Bíblica */}
+              {/* Mentores Bíblicos & Sabedoria */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                   </svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left', color: 'var(--text-primary)' }}>LAYA • Inteligência Bíblica</h3>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left', color: 'var(--text-primary)' }}>Mentores Bíblicos & Sabedoria</h3>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: '700', fontSize: '0.92rem', margin: '4px 0' }}>
@@ -6155,7 +6157,7 @@ Em nome de Jesus, Amém.`;
                 </div>
                 
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.5', marginTop: '6px' }}>
-                  A LAYA opera integrada nativamente ao seu aplicativo com a Bíblia Sagrada completa e os Mentores Bíblicos. Não necessita de chaves externas, internet constante ou contas de terceiros.
+                  O sistema opera integrado nativamente ao seu aplicativo com a Bíblia Sagrada completa e os Mentores Bíblicos. Não necessita de chaves externas, internet constante ou contas de terceiros.
                 </p>
               </div>
 

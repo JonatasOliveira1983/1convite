@@ -228,7 +228,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Mestre e Redentor',
       citacao: 'Vinde a mim todos os que estais cansados e oprimidos, e eu vos aliviarei.',
       foco: 'Paz profunda, salvação, reconciliação e graça restauradora',
-      avatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/jesus.png',
       tag: 'Graça & Salvação'
     },
     {
@@ -237,7 +237,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Rei da Sabedoria',
       citacao: 'Os planos do diligente conduzem à abundância, mas a pressa excessiva leva à penúria.',
       foco: 'Finanças, domínio próprio, prudência contratual e negócios',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/salomao.png',
       tag: 'Finanças & Gestão'
     },
     {
@@ -246,7 +246,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Homem Segundo o Coração de Deus',
       citacao: 'O Senhor é a minha luz e a minha salvação; a quem temerei?',
       foco: 'Superação do medo, quebra de gigantes, adoração e oração',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/davi.png',
       tag: 'Coragem & Louvor'
     },
     {
@@ -255,7 +255,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Apóstolo dos Gentios',
       citacao: 'Combati o bom combate, acabei a carreira, guardei a fé.',
       foco: 'Propósito eterno, resiliência na adversidade e fé apostólica',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/paulo.png',
       tag: 'Propósito & Foco'
     },
     {
@@ -264,7 +264,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Libertador e Legislador',
       citacao: 'Se a tua presença não for conosco, não nos faças subir daqui.',
       foco: 'Liderança de equipes, paciência no deserto e intimidade face a face',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/moises.png',
       tag: 'Liderança & Direção'
     },
     {
@@ -273,8 +273,17 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'A Rainha da Coragem',
       citacao: 'Se perecer, pereci. Entrarei na presença do rei conforme a lei de Deus.',
       foco: 'Posicionamento estratégico, jejum bíblico e intrepidez',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+      avatar: '/mentores/ester.png',
       tag: 'Coragem Estratégica'
+    },
+    {
+      id: 'maria',
+      nome: 'Maria Mãe de Jesus',
+      papel: 'Exemplo de Devoção e Graça',
+      citacao: 'Eis aqui a serva do Senhor; cumpra-se em mim segundo a tua palavra.',
+      foco: 'Humildade, confiança inabalável, família e consagração',
+      avatar: '/mentores/maria.png',
+      tag: 'Devoção & Família'
     }
   ];
 
@@ -311,7 +320,7 @@ export default function LandingPage({ onEnterApp }) {
 
           <nav className="sp-nav-links">
             <a href="#recursos">Recursos</a>
-            <a href="#mentores">Mentores LAYA</a>
+            <a href="#mentores">Mentores Bíblicos</a>
             <a href="#trilha">Trilha do Reino</a>
             <a href="#baixar-app" className="sp-pill-link">
               <IconDownload />
@@ -431,7 +440,7 @@ export default function LandingPage({ onEnterApp }) {
             </h1>
 
             <p className="sp-hero-sub">
-              Bíblia Sagrada completa em ACF com narração imersiva, mentoria bíblica neural via LAYA, matriz diária de 365 desafios e trilha cronológica.
+              Bíblia Sagrada completa em ACF com narração imersiva, mentoria bíblica com os grandes Mentores da Fé, matriz diária de 365 desafios e trilha cronológica.
             </p>
 
             <div className="sp-hero-actions">
@@ -458,7 +467,7 @@ export default function LandingPage({ onEnterApp }) {
               </div>
               <div className="sp-stat-divider" />
               <div className="sp-stat-item">
-                <span className="sp-stat-num">6</span>
+                <span className="sp-stat-num">7</span>
                 <span className="sp-stat-label">Mentores Bíblicos</span>
               </div>
             </div>
@@ -533,11 +542,11 @@ export default function LandingPage({ onEnterApp }) {
               <div className="sp-card-icon-circle">
                 <IconSparkles />
               </div>
-              <span className="sp-card-tag">NEURAL</span>
-              <h3>LAYA — Sabedoria Bíblica</h3>
-              <p>Motor de IA autônomo com RAG bíblico (BM25 Okapi) para orientar decisões com base nos ensinamentos dos 6 mentores.</p>
+              <span className="sp-card-tag">SABEDORIA</span>
+              <h3>Mentores Bíblicos</h3>
+              <p>Conselhos e discernimento bíblico fundamentados nas Escrituras com os 7 grandes mentores da história da fé.</p>
               <div className="sp-card-footer">
-                <span>6 Mentores Canônicos</span>
+                <span>7 Mentores Canônicos</span>
               </div>
             </div>
 
@@ -573,7 +582,7 @@ export default function LandingPage({ onEnterApp }) {
         <div className="sp-container">
           <div className="sp-section-heading">
             <span className="sp-kicker">CONSELHO DOS GIGANTES DA FÉ</span>
-            <h2 className="sp-title">Mentores Bíblicos da LAYA</h2>
+            <h2 className="sp-title">Mentores Bíblicos</h2>
             <p className="sp-desc">Conselhos fundamentados em capítulos reais das Escrituras e orações guiadas para o seu momento de vida.</p>
           </div>
 
@@ -790,7 +799,7 @@ export default function LandingPage({ onEnterApp }) {
 
             <div className="sp-footer-col">
               <h4>Recursos</h4>
-              <a href="#mentores" className="sp-footer-link">Mentores LAYA</a>
+              <a href="#mentores" className="sp-footer-link">Mentores Bíblicos</a>
               <a href="#recursos" className="sp-footer-link">Matriz de 365 Dias</a>
               <a href="https://1convite.com.br" className="sp-footer-link">Portal 1convite.com.br</a>
             </div>

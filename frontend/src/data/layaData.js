@@ -10,7 +10,7 @@ export const LAYA_MENTORES = [
     titulo: 'O Mestre e Redentor',
     periodo: 'Evangelhos • O Verbo Vivo',
     descricao: 'A plenitude da graça, verdade e amor eterno. Ele ensina o caminho para a paz profunda, a salvação e a transformação do coração.',
-    avatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/jesus.png',
     ordem: 1,
     preco_desbloqueio: 0,
     especialidades: ['Paz', 'Graça', 'Salvação', 'Amor', 'Perdão'],
@@ -22,7 +22,7 @@ export const LAYA_MENTORES = [
     titulo: 'O Rei da Sabedoria',
     periodo: 'Provérbios & Eclesiastes',
     descricao: 'O homem mais sábio da história. Princípios de ouro sobre finanças, prudência, disciplina e negócios honrados.',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/salomao.png',
     ordem: 2,
     preco_desbloqueio: 50,
     especialidades: ['Finanças', 'Sabedoria', 'Trabalho', 'Prudência'],
@@ -34,7 +34,7 @@ export const LAYA_MENTORES = [
     titulo: 'O Homem Segundo o Coração de Deus',
     periodo: 'Livro dos Salmos',
     descricao: 'Guerreiro e salmista que enfrentou gigantes e perseguições, rasgando a alma em adoração autêntica.',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/davi.png',
     ordem: 3,
     preco_desbloqueio: 70,
     especialidades: ['Superação do Medo', 'Adoração', 'Coragem'],
@@ -46,7 +46,7 @@ export const LAYA_MENTORES = [
     titulo: 'O Apóstolo dos Gentios',
     periodo: 'Epístolas Paulinas',
     descricao: 'Exemplo supremo de resiliência e foco ministerial. Ensina a transformar dor presente em peso eterno de glória.',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/paulo.png',
     ordem: 4,
     preco_desbloqueio: 100,
     especialidades: ['Propósito', 'Resiliência', 'Fé Radical'],
@@ -58,7 +58,7 @@ export const LAYA_MENTORES = [
     titulo: 'O Libertador e Líder',
     periodo: 'Pentateuco',
     descricao: 'Conduziu um povo pelo deserto com paciência, liderança e intimidade face a face com o Criador.',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/moises.png',
     ordem: 5,
     preco_desbloqueio: 120,
     especialidades: ['Liderança', 'Direção Divina', 'Paciência'],
@@ -70,11 +70,23 @@ export const LAYA_MENTORES = [
     titulo: 'A Rainha da Coragem',
     periodo: 'Livro de Ester',
     descricao: 'Posicionamento e sabedoria estratégica em tempo de crise que salvaram um povo da destruição.',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+    avatar: '/mentores/ester.png',
     ordem: 6,
     preco_desbloqueio: 140,
     especialidades: ['Coragem Estratégica', 'Jejum & Oração', 'Posicionamento'],
     frase_destaque: 'Quem sabe se não foi para um momento como este que você chegou ao reino?'
+  },
+  {
+    id: 'maria',
+    nome: 'Maria Mãe de Jesus',
+    titulo: 'Exemplo de Devoção e Graça',
+    periodo: 'Evangelhos • Maternidade Sagrada',
+    descricao: 'Humildade, fé inabalável e entrega total ao propósito divino. Ensina a guardar as promessas no coração e obedecer com mansidão.',
+    avatar: '/mentores/maria.png',
+    ordem: 7,
+    preco_desbloqueio: 150,
+    especialidades: ['Devoção', 'Humildade', 'Confiança', 'Família'],
+    frase_destaque: 'Eis aqui a serva do Senhor; cumpra-se em mim segundo a tua palavra.'
   }
 ];
 
@@ -158,6 +170,16 @@ export const LAYA_CONSELHOS = [
     conselho_doutrinario: 'Há momentos em que o silêncio se torna cumplicidade. Deus te posicionou onde você está não por acaso, mas com um propósito sagrado. Una a intercessão sincera à ação corajosa.',
     oracao_guiada: 'Pai do céu, concede-me ousadia santa para não me acovardar diante das pressões do ambiente. Usa a minha voz e minha postura para defender o que é justo e honrado. Amém.',
     desafio_pratico: 'Tome uma atitude ética que você vinha adiando por receio do que os outros iam pensar.'
+  },
+  {
+    mentor_id: 'maria',
+    tema: 'devocao',
+    titulo: 'A Entrega Total e a Paz de Confiar em Deus',
+    versiculo_referencia: 'Lucas 1:38 & Lucas 2:19',
+    texto_biblico: 'Disse então Maria: Eis aqui a serva do Senhor; cumpra-se em mim segundo a tua palavra. (...) Maria, porém, guardava todas estas coisas, meditando-as no seu coração.',
+    conselho_doutrinario: 'A verdadeira grandeza diante de Deus começa na rendição silenciosa e humilde. Quando você entrega os seus planos ao Senhor e aprende a meditar nas Suas promessas no íntimo do coração, o medo do desconhecido se dissipa diante da soberania do Pai.',
+    oracao_guiada: 'Pai Eterno, que eu tenha a docilidade e a mansidão de confiar inteiramente nos Teus desígnios para a minha história. Que a Tua santa vontade se cumpra em minha vida e em meu lar. Amém.',
+    desafio_pratico: 'Passe 5 minutos em silêncio hoje, sem pedir nada, apenas agradecendo a Deus por Sua fidelidade e guardando as promessas Dele no coração.'
   }
 ];
 
