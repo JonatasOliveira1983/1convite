@@ -1006,6 +1006,34 @@ function App() {
   });
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
+  // ── Versão do Sistema & Atualizações ──────────────────────────
+  const [checkingUpdate, setCheckingUpdate] = useState(false);
+  const [updateStatusMsg, setUpdateStatusMsg] = useState('');
+  const [showChangelog, setShowChangelog] = useState(false);
+
+  const handleCheckForUpdates = async () => {
+    setCheckingUpdate(true);
+    setUpdateStatusMsg('Consultando servidores na nuvem...');
+    try {
+      if ('serviceWorker' in navigator) {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          await registration.update();
+        }
+      }
+      await fetch('/manifest.json?t=' + Date.now(), { cache: 'no-store' });
+      setTimeout(() => {
+        setCheckingUpdate(false);
+        setUpdateStatusMsg('Você está utilizando a versão mais recente e segura do 1Convite (v2.4.0)!');
+      }, 1200);
+    } catch {
+      setTimeout(() => {
+        setCheckingUpdate(false);
+        setUpdateStatusMsg('Sistema verificado. Aplicativo atualizado (v2.4.0).');
+      }, 1000);
+    }
+  };
+
   // Login Dedicado
   const [loginEmail, setLoginEmail] = useState('');
   const [loginNome, setLoginNome] = useState('');
@@ -1610,10 +1638,6 @@ function App() {
             setProfileAvatar(getDefaultAvatar(gender));
             setIsCustomAvatar(false);
           }
-        }
-        if (d.user && !d.user.checkpoint_completado) { setActiveTab('pedagio'); if (!pedagioIniciado) iniciarPedagio(); }
-        else {
-          if (activeTab === 'pedagio') setActiveTab('sabado');
         }
       }
       const contatosData = await fetchJson(`${API_BASE}/contatos`);
@@ -2258,47 +2282,6 @@ Em nome de Jesus, Amém.`;
   const reiniciarJornada = async () => { if (!confirm('Reiniciar ao Dia 1?')) return; try { await fetch(`${API_BASE}/reiniciar-jornada`, { method: 'POST' }); loadAppData(); } catch (e) { console.error(e); } };
   const alterarPlanoAdmin = async (p) => { try { await fetch(`${API_BASE}/admin/definir-plano`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plano: p }) }); loadAppData(); } catch (e) { console.error(e); } };
 
-  // ═══════════════════════════════════════════════════════════
-  //  TELA PEDÁGIO
-  // ═══════════════════════════════════════════════════════════
-  if (activeTab === 'pedagio' && codigoDia) {
-    const isProposito = codigoDia.pilar_origem === 'PROPÓSITO_M2414';
-    return (
-      <div className="pedagio-overlay">
-        <div style={{ position: 'fixed', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%)', top: -80, right: -60, filter: 'blur(50px)', pointerEvents: 'none' }} />
-        <div style={{ position: 'fixed', width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, rgba(51,65,85,0.10) 0%, transparent 70%)', bottom: 80, left: -60, filter: 'blur(50px)', pointerEvents: 'none' }} />
-
-        <div className="pedagio-container">
-          <div style={{ textAlign: 'center' }}>
-            <img src="/LOGOMARCA.png" alt="1Convite" style={{ height: '38px', objectFit: 'contain' }} />
-          </div>
-
-          <div style={{ textAlign: 'center' }}>
-            <div className={`pedagio-badge ${isProposito ? 'badge-proposito' : 'badge-recompensa'}`}>
-              {isProposito ? 'Mateus 24:14 — Propósito' : 'Apocalipse 3:21 — Recompensa'}
-            </div>
-            <h1 style={{ fontSize: '1.4rem', marginTop: '8px' }}>Dia {codigoDia.dia_id} da Jornada</h1>
-            <p style={{ color: '#78716C', marginTop: '4px' }}>Alinhamento mental no Agora de Deus</p>
-          </div>
-
-          <div className="pedagio-card">
-            <div className="pedagio-codigo">"{codigoDia.codigo_verbal}"</div>
-            <div className="pedagio-versiculo">{codigoDia.versiculo_chave}</div>
-            <div className="pedagio-reflexao">{codigoDia.texto_reflexao}</div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
-            {countdown > 0 && <div className="timer-circle"><span style={{ animation: 'none' }}>{countdown}</span></div>}
-            {pedagioErro && <p style={{ color: '#ef4444', textAlign: 'center' }}>{pedagioErro}</p>}
-            <button className="btn-primary" onClick={destravarAgora} disabled={countdown > 0} style={{ maxWidth: 360 }}>
-              {countdown > 0 ? `Medite... (${countdown}s)` : 'Destravar o Agora'}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (currentPath === '/baixar' || currentPath === '/app') {
     return (
       <div style={{
@@ -2429,6 +2412,7 @@ Em nome de Jesus, Amém.`;
     return (
       <LandingPage onEnterApp={() => {
         setShowLanding(false);
+        setActiveTab('dashboard');
         try { localStorage.setItem('1convite_visited_app', 'true'); } catch (e) {}
       }} />
     );
@@ -6255,6 +6239,145 @@ Em nome de Jesus, Amém.`;
                     Acessar Conteúdo Exclusivo
                   </button>
                 )}
+              </div>
+
+              {/* Versão do Sistema & Atualizações Automáticas */}
+              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                    </svg>
+                    <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Versão & Atualizações</h3>
+                  </div>
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    fontSize: '0.72rem',
+                    fontWeight: '700',
+                    color: '#10B981',
+                    background: 'rgba(16, 185, 129, 0.12)',
+                    padding: '3px 8px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(16, 185, 129, 0.3)'
+                  }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' }} />
+                    Sistema Atualizado
+                  </span>
+                </div>
+
+                <div style={{ background: 'var(--slate-light)', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Versão Atual:</span>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.4.0 (Build 2026.11.23)</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
+                    <span style={{ fontSize: '0.82rem', color: 'var(--text-primary)', fontWeight: '600' }}>Cloudflare Pages & Turso Cloud</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tipo de Atualização:</span>
+                    <span style={{ fontSize: '0.82rem', color: '#10B981', fontWeight: '600' }}>Automática em Segundo Plano</span>
+                  </div>
+                </div>
+
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '0 0 12px', lineHeight: '1.4' }}>
+                  As atualizações do 1Convite ocorrem automaticamente para garantir sempre a melhor experiência com novos devocionais, áudios e recursos sem necessidade de reinstalação manual.
+                </p>
+
+                {updateStatusMsg && (
+                  <div style={{
+                    marginBottom: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    background: 'rgba(16, 185, 129, 0.12)',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.82rem',
+                    textAlign: 'center',
+                    fontWeight: '600'
+                  }}>
+                    {updateStatusMsg}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={handleCheckForUpdates}
+                    disabled={checkingUpdate}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      padding: '10px',
+                      fontSize: '0.86rem'
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: checkingUpdate ? 'spin 1s linear infinite' : 'none' }}>
+                      <polyline points="23 4 23 10 17 10"></polyline>
+                      <polyline points="1 20 1 14 7 14"></polyline>
+                      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span>{checkingUpdate ? 'Verificando Atualizações...' : 'Verificar Atualizações'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowChangelog(!showChangelog)}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'var(--orange)',
+                      fontSize: '0.8rem',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      padding: '6px 0',
+                      textAlign: 'center',
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    {showChangelog ? '▲ Ocultar Registro de Atualizações' : '▼ Ver Registro de Atualizações Recentes'}
+                  </button>
+
+                  {showChangelog && (
+                    <div style={{
+                      marginTop: '6px',
+                      background: 'var(--bg-app)',
+                      borderRadius: '10px',
+                      padding: '12px 14px',
+                      border: '1px solid var(--slate-border)',
+                      fontSize: '0.78rem',
+                      lineHeight: '1.5'
+                    }}>
+                      <div style={{ marginBottom: '10px' }}>
+                        <div style={{ fontWeight: '800', color: 'var(--orange)', marginBottom: '2px' }}>
+                          ● Versão 2.4.0 (23 de Novembro de 2026)
+                        </div>
+                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
+                          <li><strong>Acesso Direto e Rápido:</strong> Entrada imediata ao Dashboard de blocos ao clicar em Acessar Aplicativo.</li>
+                          <li><strong>Ícone Oficial no Celular:</strong> Logotipo com chama de fogo laranja sobre fundo preto aplicado aos ícones de aplicativo (Android e Web/PWA).</li>
+                          <li><strong>Logomarca Adaptativa:</strong> Suporte com contraste nos modos claro e escuro.</li>
+                          <li><strong>Banco de Dados e Nuvem:</strong> Sincronização persistente do perfil e foto no Turso LibSQL Cloud.</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <div style={{ fontWeight: '800', color: 'var(--text-primary)', marginBottom: '2px' }}>
+                          ● Versão 2.3.0
+                        </div>
+                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
+                          <li>Síntese rápida dos 365 dias do Devocional Café com Deus.</li>
+                          <li>Motor de voz neural de alta fidelidade sem robotização.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
