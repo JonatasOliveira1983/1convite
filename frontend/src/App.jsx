@@ -11,6 +11,8 @@ import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPr
 import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooksView';
 import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
 import cafeData from './data/cafe_com_deus_365.json';
+import cafeSinteseData from './data/cafeComDeusSintese365.json';
+import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from './services/neuralAudioPlayer';
 import { TRILHAS_DATA, getTrilhaPorTema, getConteudoDiaTrilha } from './data/trilhasCrescimentoData';
 import { DEFAULT_AVATAR_MAN, DEFAULT_AVATAR_WOMAN, getDefaultAvatar } from './utils/defaultAvatars';
 // ═══ COMPONENTE REWARD POPUP (CHAMINHA) ═══
@@ -321,6 +323,7 @@ function App() {
   };
   const todayDayNumber = getDayOfYear();
   const todayMeditation = cafeData.find(item => item.day === todayDayNumber) || cafeData[0];
+  const todaySintese = cafeSinteseData.find(item => item.day === todayDayNumber) || cafeSinteseData[0];
   const getTodayDateFormatted = () => {
     const now = new Date();
     const day = now.getDate();
@@ -1782,37 +1785,26 @@ function App() {
   };
 
   const speakReflection = () => {
-    if (!('speechSynthesis' in window)) {
-      alert('Narração de voz não disponível no navegador.');
-      return;
-    }
     if (isNarrating) {
-      window.speechSynthesis.cancel();
+      stopNeuralSpeech();
       setIsNarrating(false);
       return;
     }
-    const title = todayMeditation?.title || codigoDia?.codigo_verbal || 'Reflexão do Dia';
-    const verse = todayMeditation?.verse || codigoDia?.versiculo_chave || '';
-    const body = todayMeditation?.body || codigoDia?.texto_reflexao || '';
-    const cleanBody = body.replace(/\n\n+/g, '. ').replace(/\n/g, ' ');
-    const texto = `${title}. ${verse}. Reflexão: ${cleanBody}`;
 
-    const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'pt-BR';
-    utterance.rate = 0.90;
-    utterance.pitch = 0.98;
+    const title = todaySintese?.title || todayMeditation?.title || 'Reflexão do Dia';
+    const verse = todaySintese?.verse || todayMeditation?.verse || '';
+    const pensamento = todaySintese?.pensamento_principal || '';
+    const sintese = todaySintese?.sintese || '';
+    const desafio = todaySintese?.desafio_pratico || '';
 
-    if ('speechSynthesis' in window) {
-      const voice = getBestVoiceForGender(voiceGender);
-      if (voice) {
-        utterance.voice = voice;
-      }
-    }
+    const texto = `Reflexão do Dia. ${title}. ${verse}. Pensamento principal: ${pensamento}. Síntese: ${sintese}. Desafio de hoje: ${desafio}.`;
 
-    utterance.onend = () => setIsNarrating(false);
-    utterance.onerror = () => setIsNarrating(false);
     setIsNarrating(true);
-    window.speechSynthesis.speak(utterance);
+    playNeuralSpeech(texto, {
+      onStart: () => setIsNarrating(true),
+      onEnd: () => setIsNarrating(false),
+      onError: () => setIsNarrating(false)
+    });
   };
 
   const generateDailyReflectionWithAI = async () => {
@@ -1914,7 +1906,7 @@ Importante: O JSON deve ser 100% válido.`;
   }, [activeAmbient]);
 
   const stopMeditation = () => {
-    window.speechSynthesis.cancel();
+    stopNeuralSpeech();
     setMeditationPlaying(false);
     if (ambientAudioRef.current) {
       ambientAudioRef.current.pause();
@@ -1930,35 +1922,27 @@ Importante: O JSON deve ser 100% válido.`;
   };
 
   const getTodayMeditationPrayerScript = () => {
-    const title = todayMeditation?.title || 'Comunhão Sagrada';
-    const verse = todayMeditation?.verse || '';
-    const prayer = todayMeditation?.prayer || 'Senhor Deus, abençoa este dia em Tua doce presença.';
+    const title = todaySintese?.title || todayMeditation?.title || 'Comunhão Sagrada';
+    const verse = todaySintese?.verse || todayMeditation?.verse || '';
+    const prayer = todaySintese?.oracao_sintese || todayMeditation?.prayer || 'Senhor Deus, abençoa este dia em Tua doce presença.';
 
     return `Respire fundo... e silencie as preocupações do mundo por alguns instantes.
-(Pausa de 4 segundos)
-Pai celestial de infinita graça, nesta manhã eu Te agradeço pelo dom da vida e pelas Tuas misericórdias que se renovam hoje sobre nós.
 (Pausa de 3 segundos)
+Pai celestial de infinita graça, nesta manhã eu Te agradeço pelo dom da vida e pelas Tuas misericórdias que se renovam hoje sobre nós.
+(Pausa de 2 segundos)
 A Tua Palavra nos lembra hoje a promessa de: ${title}.
 (Pausa de 2 segundos)
 Nas Escrituras Sagradas está escrito: ${verse}.
-(Pausa de 4 segundos)
+(Pausa de 3 segundos)
 ${prayer}
-(Pausa de 4 segundos)
+(Pausa de 3 segundos)
 Que a Tua paz, que excede todo o entendimento humano, guarde o meu coração e a minha mente ao longo de todo este dia.
-(Pausa de 3 segundos)
 Consagro a Ti cada decisão, cada encontro e cada palavra que sair dos meus lábios.
-(Pausa de 3 segundos)
-Usa a minha vida como um canal de bênção e esperança para abençoar o meu próximo com o amor de Cristo.
-(Pausa de 3 segundos)
+Usa a minha vida como um canal de bênção e esperança para abençoar o meu próximo com o amor de Cristo através do meu 1Convite.
 Em nome de Jesus, Amém.`;
   };
 
   const toggleMeditationTTS = () => {
-    if (!('speechSynthesis' in window)) {
-      alert('Narração de voz não disponível no navegador.');
-      return;
-    }
-
     if (meditationPlaying) {
       stopMeditation();
       return;
@@ -1966,66 +1950,26 @@ Em nome de Jesus, Amém.`;
 
     const rawText = getTodayMeditationPrayerScript();
     
-    // Parser profissional: extrai pausas programadas e tons de voz
-    const lines = rawText.split('\n');
-    const segments = [];
-    let currentRate = narrationRate;
-    
-    for (let line of lines) {
-      line = line.trim();
-      if (!line) continue;
-      
-      // Ignorar metadados de guia
-      if (line.startsWith('Roteiro de Meditação') || line.startsWith('Duração') || line.startsWith('Trilha de fundo') || line.startsWith('Bloco')) {
-        continue;
-      }
-      
-      // Tom de voz
-      if (line.startsWith('(Tom de voz:')) {
-        if (line.includes('Suave') || line.includes('pausado')) {
-          currentRate = narrationRate * 0.9;
-        } else if (line.includes('Firme') || line.includes('ritmo')) {
-          currentRate = narrationRate * 1.05;
-        } else {
-          currentRate = narrationRate;
-        }
-        continue;
-      }
-      
-      // Pausa programada
-      const pauseMatch = line.match(/\(Pausa de (\d+) segundos\)/i);
-      if (pauseMatch) {
-        const secs = parseInt(pauseMatch[1], 10);
-        segments.push({ type: 'pause', duration: secs * 1000 });
-        continue;
-      }
-      
-      const cleanLine = line.replace(/^["']|["']$/g, '');
-      if (cleanLine) {
-        segments.push({ type: 'text', text: cleanLine, rate: currentRate });
-      }
-    }
+    // Parser que limpa rótulos de guia para a voz fluir naturalmente
+    const cleanPrayerSpeech = rawText
+      .split('\n')
+      .filter(line => {
+        const l = line.trim();
+        return l && !l.startsWith('Roteiro') && !l.startsWith('Duração') && !l.startsWith('Trilha') && !l.startsWith('Bloco') && !l.startsWith('(Tom de voz') && !l.includes('Pausa de');
+      })
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-    if (segments.length === 0) {
-      segments.push({ type: 'text', text: rawText, rate: narrationRate });
-    }
-
-    // Calcular duração com precisão (considerando velocidade da fala e pausas de respiração)
-    let totalSecs = 0;
-    segments.forEach(seg => {
-      if (seg.type === 'pause') {
-        totalSecs += seg.duration / 1000;
-      } else {
-        const wc = seg.text.split(' ').length;
-        totalSecs += Math.max(3.5, Math.round((wc * 0.72) / (seg.rate || 1)));
-      }
-    });
-
-    setMeditationDuration(totalSecs);
+    // Duração estimada em segundos
+    const wordCount = cleanPrayerSpeech.split(' ').length;
+    const estimatedDuration = Math.max(30, Math.round(wordCount * 0.48));
+    setMeditationDuration(estimatedDuration);
     setMeditationCurrentTime(0);
     setMeditationPlaying(true);
     setMeditationCompleted(false);
 
+    // Toca som ambiente de fundo
     if (activeAmbient !== 'none' && ambientAudioRef.current) {
       const track = ambientTracks.find(t => t.id === activeAmbient);
       if (track && track.url) {
@@ -2039,55 +1983,23 @@ Em nome de Jesus, Amém.`;
     const startTime = Date.now();
     meditationIntervalRef.current = setInterval(() => {
       const elapsed = Math.round((Date.now() - startTime) / 1000);
-      setMeditationCurrentTime(Math.min(elapsed, totalSecs));
+      setMeditationCurrentTime(Math.min(elapsed, estimatedDuration));
     }, 1000);
 
-    const playSegment = (index) => {
-      if (index >= segments.length) {
+    playNeuralSpeech(cleanPrayerSpeech, {
+      onStart: () => setMeditationPlaying(true),
+      onEnd: () => {
         setMeditationCompleted(true);
-        // Mantém som ambiente por mais 15s de contemplação antes de terminar
+        // Mantém som ambiente por mais 10s antes de concluir
         meditationTimeoutRef.current = setTimeout(() => {
           stopMeditation();
-          setMeditationCurrentTime(totalSecs);
-        }, 15000);
-        return;
+          setMeditationCurrentTime(estimatedDuration);
+        }, 10000);
+      },
+      onError: () => {
+        stopMeditation();
       }
-
-      currentSegmentIndexRef.current = index;
-      const seg = segments[index];
-
-      if (seg.type === 'pause') {
-        meditationTimeoutRef.current = setTimeout(() => {
-          playSegment(index + 1);
-        }, seg.duration);
-      } else {
-        const utterance = new SpeechSynthesisUtterance(seg.text);
-        utterance.lang = 'pt-BR';
-        utterance.rate = (seg.rate || 0.88) * 0.95;
-        utterance.pitch = 0.98;
-
-        if ('speechSynthesis' in window) {
-          const voice = getBestVoiceForGender(voiceGender);
-          if (voice) {
-            utterance.voice = voice;
-          }
-        }
-
-        utterance.onend = () => {
-          meditationTimeoutRef.current = setTimeout(() => {
-            playSegment(index + 1);
-          }, 600);
-        };
-
-        utterance.onerror = () => {
-          stopMeditation();
-        };
-
-        window.speechSynthesis.speak(utterance);
-      }
-    };
-
-    playSegment(0);
+    });
   };
 
   // ── Áudio da Bíblia ─────────────────────────────────────────
@@ -2468,13 +2380,12 @@ Em nome de Jesus, Amém.`;
             {/* Esquerda: Botão Voltar */}
             <button 
               onClick={() => {
-                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                stopNeuralSpeech();
                 setIsNarrating(false);
                 setMeditationPlaying(false);
                 if (meditationIntervalRef.current) clearInterval(meditationIntervalRef.current);
                 if (activeTab === 'sabado' && activeSabadoBlock !== 'menu') {
                   setActiveSabadoBlock('menu');
-                  // Parar meditação se estiver tocando
                   setAudioPlaying(false);
                   if (audioRef.current) audioRef.current.pause();
                 } else {
@@ -3183,7 +3094,7 @@ Em nome de Jesus, Amém.`;
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
                   <button
                     onClick={() => {
-                      if (window.speechSynthesis) window.speechSynthesis.cancel();
+                      stopNeuralSpeech();
                       setIsNarrating(false);
                       setActiveSabadoBlock('menu');
                     }}
@@ -3206,7 +3117,7 @@ Em nome de Jesus, Amém.`;
                   </button>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: '700', color: 'var(--orange-dark)' }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>Dia {todayMeditation?.day || todayDayNumber} de 365</span>
+                    <span>Dia {todaySintese?.day || todayDayNumber} de 365</span>
                   </div>
                 </div>
 
@@ -3222,7 +3133,7 @@ Em nome de Jesus, Amém.`;
                   position: 'relative',
                   overflow: 'hidden'
                 }}>
-                  {/* Selo Devocional Diário */}
+                  {/* Selo Devocional Diário & Botão de Voz Neural */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
                     <span style={{
                       display: 'inline-flex',
@@ -3245,7 +3156,7 @@ Em nome de Jesus, Amém.`;
                     <button
                       onClick={speakReflection}
                       style={{
-                        padding: '8px 14px',
+                        padding: '8px 16px',
                         borderRadius: '12px',
                         border: '1.5px solid var(--orange)',
                         background: isNarrating ? 'var(--orange)' : (darkMode ? 'rgba(249,115,22,0.15)' : '#ffffff'),
@@ -3263,7 +3174,7 @@ Em nome de Jesus, Amém.`;
                       {isNarrating ? (
                         <>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
-                          <span>Pausar Áudio</span>
+                          <span>Pausar Voz</span>
                         </>
                       ) : (
                         <>
@@ -3274,7 +3185,7 @@ Em nome de Jesus, Amém.`;
                     </button>
                   </div>
 
-                  {/* Título Principal */}
+                  {/* Título da Reflexão */}
                   <h2 style={{
                     fontSize: '1.35rem',
                     fontWeight: '900',
@@ -3282,16 +3193,16 @@ Em nome de Jesus, Amém.`;
                     margin: '0 0 14px 0',
                     color: darkMode ? '#F8FAFC' : '#1E293B'
                   }}>
-                    {todayMeditation?.title || codigoDia?.codigo_verbal}
+                    {todaySintese?.title || todayMeditation?.title}
                   </h2>
 
-                  {/* Versículo-Chave com Aspas */}
+                  {/* Versículo de Ancoragem */}
                   <div style={{
                     background: darkMode ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.7)',
                     borderLeft: '4px solid var(--orange)',
                     padding: '12px 14px',
                     borderRadius: '0 12px 12px 0',
-                    marginBottom: '6px'
+                    marginBottom: '4px'
                   }}>
                     <p style={{
                       fontSize: '0.92rem',
@@ -3300,70 +3211,123 @@ Em nome de Jesus, Amém.`;
                       margin: 0,
                       color: darkMode ? '#E2E8F0' : '#475569'
                     }}>
-                      "{todayMeditation?.verse || codigoDia?.versiculo_chave}"
+                      "{todaySintese?.verse || todayMeditation?.verse}"
                     </p>
                   </div>
                 </div>
 
-                {/* Conteúdo Completo da Reflexão Devocional */}
+                {/* 1. CARD: PENSAMENTO PRINCIPAL DO DIA (A IDEIA-FORÇA) */}
+                <div style={{
+                  background: darkMode 
+                    ? 'linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, rgba(20, 16, 10, 0.95) 100%)' 
+                    : 'linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%)',
+                  borderRadius: '20px',
+                  padding: '20px',
+                  border: darkMode ? '1.5px solid rgba(249, 115, 22, 0.35)' : '1.5px solid #FCD34D',
+                  boxShadow: 'var(--shadow-sm)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--orange-dark)' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span style={{ fontSize: '0.78rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                      Pensamento Central de Hoje
+                    </span>
+                  </div>
+                  <p style={{
+                    fontSize: '1.08rem',
+                    fontWeight: '800',
+                    lineHeight: '1.5',
+                    color: darkMode ? '#FFFFFF' : '#78350F',
+                    margin: 0
+                  }}>
+                    "{todaySintese?.pensamento_principal}"
+                  </p>
+                </div>
+
+                {/* 2. CARD: SÍNTESE DA MEDITAÇÃO (REFLEXÃO OBJETIVA) */}
                 <div style={{
                   background: darkMode ? 'var(--dark-card, #13121d)' : '#FFFFFF',
                   borderRadius: '24px',
-                  padding: '24px 20px',
+                  padding: '22px 20px',
                   border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
                   boxShadow: 'var(--shadow-sm)'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', color: 'var(--orange-dark)' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800' }}>Alimento para o Coração</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: 'var(--orange-dark)' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '800' }}>Síntese da Meditação</h3>
                   </div>
 
                   <p style={{
-                    fontSize: '1rem',
-                    lineHeight: '1.8',
+                    fontSize: '0.96rem',
+                    lineHeight: '1.75',
                     color: 'var(--text-primary)',
-                    margin: '0 0 20px 0',
-                    whiteSpace: 'pre-wrap',
+                    margin: '0 0 18px 0',
                     textAlign: 'left'
                   }}>
-                    {todayMeditation?.body || codigoDia?.texto_reflexao}
+                    {todaySintese?.sintese}
                   </p>
 
-                  {/* Caixa de Oração / Aplicação Prática */}
-                  {(todayMeditation?.prayer || codigoDia?.texto_meditacao) && (
+                  {/* 3. CARD: DESAFIO PRÁTICO PARA AS PRÓXIMAS 24 HORAS */}
+                  <div style={{
+                    background: darkMode ? 'rgba(16, 185, 129, 0.1)' : '#ECFDF5',
+                    border: darkMode ? '1.5px solid rgba(16, 185, 129, 0.3)' : '1.5px solid #A7F3D0',
+                    padding: '16px',
+                    borderRadius: '16px',
+                    marginBottom: '16px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#059669' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      <strong style={{ fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        Desafio Prático do Dia:
+                      </strong>
+                    </div>
+                    <p style={{
+                      fontSize: '0.92rem',
+                      lineHeight: '1.5',
+                      color: darkMode ? '#ECFDF5' : '#065F46',
+                      margin: 0,
+                      fontWeight: '600'
+                    }}>
+                      {todaySintese?.desafio_pratico}
+                    </p>
+                  </div>
+
+                  {/* 4. CAIXA: ORAÇÃO DE ENTREGA SINTÉTICA */}
+                  {todaySintese?.oracao_sintese && (
                     <div style={{
                       background: darkMode ? 'rgba(249, 115, 22, 0.08)' : '#FFFBEB',
                       border: darkMode ? '1px solid rgba(249, 115, 22, 0.2)' : '1px solid #FDE68A',
                       padding: '16px',
-                      borderRadius: '16px',
-                      marginTop: '16px'
+                      borderRadius: '16px'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--orange-dark)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: 'var(--orange-dark)' }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        <strong style={{ fontSize: '0.88rem' }}>Oração de Entrega do Dia:</strong>
+                        <strong style={{ fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                          Oração de Alinhamento:
+                        </strong>
                       </div>
                       <p style={{
-                        fontSize: '0.92rem',
+                        fontSize: '0.9rem',
                         fontStyle: 'italic',
                         lineHeight: '1.6',
                         color: darkMode ? '#F1F5F9' : '#78350F',
                         margin: 0
                       }}>
-                        "{todayMeditation?.prayer || codigoDia?.texto_meditacao}"
+                        "{todaySintese?.oracao_sintese}"
                       </p>
                     </div>
                   )}
 
-                  {/* Botão de Conexão com a Oração Guiada */}
-                  <div style={{ marginTop: '22px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {/* Botão de Conexão Rápida com a Oração Guiada */}
+                  <div style={{ marginTop: '22px' }}>
                     <button
                       onClick={() => {
-                        if (window.speechSynthesis) window.speechSynthesis.cancel();
+                        stopNeuralSpeech();
                         setIsNarrating(false);
                         setActiveSabadoBlock('meditacao');
                       }}
                       className="btn-primary"
                       style={{
+                        width: '100%',
                         padding: '14px 20px',
                         borderRadius: '16px',
                         fontSize: '0.95rem',
