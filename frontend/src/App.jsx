@@ -320,6 +320,13 @@ function App() {
   };
   const todayDayNumber = getDayOfYear();
   const todayMeditation = cafeData.find(item => item.day === todayDayNumber) || cafeData[0];
+  const getTodayDateFormatted = () => {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.toLocaleDateString('pt-BR', { month: 'long' });
+    const capMonth = month.charAt(0).toUpperCase() + month.slice(1);
+    return `${day} de ${capMonth}`;
+  };
   
   // --- RESTORED ARCADE STATES ---
   const [arcadeActiveGame, setArcadeActiveGame] = useState('lobby');
@@ -2744,20 +2751,7 @@ Importante: O JSON deve ser 100% válido.`;
             {/* CARD DESTAQUE CAFÉ COM DEUS (365 MEDITAÇÕES DIÁRIAS) */}
             <div 
               onClick={() => setActiveTab('cafe-com-deus')}
-              className="animate-fade-in"
-              style={{
-                background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.16) 0%, rgba(24, 24, 28, 0.95) 100%)',
-                border: '1.5px solid rgba(249, 115, 22, 0.35)',
-                borderRadius: '18px',
-                padding: '14px 16px',
-                marginBottom: '18px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                boxShadow: '0 8px 24px rgba(249, 115, 22, 0.12)',
-                transition: 'all 0.25s ease'
-              }}
+              className="cafe-home-card animate-fade-in"
             >
               <div style={{
                 width: '46px',
@@ -2781,19 +2775,19 @@ Importante: O JSON deve ser 100% válido.`;
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
-                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#FB923C', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                    Café com Deus • Dia {todayDayNumber}
+                  <span className="cafe-home-tag" style={{ fontSize: '0.68rem', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    Café com Deus • {getTodayDateFormatted()}
                   </span>
                   <span style={{ fontSize: '0.62rem', background: '#22C55E', color: '#FFF', padding: '1px 6px', borderRadius: '10px', fontWeight: '800' }}>HOJE</span>
                 </div>
-                <h4 style={{ margin: '0 0 2px', fontSize: '0.94rem', fontWeight: '800', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <h4 style={{ margin: '0 0 2px', fontSize: '0.94rem', fontWeight: '800', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {todayMeditation.title}
                 </h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#9CA3AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <p style={{ margin: 0, fontSize: '0.78rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {todayMeditation.verse}
                 </p>
               </div>
-              <div style={{ color: '#FB923C', flexShrink: 0 }}>
+              <div style={{ color: '#F97316', flexShrink: 0 }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 18l6-6-6-6" />
                 </svg>
@@ -6594,6 +6588,8 @@ Importante: O JSON deve ser 100% válido.`;
             onBack={() => setActiveTab('dashboard')} 
             isPremium={isPremiumUser}
             onOpenUpgrade={() => setShowUpgradeModal(true)}
+            isDarkMode={darkMode}
+            onToggleDarkMode={() => setDarkMode(prev => !prev)}
           />
         )}
 

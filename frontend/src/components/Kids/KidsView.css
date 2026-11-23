@@ -234,3 +234,55 @@
   font-size: 0.9rem;
   cursor: pointer;
 }
+
+/* ── SUPORTE AO MODO CLARO ── */
+body:not(.dark-mode) .kids-back-btn {
+  background: #F3F4F6;
+  border-color: #E5E7EB;
+  color: #111827;
+}
+
+body:not(.dark-mode) .kids-tab-btn {
+  background: #F3F4F6;
+  border-color: #E5E7EB;
+  color: #4B5563;
+}
+
+body:not(.dark-mode) .kids-tab-btn.active {
+  background: #E0F2FE;
+  border-color: #38BDF8;
+  color: #0284C7;
+}
+
+body:not(.dark-mode) .kids-story-card {
+  background: #FFFFFF;
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+body:not(.dark-mode) .kids-story-title {
+  color: #111827;
+}
+
+body:not(.dark-mode) .kids-story-text {
+  color: #374151;
+}
+
+body:not(.dark-mode) .kids-quiz-card,
+body:not(.dark-mode) .kids-result-card {
+  background: #FFFFFF;
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+body:not(.dark-mode) .kids-quiz-question,
+body:not(.dark-mode) .kids-congrats-title {
+  color: #111827;
+}
+
+body:not(.dark-mode) .kids-option-btn {
+  background: #F9FAFB;
+  border-color: #E5E7EB;
+  color: #111827;
+}
+

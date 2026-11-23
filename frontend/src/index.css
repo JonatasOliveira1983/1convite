@@ -1116,8 +1116,57 @@ body.dark-mode .app-header {
 }
 
 /* ═══════════════════════════════════════════════════
-   DARK MODE (TEMA ESCURO - MIDNIGHT AMOLED)
+   ADAPTAÇÃO DE TEMA (CLARO / ESCURO) — NOVOS MÓDULOS
 ═══════════════════════════════════════════════════ */
+.cafe-home-card {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 100%);
+  border: 1.5px solid #FDBA74;
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.10);
+  transition: all 0.25s ease;
+}
+
+.cafe-home-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.18);
+}
+
+.cafe-home-card h4 {
+  color: #111827 !important;
+}
+
+.cafe-home-card p {
+  color: #4B5563 !important;
+}
+
+.cafe-home-tag {
+  color: #C2410C !important;
+}
+
+body.dark-mode .cafe-home-card {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.16) 0%, rgba(24, 24, 28, 0.95) 100%) !important;
+  border-color: rgba(249, 115, 22, 0.35) !important;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12) !important;
+}
+
+body.dark-mode .cafe-home-card h4 {
+  color: #FFFFFF !important;
+}
+
+body.dark-mode .cafe-home-card p {
+  color: #9CA3AF !important;
+}
+
+body.dark-mode .cafe-home-tag {
+  color: #FB923C !important;
+}
+
 body.dark-mode, .app-container.dark-mode, :root.dark-mode {
   --bg-app:         #121212 !important; /* Spotify Canvas #121212 */
   --white:          #181818 !important; /* Spotify Surface Card #181818 */

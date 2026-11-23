@@ -233,3 +233,55 @@
   background: #22C55E;
   color: #FFF;
 }
+
+/* ── SUPORTE AO MODO CLARO ── */
+body:not(.dark-mode) .eb-back-btn {
+  background: #F3F4F6;
+  border-color: #E5E7EB;
+  color: #111827;
+}
+
+body:not(.dark-mode) .eb-card {
+  background: #FFFFFF;
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+body:not(.dark-mode) .eb-card-title {
+  color: #111827;
+}
+
+body:not(.dark-mode) .eb-card-desc {
+  color: #4B5563;
+}
+
+body:not(.dark-mode) .eb-modal-content {
+  background: #FFFFFF;
+  border-color: #E5E7EB;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+body:not(.dark-mode) .eb-modal-title {
+  color: #111827;
+}
+
+body:not(.dark-mode) .eb-close-btn {
+  background: #F3F4F6;
+  border-color: #E5E7EB;
+  color: #111827;
+}
+
+body:not(.dark-mode) .eb-intro-text,
+body:not(.dark-mode) .eb-chapter-desc {
+  color: #374151;
+}
+
+body:not(.dark-mode) .eb-chapter-item {
+  background: #F9FAFB;
+  border-color: #E5E7EB;
+}
+
+body:not(.dark-mode) .eb-chapter-name {
+  color: #111827;
+}
+
