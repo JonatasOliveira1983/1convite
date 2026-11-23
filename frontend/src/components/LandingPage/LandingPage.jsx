@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import './LandingPage.css';
 import { sendLeadWebhook } from '../../services/webhookService';
 
+import jesusImg from '../../assets/mentores/jesus.png';
+import salomaoImg from '../../assets/mentores/salomao.png';
+import daviImg from '../../assets/mentores/davi.png';
+import pauloImg from '../../assets/mentores/paulo.png';
+import moisesImg from '../../assets/mentores/moises.png';
+import esterImg from '../../assets/mentores/ester.png';
+import mariaImg from '../../assets/mentores/maria.png';
+
 // ── VETORES SVG CANÔNICOS (ZERO EMOJIS - PADRÃO SPOTIFY DESIGN-MD) ──
 const IconBible = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -228,7 +236,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Mestre e Redentor',
       citacao: 'Vinde a mim todos os que estais cansados e oprimidos, e eu vos aliviarei.',
       foco: 'Paz profunda, salvação, reconciliação e graça restauradora',
-      avatar: '/mentores/jesus.png',
+      avatar: jesusImg,
       tag: 'Graça & Salvação'
     },
     {
@@ -237,7 +245,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Rei da Sabedoria',
       citacao: 'Os planos do diligente conduzem à abundância, mas a pressa excessiva leva à penúria.',
       foco: 'Finanças, domínio próprio, prudência contratual e negócios',
-      avatar: '/mentores/salomao.png',
+      avatar: salomaoImg,
       tag: 'Finanças & Gestão'
     },
     {
@@ -246,7 +254,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Homem Segundo o Coração de Deus',
       citacao: 'O Senhor é a minha luz e a minha salvação; a quem temerei?',
       foco: 'Superação do medo, quebra de gigantes, adoração e oração',
-      avatar: '/mentores/davi.png',
+      avatar: daviImg,
       tag: 'Coragem & Louvor'
     },
     {
@@ -255,7 +263,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Apóstolo dos Gentios',
       citacao: 'Combati o bom combate, acabei a carreira, guardei a fé.',
       foco: 'Propósito eterno, resiliência na adversidade e fé apostólica',
-      avatar: '/mentores/paulo.png',
+      avatar: pauloImg,
       tag: 'Propósito & Foco'
     },
     {
@@ -264,7 +272,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'O Libertador e Legislador',
       citacao: 'Se a tua presença não for conosco, não nos faças subir daqui.',
       foco: 'Liderança de equipes, paciência no deserto e intimidade face a face',
-      avatar: '/mentores/moises.png',
+      avatar: moisesImg,
       tag: 'Liderança & Direção'
     },
     {
@@ -273,7 +281,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'A Rainha da Coragem',
       citacao: 'Se perecer, pereci. Entrarei na presença do rei conforme a lei de Deus.',
       foco: 'Posicionamento estratégico, jejum bíblico e intrepidez',
-      avatar: '/mentores/ester.png',
+      avatar: esterImg,
       tag: 'Coragem Estratégica'
     },
     {
@@ -282,7 +290,7 @@ export default function LandingPage({ onEnterApp }) {
       papel: 'Exemplo de Devoção e Graça',
       citacao: 'Eis aqui a serva do Senhor; cumpra-se em mim segundo a tua palavra.',
       foco: 'Humildade, confiança inabalável, família e consagração',
-      avatar: '/mentores/maria.png',
+      avatar: mariaImg,
       tag: 'Devoção & Família'
     }
   ];

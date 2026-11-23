@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import LandingPage from './components/LandingPage/LandingPage';
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid, generateMemoriaDeck } from './data/arcadeData';
 import TrailHome from './components/trail/TrailHome';
-import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal } from './data/layaData';
+import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal, gerarRespostaMentor } from './data/layaData';
 import CafeComDeusView from './components/CafeComDeus/CafeComDeusView';
 import MulherVirtuosaView from './components/MulherVirtuosa/MulherVirtuosaView';
 import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPregadorView';
@@ -825,6 +825,66 @@ function App() {
   const [layaMentorTheme, setLayaMentorTheme] = useState('ansiedade');
   const [layaCopied, setLayaCopied] = useState(false);
   const [layaSearching, setLayaSearching] = useState(false);
+
+  // ── CHAT INTERATIVO COM O MENTOR BÍBLICO ──
+  const [mentorChatHistory, setMentorChatHistory] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('mentor-chat-history') || '{}');
+    } catch {
+      return {};
+    }
+  });
+  const [mentorInputText, setMentorInputText] = useState('');
+  const [mentorIsThinking, setMentorIsThinking] = useState(false);
+  const mentorChatEndRef = useRef(null);
+
+  const handleSendMentorMessage = (customQuestion = null) => {
+    const textToSend = (typeof customQuestion === 'string' ? customQuestion : mentorInputText || '').trim();
+    if (!textToSend || !activeCounselor || mentorIsThinking) return;
+
+    const currentMentor = LAYA_MENTORES.find(m => m.id === activeCounselor) || LAYA_MENTORES[0];
+    const prevList = mentorChatHistory[currentMentor.id] || [
+      { id: 'welcome', sender: 'mentor', text: currentMentor.saudacao_chat, time: 'Início' }
+    ];
+
+    const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMsg = {
+      id: Date.now(),
+      sender: 'user',
+      text: textToSend,
+      time: nowTime
+    };
+
+    const updatedWithUser = [...prevList, userMsg];
+    setMentorChatHistory(prev => {
+      const next = { ...prev, [currentMentor.id]: updatedWithUser };
+      try { localStorage.setItem('mentor-chat-history', JSON.stringify(next)); } catch {}
+      return next;
+    });
+
+    setMentorInputText('');
+    setMentorIsThinking(true);
+
+    setTimeout(() => {
+      const resp = gerarRespostaMentor(currentMentor.id, textToSend);
+      const mentorMsg = {
+        id: Date.now() + 1,
+        sender: 'mentor',
+        text: resp.texto,
+        versiculo: resp.versiculo,
+        acao: resp.acao,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      setMentorChatHistory(prev => {
+        const currentList = prev[currentMentor.id] || updatedWithUser;
+        const next = { ...prev, [currentMentor.id]: [...currentList, mentorMsg] };
+        try { localStorage.setItem('mentor-chat-history', JSON.stringify(next)); } catch {}
+        return next;
+      });
+      setMentorIsThinking(false);
+    }, 600);
+  };
 
   const [countdown, setCountdown] = useState(12);
   const [isCountdownActive, setIsCountdownActive] = useState(false);
@@ -5404,7 +5464,7 @@ Em nome de Jesus, Amém.`;
                         Mentores Bíblicos Canônicos
                       </h2>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', margin: 0 }}>
-                        Acesse conselhos doutrinários, orações e princípios de vida deixados pelos grandes homens e mulheres da Bíblia.
+                        Acesse a biografia, pilares de fé e converse diretamente com os grandes homens e mulheres das Escrituras Sagradas.
                       </p>
                     </div>
 
@@ -5417,16 +5477,19 @@ Em nome de Jesus, Amém.`;
                             className="dashboard-card"
                             style={{
                               position: 'relative',
-                              padding: '18px 14px',
-                              borderRadius: '20px',
+                              padding: '20px 14px 16px',
+                              borderRadius: '22px',
                               border: isUnlocked ? '1.5px solid var(--slate-border)' : '1px dashed var(--slate-border)',
-                              opacity: isUnlocked ? 1 : 0.85,
+                              opacity: isUnlocked ? 1 : 0.88,
                               cursor: 'pointer',
                               display: 'flex',
                               flexDirection: 'column',
                               alignItems: 'center',
                               textAlign: 'center',
-                              gap: '10px'
+                              gap: '12px',
+                              background: 'var(--white)',
+                              boxShadow: 'var(--shadow-sm)',
+                              transition: 'all 0.2s ease'
                             }}
                             onClick={() => {
                               if (isUnlocked) {
@@ -5449,13 +5512,15 @@ Em nome de Jesus, Amém.`;
                               </div>
                             )}
 
+                            {/* Foto Oficial em Destaque */}
                             <div style={{
-                              width: '64px',
-                              height: '64px',
+                              width: '74px',
+                              height: '74px',
                               borderRadius: '50%',
                               overflow: 'hidden',
-                              border: '2px solid var(--orange)',
-                              boxShadow: 'var(--shadow-sm)'
+                              border: '2.5px solid var(--orange)',
+                              boxShadow: '0 4px 12px rgba(249,115,22,0.25)',
+                              flexShrink: 0
                             }}>
                               <img
                                 src={mentor.avatar}
@@ -5465,10 +5530,10 @@ Em nome de Jesus, Amém.`;
                             </div>
 
                             <div>
-                              <strong style={{ display: 'block', fontSize: '0.98rem', color: 'var(--text-primary)' }}>
+                              <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', fontWeight: '800' }}>
                                 {mentor.nome}
                               </strong>
-                              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: '600', display: 'block', marginTop: '2px' }}>
                                 {mentor.titulo}
                               </span>
                             </div>
@@ -5479,17 +5544,42 @@ Em nome de Jesus, Amém.`;
                                 <span
                                   key={esp}
                                   style={{
-                                    fontSize: '0.65rem',
-                                    padding: '2px 6px',
-                                    background: 'var(--slate-light)',
-                                    borderRadius: '6px',
-                                    color: 'var(--text-secondary)'
+                                    fontSize: '0.66rem',
+                                    padding: '2px 7px',
+                                    background: 'rgba(249,115,22,0.08)',
+                                    border: '1px solid rgba(249,115,22,0.2)',
+                                    borderRadius: '8px',
+                                    color: 'var(--orange)',
+                                    fontWeight: '600'
                                   }}
                                 >
                                   {esp}
                                 </span>
                               ))}
                             </div>
+
+                            {/* Botão Chamativo de Ação */}
+                            <button
+                              style={{
+                                width: '100%',
+                                padding: '8px 10px',
+                                borderRadius: '12px',
+                                border: 'none',
+                                background: isUnlocked ? 'var(--orange)' : 'var(--slate-light)',
+                                color: isUnlocked ? '#fff' : 'var(--text-secondary)',
+                                fontSize: '0.76rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '6px',
+                                marginTop: '4px'
+                              }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                              <span>{isUnlocked ? 'Conversar' : 'Desbloquear'}</span>
+                            </button>
                           </div>
                         );
                       })}
@@ -5501,182 +5591,486 @@ Em nome de Jesus, Amém.`;
                     const currentMentor = LAYA_MENTORES.find(m => m.id === activeCounselor) || LAYA_MENTORES[0];
                     const mentorConselhos = LAYA_CONSELHOS.filter(c => c.mentor_id === currentMentor.id);
                     const conselhoAtivo = mentorConselhos.find(c => c.tema === layaMentorTheme) || mentorConselhos[0] || LAYA_CONSELHOS[0];
+                    const chatHistoryList = mentorChatHistory[currentMentor.id] || [
+                      { id: 'welcome', sender: 'mentor', text: currentMentor.saudacao_chat, time: 'Início' }
+                    ];
 
                     return (
-                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                        {/* Botão Voltar aos Mentores */}
-                        <button
-                          onClick={() => setActiveCounselor(null)}
-                          style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--text-primary)',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            padding: '4px 0',
-                            fontSize: '0.9rem',
-                            fontWeight: '600'
-                          }}
-                        >
-                          <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                          Voltar para Lista de Mentores
-                        </button>
+                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                        
+                        {/* Barra Superior de Navegação */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <button
+                            onClick={() => setActiveCounselor(null)}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: 'var(--orange)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '6px 0',
+                              fontSize: '0.92rem',
+                              fontWeight: '700'
+                            }}
+                          >
+                            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                            Voltar aos Mentores
+                          </button>
+                          
+                          <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: '600' }}>
+                            {currentMentor.periodo}
+                          </span>
+                        </div>
 
-                        {/* Hero do Mentor */}
+                        {/* ══ 1. TOPO / PARTE SUPERIOR: HERO DO MENTOR COM FOTO DESTACADA ══ */}
                         <div className="glass-panel" style={{
                           padding: '24px 20px',
                           borderRadius: '24px',
-                          background: 'linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(5,150,105,0.03) 100%)',
-                          border: '1px solid var(--slate-border)',
+                          background: 'linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(245,158,11,0.03) 100%)',
+                          border: '1.5px solid var(--orange)',
                           display: 'flex',
+                          flexDirection: 'column',
                           alignItems: 'center',
-                          gap: '16px'
+                          textAlign: 'center',
+                          gap: '14px',
+                          boxShadow: 'var(--shadow-md)',
+                          position: 'relative'
                         }}>
-                          <img
-                            src={currentMentor.avatar}
-                            alt={currentMentor.nome}
-                            style={{
-                              width: '74px',
-                              height: '74px',
-                              borderRadius: '50%',
-                              objectFit: 'cover',
-                              border: '3px solid var(--orange)',
-                              flexShrink: 0
-                            }}
-                          />
+                          {/* Imagem do Mentor na Parte Superior */}
+                          <div style={{
+                            width: '92px',
+                            height: '92px',
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            border: '3.5px solid var(--orange)',
+                            boxShadow: '0 8px 24px rgba(249,115,22,0.3)',
+                            flexShrink: 0
+                          }}>
+                            <img
+                              src={currentMentor.avatar}
+                              alt={currentMentor.nome}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </div>
+
                           <div>
-                            <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
-                              {currentMentor.periodo}
+                            <span style={{
+                              display: 'inline-block',
+                              background: 'var(--orange)',
+                              color: '#fff',
+                              fontSize: '0.72rem',
+                              fontWeight: '800',
+                              textTransform: 'uppercase',
+                              padding: '3px 10px',
+                              borderRadius: '12px',
+                              marginBottom: '6px'
+                            }}>
+                              {currentMentor.titulo}
                             </span>
-                            <h2 style={{ margin: '2px 0 4px 0', fontSize: '1.35rem', color: 'var(--text-primary)', fontWeight: '800' }}>
+                            <h2 style={{ margin: '2px 0 6px 0', fontSize: '1.5rem', color: 'var(--text-primary)', fontWeight: '800' }}>
                               {currentMentor.nome}
                             </h2>
-                            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                              {currentMentor.descricao}
+                            <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5', maxWidth: '460px' }}>
+                              "{currentMentor.frase_destaque}"
                             </p>
                           </div>
                         </div>
 
-                        {/* Seletor de Temas do Mentor */}
-                        <div>
-                          <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
-                            Selecione a Área de Orientação:
-                          </span>
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                            {mentorConselhos.map(c => (
-                              <button
-                                key={c.tema}
-                                onClick={() => setLayaMentorTheme(c.tema)}
-                                style={{
-                                  padding: '8px 16px',
-                                  borderRadius: '16px',
-                                  border: '1px solid',
-                                  borderColor: conselhoAtivo.tema === c.tema ? 'var(--orange)' : 'var(--slate-border)',
-                                  background: conselhoAtivo.tema === c.tema ? 'var(--orange)' : 'var(--white)',
-                                  color: conselhoAtivo.tema === c.tema ? '#fff' : 'var(--text-primary)',
-                                  fontSize: '0.85rem',
-                                  fontWeight: '700',
-                                  cursor: 'pointer',
-                                  transition: 'all 0.15s ease'
-                                }}
-                              >
-                                {c.titulo}
-                              </button>
-                            ))}
+                        {/* ══ 2. PERFIL ROBUSTO: QUEM FOI & PILARES DE SABEDORIA ══ */}
+                        <div className="glass-panel" style={{
+                          padding: '20px',
+                          borderRadius: '20px',
+                          border: '1px solid var(--slate-border)',
+                          background: 'var(--white)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '14px'
+                        }}>
+                          <div>
+                            <h3 style={{ margin: '0 0 6px 0', fontSize: '0.98rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                              Quem Foi & Trajetória Bíblica
+                            </h3>
+                            <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.55' }}>
+                              {currentMentor.biografia}
+                            </p>
+                            {currentMentor.contexto_historico && (
+                              <p style={{ margin: '8px 0 0 0', fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.45', fontStyle: 'italic' }}>
+                                Contexto Histórico: {currentMentor.contexto_historico}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* 3 Pilares Fundamentais de Sabedoria */}
+                          {currentMentor.pilares_sabedoria && (
+                            <div>
+                              <h4 style={{ margin: '0 0 8px 0', fontSize: '0.84rem', fontWeight: '800', color: 'var(--text-primary)', textTransform: 'uppercase' }}>
+                                Pilares de Sabedoria do Mentor
+                              </h4>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
+                                {currentMentor.pilares_sabedoria.map((pilar, idx) => (
+                                  <div
+                                    key={idx}
+                                    style={{
+                                      padding: '10px 12px',
+                                      borderRadius: '12px',
+                                      background: 'var(--slate-light)',
+                                      border: '1px solid var(--slate-border)',
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      gap: '2px'
+                                    }}
+                                  >
+                                    <strong style={{ fontSize: '0.84rem', color: 'var(--orange)' }}>
+                                      {idx + 1}. {pilar.titulo}
+                                    </strong>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                      {pilar.desc}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Versículo Âncora */}
+                          <div style={{
+                            background: 'rgba(249,115,22,0.06)',
+                            padding: '10px 14px',
+                            borderRadius: '12px',
+                            borderLeft: '3.5px solid var(--orange)'
+                          }}>
+                            <span style={{ fontSize: '0.74rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase', display: 'block' }}>
+                              Versículo Âncora da Vida
+                            </span>
+                            <span style={{ fontSize: '0.84rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                              {currentMentor.versiculo_chave}
+                            </span>
                           </div>
                         </div>
 
-                        {/* Card do Conselho Canônico */}
+                        {/* ══ 3. MEIO: ENSINAMENTOS DOUTRINÁRIOS & ORAÇÃO ══ */}
+                        {conselhoAtivo && (
+                          <div className="glass-panel" style={{
+                            padding: '20px',
+                            borderRadius: '20px',
+                            border: '1px solid var(--slate-border)',
+                            background: 'var(--white)',
+                            boxShadow: 'var(--shadow-sm)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '14px'
+                          }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '800' }}>
+                                {conselhoAtivo.versiculo_referencia}
+                              </span>
+                              <button
+                                onClick={() => handleCopyLayaConselho(
+                                  `MENTORIA COM ${currentMentor.nome.toUpperCase()}\nTema: ${conselhoAtivo.titulo}\nVersículo: ${conselhoAtivo.versiculo_referencia}\n\n"${conselhoAtivo.texto_biblico}"\n\nCONSELHO DOUTRINÁRIO:\n${conselhoAtivo.conselho_doutrinario}\n\nORAÇÃO:\n${conselhoAtivo.oracao_guiada}\n\nDESAFIO PRÁTICO:\n${conselhoAtivo.desafio_pratico}`
+                                )}
+                                style={{
+                                  background: 'transparent',
+                                  border: 'none',
+                                  color: layaCopied ? 'var(--orange)' : 'var(--text-secondary)',
+                                  fontSize: '0.82rem',
+                                  fontWeight: '600',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                {layaCopied ? 'Copiado!' : 'Copiar'}
+                              </button>
+                            </div>
+
+                            {/* Texto Bíblico */}
+                            <div style={{
+                              background: 'rgba(16,185,129,0.05)',
+                              padding: '12px 14px',
+                              borderRadius: '12px',
+                              borderLeft: '3.5px solid var(--orange)'
+                            }}>
+                              <p style={{ margin: 0, fontSize: '0.92rem', fontWeight: '600', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.5' }}>
+                                "{conselhoAtivo.texto_biblico}"
+                              </p>
+                            </div>
+
+                            {/* Princípio Doutrinário */}
+                            <div>
+                              <h4 style={{ margin: '0 0 4px 0', fontSize: '0.86rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+                                Ensinamento de {currentMentor.nome}
+                              </h4>
+                              <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.55' }}>
+                                {conselhoAtivo.conselho_doutrinario}
+                              </p>
+                            </div>
+
+                            {/* Oração com o Mentor */}
+                            <div style={{
+                              background: 'var(--slate-light)',
+                              padding: '14px',
+                              borderRadius: '14px',
+                              border: '1px solid var(--slate-border)'
+                            }}>
+                              <h4 style={{ margin: '0 0 4px 0', fontSize: '0.82rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+                                Oração Guiada
+                              </h4>
+                              <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: '1.5', fontStyle: 'italic' }}>
+                                "{conselhoAtivo.oracao_guiada}"
+                              </p>
+                            </div>
+
+                            {/* Desafio Prático */}
+                            <div style={{
+                              background: 'rgba(245,158,11,0.08)',
+                              padding: '12px 14px',
+                              borderRadius: '12px',
+                              border: '1px solid rgba(245,158,11,0.3)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px'
+                            }}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                              <div>
+                                <div style={{ fontSize: '0.74rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
+                                  Desafio Prático
+                                </div>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: '500' }}>
+                                  {conselhoAtivo.desafio_pratico}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ══ 4. PARTE INFERIOR: CHAT PRINCIPAL COM O MENTOR BÍBLICO ══ */}
                         <div className="glass-panel" style={{
-                          padding: '24px 20px',
-                          borderRadius: '20px',
-                          border: '1.5px solid var(--slate-border)',
+                          padding: '20px',
+                          borderRadius: '24px',
+                          border: '2px solid var(--orange)',
                           background: 'var(--white)',
                           boxShadow: 'var(--shadow-md)',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '16px'
+                          gap: '14px',
+                          marginTop: '4px'
                         }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span style={{ background: 'var(--orange-light)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '800' }}>
-                              {conselhoAtivo.versiculo_referencia}
-                            </span>
-                            <button
-                              onClick={() => handleCopyLayaConselho(
-                                `MENTORIA COM ${currentMentor.nome.toUpperCase()}\nTema: ${conselhoAtivo.titulo}\nVersículo: ${conselhoAtivo.versiculo_referencia}\n\n"${conselhoAtivo.texto_biblico}"\n\nCONSELHO DOUTRINÁRIO:\n${conselhoAtivo.conselho_doutrinario}\n\nORAÇÃO:\n${conselhoAtivo.oracao_guiada}\n\nDESAFIO PRÁTICO:\n${conselhoAtivo.desafio_pratico}`
-                              )}
-                              style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: layaCopied ? 'var(--orange)' : 'var(--text-secondary)',
-                                fontSize: '0.82rem',
-                                fontWeight: '600',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              {layaCopied ? 'Copiado!' : 'Copiar'}
-                            </button>
-                          </div>
-
-                          {/* Texto Bíblico */}
-                          <div style={{
-                            background: 'rgba(16,185,129,0.05)',
-                            padding: '14px 16px',
-                            borderRadius: '14px',
-                            borderLeft: '4px solid var(--orange)'
-                          }}>
-                            <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.5' }}>
-                              "{conselhoAtivo.texto_biblico}"
-                            </p>
-                          </div>
-
-                          {/* Conselho Doutrinário */}
-                          <div>
-                            <h4 style={{ margin: '0 0 6px 0', fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-primary)' }}>
-                              Princípio Doutrinário
-                            </h4>
-                            <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                              {conselhoAtivo.conselho_doutrinario}
-                            </p>
-                          </div>
-
-                          {/* Oração Guiada */}
-                          <div style={{
-                            background: 'var(--slate-light)',
-                            padding: '16px',
-                            borderRadius: '16px',
-                            border: '1px solid var(--slate-border)'
-                          }}>
-                            <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-primary)' }}>
-                              Oração com o Mentor
-                            </h4>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic' }}>
-                              "{conselhoAtivo.oracao_guiada}"
-                            </p>
-                          </div>
-
-                          {/* Desafio Prático */}
-                          <div style={{
-                            background: 'rgba(245,158,11,0.08)',
-                            padding: '14px 16px',
-                            borderRadius: '14px',
-                            border: '1px solid rgba(245,158,11,0.3)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px'
-                          }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                            <div>
-                              <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase' }}>
-                                Desafio Prático do Dia
-                              </div>
-                              <div style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: '500' }}>
-                                {conselhoAtivo.desafio_pratico}
+                          {/* Cabeçalho do Chat */}
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--slate-border)', paddingBottom: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <img
+                                src={currentMentor.avatar}
+                                alt={currentMentor.nome}
+                                style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--orange)' }}
+                              />
+                              <div>
+                                <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-primary)', fontWeight: '800' }}>
+                                  Conversar com {currentMentor.nome}
+                                </h3>
+                                <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                                  Disponível nas Escrituras • Resposta Imediata
+                                </span>
                               </div>
                             </div>
                           </div>
+
+                          {/* Chips de Perguntas Rápidas */}
+                          {currentMentor.exemplos_perguntas && (
+                            <div>
+                              <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: '700', display: 'block', marginBottom: '6px' }}>
+                                Sugestões de perguntas para iniciar:
+                              </span>
+                              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                {currentMentor.exemplos_perguntas.map((perg, pIdx) => (
+                                  <button
+                                    key={pIdx}
+                                    onClick={() => handleSendMentorMessage(perg)}
+                                    style={{
+                                      padding: '6px 12px',
+                                      borderRadius: '16px',
+                                      background: 'var(--slate-light)',
+                                      border: '1px solid var(--slate-border)',
+                                      color: 'var(--text-primary)',
+                                      fontSize: '0.76rem',
+                                      fontWeight: '600',
+                                      cursor: 'pointer',
+                                      textAlign: 'left',
+                                      display: 'flex',
+                                      alignItems: 'center'
+                                    }}
+                                  >
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2.5" style={{ marginRight: '6px', flexShrink: 0 }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                    <span>{perg}</span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Feed de Mensagens do Chat */}
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px',
+                            maxHeight: '380px',
+                            overflowY: 'auto',
+                            padding: '6px 2px',
+                            scrollbarWidth: 'thin'
+                          }}>
+                            {chatHistoryList.map(msg => (
+                              <div
+                                key={msg.id}
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row',
+                                  alignItems: 'flex-start',
+                                  gap: '8px'
+                                }}
+                              >
+                                {msg.sender === 'mentor' && (
+                                  <img
+                                    src={currentMentor.avatar}
+                                    alt={currentMentor.nome}
+                                    style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, marginTop: '2px' }}
+                                  />
+                                )}
+
+                                <div style={{
+                                  maxWidth: '82%',
+                                  padding: '12px 14px',
+                                  borderRadius: msg.sender === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                                  background: msg.sender === 'user' ? 'var(--orange)' : 'var(--slate-light)',
+                                  color: msg.sender === 'user' ? '#fff' : 'var(--text-primary)',
+                                  border: msg.sender === 'user' ? 'none' : '1px solid var(--slate-border)',
+                                  boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  gap: '6px'
+                                }}>
+                                  <p style={{ margin: 0, fontSize: '0.88rem', lineHeight: '1.5' }}>
+                                    {msg.text}
+                                  </p>
+
+                                  {/* Versículo de Fundamentação da Resposta */}
+                                  {msg.versiculo && (
+                                    <div style={{
+                                      fontSize: '0.75rem',
+                                      fontWeight: '700',
+                                      color: 'var(--orange)',
+                                      padding: '4px 8px',
+                                      borderRadius: '8px',
+                                      background: 'rgba(249,115,22,0.1)',
+                                      marginTop: '2px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}>
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                      <span>{msg.versiculo}</span>
+                                    </div>
+                                  )}
+
+                                  {/* Ação Prática Sugerida */}
+                                  {msg.acao && (
+                                    <div style={{
+                                      fontSize: '0.76rem',
+                                      color: 'var(--text-secondary)',
+                                      fontStyle: 'italic',
+                                      borderTop: '1px solid rgba(0,0,0,0.06)',
+                                      paddingTop: '4px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}>
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                      <span>{msg.acao}</span>
+                                    </div>
+                                  )}
+
+                                  <span style={{
+                                    fontSize: '0.66rem',
+                                    color: msg.sender === 'user' ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)',
+                                    alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start'
+                                  }}>
+                                    {msg.time}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+
+                            {/* Indicador de Digitando / Formulando Resposta */}
+                            {mentorIsThinking && (
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <img
+                                  src={currentMentor.avatar}
+                                  alt={currentMentor.nome}
+                                  style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }}
+                                />
+                                <div style={{
+                                  padding: '8px 14px',
+                                  borderRadius: '16px',
+                                  background: 'var(--slate-light)',
+                                  color: 'var(--text-muted)',
+                                  fontSize: '0.8rem',
+                                  fontWeight: '600',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px'
+                                }}>
+                                  <span>{currentMentor.nome} está discernindo a resposta...</span>
+                                </div>
+                              </div>
+                            )}
+
+                            <div ref={mentorChatEndRef} />
+                          </div>
+
+                          {/* Barra de Entrada / Input do Chat */}
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              handleSendMentorMessage();
+                            }}
+                            style={{ display: 'flex', gap: '8px', marginTop: '4px' }}
+                          >
+                            <input
+                              type="text"
+                              value={mentorInputText}
+                              onChange={(e) => setMentorInputText(e.target.value)}
+                              placeholder={`Pergunte algo a ${currentMentor.nome}...`}
+                              style={{
+                                flex: 1,
+                                padding: '12px 16px',
+                                borderRadius: '16px',
+                                border: '1px solid var(--slate-border)',
+                                background: 'var(--slate-light)',
+                                color: 'var(--text-primary)',
+                                fontSize: '0.9rem',
+                                outline: 'none'
+                              }}
+                            />
+
+                            <button
+                              type="submit"
+                              disabled={!mentorInputText.trim() || mentorIsThinking}
+                              style={{
+                                padding: '0 18px',
+                                borderRadius: '16px',
+                                border: 'none',
+                                background: mentorInputText.trim() ? 'var(--orange)' : 'var(--slate-border)',
+                                color: '#fff',
+                                cursor: mentorInputText.trim() ? 'pointer' : 'not-allowed',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'all 0.2s'
+                              }}
+                            >
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                          </form>
                         </div>
                       </div>
                     );
