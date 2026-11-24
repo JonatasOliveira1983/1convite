@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import html2canvas from 'html2canvas';
+import { renderCardToHD } from '../../utils/cardCanvasGenerator';
 import cafeData from '../../data/cafe_com_deus_365.json';
 import sinteseData from '../../data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from '../../services/neuralAudioPlayer';
@@ -108,47 +108,102 @@ export default function CafeComDeusView({
 
   const isCompleted = completedDays.includes(selectedDay);
 
-  // Fundos visuais cinematográficos locais curados (sem URLs externas com erro 404)
+  // Acervo Curado de Imagens em Alta Resolução (Pelo menos 2 para cada categoria)
   const CARD_BACKGROUNDS = [
+    // Categoria 1: Palavra de Hoje (2 imagens)
     {
-      id: 'alvorada',
-      label: 'Alvorada',
+      id: 'palavra_montanhas',
+      label: 'Montanhas & Alvorada',
+      category: 'palavra',
       type: 'image',
       url: '/assets/feed/hero_mountains.jpg'
     },
     {
-      id: 'templo',
-      label: 'Templo',
+      id: 'palavra_biblia',
+      label: 'Bíblia & Luz Sagrada',
+      category: 'palavra',
+      type: 'image',
+      url: '/assets/feed/palavra_biblia.jpg'
+    },
+    // Categoria 2: Café & Conversa (2 imagens)
+    {
+      id: 'cafe_xicara',
+      label: 'Xícara Artesanal',
+      category: 'cafe',
+      type: 'image',
+      url: '/assets/feed/cafe_xicara.jpg'
+    },
+    {
+      id: 'cafe_conversa',
+      label: 'Café & Comunhão',
+      category: 'cafe',
+      type: 'image',
+      url: '/assets/feed/cafe_conversa.jpg'
+    },
+    // Categoria 3: Cuidar do Templo (2 imagens)
+    {
+      id: 'templo_atleta',
+      label: 'Atleta no Cume',
+      category: 'treino',
       type: 'image',
       url: '/assets/feed/treino_templo.jpg'
     },
     {
+      id: 'templo_saude',
+      label: 'Saúde & Vitalidade',
+      category: 'treino',
+      type: 'image',
+      url: '/assets/feed/templo_saude.jpg'
+    },
+    // Categoria 4: Igreja & Fé (2 imagens)
+    {
+      id: 'igreja_santuario',
+      label: 'Santuário Sagrado',
+      category: 'igreja',
+      type: 'image',
+      url: '/assets/feed/igreja_santuario.jpg'
+    },
+    {
+      id: 'igreja_adoracao',
+      label: 'Celebração & Fé',
+      category: 'igreja',
+      type: 'image',
+      url: '/assets/feed/igreja_adoracao.jpg'
+    },
+    // Gradientes Cinematográficos de Estúdio
+    {
       id: 'dourado',
-      label: 'Dourado',
+      label: 'Dourado Real',
+      category: 'custom',
       type: 'gradient',
-      css: 'linear-gradient(145deg, #1A1308 0%, #2E1F0B 50%, #0F0A04 100%)'
+      colors: ['#2A1D0D', '#0F0A04'],
+      css: 'linear-gradient(145deg, #2A1D0D 0%, #150E05 100%)'
     },
     {
       id: 'purpura',
-      label: 'Púrpura',
+      label: 'Púrpura Celestial',
+      category: 'custom',
       type: 'gradient',
-      css: 'linear-gradient(145deg, #150A26 0%, #2D1454 50%, #0D0518 100%)'
-    },
-    {
-      id: 'esmeralda',
-      label: 'Esmeralda',
-      type: 'gradient',
-      css: 'linear-gradient(145deg, #061A12 0%, #0D3827 50%, #03100B 100%)'
-    },
-    {
-      id: 'noite',
-      label: 'Noite',
-      type: 'gradient',
-      css: 'linear-gradient(145deg, #080D1A 0%, #111D36 50%, #050811 100%)'
+      colors: ['#221040', '#0A0414'],
+      css: 'linear-gradient(145deg, #221040 0%, #0A0414 100%)'
     }
   ];
 
   const activeBg = CARD_BACKGROUNDS[cardSelectedBg] || CARD_BACKGROUNDS[0];
+
+  // Filtra fundos da categoria ativa com destaque
+  const categoryBgs = CARD_BACKGROUNDS.filter(bg => 
+    cardSelectedIntent === 'custom' ? true : bg.category === cardSelectedIntent || bg.category === 'custom'
+  );
+
+  // Troca de intenção com seleção automática do fundo temático correspondente
+  const handleSelectIntent = (intentKey) => {
+    setCardSelectedIntent(intentKey);
+    const firstMatchIdx = CARD_BACKGROUNDS.findIndex(bg => bg.category === intentKey);
+    if (firstMatchIdx !== -1) {
+      setCardSelectedBg(firstMatchIdx);
+    }
+  };
 
   // Textos para o Card baseado na intenção escolhida
   const getCardContent = () => {
@@ -284,34 +339,52 @@ export default function CafeComDeusView({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Exportação e Download do Card com html2canvas
+  // Exportação e Download do Card em Alta Definição (1080p Nativo)
   const handleExportCard = async (shareMode = 'download') => {
-    if (!cardPreviewRef.current || isGeneratingCard) return;
+    if (isGeneratingCard) return;
     setIsGeneratingCard(true);
     try {
-      const canvas = await html2canvas(cardPreviewRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#0F1117'
+      const dataUrl = await renderCardToHD({
+        format: cardFormat,
+        bg: activeBg,
+        content: {
+          tag: cardContent.title,
+          text: cardContent.text,
+          ref: cardContent.ref,
+          link: '1convite.com.br'
+        }
       });
 
-      const dataUrl = canvas.toDataURL('image/png');
+      if (shareMode === 'share') {
+        const shareText = `*${cardContent.title}*\n\n"${cardContent.text}"\n\n${cardContent.ref ? `_${cardContent.ref}_\n\n` : ''}✨ Acesse e participe do movimento: https://1convite.com.br`;
 
-      if (shareMode === 'share' && navigator.share && navigator.canShare) {
-        canvas.toBlob(async (blob) => {
-          if (!blob) return;
-          const file = new File([blob], '1convite-card.png', { type: 'image/png' });
+        // Tenta compartilhar imagem nativamente se o dispositivo suportar Web Share API de arquivos
+        let sharedNatively = false;
+        if (navigator.share && navigator.canShare) {
           try {
-            await navigator.share({
-              files: [file],
-              title: '1Convite',
-              text: 'Um convite especial para você. https://1convite.com.br'
-            });
-          } catch (err) {
-            downloadDataUrl(dataUrl);
+            const res = await fetch(dataUrl);
+            const blob = await res.blob();
+            const file = new File([blob], `1convite-${cardFormat}-dia-${selectedDay}.jpg`, { type: 'image/jpeg' });
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({
+                files: [file],
+                title: '1Convite',
+                text: shareText
+              });
+              sharedNatively = true;
+            }
+          } catch (shareErr) {
+            console.log('[Native share skipped]:', shareErr);
           }
-        }, 'image/png');
+        }
+
+        // Se não compartilhou nativamente com arquivo, baixa a imagem HD e abre o WhatsApp com o texto
+        if (!sharedNatively) {
+          downloadDataUrl(dataUrl);
+          const encodedText = encodeURIComponent(shareText);
+          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+          window.open(whatsappUrl, '_blank');
+        }
       } else {
         downloadDataUrl(dataUrl);
       }
@@ -324,7 +397,7 @@ export default function CafeComDeusView({
 
   const downloadDataUrl = (dataUrl) => {
     const link = document.createElement('a');
-    link.download = `1convite-card-dia-${selectedDay}.png`;
+    link.download = `1convite-${cardFormat}-hd-dia-${selectedDay}.jpg`;
     link.href = dataUrl;
     document.body.appendChild(link);
     link.click();
@@ -973,14 +1046,14 @@ export default function CafeComDeusView({
                 </span>
 
                 <blockquote className="cafe-card-quote-text">
-                  &ldquo;{cardContent.text}&rdquo;
+                  “{(cardContent.text || '').replace(/^["“”]+|["“”]+$/g, '').trim()}”
                 </blockquote>
 
                 <span className="cafe-card-ref-text">
                   {cardContent.ref}
                 </span>
 
-                {/* Marca d'água oficial 1Convite com ícone de chama em SVG */}
+                {/* Marca d'água oficial 1Convite com link oficial */}
                 <div className="cafe-card-watermark">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="#F97316">
                     <path d="M12 2C8 7 5 11 5 15C5 18.87 8.13 22 12 22C15.87 22 19 18.87 19 15C19 11 16 7 12 2ZM12 20C9.79 20 8 18.21 8 16C8 13.5 10.5 10 12 8.5C13.5 10 16 13.5 16 16C16 18.21 14.21 20 12 20Z" />
@@ -996,7 +1069,7 @@ export default function CafeComDeusView({
             <label className="cafe-studio-label">1. Escolha a Mensagem do Card:</label>
             <div className="cafe-intent-grid">
               <button
-                onClick={() => setCardSelectedIntent('palavra')}
+                onClick={() => handleSelectIntent('palavra')}
                 className={`cafe-intent-pill ${cardSelectedIntent === 'palavra' ? 'active' : ''}`}
                 title="Versículo e tema de hoje"
               >
@@ -1008,7 +1081,7 @@ export default function CafeComDeusView({
               </button>
 
               <button
-                onClick={() => setCardSelectedIntent('cafe')}
+                onClick={() => handleSelectIntent('cafe')}
                 className={`cafe-intent-pill ${cardSelectedIntent === 'cafe' ? 'active' : ''}`}
                 title="Convite para um café"
               >
@@ -1022,7 +1095,7 @@ export default function CafeComDeusView({
               </button>
 
               <button
-                onClick={() => setCardSelectedIntent('treino')}
+                onClick={() => handleSelectIntent('treino')}
                 className={`cafe-intent-pill ${cardSelectedIntent === 'treino' ? 'active' : ''}`}
                 title="Cuidar do templo"
               >
@@ -1033,7 +1106,7 @@ export default function CafeComDeusView({
               </button>
 
               <button
-                onClick={() => setCardSelectedIntent('igreja')}
+                onClick={() => handleSelectIntent('igreja')}
                 className={`cafe-intent-pill ${cardSelectedIntent === 'igreja' ? 'active' : ''}`}
                 title="Convite para a igreja"
               >
@@ -1044,7 +1117,7 @@ export default function CafeComDeusView({
               </button>
 
               <button
-                onClick={() => setCardSelectedIntent('custom')}
+                onClick={() => handleSelectIntent('custom')}
                 className={`cafe-intent-pill is-full-width ${cardSelectedIntent === 'custom' ? 'active' : ''}`}
                 title="Escrever mensagem própria"
               >
@@ -1071,33 +1144,37 @@ export default function CafeComDeusView({
             )}
           </section>
 
-          {/* ── CONTROLE 2: ESCOLHA DO FUNDO VISUAL ── */}
+          {/* ── CONTROLE 2: ESCOLHA DO FUNDO VISUAL (2 IMAGENS POR CATEGORIA + GRADIENTES) ── */}
           <section className="cafe-studio-section">
-            <label className="cafe-studio-label">2. Escolha o Fundo Cinematográfico:</label>
+            <label className="cafe-studio-label">2. Escolha o Fundo da Imagem (Pelo menos 2 por categoria):</label>
             <div className="cafe-bg-selector-grid">
-              {CARD_BACKGROUNDS.map((bg, idx) => (
-                <button
-                  key={bg.id}
-                  onClick={() => setCardSelectedBg(idx)}
-                  className={`cafe-bg-thumb-btn ${cardSelectedBg === idx ? 'selected' : ''}`}
-                  title={bg.label}
-                >
-                  <div 
-                    className="cafe-bg-thumb-preview"
-                    style={{
-                      backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
-                      background: bg.type === 'gradient' ? bg.css : undefined,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
+              {categoryBgs.map((bg) => {
+                const isSelected = activeBg.id === bg.id;
+                const originalIndex = CARD_BACKGROUNDS.findIndex(b => b.id === bg.id);
+                return (
+                  <button
+                    key={bg.id}
+                    onClick={() => setCardSelectedBg(originalIndex)}
+                    className={`cafe-bg-thumb-btn ${isSelected ? 'selected' : ''}`}
+                    title={bg.label}
                   >
-                    {cardSelectedBg === idx && (
-                      <span className="cafe-bg-thumb-check">✓</span>
-                    )}
-                  </div>
-                  <span className="cafe-bg-thumb-label">{bg.label}</span>
-                </button>
-              ))}
+                    <div 
+                      className="cafe-bg-thumb-preview"
+                      style={{
+                        backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
+                        background: bg.type === 'gradient' ? bg.css : undefined,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    >
+                      {isSelected && (
+                        <span className="cafe-bg-thumb-check">✓</span>
+                      )}
+                    </div>
+                    <span className="cafe-bg-thumb-label">{bg.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </section>
 

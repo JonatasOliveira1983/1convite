@@ -1,13 +1,14 @@
 {
-  "version": "v2.10.3",
-  "build": "2026112412",
+  "version": "v2.11.0",
+  "build": "2026112413",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Refinamento de Design & Espaçamentos (Padrão Freepik Dark Glass): Respiro inferior de 140px garantindo que o menu flutuante nunca sobreponha conteúdo.",
-    "Moldura de Vidro Proporcional: Cards sem texto vazando com quebras equilibradas e fontes dimensionadas.",
-    "Menu Inferior Flutuante Elevado: Cantos de 28px, vidro com blur de 24px e sombreamento de profundidade limpo.",
-    "Estúdio 1Convite Otimizado: Formatos Post e Story com preview centralizado, seleção de fundos com miniaturas separadas e botões empilhados com conforto mobile."
+    "Motor de Renderização Nativa Full HD 1080p: Fim dos artefatos do html2canvas. Imagens exportadas em 1080x1080 (Post) e 1080x1920 (Story) cristalinas.",
+    "Acervo Curado com 2+ Imagens por Categoria: Palavra de Hoje (Montanhas e Bíblia Sagrada), Café & Conversa (Xícara e Comunhão), Cuidar do Templo (Atleta e Vitalidade) e Igreja & Fé (Santuário e Adoração).",
+    "Link Oficial 1convite.com.br na Imagem: Marca d'água oficial e endereço web renderizados de forma elegante na base de cada card.",
+    "Seleção Inteligente por Intenção: Ao escolher a categoria, os cenários específicos são destacados e ativados com 1 toque.",
+    "Formatação Tipográfica Impecável: Correção de aspas duplicadas e quebra de linha com proporções áureas de design."
   ],
-  "updateTimestamp": 1795533000000
+  "updateTimestamp": 1795535000000
 }
