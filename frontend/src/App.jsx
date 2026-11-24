@@ -4189,35 +4189,76 @@ Em nome de Jesus, Amém.`;
                       {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Sereno' : narrationRate === 0.95 ? 'Normal' : 'Rápido'}
                     </button>
 
-                    {/* Alternar Voz Neural: Francisca (Serena) / Antônio (Pastoral) */}
-                    <button
-                      onClick={() => {
-                        const nextVoice = meditationVoice === 'pt-BR-FranciscaNeural' ? 'pt-BR-AntonioNeural' : 'pt-BR-FranciscaNeural';
-                        setMeditationVoice(nextVoice);
-                        if (meditationPlaying) {
-                          stopNeuralSpeech();
-                          setMeditationPlaying(false);
-                          setTimeout(() => toggleMeditationTTS(), 100);
-                        }
-                      }}
-                      style={{
-                        background: darkMode ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)',
-                        border: '1.5px solid rgba(139, 92, 246, 0.4)',
-                        padding: '10px 14px',
-                        borderRadius: '20px',
-                        color: darkMode ? '#C4B5FD' : '#6D28D9',
-                        fontSize: '0.82rem',
-                        fontWeight: '800',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '5px'
-                      }}
-                      title="Clique para alternar entre voz feminina serena e masculina pastoral"
-                    >
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-                      <span>{meditationVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}</span>
-                    </button>
+                    {/* Seletor de Vozes: Francisca e Antônio Lado a Lado */}
+                    <div style={{ display: 'inline-flex', gap: '6px' }}>
+                      <button
+                        onClick={() => {
+                          const target = 'pt-BR-FranciscaNeural';
+                          const changed = meditationVoice !== target;
+                          setMeditationVoice(target);
+                          if (meditationPlaying && changed) {
+                            stopNeuralSpeech();
+                            setMeditationPlaying(false);
+                            setTimeout(() => toggleMeditationTTS(), 100);
+                          }
+                        }}
+                        style={{
+                          background: meditationVoice === 'pt-BR-FranciscaNeural'
+                            ? (darkMode ? 'rgba(236, 72, 153, 0.25)' : 'rgba(236, 72, 153, 0.15)')
+                            : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                          border: meditationVoice === 'pt-BR-FranciscaNeural'
+                            ? '1.5px solid #EC4899'
+                            : '1.5px solid rgba(255,255,255,0.1)',
+                          padding: '8px 12px',
+                          borderRadius: '16px',
+                          color: meditationVoice === 'pt-BR-FranciscaNeural' ? '#F472B6' : (darkMode ? '#94A3B8' : '#64748B'),
+                          fontSize: '0.8rem',
+                          fontWeight: '800',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
+                        title="Voz de Francisca (Serena e Doce)"
+                      >
+                        <span>Francisca</span>
+                        {meditationVoice === 'pt-BR-FranciscaNeural' && <span>✓</span>}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          const target = 'pt-BR-AntonioNeural';
+                          const changed = meditationVoice !== target;
+                          setMeditationVoice(target);
+                          if (meditationPlaying && changed) {
+                            stopNeuralSpeech();
+                            setMeditationPlaying(false);
+                            setTimeout(() => toggleMeditationTTS(), 100);
+                          }
+                        }}
+                        style={{
+                          background: meditationVoice === 'pt-BR-AntonioNeural'
+                            ? (darkMode ? 'rgba(59, 130, 246, 0.25)' : 'rgba(59, 130, 246, 0.15)')
+                            : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                          border: meditationVoice === 'pt-BR-AntonioNeural'
+                            ? '1.5px solid #3B82F6'
+                            : '1.5px solid rgba(255,255,255,0.1)',
+                          padding: '8px 12px',
+                          borderRadius: '16px',
+                          color: meditationVoice === 'pt-BR-AntonioNeural' ? '#60A5FA' : (darkMode ? '#94A3B8' : '#64748B'),
+                          fontSize: '0.8rem',
+                          fontWeight: '800',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
+                        title="Voz de Antônio (Pastoral e Firme)"
+                      >
+                        <span>Antônio</span>
+                        {meditationVoice === 'pt-BR-AntonioNeural' && <span>✓</span>}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Som Ambiente de Fundo (Paisagem Sonora) */}

@@ -12,7 +12,15 @@ let isPlayingInternal = false;
 let isPausedInternal = false;
 let currentBlobUrl = null;
 
-const API_FALLBACK_URL = 'https://oneconvite.onrender.com/api/v1/tts/synthesize';
+const getTtsEndpoint = () => {
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return '/api/v1/tts/synthesize';
+    }
+  }
+  return 'https://oneconvite.onrender.com/api/v1/tts/synthesize';
+};
 
 // Fallback nativo calibrado em caso de falta de conexão
 function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
@@ -151,29 +159,20 @@ export async function playNeuralSpeech(text, options = {}) {
   try {
     let response;
     const requestBody = JSON.stringify({ text, voice, rate });
+    const targetEndpoint = getTtsEndpoint();
 
     try {
-      // 1. Tenta endpoint relativo (Pages Function ou Proxy)
-      response = await fetch('/api/v1/tts/synthesize', {
+      response = await fetch(targetEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: requestBody
       });
-    } catch (_) {}
-
-    // 2. Se falhar ou não for ok, tenta a URL direta do Render
-    if (!response || !response.ok) {
-      try {
-        response = await fetch(API_FALLBACK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: requestBody
-        });
-      } catch (_) {}
+    } catch (netErr) {
+      console.warn('[NeuralTTS] Erro de rede no endpoint primário:', netErr);
     }
 
     if (!response || !response.ok) {
-      throw new Error('Falha na resposta do servidor de áudio neural');
+      throw new Error(`Falha no servidor de áudio neural: ${response?.status || 'desconectado'}`);
     }
 
     const audioBlob = await response.blob();

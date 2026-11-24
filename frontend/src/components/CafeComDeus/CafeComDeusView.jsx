@@ -78,16 +78,10 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const togglePlayAudio = () => {
-    if (isAudioPlaying) {
-      stopNeuralSpeech();
-      setIsAudioPlaying(false);
-      setIsAudioLoading(false);
-      return;
-    }
-
+  const startAudioPlayback = (voiceToUse = selectedVoice, modeToUse = audioMode, ambientToUse = ambientPiano) => {
+    stopNeuralSpeech();
     let textToSpeak = '';
-    if (audioMode === 'oracao') {
+    if (modeToUse === 'oracao') {
       textToSpeak = currentMeditation.prayer
         ? `Oração do Café com Deus para hoje. ${currentMeditation.prayer}`
         : `Oração do dia. Senhor, abençoa o nosso dia e guia os nossos passos. Em nome de Jesus, amém.`;
@@ -100,9 +94,9 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
     setAudioProgress(0);
 
     playNeuralSpeech(textToSpeak, {
-      voice: selectedVoice,
+      voice: voiceToUse,
       rate: '-4%',
-      ambient: ambientPiano,
+      ambient: ambientToUse,
       ambientVolume: 0.12,
       onStart: () => {
         setIsAudioLoading(false);
@@ -123,6 +117,30 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
         setIsAudioLoading(false);
       }
     });
+  };
+
+  const togglePlayAudio = () => {
+    if (isAudioPlaying) {
+      stopNeuralSpeech();
+      setIsAudioPlaying(false);
+      setIsAudioLoading(false);
+      return;
+    }
+    startAudioPlayback(selectedVoice, audioMode, ambientPiano);
+  };
+
+  const handleSelectVoice = (voiceKey) => {
+    setSelectedVoice(voiceKey);
+    if (isAudioPlaying) {
+      startAudioPlayback(voiceKey, audioMode, ambientPiano);
+    }
+  };
+
+  const handleSelectMode = (modeKey) => {
+    setAudioMode(modeKey);
+    if (isAudioPlaying) {
+      startAudioPlayback(selectedVoice, modeKey, ambientPiano);
+    }
   };
 
   // Informações de data do dia selecionado
@@ -352,7 +370,10 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
 
           <div className="cafe-audio-info-col">
             <div className="cafe-audio-track-name">
-              {audioMode === 'meditacao' ? `Meditação: ${currentMeditation.title}` : `Oração: Café com Deus (Dia ${selectedDay})`}
+              {audioMode === 'meditacao' ? `Meditação: ${currentMeditation.title}` : `Oração do Dia ${selectedDay}`}
+              <span className="cafe-audio-voice-badge">
+                • Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}
+              </span>
             </div>
 
             <div className="cafe-progress-track">
@@ -369,39 +390,70 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
           </div>
         </div>
 
-        {/* Barra de Ajustes: Modo, Voz e Piano */}
+        {/* Seletor Visível das Vozes: Francisca e Antônio Lado a Lado */}
+        <div className="cafe-voice-bar">
+          <span className="cafe-voice-bar-title">Escolha quem narra para você:</span>
+          <div className="cafe-voice-pills-wrap">
+            <button
+              type="button"
+              onClick={() => handleSelectVoice('pt-BR-FranciscaNeural')}
+              className={`cafe-voice-pill ${selectedVoice === 'pt-BR-FranciscaNeural' ? 'is-active' : ''}`}
+              title="Voz feminina serena, aveludada e reflexiva"
+            >
+              <span className="cafe-voice-avatar-badge fem">F</span>
+              <div className="cafe-voice-pill-text">
+                <strong>Francisca</strong>
+                <small>Serena & Doce</small>
+              </div>
+              {selectedVoice === 'pt-BR-FranciscaNeural' && <span className="cafe-voice-pill-check">✓</span>}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSelectVoice('pt-BR-AntonioNeural')}
+              className={`cafe-voice-pill ${selectedVoice === 'pt-BR-AntonioNeural' ? 'is-active' : ''}`}
+              title="Voz masculina grave, acolhedora e pastoral"
+            >
+              <span className="cafe-voice-avatar-badge masc">A</span>
+              <div className="cafe-voice-pill-text">
+                <strong>Antônio</strong>
+                <small>Pastoral & Firme</small>
+              </div>
+              {selectedVoice === 'pt-BR-AntonioNeural' && <span className="cafe-voice-pill-check">✓</span>}
+            </button>
+          </div>
+        </div>
+
+        {/* Barra de Ajustes Secundários: Modo e Piano */}
         <div className="cafe-audio-options-bar">
           {/* Seletor de Modo */}
           <button
-            onClick={() => {
-              if (isAudioPlaying) stopNeuralSpeech();
-              setIsAudioPlaying(false);
-              setAudioMode(audioMode === 'meditacao' ? 'oracao' : 'meditacao');
-            }}
-            className="cafe-opt-chip active"
-            title="Alternar entre ouvir a meditação completa ou apenas a oração"
+            onClick={() => handleSelectMode('meditacao')}
+            className={`cafe-opt-chip ${audioMode === 'meditacao' ? 'active' : ''}`}
+            title="Ouvir reflexão bíblica e oração completas"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span>{audioMode === 'meditacao' ? 'Modo: Meditação' : 'Modo: Oração'}</span>
+            <span>Meditação Completa</span>
           </button>
 
-          {/* Seletor de Voz */}
           <button
-            onClick={() => {
-              if (isAudioPlaying) stopNeuralSpeech();
-              setIsAudioPlaying(false);
-              setSelectedVoice(selectedVoice === 'pt-BR-FranciscaNeural' ? 'pt-BR-AntonioNeural' : 'pt-BR-FranciscaNeural');
-            }}
-            className="cafe-opt-chip"
-            title="Alternar entre voz serena ou pastoral"
+            onClick={() => handleSelectMode('oracao')}
+            className={`cafe-opt-chip ${audioMode === 'oracao' ? 'active' : ''}`}
+            title="Ouvir apenas a oração matinal"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-            <span>{selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca (Serena)' : 'Antônio (Pastoral)'}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span>Apenas Oração</span>
           </button>
 
           {/* Toggle de Piano Suave */}
           <button
-            onClick={() => setAmbientPiano(!ambientPiano)}
+            onClick={() => {
+              const nextAmbient = !ambientPiano;
+              setAmbientPiano(nextAmbient);
+              if (isAudioPlaying) {
+                startAudioPlayback(selectedVoice, audioMode, nextAmbient);
+              }
+            }}
             className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
             title="Ligar ou desligar piano de fundo"
           >
