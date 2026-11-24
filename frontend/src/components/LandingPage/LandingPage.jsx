@@ -6,6 +6,8 @@ import imgTreinoTemplo from '../../assets/landing/treino_templo.jpg';
 import imgMeditacaoNarrada from '../../assets/landing/meditacao_narrada.jpg';
 import imgConviteVip from '../../assets/landing/convite_vip.jpg';
 import imgHeroMockup from '../../assets/landing/hero_mockup_1convite.jpg';
+import LegalModalPage from '../Legal/LegalModalPage';
+import LgpdBanner from '../Legal/LgpdBanner';
 
 import jesusImg from '../../assets/mentores/jesus.png';
 import salomaoImg from '../../assets/mentores/salomao.png';
@@ -113,6 +115,7 @@ export default function LandingPage({ onEnterApp }) {
   const [selectedMentor, setSelectedMentor] = useState('salomao');
   const [downloadToast, setDownloadToast] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [legalTab, setLegalTab] = useState(null);
   const particlesCanvasRef = React.useRef(null);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
@@ -994,19 +997,31 @@ export default function LandingPage({ onEnterApp }) {
               <h4>Recursos</h4>
               <a href="#mentores" className="sp-footer-link">Mentores Bíblicos</a>
               <a href="#recursos" className="sp-footer-link">Matriz de 365 Dias</a>
-              <a href="https://1convite.com.br" className="sp-footer-link">Portal 1convite.com.br</a>
+              <a href="#planos" className="sp-footer-link">Planos & Convites</a>
+            </div>
+
+            <div className="sp-footer-col">
+              <h4>Legal & LGPD</h4>
+              <button type="button" className="sp-footer-link" onClick={() => setLegalTab('termos')}>Termos de Uso</button>
+              <button type="button" className="sp-footer-link" onClick={() => setLegalTab('privacidade')}>Política de Privacidade</button>
+              <button type="button" className="sp-footer-link" onClick={() => setLegalTab('lgpd')}>LGPD (Seus Dados)</button>
             </div>
           </div>
 
           <div className="sp-footer-bottom">
-            <span>© 2026 1Convite • Design System getdesign.md/spotify • Fiel à Palavra</span>
+            <span>© 2026 1Convite • Todos os direitos reservados • Fiel à Palavra</span>
             <div className="sp-footer-badges">
-              <span className="sp-micro-badge">Zero Rastreadores</span>
+              <span className="sp-micro-badge">Conforme LGPD</span>
               <span className="sp-micro-badge">SSL 256-Bit</span>
             </div>
           </div>
         </div>
       </footer>
+
+      {legalTab && (
+        <LegalModalPage initialTab={legalTab} onClose={() => setLegalTab(null)} />
+      )}
+      <LgpdBanner onOpenLegal={(tab) => setLegalTab(tab)} />
     </div>
   );
 }

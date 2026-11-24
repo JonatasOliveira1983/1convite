@@ -27,6 +27,8 @@ import AdminPanel from './components/Admin/AdminPanel';
 import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
+import LegalModalPage from './components/Legal/LegalModalPage';
+import LgpdBanner from './components/Legal/LgpdBanner';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -405,6 +407,11 @@ function App() {
   const [isAdminMode, setIsAdminMode] = useState(() => adminAuthService.isCurrentSessionAdmin());
   const [showAdminPanel, setShowAdminPanel] = useState(() => adminAuthService.isCurrentSessionAdmin());
   const [dailyPendingBadge, setDailyPendingBadge] = useState(() => syncAppBadge());
+  const [legalModalTab, setLegalModalTab] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const p = new URLSearchParams(window.location.search).get('pagina');
+    return ['termos', 'privacidade', 'lgpd'].includes(p) ? p : null;
+  });
 
   useEffect(() => {
     const updateBadge = () => setDailyPendingBadge(syncAppBadge());
@@ -7243,6 +7250,17 @@ Em nome de Jesus, Amém.`;
                 }}>
                   1convite.com.br • Compartilhando o Reino
                 </div>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '10px' }}>
+                  <button type="button" onClick={() => setLegalModalTab('termos')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '0.74rem', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}>
+                    Termos de Uso
+                  </button>
+                  <button type="button" onClick={() => setLegalModalTab('privacidade')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '0.74rem', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}>
+                    Privacidade
+                  </button>
+                  <button type="button" onClick={() => setLegalModalTab('lgpd')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '0.74rem', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}>
+                    LGPD
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -8911,6 +8929,11 @@ Em nome de Jesus, Amém.`;
           }
         }}
       />
+      {/* Modais Legais e Banner LGPD */}
+      {legalModalTab && (
+        <LegalModalPage initialTab={legalModalTab} onClose={() => setLegalModalTab(null)} />
+      )}
+      <LgpdBanner onOpenLegal={(tab) => setLegalModalTab(tab)} />
     </div>
   );
 }
