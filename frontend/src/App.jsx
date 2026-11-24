@@ -1014,7 +1014,7 @@ function App() {
     if (isCap) return false;
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('app') === 'true') return false;
-    if (urlParams.get('landing') === 'true') return true;
+    if (urlParams.get('landing') === 'true' || urlParams.get('vendas') === 'true') return true;
     return !localStorage.getItem('1convite_visited_app');
   });
 
@@ -2675,6 +2675,10 @@ Em nome de Jesus, Amém.`;
     return (
       <AdminPanel 
         onOpenApp={() => setShowAdminPanel(false)}
+        onOpenLanding={() => {
+          setShowAdminPanel(false);
+          setShowLanding(true);
+        }}
         onLogout={() => {
           adminAuthService.setAdminSession(false);
           setIsAdminMode(false);
@@ -6672,19 +6676,78 @@ Em nome de Jesus, Amém.`;
                 ))}
               </div>
 
-              <div className="glass-panel orange-card" style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.85rem', color: '#78716C', marginBottom: '4px', fontWeight: '600' }}>PLANO MENSAL</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px', marginBottom: '20px' }}>
-                  <span style={{ fontSize: '1.1rem', color: '#78716C' }}>R$</span>
-                  <span style={{ fontSize: '3rem', fontWeight: '900', color: '#C2550A', lineHeight: 1 }}>19</span>
-                  <span style={{ fontSize: '1.5rem', fontWeight: '800', color: '#C2550A' }}>,90</span>
-                  <span style={{ fontSize: '0.85rem', color: '#A8A29E', alignSelf: 'flex-end', marginBottom: '6px' }}>/mês</span>
-                </div>
-                <button className="btn-primary" onClick={iniciarCheckoutWhatsApp} style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)', color: '#fff', border: 'none', boxShadow: '0 8px 24px rgba(37,211,102,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                  Ativar no WhatsApp (Pix/Cartão)
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {[
+                  {
+                    tag: 'Básico',
+                    name: 'Plano Semente',
+                    price: '67',
+                    invites: '1 Convite Gratuito',
+                    desc: 'Acesso completo ao aplicativo + 1 código de convite para liberar gratuitamente para alguém especial.',
+                    featured: false
+                  },
+                  {
+                    tag: 'Mais Popular',
+                    name: 'Plano Edificação',
+                    price: '97',
+                    invites: '5 Convites Gratuitos',
+                    desc: 'O mais escolhido: acesso total + 5 códigos de convite para abençoar família e amigos.',
+                    featured: true
+                  },
+                  {
+                    tag: 'Avançado',
+                    name: 'Plano Reino',
+                    price: '147',
+                    invites: '10 Convites Gratuitos',
+                    desc: 'Para líderes, células e famílias: acesso total + 10 códigos de convite para distribuir.',
+                    featured: false
+                  }
+                ].map((plan) => (
+                  <div
+                    key={plan.name}
+                    className={`glass-panel ${plan.featured ? 'orange-card' : ''}`}
+                    style={{
+                      textAlign: 'center',
+                      border: plan.featured ? '2px solid var(--orange)' : '1px solid var(--slate-border)',
+                      position: 'relative'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
+                      {plan.tag} • {plan.invites}
+                    </div>
+                    <h3 style={{ margin: '0 0 6px', fontSize: '1.15rem' }}>{plan.name}</h3>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px', lineHeight: '1.45' }}>{plan.desc}</p>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px', marginBottom: '14px' }}>
+                      <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>R$</span>
+                      <span style={{ fontSize: '2.4rem', fontWeight: '900', color: 'var(--orange)', lineHeight: 1 }}>{plan.price}</span>
+                    </div>
+                    <button
+                      className="btn-primary"
+                      onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`Olá! Quero adquirir o ${plan.name} (R$ ${plan.price} com ${plan.invites}) do 1Convite.`)}`, '_blank')}
+                      style={{
+                        background: plan.featured ? 'linear-gradient(135deg, var(--orange), #ea580c)' : 'linear-gradient(135deg, #25D366, #128C7E)',
+                        color: '#fff',
+                        border: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        width: '100%'
+                      }}
+                    >
+                      Garantir {plan.name}
+                    </button>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => setShowLanding(true)}
+                  style={{ width: '100%', marginTop: '4px' }}
+                >
+                  Ver Página Completa de Apresentação e Vendas
                 </button>
-                <p style={{ fontSize: '0.78rem', color: '#A8A29E', marginTop: '12px' }}>Cancele quando quiser • Pagamento seguro</p>
               </div>
             </div>
           </div>
@@ -6784,7 +6847,7 @@ Em nome de Jesus, Amém.`;
                 </span>
 
                 {isAdminMode && (
-                  <div style={{ marginTop: '14px' }}>
+                  <div style={{ marginTop: '14px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
                     <button
                       type="button"
                       onClick={() => setShowAdminPanel(true)}
@@ -6809,6 +6872,31 @@ Em nome de Jesus, Amém.`;
                         <path d="M2 12l10 5 10-5" />
                       </svg>
                       <span>Abrir Painel Administrativo</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowLanding(true)}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: '1px solid var(--slate-border)',
+                        color: 'var(--text-primary)',
+                        borderRadius: '24px',
+                        padding: '9px 18px',
+                        fontSize: '0.84rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                      <span>Página de Vendas</span>
                     </button>
                   </div>
                 )}

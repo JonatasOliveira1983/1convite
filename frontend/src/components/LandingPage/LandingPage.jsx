@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './LandingPage.css';
 import { sendLeadWebhook } from '../../services/webhookService';
+import appLogoWhite from '../../assets/logomarca_dark.png';
+import imgTreinoTemplo from '../../assets/landing/treino_templo.jpg';
+import imgMeditacaoNarrada from '../../assets/landing/meditacao_narrada.jpg';
+import imgConviteVip from '../../assets/landing/convite_vip.jpg';
 
 import jesusImg from '../../assets/mentores/jesus.png';
 import salomaoImg from '../../assets/mentores/salomao.png';
@@ -319,17 +323,14 @@ export default function LandingPage({ onEnterApp }) {
       {/* ── TOP NAV BAR (PADRÃO SPOTIFY SHELF) ── */}
       <header className="sp-nav">
         <div className="sp-nav-container">
-          <div className="sp-brand" onClick={onEnterApp}>
-            <div className="sp-brand-icon-box">
-              <IconFlame />
-            </div>
-            <span className="sp-brand-name">1Convite</span>
+          <div className="sp-brand" onClick={onEnterApp} style={{ cursor: 'pointer' }}>
+            <img src={appLogoWhite} alt="1Convite - Compartilhando o Reino" style={{ height: '38px', width: 'auto', objectFit: 'contain' }} />
           </div>
 
           <nav className="sp-nav-links">
             <a href="#recursos">Recursos</a>
+            <a href="#planos">Planos & Convites</a>
             <a href="#mentores">Mentores Bíblicos</a>
-            <a href="#trilha">Trilha do Reino</a>
             <a href="#baixar-app" className="sp-pill-link">
               <IconDownload />
               <span>Baixar o aplicativo</span>
@@ -448,7 +449,7 @@ export default function LandingPage({ onEnterApp }) {
             </h1>
 
             <p className="sp-hero-sub">
-              Bíblia Sagrada completa em ACF com narração imersiva, mentoria bíblica com os grandes Mentores da Fé, matriz diária de 365 desafios e trilha cronológica.
+              Bíblia Sagrada ACF com áudio, meditação diária que você pode ler ou ouvir de forma narrativa, Treino Templo para saúde física, Mentores Bíblicos e um sistema de convites para abençoar outras vidas.
             </p>
 
             <div className="sp-hero-actions">
@@ -512,13 +513,48 @@ export default function LandingPage({ onEnterApp }) {
         </a>
       </section>
 
-      {/* ── SEÇÃO: OS 5 PILARES (ESTILO SHELF DO SPOTIFY) ── */}
+      {/* ── SEÇÃO: DESTAQUES VISUAIS DO ECOSSISTEMA ── */}
       <section id="recursos" className="sp-section">
         <div className="sp-container">
           <div className="sp-section-heading">
-            <span className="sp-kicker">DISCIPLINA & EDIFICAÇÃO</span>
-            <h2 className="sp-title">Estrutura Completa de Crescimento Espiritual</h2>
-            <p className="sp-desc">Ferramentas canônicas para oração, estudo teológico e aplicação prática diária.</p>
+            <span className="sp-kicker">CORPO, ALMA & ESPÍRITO</span>
+            <h2 className="sp-title">Tudo o que você vive dentro do 1Convite</h2>
+            <p className="sp-desc">Uma plataforma completa que une Palavra, meditação narrada, saúde física e compartilhamento do Reino.</p>
+          </div>
+
+          <div className="sp-showcase-grid" style={{ marginBottom: '40px' }}>
+            <div className="sp-showcase-card">
+              <div className="sp-showcase-img-wrap">
+                <img src={imgMeditacaoNarrada} alt="Meditação Diária para ler e ouvir narrada" className="sp-showcase-img" />
+                <span className="sp-showcase-badge">Leitura + Narração</span>
+              </div>
+              <div className="sp-showcase-body">
+                <h3>Meditação Diária & Café com Deus</h3>
+                <p>Leia o devocional do dia ou aperte o play para ouvir de forma narrativa e imersiva — ideal para começar a manhã, dirigir ou descansar.</p>
+              </div>
+            </div>
+
+            <div className="sp-showcase-card">
+              <div className="sp-showcase-img-wrap">
+                <img src={imgTreinoTemplo} alt="Treino Templo - Exercícios Físicos" className="sp-showcase-img" />
+                <span className="sp-showcase-badge">Treino Templo</span>
+              </div>
+              <div className="sp-showcase-body">
+                <h3>Exercícios Físicos & Saúde</h3>
+                <p>Cuide do seu corpo como templo do Espírito Santo com treinos guiados, mapeamento muscular e rotina prática para manter disposição e disciplina.</p>
+              </div>
+            </div>
+
+            <div className="sp-showcase-card">
+              <div className="sp-showcase-img-wrap">
+                <img src={imgConviteVip} alt="Convites Exclusivos do Reino" className="sp-showcase-img" />
+                <span className="sp-showcase-badge">1Convite VIP</span>
+              </div>
+              <div className="sp-showcase-body">
+                <h3>Convites Gratuitos para Presentear</h3>
+                <p>Cada plano libera códigos de convite exclusivos. Quem recebe o seu código entra no aplicativo com acesso total e gratuito a tudo!</p>
+              </div>
+            </div>
           </div>
 
           <div className="sp-cards-grid">
@@ -528,7 +564,7 @@ export default function LandingPage({ onEnterApp }) {
               </div>
               <span className="sp-card-tag">CANÔNICO</span>
               <h3>Bíblia ACF Completa & Áudio</h3>
-              <p>Texto fidedigno com 31.106 versículos, busca instantânea, anotações e streaming narrado com cache offline instantâneo.</p>
+              <p>Texto fidedigno com 31.106 versículos, busca instantânea, anotações e narração em áudio para ouvir qualquer capítulo.</p>
               <div className="sp-card-footer">
                 <span>66 Livros • VT & NT</span>
               </div>
@@ -539,10 +575,10 @@ export default function LandingPage({ onEnterApp }) {
                 <IconShield />
               </div>
               <span className="sp-card-tag">365 DIAS</span>
-              <h3>Desafio do Dia & Matriz Anual</h3>
-              <p>Códigos práticos de domínio próprio, oração guiada em 4 fases e testemunhos históricos da fé de Moody a Spurgeon.</p>
+              <h3>Oração Guiada & Matriz Anual</h3>
+              <p>Códigos práticos de domínio próprio, oração guiada em fases, Espaço Mulher Virtuosa, Biblioteca do Pregador e Espaço Kids.</p>
               <div className="sp-card-footer">
-                <span>Jornadas Diárias</span>
+                <span>Para Toda a Família</span>
               </div>
             </div>
 
@@ -552,7 +588,7 @@ export default function LandingPage({ onEnterApp }) {
               </div>
               <span className="sp-card-tag">SABEDORIA</span>
               <h3>Mentores Bíblicos</h3>
-              <p>Conselhos e discernimento bíblico fundamentados nas Escrituras com os 7 grandes mentores da história da fé.</p>
+              <p>Conselhos e discernimento fundamentados nas Escrituras com os 7 grandes mentores da história da fé.</p>
               <div className="sp-card-footer">
                 <span>7 Mentores Canônicos</span>
               </div>
@@ -563,10 +599,10 @@ export default function LandingPage({ onEnterApp }) {
                 <IconCrown />
               </div>
               <span className="sp-card-tag">CRONOLOGIA</span>
-              <h3>Trilha do Reino & Talentos</h3>
-              <p>Plano cronológico de leitura em 12 ou 18 meses com recompensas espirituais, contagem de streak e marcos de fé.</p>
+              <h3>Trilha do Reino & E-books</h3>
+              <p>Plano cronológico de leitura com marcos de fé, acervo de e-books edificantes e acompanhamento diário.</p>
               <div className="sp-card-footer">
-                <span>Gamificação Santa</span>
+                <span>Crescimento Contínuo</span>
               </div>
             </div>
 
@@ -575,11 +611,115 @@ export default function LandingPage({ onEnterApp }) {
                 <IconPalette />
               </div>
               <span className="sp-card-tag">ESTÚDIO</span>
-              <h3>Studio de Cards & Conexões</h3>
-              <p>Editor visual para criar cartões bíblicos com a estética oficial e convidar amigos pelo WhatsApp e redes sociais.</p>
+              <h3>Studio de Cards & Convites</h3>
+              <p>Crie cartões bíblicos visuais em segundos e envie seu código de convite pelo WhatsApp para transformar vidas.</p>
               <div className="sp-card-footer">
                 <span>Compartilhamento Ágil</span>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEÇÃO: OS 3 PLANOS & CONVITES GRATUITOS ── */}
+      <section id="planos" className="sp-section sp-section-elevated">
+        <div className="sp-container">
+          <div className="sp-section-heading">
+            <span className="sp-kicker">PLANOS & CONVITES DO REINO</span>
+            <h2 className="sp-title">Escolha seu Plano e Abençoe Outras Vidas</h2>
+            <p className="sp-desc">Ao adquirir qualquer plano, você recebe códigos de convite para liberar o acesso completo gratuitamente para quem você ama.</p>
+          </div>
+
+          <div className="sp-plans-grid">
+            {/* Plano Básico */}
+            <div className="sp-plan-card">
+              <span className="sp-plan-tier">Plano Básico</span>
+              <h3 className="sp-plan-title">Semente</h3>
+              <p className="sp-plan-subtitle">Ideal para sua jornada diária pessoal + 1 pessoa especial.</p>
+              <div className="sp-plan-price-row">
+                <span className="sp-plan-currency">R$</span>
+                <span className="sp-plan-amount">67</span>
+              </div>
+              <div className="sp-plan-invites-pill">
+                <IconCheck />
+                <span>Inclui 1 Convite Gratuito</span>
+              </div>
+              <ul className="sp-plan-features">
+                <li><IconCheck /><span>Acesso completo à Bíblia ACF + Áudio</span></li>
+                <li><IconCheck /><span>Meditação Diária (Leitura + Narração)</span></li>
+                <li><IconCheck /><span>Treino Templo, Mentores e Espaço Kids</span></li>
+                <li><IconCheck /><span>1 código exclusivo para liberar acesso total a um convidado</span></li>
+              </ul>
+              <button
+                type="button"
+                className="sp-btn-cta-dark"
+                style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67+-+1+Convite)+do+1Convite!', '_blank')}
+              >
+                <span>Garantir Plano Básico</span>
+                <IconArrowRight />
+              </button>
+            </div>
+
+            {/* Plano Mais Popular */}
+            <div className="sp-plan-card sp-plan-card-featured">
+              <div className="sp-plan-popular-pill">MAIS POPULAR</div>
+              <span className="sp-plan-tier">Mais Popular</span>
+              <h3 className="sp-plan-title">Edificação</h3>
+              <p className="sp-plan-subtitle">Perfeito para sua casa, família e amigos próximos.</p>
+              <div className="sp-plan-price-row">
+                <span className="sp-plan-currency">R$</span>
+                <span className="sp-plan-amount">97</span>
+              </div>
+              <div className="sp-plan-invites-pill">
+                <IconCheck />
+                <span>Inclui 5 Convites Gratuitos</span>
+              </div>
+              <ul className="sp-plan-features">
+                <li><IconCheck /><span>Tudo do Plano Básico liberado</span></li>
+                <li><IconCheck /><span>Mulher Virtuosa, Biblioteca do Pregador & E-books</span></li>
+                <li><IconCheck /><span>Studio de Cards e Oração Guiada completa</span></li>
+                <li><IconCheck /><span>5 códigos exclusivos para seus convidados usarem de graça</span></li>
+              </ul>
+              <button
+                type="button"
+                className="sp-btn-cta-green"
+                style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97+-+5+Convites)+do+1Convite!', '_blank')}
+              >
+                <span>Garantir Plano Popular</span>
+                <IconArrowRight />
+              </button>
+            </div>
+
+            {/* Plano Avançado */}
+            <div className="sp-plan-card">
+              <span className="sp-plan-tier">Plano Avançado</span>
+              <h3 className="sp-plan-title">Reino</h3>
+              <p className="sp-plan-subtitle">Para líderes, células, ministérios e famílias grandes.</p>
+              <div className="sp-plan-price-row">
+                <span className="sp-plan-currency">R$</span>
+                <span className="sp-plan-amount">147</span>
+              </div>
+              <div className="sp-plan-invites-pill">
+                <IconCheck />
+                <span>Inclui 10 Convites Gratuitos</span>
+              </div>
+              <ul className="sp-plan-features">
+                <li><IconCheck /><span>Acesso total a todos os recursos do ecossistema</span></li>
+                <li><IconCheck /><span>Todos os E-books, Trilhas e Mentores Bíblicos</span></li>
+                <li><IconCheck /><span>10 códigos exclusivos para distribuir na sua célula ou igreja</span></li>
+                <li><IconCheck /><span>Quem recebe o código acessa tudo gratuitamente</span></li>
+              </ul>
+              <button
+                type="button"
+                className="sp-btn-cta-dark"
+                style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147+-+10+Convites)+do+1Convite!', '_blank')}
+              >
+                <span>Garantir Plano Avançado</span>
+                <IconArrowRight />
+              </button>
             </div>
           </div>
         </div>
@@ -790,10 +930,7 @@ export default function LandingPage({ onEnterApp }) {
           <div className="sp-footer-main">
             <div className="sp-footer-col-brand">
               <div className="sp-brand" onClick={onEnterApp} style={{ cursor: 'pointer' }}>
-                <div className="sp-brand-icon-box">
-                  <IconFlame />
-                </div>
-                <span className="sp-brand-name">1Convite</span>
+                <img src={appLogoWhite} alt="1Convite - Compartilhando o Reino" style={{ height: '38px', width: 'auto', objectFit: 'contain' }} />
               </div>
               <p className="sp-footer-slogan">Conectando vidas ao propósito eterno através da Palavra viva de Deus.</p>
             </div>

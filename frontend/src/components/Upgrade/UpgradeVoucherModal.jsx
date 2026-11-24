@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UpgradeVoucherModal.css';
+import adminAuthService from '../../services/adminAuthService';
 
 export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium }) {
   if (!isOpen) return null;
@@ -8,8 +9,9 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
   const [voucherCode, setVoucherCode] = useState('');
   const [voucherError, setVoucherError] = useState('');
   const [voucherSuccess, setVoucherSuccess] = useState('');
+  const [validating, setValidating] = useState(false);
 
-  const handleApplyVoucher = (e) => {
+  const handleApplyVoucher = async (e) => {
     e.preventDefault();
     setVoucherError('');
     setVoucherSuccess('');
@@ -20,15 +22,18 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
       return;
     }
 
-    // Aceita qualquer código com formato de voucher ou palavras-chave
-    if (clean.length >= 3) {
-      setVoucherSuccess('Convite ativado com sucesso! Você ganhou acesso Premium.');
+    setValidating(true);
+    const res = await adminAuthService.validateVoucherAsync(clean);
+    setValidating(false);
+
+    if (res.success) {
+      setVoucherSuccess('Convite ativado com sucesso! Acesso completo liberado.');
       setTimeout(() => {
         onActivatePremium(clean);
         onClose();
-      }, 1500);
+      }, 1200);
     } else {
-      setVoucherError('Código de convite inválido ou expirado.');
+      setVoucherError(res.message || 'Código de convite inválido, pausado ou esgotado.');
     }
   };
 
@@ -72,80 +77,81 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
         {/* Conteúdo: Planos */}
         {activeTab === 'planos' && (
           <div className="uv-plans-scroll animate-fade-in">
-            {/* Plano Semente */}
+            {/* Plano Básico */}
             <div className="uv-plan-card">
               <div className="uv-plan-tag">Básico</div>
               <h3 className="uv-plan-name">Plano Semente</h3>
-              <p className="uv-plan-desc">Acesso individual completo ao ecossistema.</p>
+              <p className="uv-plan-desc">Acesso completo ao ecossistema + 1 convite gratuito.</p>
               <div className="uv-plan-price">
                 <span className="uv-currency">R$</span>
-                <span className="uv-value">37</span>
-                <span className="uv-period">/ano</span>
+                <span className="uv-value">67</span>
+                <span className="uv-period">/único</span>
               </div>
               <ul className="uv-plan-features">
-                <li>Bíblia com Narração Imersiva</li>
-                <li>Mini-App Café com Deus (365 Dias)</li>
-                <li>1 Convite de Cortesia para presentear um amigo</li>
+                <li>Bíblia ACF com Narração Imersiva</li>
+                <li>Meditação Café com Deus (Leitura + Áudio)</li>
+                <li>Treino Templo & Espaço Kids</li>
+                <li><strong>1 Convite Gratuito</strong> para liberar o app a alguém</li>
               </ul>
               <button 
                 onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Semente+do+1Convite', '_blank');
+                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67+-+1+Convite)+do+1Convite', '_blank');
                 }}
                 className="uv-plan-btn"
               >
-                Garantir Plano Semente
+                Garantir Plano Básico
               </button>
             </div>
 
-            {/* Plano Edificação (Popular / Recomendado) */}
+            {/* Plano Mais Popular */}
             <div className="uv-plan-card uv-featured">
-              <div className="uv-badge-highlight">MAIS ESCOLHIDO</div>
-              <div className="uv-plan-tag uv-tag-orange">Carro-Chefe</div>
+              <div className="uv-badge-highlight">MAIS POPULAR</div>
+              <div className="uv-plan-tag uv-tag-orange">Mais Popular</div>
               <h3 className="uv-plan-name">Plano Edificação</h3>
-              <p className="uv-plan-desc">O plano ideal para você e para abençoar quem você ama.</p>
-              <div className="uv-plan-price">
-                <span className="uv-currency">R$</span>
-                <span className="uv-value">57</span>
-                <span className="uv-period">/ano</span>
-              </div>
-              <ul className="uv-plan-features">
-                <li>Tudo do Plano Semente</li>
-                <li>Espaço Mulher Virtuosa & Biblioteca do Pregador</li>
-                <li>Mentoria Neural Ilimitada com IA LAYLA</li>
-                <li><strong>3 a 5 Vouchers / Convites Oficiais</strong> para presentear</li>
-              </ul>
-              <button 
-                onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Edifica%C3%A7%C3%A3o+do+1Convite', '_blank');
-                }}
-                className="uv-plan-btn uv-btn-featured"
-              >
-                Garantir Plano Edificação
-              </button>
-            </div>
-
-            {/* Plano Reino */}
-            <div className="uv-plan-card">
-              <div className="uv-plan-tag">Completo VIP</div>
-              <h3 className="uv-plan-name">Plano Reino</h3>
-              <p className="uv-plan-desc">Acesso total e vitalício com acervo para ministérios.</p>
+              <p className="uv-plan-desc">O plano ideal para você e para abençoar sua família e amigos.</p>
               <div className="uv-plan-price">
                 <span className="uv-currency">R$</span>
                 <span className="uv-value">97</span>
-                <span className="uv-period">/vitalício</span>
+                <span className="uv-period">/único</span>
               </div>
               <ul className="uv-plan-features">
-                <li>Acesso Completo & Vitalício</li>
-                <li>Todos os E-books & Guias em PDF</li>
-                <li><strong>10 Vouchers Digitais</strong> para sua igreja/célula</li>
+                <li>Tudo do Plano Básico liberado</li>
+                <li>Espaço Mulher Virtuosa & Biblioteca do Pregador</li>
+                <li>Mentoria Bíblica & Estúdio de Cards</li>
+                <li><strong>5 Convites Gratuitos</strong> com código exclusivo</li>
               </ul>
               <button 
                 onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Reino+do+1Convite', '_blank');
+                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97+-+5+Convites)+do+1Convite', '_blank');
+                }}
+                className="uv-plan-btn uv-btn-featured"
+              >
+                Garantir Plano Popular
+              </button>
+            </div>
+
+            {/* Plano Avançado */}
+            <div className="uv-plan-card">
+              <div className="uv-plan-tag">Avançado</div>
+              <h3 className="uv-plan-name">Plano Reino</h3>
+              <p className="uv-plan-desc">Acesso completo para líderes, células e famílias.</p>
+              <div className="uv-plan-price">
+                <span className="uv-currency">R$</span>
+                <span className="uv-value">147</span>
+                <span className="uv-period">/único</span>
+              </div>
+              <ul className="uv-plan-features">
+                <li>Acesso Total a Todos os Módulos</li>
+                <li>Todos os E-books & Guias em PDF</li>
+                <li><strong>10 Convites Gratuitos</strong> para sua igreja/célula</li>
+              </ul>
+              <button 
+                onClick={() => {
+                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147+-+10+Convites)+do+1Convite', '_blank');
                 }}
                 className="uv-plan-btn"
               >
-                Garantir Acesso Vitalício
+                Garantir Plano Avançado
               </button>
             </div>
           </div>

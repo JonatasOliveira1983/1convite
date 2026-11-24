@@ -505,6 +505,24 @@ export const adminAuthService = {
       console.warn('Fallback local em deleteVoucherAsync:', e);
     }
     return this.deleteVoucher(code);
+  },
+
+  async validateVoucherAsync(code) {
+    const cleanCode = (code || '').trim().toUpperCase();
+    try {
+      const resp = await fetch(`${API_BASE}/vouchers/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: cleanCode })
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data && typeof data.success === 'boolean') return data;
+      }
+    } catch (e) {
+      console.warn('Fallback local em validateVoucherAsync:', e);
+    }
+    return this.useVoucher(cleanCode);
   }
 };
 

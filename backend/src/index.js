@@ -2145,6 +2145,34 @@ app.delete('/api/v1/admin/vouchers/:code', requireAdminHeader, async (req, res) 
   }
 });
 
+app.post('/api/v1/vouchers/validate', async (req, res) => {
+  try {
+    const { code } = req.body || {};
+    const cleanCode = (code || '').trim().toUpperCase();
+    if (!cleanCode) {
+      return res.json({ success: false, message: 'Digite o código do seu convite.' });
+    }
+    const voucher = await dbGet('SELECT * FROM tb_vouchers WHERE code = $1', [cleanCode]);
+    if (!voucher) {
+      return res.json({ success: false, message: 'Código de convite não encontrado.' });
+    }
+    if (!Number(voucher.active)) {
+      return res.json({ success: false, message: 'Este código foi desativado pelo administrador.' });
+    }
+    if (Number(voucher.max_uses) > 0 && Number(voucher.used_count || 0) >= Number(voucher.max_uses)) {
+      return res.json({ success: false, message: 'Este código atingiu o limite máximo de utilizações permitidas.' });
+    }
+    await dbRun('UPDATE tb_vouchers SET used_count = COALESCE(used_count, 0) + 1 WHERE code = $1', [cleanCode]);
+    res.json({
+      success: true,
+      daysValid: Number(voucher.days_valid) || 180,
+      code: cleanCode
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao validar código de convite.' });
+  }
+});
+
 app.post('/api/v1/leads', async (req, res) => {
   try {
     const { phone, nome, email, origem, pagina } = req.body;

@@ -1060,6 +1060,208 @@
   color: var(--sp-subdued);
 }
 
+/* ── SHOWCASE VISUAL COM IMAGENS ── */
+.sp-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.sp-showcase-card {
+  background: var(--sp-surface-elevated);
+  border: 1px solid var(--sp-border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.sp-showcase-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.45);
+}
+
+.sp-showcase-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0b0b0e;
+}
+
+.sp-showcase-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sp-showcase-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(12, 12, 16, 0.85);
+  border: 1px solid rgba(249, 115, 22, 0.5);
+  color: #FDBA74;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+.sp-showcase-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.sp-showcase-body h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--sp-white);
+}
+
+.sp-showcase-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--sp-subdued);
+  line-height: 1.55;
+}
+
+/* ── SEÇÃO DE 3 PLANOS ── */
+.sp-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.sp-plan-card {
+  position: relative;
+  background: var(--sp-surface-elevated);
+  border: 1px solid var(--sp-border);
+  border-radius: 18px;
+  padding: 32px 26px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.sp-plan-card:hover {
+  transform: translateY(-4px);
+}
+
+.sp-plan-card-featured {
+  background: linear-gradient(160deg, rgba(249, 115, 22, 0.14) 0%, var(--sp-surface-elevated) 55%);
+  border: 2px solid #F97316;
+  box-shadow: 0 16px 40px rgba(249, 115, 22, 0.16);
+}
+
+.sp-plan-popular-pill {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #F97316, #EA580C);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.sp-plan-tier {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #FDBA74;
+  margin-bottom: 6px;
+}
+
+.sp-plan-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--sp-white);
+  margin: 0 0 8px 0;
+}
+
+.sp-plan-subtitle {
+  font-size: 0.88rem;
+  color: var(--sp-subdued);
+  margin: 0 0 20px 0;
+  line-height: 1.45;
+}
+
+.sp-plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.sp-plan-currency {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--sp-subdued);
+}
+
+.sp-plan-amount {
+  font-size: 2.9rem;
+  font-weight: 900;
+  color: var(--sp-white);
+  line-height: 1;
+}
+
+.sp-plan-invites-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 215, 96, 0.14);
+  border: 1px solid rgba(30, 215, 96, 0.35);
+  color: #4ADE80;
+  font-size: 0.84rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.sp-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.sp-plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #E2E8F0;
+  line-height: 1.4;
+}
+
+.sp-plan-features li svg {
+  color: var(--sp-green);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
 /* ── RESPONSIVO ── */
 @media (max-width: 860px) {
   .sp-hero {

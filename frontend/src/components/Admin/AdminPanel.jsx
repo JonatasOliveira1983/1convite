@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
 import adminAuthService from '../../services/adminAuthService';
 
-export default function AdminPanel({ onOpenApp, onLogout }) {
+export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
   const [stats, setStats] = useState(() => adminAuthService.getDashboardStats());
   const [newCode, setNewCode] = useState('');
   const [newMaxUses, setNewMaxUses] = useState('1');
@@ -85,6 +85,16 @@ export default function AdminPanel({ onOpenApp, onLogout }) {
           </div>
 
           <div className="admin-header-actions">
+            {onOpenLanding && (
+              <button type="button" className="admin-btn-outline" onClick={onOpenLanding}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                <span>Página de Vendas</span>
+              </button>
+            )}
             <button type="button" className="admin-btn-outline" onClick={onOpenApp}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
