@@ -475,6 +475,22 @@ const BANCO_INTENCOES_MENTORES = {
           acao: 'Faça uma oração de confissão sincera e tome a decisão prática de fugir da ocasião de pecado.'
         }
       ]
+    },
+    {
+      intent: 'AMOR_AO_PROXIMO_BOM_SAMARITANO',
+      palavras: ['proximo', 'proximo?', 'bom samaritano', 'samaritano', 'amar o proximo', 'quem e meu proximo', 'vizinho', 'ajudar', 'misericordia', 'compaixao', 'inimigos', 'amar'],
+      respostas: [
+        {
+          texto: 'Um homem descia de Jerusalém para Jericó e caiu nas mãos de salteadores, que o despiram e espancaram. Passaram um sacerdote e um levita, e ambos desviaram pelo outro lado. Mas um samaritano, que ia de viagem, aproximou-se, moveu-se de íntima compaixão e cuidou das suas feridas. Qual dos três te parece ter sido o próximo daquele homem? Aquele que usou de misericórdia para com ele. O seu próximo não é quem você escolhe por conveniência, mas qualquer pessoa que Deus colocar no seu caminho necessitada de socorro. Vai, e faze tu o mesmo.',
+          versiculo: 'Lucas 10:30-37',
+          acao: 'Demonstre compaixão prática hoje por alguém que não pode te retribuir o favor.'
+        },
+        {
+          texto: 'O primeiro e maior mandamento é: Amarás o Senhor teu Deus de todo o teu coração, de toda a tua alma e de todo o teu entendimento. E o segundo, semelhante a este, é: Amarás o teu próximo como a ti mesmo. Destes dois mandamentos dependem toda a Lei e os Profetas. Se você diz amar a Deus a quem não vê, mas não tem amor ao próximo que vê, a verdade ainda não está em você.',
+          versiculo: 'Mateus 22:37-40 & 1 João 4:20',
+          acao: 'Trate hoje o próximo com a mesma paciência e generosidade que você gostaria de receber.'
+        }
+      ]
     }
   ],
 

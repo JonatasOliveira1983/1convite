@@ -838,7 +838,21 @@ function App() {
   const [mentorIsThinking, setMentorIsThinking] = useState(false);
   const mentorChatEndRef = useRef(null);
 
-  const handleSendMentorMessage = (customQuestion = null) => {
+  const handleResetMentorChat = (mentorId = null) => {
+    const targetId = mentorId || activeCounselor;
+    if (!targetId) return;
+    const currentMentor = LAYA_MENTORES.find(m => m.id === targetId) || LAYA_MENTORES[0];
+    const initialList = [
+      { id: 'welcome', sender: 'mentor', text: currentMentor.saudacao_chat, time: 'Início' }
+    ];
+    setMentorChatHistory(prev => {
+      const next = { ...prev, [targetId]: initialList };
+      try { localStorage.setItem('mentor-chat-history', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  const handleSendMentorMessage = async (customQuestion = null) => {
     const textToSend = (typeof customQuestion === 'string' ? customQuestion : mentorInputText || '').trim();
     if (!textToSend || !activeCounselor || mentorIsThinking) return;
 
@@ -865,8 +879,38 @@ function App() {
     setMentorInputText('');
     setMentorIsThinking(true);
 
-    setTimeout(() => {
-      const resp = gerarRespostaMentor(currentMentor.id, textToSend);
+    try {
+      // 1. Tenta chamar o Cloudflare Workers AI no Edge
+      let aiResponse = null;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+        const res = await fetch('/api/mentor-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mentorId: currentMentor.id,
+            pergunta: textToSend,
+            historico: updatedWithUser.slice(-4)
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.texto && !data.fallback) {
+            aiResponse = data;
+          }
+        }
+      } catch (e) {
+        // Fallback para LAYA semântica local
+      }
+
+      // 2. Se a IA do Cloudflare não respondeu ou deu fallback, usa a inteligência semântica local
+      const resp = aiResponse || gerarRespostaMentor(currentMentor.id, textToSend);
+
       const mentorMsg = {
         id: Date.now() + 1,
         sender: 'mentor',
@@ -882,8 +926,9 @@ function App() {
         try { localStorage.setItem('mentor-chat-history', JSON.stringify(next)); } catch {}
         return next;
       });
+    } finally {
       setMentorIsThinking(false);
-    }, 600);
+    }
   };
 
   const [countdown, setCountdown] = useState(12);
@@ -5857,7 +5902,7 @@ Em nome de Jesus, Amém.`;
                           marginTop: '4px'
                         }}>
                           {/* Cabeçalho do Chat */}
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--slate-border)', paddingBottom: '12px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--slate-border)', paddingBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                               <img
                                 src={currentMentor.avatar}
@@ -5874,6 +5919,29 @@ Em nome de Jesus, Amém.`;
                                 </span>
                               </div>
                             </div>
+
+                            {/* Botão para Nova Conversa */}
+                            <button
+                              onClick={() => handleResetMentorChat(currentMentor.id)}
+                              title="Iniciar Nova Conversa"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                background: 'var(--slate-light)',
+                                border: '1px solid var(--slate-border)',
+                                borderRadius: '14px',
+                                padding: '6px 12px',
+                                color: 'var(--text-secondary)',
+                                fontSize: '0.76rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                transition: 'all 0.15s ease'
+                              }}
+                            >
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                              <span>Nova Conversa</span>
+                            </button>
                           </div>
 
                           {/* Chips de Perguntas Rápidas */}
