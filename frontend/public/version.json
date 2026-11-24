@@ -1,13 +1,12 @@
 {
-  "version": "v2.16.2",
-  "build": "2026112422",
+  "version": "v2.16.3",
+  "build": "2026112423",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Sair da Conta (Logout Limpo): Redirecionamento instantâneo para a tela inicial de login estilo C6 Bank, limpando sessões residuais.",
-    "Forçar Atualização do Aplicativo: Limpeza imediata de cache do navegador e recarregamento rígido com a versão mais recente da nuvem.",
-    "Refinamento de Minha Conta: Eliminação de blocos obsoletos, duplicações de temas e textos desatualizados.",
-    "Fotografia Oficial das Crianças no Pôr do Sol: Enquadramento vertical cinematográfico com respiração de luz viva."
+    "Remoção Definitiva do Onboarding/Personalização: Eliminada por completo a tela antiga de perguntas de personalização. Ao logar, a UI principal do app abre imediatamente.",
+    "Fluxo de Entrada Ultra Rápido: Login autenticado direciona instantaneamente ao Dashboard.",
+    "Sair da Conta (Logout) com Redirecionamento Estável para a tela estilo C6 Bank."
   ],
-  "updateTimestamp": 1795546000000
+  "updateTimestamp": 1795547000000
 }

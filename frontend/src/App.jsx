@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Onboarding from './components/Onboarding';
 import html2canvas from 'html2canvas';
 import LandingPage from './components/LandingPage/LandingPage';
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid, generateMemoriaDeck } from './data/arcadeData';
@@ -843,7 +842,6 @@ function App() {
 
     return targetList[0] || ptVoices[0];
   };
-  const [showOnboarding, setShowOnboarding] = useState(() => !localStorage.getItem('onboarding-completed'));
 
   useEffect(() => {
     document.body.classList.remove('theme-orange', 'theme-blue', 'theme-green', 'theme-purple', 'theme-sepia');
@@ -1161,8 +1159,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.16.2';
-  const CURRENT_APP_BUILD = 2026112422;
+  const CURRENT_APP_VERSION = 'v2.16.3';
+  const CURRENT_APP_BUILD = 2026112423;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
@@ -2732,7 +2730,6 @@ Em nome de Jesus, Amém.`;
 
   return (
     <div className="app-container">
-      {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
       <header className="app-header" style={{
         display: 'flex',
         alignItems: 'center',
