@@ -1114,31 +1114,116 @@ function App() {
   });
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
-  // ── Versão do Sistema & Atualizações ──────────────────────────
+  // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
+  const CURRENT_APP_VERSION = 'v2.5.1';
+  const CURRENT_APP_BUILD = 2026112402;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
+  const [autoUpdateToast, setAutoUpdateToast] = useState('');
+
+  // Sincronização contínua em segundo plano
+  useEffect(() => {
+    let isChecking = false;
+
+    const checkRemoteVersion = async () => {
+      if (isChecking) return;
+      isChecking = true;
+      try {
+        const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) {
+          const remote = await res.json();
+          const localBuild = parseInt(localStorage.getItem('app_installed_build') || '0', 10);
+          
+          if (remote.build && remote.build > localBuild) {
+            localStorage.setItem('app_installed_build', String(remote.build));
+            localStorage.setItem('app_installed_version', remote.version);
+            
+            // Limpa caches antigos do Service Worker
+            if ('caches' in window) {
+              const keys = await caches.keys();
+              await Promise.all(keys.map(k => caches.delete(k)));
+            }
+
+            if ('serviceWorker' in navigator) {
+              const reg = await navigator.serviceWorker.getRegistration();
+              if (reg) await reg.update();
+            }
+
+            // Notifica e recarrega para aplicar a atualização na hora
+            setAutoUpdateToast(`Nova versão aplicada (${remote.version})! Sincronizando...`);
+            setTimeout(() => {
+              window.location.reload();
+            }, 800);
+          } else if (!localBuild) {
+            localStorage.setItem('app_installed_build', String(CURRENT_APP_BUILD));
+            localStorage.setItem('app_installed_version', CURRENT_APP_VERSION);
+          }
+        }
+      } catch (e) {
+        // Silencioso em caso de ausência de rede temporária
+      } finally {
+        isChecking = false;
+      }
+    };
+
+    // Checa na inicialização imediata
+    checkRemoteVersion();
+
+    // Checa a cada 45 segundos enquanto o app estiver em execução
+    const intervalId = setInterval(checkRemoteVersion, 45000);
+
+    // Checa automaticamente quando a tela ganha foco ou volta a ficar visível
+    const onFocusOrVisible = () => {
+      if (document.visibilityState === 'visible') {
+        checkRemoteVersion();
+      }
+    };
+    window.addEventListener('focus', onFocusOrVisible);
+    document.addEventListener('visibilitychange', onFocusOrVisible);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('focus', onFocusOrVisible);
+      document.removeEventListener('visibilitychange', onFocusOrVisible);
+    };
+  }, []);
 
   const handleCheckForUpdates = async () => {
     setCheckingUpdate(true);
     setUpdateStatusMsg('Consultando servidores na nuvem...');
     try {
-      if ('serviceWorker' in navigator) {
-        const registration = await navigator.serviceWorker.getRegistration();
-        if (registration) {
-          await registration.update();
-        }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
       }
-      await fetch('/manifest.json?t=' + Date.now(), { cache: 'no-store' });
-      setTimeout(() => {
-        setCheckingUpdate(false);
-        setUpdateStatusMsg('Você está utilizando a versão mais recente e segura do 1Convite (v2.4.0)!');
-      }, 1200);
+      if ('serviceWorker' in navigator) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg) await reg.update();
+      }
+
+      const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+      if (res.ok) {
+        const remote = await res.json();
+        const localBuild = parseInt(localStorage.getItem('app_installed_build') || '0', 10);
+        localStorage.setItem('app_installed_build', String(remote.build || CURRENT_APP_BUILD));
+        localStorage.setItem('app_installed_version', remote.version || CURRENT_APP_VERSION);
+
+        if (remote.build > localBuild) {
+          setUpdateStatusMsg(`Nova versão encontrada (${remote.version})! Atualizando agora...`);
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          setUpdateStatusMsg(`Você já está na versão mais recente (${remote.version} - ${remote.formattedDate})!`);
+        }
+      } else {
+        setUpdateStatusMsg(`Você está utilizando a versão mais recente (${CURRENT_APP_VERSION}).`);
+      }
     } catch {
-      setTimeout(() => {
-        setCheckingUpdate(false);
-        setUpdateStatusMsg('Sistema verificado. Aplicativo atualizado (v2.4.0).');
-      }, 1000);
+      setUpdateStatusMsg(`Sistema verificado. Aplicativo atualizado (${CURRENT_APP_VERSION}).`);
+    } finally {
+      setTimeout(() => setCheckingUpdate(false), 800);
     }
   };
 
@@ -6737,7 +6822,7 @@ Em nome de Jesus, Amém.`;
                 <div style={{ background: 'var(--slate-light)', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Versão Atual:</span>
-                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.4.0 (Build 2026.11.23)</strong>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.5.1 (Build 2026.11.24)</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
@@ -6745,7 +6830,7 @@ Em nome de Jesus, Amém.`;
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tipo de Atualização:</span>
-                    <span style={{ fontSize: '0.82rem', color: '#10B981', fontWeight: '600' }}>Automática em Segundo Plano</span>
+                    <span style={{ fontSize: '0.82rem', color: '#10B981', fontWeight: '600' }}>Automática em Tempo Real (Live Cloud Sync)</span>
                   </div>
                 </div>
 
@@ -6821,6 +6906,17 @@ Em nome de Jesus, Amém.`;
                       fontSize: '0.78rem',
                       lineHeight: '1.5'
                     }}>
+                      <div style={{ marginBottom: '10px' }}>
+                        <div style={{ fontWeight: '800', color: 'var(--orange)', marginBottom: '2px' }}>
+                          ● Versão 2.5.1 (24 de Novembro de 2026)
+                        </div>
+                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
+                          <li><strong>Mentores Bíblicos Canônicos:</strong> Imagens de alta definição, ensinamentos canônicos e perfis biográficos completos de Jesus Cristo, Rei Salomão, Rei Davi, Apóstolo Paulo, Moisés, Rainha Ester e Maria Mãe de Jesus.</li>
+                          <li><strong>Chat Interativo em 1ª Pessoa:</strong> Conversação bíblica direta com os mentores, botão de Nova Conversa, histórico persistente e respostas canônicas com referências das Escrituras.</li>
+                          <li><strong>Atualização Automática em Tempo Real:</strong> Live Cloud Sync contínuo em segundo plano para aplicação instantânea de novos recursos sem necessidade de reinstalação.</li>
+                        </ul>
+                      </div>
+
                       <div style={{ marginBottom: '10px' }}>
                         <div style={{ fontWeight: '800', color: 'var(--orange)', marginBottom: '2px' }}>
                           ● Versão 2.4.0 (23 de Novembro de 2026)

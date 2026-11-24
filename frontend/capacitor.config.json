@@ -1,5 +1,13 @@
 {
   "appId": "com.spcompensa.umconvite",
   "appName": "1Convite",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "url": "https://1convite.com.br",
+    "cleartext": true,
+    "allowNavigation": [
+      "1convite.com.br",
+      "*.1convite.com.br"
+    ]
+  }
 }
