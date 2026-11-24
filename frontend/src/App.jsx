@@ -1126,8 +1126,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.12.0';
-  const CURRENT_APP_BUILD = 2026112415;
+  const CURRENT_APP_VERSION = 'v2.12.1';
+  const CURRENT_APP_BUILD = 2026112416;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
@@ -2646,14 +2646,14 @@ Em nome de Jesus, Amém.`;
         boxSizing: 'border-box'
       }}>
         {activeTab === 'dashboard' ? (
-          <>
-            {/* Esquerda: Perfil/Avatar com indicador de personalização */}
+          /* Header Ultra Clean: Apenas a imagem do usuário com acesso direto à Conta */
+          <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'flex-start' }}>
             <div 
               onClick={() => setActiveTab('conta')}
               style={{
                 position: 'relative',
-                width: '38px',
-                height: '38px',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 cursor: 'pointer',
                 border: isCustomAvatar ? '2px solid #EAB308' : '2px solid var(--orange)',
@@ -2661,7 +2661,7 @@ Em nome de Jesus, Amém.`;
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: isCustomAvatar ? '0 2px 8px rgba(234, 179, 8, 0.35)' : '0 2px 8px rgba(16, 185, 129, 0.25)',
+                boxShadow: isCustomAvatar ? '0 2px 8px rgba(234, 179, 8, 0.35)' : '0 2px 8px rgba(249, 115, 22, 0.25)',
                 transition: 'all 0.2s ease',
                 flexShrink: 0
               }}
@@ -2684,49 +2684,7 @@ Em nome de Jesus, Amém.`;
                 }} />
               )}
             </div>
-
-            {/* Centro: Logomarca Oficial do App (Adaptativa para Modo Claro e Escuro) */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%', minWidth: 0 }}>
-              <img 
-                src={darkMode ? appLogomarcaDark : appLogomarcaLight} 
-                alt="1Convite" 
-                style={{ 
-                  height: '48px', 
-                  maxHeight: '50px',
-                  width: 'auto',
-                  maxWidth: '220px',
-                  objectFit: 'contain',
-                  cursor: 'pointer',
-                  filter: darkMode ? 'drop-shadow(0 2px 10px rgba(249, 115, 22, 0.35))' : 'none',
-                  transition: 'transform 0.2s ease'
-                }} 
-                onClick={() => setActiveTab('dashboard')}
-              />
-            </div>
-
-            {/* Direita: Diamante / Vouchers Premium */}
-            <div 
-              onClick={() => setShowUpgradeModal(true)}
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: isPremiumUser ? 'rgba(234, 179, 8, 0.2)' : 'var(--orange-light)',
-                border: isPremiumUser ? '1.5px solid #EAB308' : '1px solid var(--orange)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: isPremiumUser ? '#FACC15' : 'var(--orange)',
-                flexShrink: 0
-              }}
-              title={isPremiumUser ? 'Assinatura Premium Ativa' : 'Desbloquear Premium & Convites'}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/>
-              </svg>
-            </div>
-          </>
+          </div>
         ) : (
           <>
             {/* Esquerda: Botão Voltar */}
@@ -7297,6 +7255,35 @@ Em nome de Jesus, Amém.`;
                       </div>
                     </div>
                   )}
+
+                  {/* Rodapé da Conta: Apenas a Logomarca Oficial */}
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '36px 0 20px',
+                    margin: '20px 0 10px'
+                  }}>
+                    <img 
+                      src={appLogomarcaLight} 
+                      alt="1Convite - Compartilhando o Reino" 
+                      style={{ 
+                        width: '180px', 
+                        maxWidth: '65%', 
+                        height: 'auto', 
+                        objectFit: 'contain'
+                      }} 
+                    />
+                    <div style={{ 
+                      fontSize: '0.72rem', 
+                      color: 'var(--text-tertiary)', 
+                      marginTop: '8px', 
+                      letterSpacing: '0.5px' 
+                    }}>
+                      1convite.com.br • Compartilhando o Reino
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
