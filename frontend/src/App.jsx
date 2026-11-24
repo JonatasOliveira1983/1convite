@@ -26,6 +26,7 @@ import LoginPage from './components/Auth/LoginPage';
 import AdminPanel from './components/Admin/AdminPanel';
 import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
+import { syncAppBadge } from './utils/dailyBadgeTracker';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -403,6 +404,20 @@ function App() {
   });
   const [isAdminMode, setIsAdminMode] = useState(() => adminAuthService.isCurrentSessionAdmin());
   const [showAdminPanel, setShowAdminPanel] = useState(() => adminAuthService.isCurrentSessionAdmin());
+  const [dailyPendingBadge, setDailyPendingBadge] = useState(() => syncAppBadge());
+
+  useEffect(() => {
+    const updateBadge = () => setDailyPendingBadge(syncAppBadge());
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') updateBadge();
+    };
+    window.addEventListener('1convite-badge-updated', updateBadge);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      window.removeEventListener('1convite-badge-updated', updateBadge);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
   
   // Detecção de Link de Convite Recebido (Experiência Portal de Luz)
   const [portalConviteData, setPortalConviteData] = useState(() => {
@@ -3820,6 +3835,22 @@ Em nome de Jesus, Amém.`;
                     }}>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
                       Café com Deus • {getTodayDateFormatted()}
+                      {dailyPendingBadge > 0 && (
+                        <span
+                          title={`${dailyPendingBadge} dia(s) pendente(s) nos 3 passos`}
+                          style={{
+                            marginLeft: '6px',
+                            background: '#EF4444',
+                            color: '#FFFFFF',
+                            borderRadius: '999px',
+                            padding: '1px 7px',
+                            fontSize: '0.68rem',
+                            fontWeight: '900'
+                          }}
+                        >
+                          {dailyPendingBadge}
+                        </span>
+                      )}
                     </span>
 
                     <button

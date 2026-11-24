@@ -3,6 +3,7 @@ import { renderCardToHD } from '../../utils/cardCanvasGenerator';
 import cafeData from '../../data/cafe_com_deus_365.json';
 import sinteseData from '../../data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from '../../services/neuralAudioPlayer';
+import { markDailyJourneyCompleted } from '../../utils/dailyBadgeTracker';
 import './CafeComDeusView.css';
 
 export default function CafeComDeusView({ 
@@ -304,6 +305,7 @@ export default function CafeComDeusView({
   };
 
   const toggleComplete = () => {
+    const nextDone = !isCompleted;
     let updated;
     if (isCompleted) {
       updated = completedDays.filter(d => d !== selectedDay);
@@ -316,6 +318,7 @@ export default function CafeComDeusView({
     } catch (e) {
       console.error(e);
     }
+    markDailyJourneyCompleted(nextDone);
   };
 
   const handlePrev = () => {
