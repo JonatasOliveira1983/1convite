@@ -23,6 +23,7 @@ import banner3 from './assets/banners/3.png';
 import heroMountainsImg from './assets/feed/hero_mountains.jpg';
 import treinoTemploImg from './assets/feed/treino_templo.jpg';
 import TreinoTemploView from './components/TreinoTemplo/TreinoTemploView';
+import LoginPage from './components/Auth/LoginPage';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -390,8 +391,20 @@ function App() {
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
   
-  // Controle de Acesso Premium & Vouchers (100% liberado para refinamento e testes)
-  const [isPremiumUser, setIsPremiumUser] = useState(() => true);
+  // Controle de Acesso Premium & Vouchers VIP (180 dias)
+  const [isPremiumUser, setIsPremiumUser] = useState(() => {
+    return localStorage.getItem('1convite-premium') === 'true' || true;
+  });
+  const [userVipExpiry, setUserVipExpiry] = useState(() => {
+    const exp = localStorage.getItem('1convite_premium_expiry');
+    return exp ? parseInt(exp, 10) : null;
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'true') return false;
+    return localStorage.getItem('1convite_logged_in') === 'true' || localStorage.getItem('1convite_guest_mode') === 'true';
+  });
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   // Dia Atual para Café com Deus
@@ -1126,8 +1139,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.12.1';
-  const CURRENT_APP_BUILD = 2026112416;
+  const CURRENT_APP_VERSION = 'v2.13.0';
+  const CURRENT_APP_BUILD = 2026112417;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
@@ -2630,6 +2643,27 @@ Em nome de Jesus, Amém.`;
         setActiveTab('dashboard');
         try { localStorage.setItem('1convite_visited_app', 'true'); } catch (e) {}
       }} />
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <LoginPage 
+        onLoginSuccess={(userData) => {
+          setIsLoggedIn(true);
+          setProfileName(userData.name);
+          setProfileEmail(userData.contact);
+          if (userData.isPremium) {
+            setIsPremiumUser(true);
+            setUserVipExpiry(userData.expiry);
+          }
+          setActiveTab('dashboard');
+        }}
+        onExploreGuest={() => {
+          setIsLoggedIn(true);
+          setActiveTab('dashboard');
+        }}
+      />
     );
   }
 
@@ -6674,7 +6708,9 @@ Em nome de Jesus, Amém.`;
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                   </svg>
-                  <span>Membro Premium • Acesso Total</span>
+                  <span>
+                    {userVipExpiry ? `Membro VIP 6 Meses • Até ${new Date(userVipExpiry).toLocaleDateString('pt-BR')}` : 'Membro Premium • Acesso Total'}
+                  </span>
                 </span>
 
                 {/* Seletor rápido de Avatar Padrão (Homem / Mulher) */}
@@ -7209,6 +7245,41 @@ Em nome de Jesus, Amém.`;
                     }}
                   >
                     {showChangelog ? '▲ Ocultar Registro de Atualizações' : '▼ Ver Registro de Atualizações Recentes'}
+                  </button>
+
+                  {/* Botão Sair da Conta / Trocar de Código VIP */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      try {
+                        localStorage.removeItem('1convite_logged_in');
+                        localStorage.removeItem('1convite_guest_mode');
+                      } catch (e) {}
+                      setIsLoggedIn(false);
+                    }}
+                    style={{
+                      background: 'rgba(239, 68, 68, 0.08)',
+                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      color: '#F87171',
+                      borderRadius: '12px',
+                      padding: '10px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      width: '100%',
+                      marginTop: '6px'
+                    }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Sair da Conta / Trocar de Código VIP</span>
                   </button>
 
                   {showChangelog && (

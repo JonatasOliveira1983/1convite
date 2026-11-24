@@ -1,12 +1,12 @@
 {
-  "version": "v2.12.1",
-  "build": "2026112416",
+  "version": "v2.13.0",
+  "build": "2026112417",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Header Ultra Clean: Topo simplificado com foco na foto de perfil do usuário, removendo poluição visual.",
-    "Logomarca Oficial no Rodapé da Conta: Exibição elegante da marca original '1Convite - Compartilhando o Reino' no fim da aba Minha Conta.",
-    "Cores Originais Restauradas: Preservação estrita das cores autênticas da logomarca oficial."
+    "Tela de Login Cinematográfica: Abertura inspiradora com Golden Hour, campo florido e design Glassmorphism.",
+    "Controle de Acesso VIP (6 Meses): Sistema de validação de códigos promocionais com 180 dias de Acesso Total Premium.",
+    "Gestão de Sessão: Modo visitante, personalização de entrada e opção de alternar contas e códigos VIP."
   ],
-  "updateTimestamp": 1795538000000
+  "updateTimestamp": 1795539000000
 }
