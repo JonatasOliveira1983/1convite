@@ -41,7 +41,8 @@ export default function ConvitePortalLuz({
               />
               <div className="gv-seal-circle">
                 <span className="gv-seal-big">180</span>
-                <span className="gv-seal-small">Dias Grátis</span>
+                <span className="gv-seal-small">DIAS</span>
+                <span className="gv-seal-small" style={{ marginTop: '1px', opacity: 0.85 }}>GRÁTIS</span>
               </div>
             </div>
 
