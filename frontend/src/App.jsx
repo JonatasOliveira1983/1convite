@@ -1161,8 +1161,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.16.1';
-  const CURRENT_APP_BUILD = 2026112421;
+  const CURRENT_APP_VERSION = 'v2.16.2';
+  const CURRENT_APP_BUILD = 2026112422;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
@@ -1237,39 +1237,32 @@ function App() {
 
   const handleCheckForUpdates = async () => {
     setCheckingUpdate(true);
-    setUpdateStatusMsg('Consultando servidores na nuvem...');
+    setUpdateStatusMsg('Limpando dados em cache e sincronizando com a nuvem...');
     try {
       if ('caches' in window) {
         const keys = await caches.keys();
         await Promise.all(keys.map(k => caches.delete(k)));
       }
       if ('serviceWorker' in navigator) {
-        const reg = await navigator.serviceWorker.getRegistration();
-        if (reg) await reg.update();
-      }
-
-      const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
-      if (res.ok) {
-        const remote = await res.json();
-        const localBuild = parseInt(localStorage.getItem('app_installed_build') || '0', 10);
-        localStorage.setItem('app_installed_build', String(remote.build || CURRENT_APP_BUILD));
-        localStorage.setItem('app_installed_version', remote.version || CURRENT_APP_VERSION);
-
-        if (remote.build > localBuild) {
-          setUpdateStatusMsg(`Nova versão encontrada (${remote.version})! Atualizando agora...`);
-          setTimeout(() => {
-            window.location.reload();
-          }, 800);
-        } else {
-          setUpdateStatusMsg(`Você já está na versão mais recente (${remote.version} - ${remote.formattedDate})!`);
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const reg of regs) {
+          await reg.unregister();
         }
-      } else {
-        setUpdateStatusMsg(`Você está utilizando a versão mais recente (${CURRENT_APP_VERSION}).`);
       }
-    } catch {
-      setUpdateStatusMsg(`Sistema verificado. Aplicativo atualizado (${CURRENT_APP_VERSION}).`);
-    } finally {
-      setTimeout(() => setCheckingUpdate(false), 800);
+      try {
+        localStorage.removeItem('app_installed_build');
+        localStorage.removeItem('app_installed_version');
+      } catch (e) {}
+
+      setUpdateStatusMsg('Atualização aplicada com sucesso! Reiniciando o aplicativo...');
+      setTimeout(() => {
+        window.location.href = window.location.pathname + '?v=' + Date.now();
+      }, 700);
+    } catch (e) {
+      setUpdateStatusMsg('Recarregando o aplicativo...');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
   };
 
@@ -1596,27 +1589,24 @@ function App() {
     }
   };
 
-  const handleLogout = async () => {
-    if (!confirm('Deseja realmente sair da conta?')) return;
+  const handleLogout = () => {
+    if (!confirm('Deseja realmente sair da conta e voltar para a tela de login?')) return;
     try {
-      const res = await fetch(`${API_BASE}/usuario/perfil`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nome: "Membro Convidado",
-          email: "membro@1convite.com",
-          avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80"
-        })
-      });
-      if (res.ok) {
-        const updatedUser = await res.json();
-        setUser(updatedUser);
-        setProfileName(updatedUser.nome);
-        setProfileEmail(updatedUser.email);
-        setProfileAvatar(updatedUser.avatar);
-      }
+      localStorage.removeItem('1convite_logged_in');
+      localStorage.removeItem('1convite_guest_mode');
+      localStorage.removeItem('1convite_user_auth');
+      localStorage.removeItem('1convite_active_tab');
+      localStorage.removeItem('1convite_admin_session');
+      adminAuthService.logout();
     } catch (e) {
-      console.error(e);
+      console.warn(e);
+    }
+    setIsAdminMode(false);
+    setShowAdminPanel(false);
+    setIsLoggedIn(false);
+    setActiveTab('dashboard');
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', window.location.pathname);
     }
   };
 
@@ -6782,9 +6772,43 @@ Em nome de Jesus, Amém.`;
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                   </svg>
                   <span>
-                    {userVipExpiry ? `Membro VIP 6 Meses • Até ${new Date(userVipExpiry).toLocaleDateString('pt-BR')}` : 'Membro Premium • Acesso Total'}
+                    {isAdminMode 
+                      ? 'Administrador Mestre • Acesso Total'
+                      : userVipExpiry 
+                        ? `Membro VIP 6 Meses • Até ${new Date(userVipExpiry).toLocaleDateString('pt-BR')}` 
+                        : 'Membro Convidado • Modo Visitante'}
                   </span>
                 </span>
+
+                {isAdminMode && (
+                  <div style={{ marginTop: '10px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminPanel(true)}
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(234, 179, 8, 0.25) 100%)',
+                        border: '1.5px solid #F59E0B',
+                        color: '#FCD34D',
+                        borderRadius: '24px',
+                        padding: '8px 18px',
+                        fontSize: '0.82rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 4px 14px rgba(245, 158, 11, 0.2)'
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                      </svg>
+                      <span>Abrir Painel Administrativo</span>
+                    </button>
+                  </div>
+                )}
 
                 {/* Seletor rápido de Avatar Padrão (Homem / Mulher) */}
                 <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
@@ -6879,16 +6903,16 @@ Em nome de Jesus, Amém.`;
             </div>
 
             <div className="page-content" style={{ paddingTop: '10px' }}>
-              {/* Tema & Aparência */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'center' }}>
+              {/* 1. Tema & Aparência (Unificado com Dark Mode) */}
+              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Tema & Aparência</h3>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Tema & Cores de Destaque</h3>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '14px', textAlign: 'left', lineHeight: '1.4' }}>
-                  Escolha a cor de destaque do seu aplicativo para personalizar a sua experiência:
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.4' }}>
+                  Escolha a cor de destaque do seu aplicativo:
                 </p>
-                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
+                <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', alignItems: 'center', margin: '8px 0 16px' }}>
                   {[
                     { id: 'theme-orange', color: '#f97316', name: 'Laranja' },
                     { id: 'theme-blue', color: '#3b82f6', name: 'Azul' },
@@ -6914,53 +6938,33 @@ Em nome de Jesus, Amém.`;
                     />
                   ))}
                 </div>
-              </div>
 
-              {/* Portal Institucional & Aplicativo */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                  </svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Portal Institucional & Aplicativo</h3>
-                </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '14px', lineHeight: '1.4' }}>
-                  Acesse a apresentação oficial editorial do 1Convite e instale o aplicativo oficial no seu celular.
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <button 
-                    className="btn-primary" 
-                    onClick={() => {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                      setShowLanding(true);
-                    }}
-                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', fontWeight: '700' }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                    Ver Apresentação do 1Convite
-                  </button>
-                  <a 
-                    href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk" 
-                    download
-                    className="btn-secondary"
-                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', textDecoration: 'none', boxSizing: 'border-box' }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Baixar o aplicativo
-                  </a>
+                <div style={{ borderTop: '1px solid var(--slate-border)', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {darkMode ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    )}
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>Modo Escuro (Dark Mode)</strong>
+                      <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>Alternar aparência da interface</span>
+                    </div>
+                  </div>
+                  <label className="toggle-switch">
+                    <input type="checkbox" checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
+                    <span className="toggle-slider"></span>
+                  </label>
                 </div>
               </div>
 
-              {/* Ajuste de Tamanho da Fonte (Modelo da Imagem) */}
+              {/* 2. Ajuste de Tamanho da Letra */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)' }}>Aa</span>
                     <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Alterar tamanho da letra</h3>
                   </div>
-                  {/* Toggle Switch */}
                   <label style={{ position: 'relative', display: 'inline-block', width: '42px', height: '22px', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
@@ -7017,15 +7021,14 @@ Em nome de Jesus, Amém.`;
                 )}
               </div>
 
-              {/* Configurações de Voz (Modelo da Imagem) */}
+              {/* 3. Configurações de Voz da Narração */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Voz</h3>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Voz da Narração</h3>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {/* Opção Masculina */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
                     <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Masculina</span>
                     <input
@@ -7036,16 +7039,10 @@ Em nome de Jesus, Amém.`;
                         setVoiceGender('masculino');
                         localStorage.setItem('app-voice-gender', 'masculino');
                       }}
-                      style={{
-                        width: '18px',
-                        height: '18px',
-                        accentColor: 'var(--orange)',
-                        cursor: 'pointer'
-                      }}
+                      style={{ width: '18px', height: '18px', accentColor: 'var(--orange)', cursor: 'pointer' }}
                     />
                   </label>
 
-                  {/* Opção Feminina */}
                   <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
                     <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Feminina</span>
                     <input
@@ -7056,16 +7053,10 @@ Em nome de Jesus, Amém.`;
                         setVoiceGender('feminino');
                         localStorage.setItem('app-voice-gender', 'feminino');
                       }}
-                      style={{
-                        width: '18px',
-                        height: '18px',
-                        accentColor: 'var(--orange)',
-                        cursor: 'pointer'
-                      }}
+                      style={{ width: '18px', height: '18px', accentColor: 'var(--orange)', cursor: 'pointer' }}
                     />
                   </label>
 
-                  {/* Velocidade de Reprodução */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px', borderTop: '1px solid var(--slate-border)', paddingTop: '12px' }}>
                     <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Velocidade de reprodução</span>
                     <select
@@ -7079,7 +7070,7 @@ Em nome de Jesus, Amém.`;
                         padding: '6px 12px',
                         borderRadius: '8px',
                         border: '1px solid var(--slate-border)',
-                        backgroundColor: 'var(--white)',
+                        backgroundColor: 'var(--bg-app)',
                         color: 'var(--text-primary)',
                         fontSize: '0.85rem',
                         fontWeight: '500',
@@ -7096,83 +7087,20 @@ Em nome de Jesus, Amém.`;
                 </div>
               </div>
 
-              {/* Logout da Conta */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Sessão Ativa</h3>
-                </div>
-                <div className="flex-column gap-sm">
-                  <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'left' }}>
-                    Conectado como <strong>{profileEmail || 'Visitante'}</strong>
-                  </p>
-                  <button className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={handleLogout}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    Sair da Conta (Logout)
-                  </button>
-                </div>
-              </div>
-
-              {/* Mentores Bíblicos & Sabedoria */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left', color: 'var(--text-primary)' }}>Mentores Bíblicos & Sabedoria</h3>
-                </div>
-                
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: '700', fontSize: '0.92rem', margin: '4px 0' }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                  Motor Neural Ativo & 100% Autônomo
-                </div>
-                
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.5', marginTop: '6px' }}>
-                  O sistema opera integrado nativamente ao seu aplicativo com a Bíblia Sagrada completa e os Mentores Bíblicos. Não necessita de chaves externas, internet constante ou contas de terceiros.
-                </p>
-              </div>
-
-              {/* Alternância de Tema */}
-              <div className="glass-panel" style={{ marginBottom: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Aparência & Tema</h3>
-                </div>
-                <div className="toggle-switch-container">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px' }}>
-                      {darkMode ? (
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                      ) : (
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                      )}
-                    </div>
-                    <div>
-                      <strong style={{ display: 'block', fontSize: '0.92rem' }}>Modo Escuro (Dark Mode)</strong>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Alternar tema de cores da interface</span>
-                    </div>
-                  </div>
-                  <label className="toggle-switch">
-                    <input type="checkbox" checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Informações da Conta */}
+              {/* 4. Informações Pessoais */}
               <div className="glass-panel" style={{ marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Informações Pessoais</h3>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Informações da Conta</h3>
                 </div>
                 <form onSubmit={handleSaveProfile} className="flex-column gap-sm">
                   <div className="input-group">
-                    <label>Nome Completo</label>
+                    <label>Nome</label>
                     <input type="text" className="input-field" value={profileName} onChange={(e) => setProfileName(e.target.value)} placeholder="Seu nome" />
                   </div>
                   <div className="input-group">
-                    <label>E-mail da Conta</label>
-                    <input type="email" className="input-field" value={profileEmail} onChange={(e) => setProfileEmail(e.target.value)} placeholder="seu.email@exemplo.com" />
+                    <label>E-mail ou WhatsApp</label>
+                    <input type="text" className="input-field" value={profileEmail} onChange={(e) => setProfileEmail(e.target.value)} placeholder="seu.email@exemplo.com" />
                   </div>
 
                   {profileSavedMsg && (
@@ -7181,50 +7109,21 @@ Em nome de Jesus, Amém.`;
                     </div>
                   )}
 
-                  <button type="submit" className="btn-primary" style={{ marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <button type="submit" className="btn-primary" style={{ marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     Salvar Alterações
                   </button>
                 </form>
               </div>
 
-              {/* Plano & Assinatura */}
-              <div className="glass-panel">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left' }}>Plano & Assinatura</h3>
-                </div>
-                <div className="flex-between" style={{ background: 'var(--slate-light)', padding: '14px', borderRadius: '12px', marginBottom: '14px' }}>
-                  <div>
-                    <strong style={{ display: 'block', fontSize: '0.95rem' }}>1Convite Premium</strong>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                      {user?.status_plano === 'PREMIUM' ? 'Sua assinatura está ativa' : 'Acesso limitado ao plano gratuito'}
-                    </span>
-                  </div>
-                  <span style={{ fontWeight: 'bold', color: 'var(--orange)' }}>
-                    {user?.status_plano === 'PREMIUM' ? 'ATIVO' : 'R$ 19,90/mês'}
-                  </span>
-                </div>
-
-                {user?.status_plano === 'FREE' ? (
-                  <button className="btn-primary" style={{ width: '100%' }} onClick={() => setActiveTab('upgrade')}>
-                    Fazer Upgrade para Premium
-                  </button>
-                ) : (
-                  <button className="btn-secondary" style={{ width: '100%' }} onClick={() => setActiveTab('sabado')}>
-                    Acessar Conteúdo Exclusivo
-                  </button>
-                )}
-              </div>
-
-              {/* Versão do Sistema & Atualizações Automáticas */}
+              {/* 5. Versão do Sistema & Forçar Atualização */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
                     </svg>
-                    <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Versão & Atualizações</h3>
+                    <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Versão & Atualização</h3>
                   </div>
                   <span style={{
                     display: 'inline-flex',
@@ -7239,27 +7138,23 @@ Em nome de Jesus, Amém.`;
                     border: '1px solid rgba(16, 185, 129, 0.3)'
                   }}>
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' }} />
-                    Sistema Atualizado
+                    Live Cloud Sync
                   </span>
                 </div>
 
                 <div style={{ background: 'var(--slate-light)', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Versão Atual:</span>
-                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.7.0 (Build 2026.11.24)</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
-                    <span style={{ fontSize: '0.82rem', color: 'var(--text-primary)', fontWeight: '600' }}>Cloudflare Pages & Turso Cloud</span>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>{CURRENT_APP_VERSION}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tipo de Atualização:</span>
-                    <span style={{ fontSize: '0.82rem', color: '#10B981', fontWeight: '600' }}>Automática em Tempo Real (Live Cloud Sync)</span>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
+                    <span style={{ fontSize: '0.82rem', color: '#10B981', fontWeight: '600' }}>Cloudflare Pages (Sincronizado)</span>
                   </div>
                 </div>
 
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '0 0 12px', lineHeight: '1.4' }}>
-                  As atualizações do 1Convite ocorrem automaticamente para garantir sempre a melhor experiência com novos devocionais, áudios e recursos sem necessidade de reinstalação manual.
+                  Toque no botão abaixo para limpar dados residuais de cache do seu navegador e forçar o carregamento imediato da versão mais recente na nuvem.
                 </p>
 
                 {updateStatusMsg && (
@@ -7278,191 +7173,107 @@ Em nome de Jesus, Amém.`;
                   </div>
                 )}
 
-                <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={handleCheckForUpdates}
-                    disabled={checkingUpdate}
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      padding: '10px',
-                      fontSize: '0.86rem'
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: checkingUpdate ? 'spin 1s linear infinite' : 'none' }}>
-                      <polyline points="23 4 23 10 17 10"></polyline>
-                      <polyline points="1 20 1 14 7 14"></polyline>
-                      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                    </svg>
-                    <span>{checkingUpdate ? 'Verificando Atualizações...' : 'Verificar Atualizações'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowChangelog(!showChangelog)}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: 'var(--orange)',
-                      fontSize: '0.8rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      padding: '6px 0',
-                      textAlign: 'center',
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    {showChangelog ? '▲ Ocultar Registro de Atualizações' : '▼ Ver Registro de Atualizações Recentes'}
-                  </button>
-
-                  {/* Botão Sair da Conta / Trocar de Código VIP */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      try {
-                        localStorage.removeItem('1convite_logged_in');
-                        localStorage.removeItem('1convite_guest_mode');
-                        adminAuthService.setAdminSession(false);
-                      } catch (e) {}
-                      setIsAdminMode(false);
-                      setShowAdminPanel(false);
-                      setIsLoggedIn(false);
-                    }}
-                    style={{
-                      background: 'rgba(239, 68, 68, 0.08)',
-                      border: '1px solid rgba(239, 68, 68, 0.2)',
-                      color: '#F87171',
-                      borderRadius: '12px',
-                      padding: '10px 14px',
-                      fontSize: '0.82rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      width: '100%',
-                      marginTop: '6px'
-                    }}
-                  >
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                      <polyline points="16 17 21 12 16 7" />
-                      <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                    <span>Sair da Conta / Trocar de Código VIP</span>
-                  </button>
-
-                  {/* Acesso Rápido ao Painel do Administrador Mestre */}
-                  {isAdminMode && (
-                    <button
-                      type="button"
-                      onClick={() => setShowAdminPanel(true)}
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.22) 0%, rgba(234, 179, 8, 0.22) 100%)',
-                        border: '1.5px solid #F59E0B',
-                        color: '#FCD34D',
-                        borderRadius: '12px',
-                        padding: '12px 14px',
-                        fontSize: '0.84rem',
-                        fontWeight: '800',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        width: '100%',
-                        marginTop: '8px',
-                        boxShadow: '0 4px 14px rgba(245, 158, 11, 0.2)'
-                      }}
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                        <path d="M2 17l10 5 10-5" />
-                        <path d="M2 12l10 5 10-5" />
-                      </svg>
-                      <span>Abrir Painel do Administrador Mestre</span>
-                    </button>
-                  )}
-
-                  {showChangelog && (
-                    <div style={{
-                      marginTop: '6px',
-                      background: 'var(--bg-app)',
-                      borderRadius: '10px',
-                      padding: '12px 14px',
-                      border: '1px solid var(--slate-border)',
-                      fontSize: '0.78rem',
-                      lineHeight: '1.5'
-                    }}>
-                      <div style={{ marginBottom: '10px' }}>
-                        <div style={{ fontWeight: '800', color: 'var(--orange)', marginBottom: '2px' }}>
-                          ● Versão 2.5.1 (24 de Novembro de 2026)
-                        </div>
-                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
-                          <li><strong>Mentores Bíblicos Canônicos:</strong> Imagens de alta definição, ensinamentos canônicos e perfis biográficos completos de Jesus Cristo, Rei Salomão, Rei Davi, Apóstolo Paulo, Moisés, Rainha Ester e Maria Mãe de Jesus.</li>
-                          <li><strong>Chat Interativo em 1ª Pessoa:</strong> Conversação bíblica direta com os mentores, botão de Nova Conversa, histórico persistente e respostas canônicas com referências das Escrituras.</li>
-                          <li><strong>Atualização Automática em Tempo Real:</strong> Live Cloud Sync contínuo em segundo plano para aplicação instantânea de novos recursos sem necessidade de reinstalação.</li>
-                        </ul>
-                      </div>
-
-                      <div style={{ marginBottom: '10px' }}>
-                        <div style={{ fontWeight: '800', color: 'var(--orange)', marginBottom: '2px' }}>
-                          ● Versão 2.4.0 (23 de Novembro de 2026)
-                        </div>
-                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
-                          <li><strong>Acesso Direto e Rápido:</strong> Entrada imediata ao Dashboard de blocos ao clicar em Acessar Aplicativo.</li>
-                          <li><strong>Ícone Oficial no Celular:</strong> Logotipo com chama de fogo laranja sobre fundo preto aplicado aos ícones de aplicativo (Android e Web/PWA).</li>
-                          <li><strong>Logomarca Adaptativa:</strong> Suporte com contraste nos modos claro e escuro.</li>
-                          <li><strong>Banco de Dados e Nuvem:</strong> Sincronização persistente do perfil e foto no Turso LibSQL Cloud.</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <div style={{ fontWeight: '800', color: 'var(--text-primary)', marginBottom: '2px' }}>
-                          ● Versão 2.3.0
-                        </div>
-                        <ul style={{ margin: '0 0 0 16px', padding: 0, color: 'var(--text-secondary)' }}>
-                          <li>Síntese rápida dos 365 dias do Devocional Café com Deus.</li>
-                          <li>Motor de voz neural de alta fidelidade sem robotização.</li>
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Rodapé da Conta: Apenas a Logomarca Oficial */}
-                  <div style={{
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={handleCheckForUpdates}
+                  disabled={checkingUpdate}
+                  style={{
+                    width: '100%',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '36px 0 20px',
-                    margin: '20px 0 10px'
-                  }}>
-                    <img 
-                      src={appLogomarcaLight} 
-                      alt="1Convite - Compartilhando o Reino" 
-                      style={{ 
-                        width: '180px', 
-                        maxWidth: '65%', 
-                        height: 'auto', 
-                        objectFit: 'contain'
-                      }} 
-                    />
-                    <div style={{ 
-                      fontSize: '0.72rem', 
-                      color: 'var(--text-tertiary)', 
-                      marginTop: '8px', 
-                      letterSpacing: '0.5px' 
-                    }}>
-                      1convite.com.br • Compartilhando o Reino
-                    </div>
-                  </div>
+                    gap: '8px',
+                    padding: '12px',
+                    fontWeight: '700',
+                    fontSize: '0.88rem'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: checkingUpdate ? 'spin 1s linear infinite' : 'none' }}>
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                  <span>{checkingUpdate ? 'Sincronizando com a Nuvem...' : 'Forçar Atualização do Aplicativo'}</span>
+                </button>
+              </div>
+
+              {/* 6. Card Destacado: Sair da Conta (Logout) */}
+              <div className="glass-panel" style={{ 
+                marginBottom: '16px', 
+                textAlign: 'center',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                background: 'rgba(239, 68, 68, 0.03)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  <h3 style={{ fontSize: '1.05rem', margin: 0, textAlign: 'left', color: '#F87171' }}>Sessão Ativa</h3>
+                </div>
+
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '14px', textAlign: 'left', lineHeight: '1.4' }}>
+                  Conectado como <strong>{profileEmail || profileName || 'Convidado'}</strong>. Ao sair, você voltará para a tela inicial de entrada e login.
+                </p>
+
+                <button 
+                  type="button"
+                  onClick={handleLogout}
+                  style={{
+                    width: '100%',
+                    background: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '13px 18px',
+                    fontSize: '0.92rem',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 14px rgba(239, 68, 68, 0.35)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  <span>Sair da Conta (Logout)</span>
+                </button>
+              </div>
+
+              {/* 7. Rodapé da Conta: Apenas a Logomarca Oficial */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '30px 0 24px',
+                margin: '10px 0'
+              }}>
+                <img 
+                  src={appLogomarcaLight} 
+                  alt="1Convite - Compartilhando o Reino" 
+                  style={{ 
+                    width: '180px', 
+                    maxWidth: '65%', 
+                    height: 'auto', 
+                    objectFit: 'contain'
+                  }} 
+                />
+                <div style={{ 
+                  fontSize: '0.72rem', 
+                  color: 'var(--text-tertiary)', 
+                  marginTop: '8px', 
+                  letterSpacing: '0.5px' 
+                }}>
+                  1convite.com.br • Compartilhando o Reino
                 </div>
               </div>
             </div>

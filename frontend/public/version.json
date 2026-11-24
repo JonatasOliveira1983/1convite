@@ -1,12 +1,13 @@
 {
-  "version": "v2.16.1",
-  "build": "2026112421",
+  "version": "v2.16.2",
+  "build": "2026112422",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Vinculação Direta do Asset de Fundo: Imagem oficial das crianças no pôr do sol empacotada com hash pelo Vite para garantia absoluta de exibição sem cache.",
-    "Enquadramento Otimizado: Posicionamento vertical centralizado para máxima visibilidade das crianças, das flores e do sol.",
-    "Logomarca Oficial e Card C6 Bank: Ajustes refinados de contraste e margens flutuantes."
+    "Sair da Conta (Logout Limpo): Redirecionamento instantâneo para a tela inicial de login estilo C6 Bank, limpando sessões residuais.",
+    "Forçar Atualização do Aplicativo: Limpeza imediata de cache do navegador e recarregamento rígido com a versão mais recente da nuvem.",
+    "Refinamento de Minha Conta: Eliminação de blocos obsoletos, duplicações de temas e textos desatualizados.",
+    "Fotografia Oficial das Crianças no Pôr do Sol: Enquadramento vertical cinematográfico com respiração de luz viva."
   ],
-  "updateTimestamp": 1795543000000
+  "updateTimestamp": 1795546000000
 }
