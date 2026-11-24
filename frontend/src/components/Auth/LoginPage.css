@@ -23,8 +23,8 @@
   width: 104%;
   height: 104%;
   object-fit: cover;
-  object-position: center 22%;
-  filter: brightness(0.85) saturate(1.1) contrast(1.02);
+  object-position: center 28%;
+  filter: brightness(0.92) saturate(1.08);
   animation: c6KenBurnsSmooth 24s ease-in-out infinite alternate;
   pointer-events: none;
   transform-origin: center center;
@@ -35,7 +35,7 @@
     transform: scale(1.0);
   }
   100% {
-    transform: scale(1.035);
+    transform: scale(1.04);
   }
 }
 
@@ -44,8 +44,7 @@
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(180deg, rgba(7, 10, 16, 0.55) 0%, rgba(7, 10, 16, 0.05) 25%, rgba(7, 10, 16, 0.2) 65%, rgba(7, 10, 16, 0.85) 100%),
-    radial-gradient(circle at center, transparent 40%, rgba(7, 10, 16, 0.5) 100%);
+    linear-gradient(180deg, rgba(7, 10, 16, 0.45) 0%, rgba(7, 10, 16, 0.0) 25%, rgba(7, 10, 16, 0.1) 60%, rgba(7, 10, 16, 0.75) 100%);
   pointer-events: none;
 }
 

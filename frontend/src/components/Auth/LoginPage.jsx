@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginPage.css';
 import adminAuthService from '../../services/adminAuthService';
 import appLogoWhite from '../../assets/logomarca_dark.png';
+import loginSunsetBg from '../../assets/auth/login_sunset_bg.jpg';
 
 export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
   // viewMode: 'initial' (estilo C6 Bank), 'login' (gaveta login), 'register' (gaveta cadastro)
@@ -155,7 +156,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     <div className="c6-login-viewport">
       {/* Background com Movimento Ken Burns das Crianças no Pôr do Sol */}
       <img 
-        src="/assets/auth/login_sunset_bg.jpg" 
+        src={loginSunsetBg} 
         alt="Crianças no Campo Florido ao Pôr do Sol" 
         className="c6-bg-media"
       />
