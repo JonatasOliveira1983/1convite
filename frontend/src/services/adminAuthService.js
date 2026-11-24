@@ -9,7 +9,10 @@ const ADMIN_CREDENTIALS = {
   role: 'admin'
 };
 
-const API_BASE = '/api/v1';
+const isLocalHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_BASE = isLocalHost
+  ? 'http://localhost:3001/api/v1'
+  : (import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1');
 
 const getAdminHeaders = () => ({
   'Content-Type': 'application/json',
