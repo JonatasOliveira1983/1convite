@@ -24,6 +24,9 @@ import heroMountainsImg from './assets/feed/hero_mountains.jpg';
 import treinoTemploImg from './assets/feed/treino_templo.jpg';
 import TreinoTemploView from './components/TreinoTemplo/TreinoTemploView';
 import LoginPage from './components/Auth/LoginPage';
+import AdminPanel from './components/Admin/AdminPanel';
+import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
+import adminAuthService from './services/adminAuthService';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -399,6 +402,25 @@ function App() {
     const exp = localStorage.getItem('1convite_premium_expiry');
     return exp ? parseInt(exp, 10) : null;
   });
+  const [isAdminMode, setIsAdminMode] = useState(() => adminAuthService.isCurrentSessionAdmin());
+  const [showAdminPanel, setShowAdminPanel] = useState(() => adminAuthService.isCurrentSessionAdmin());
+  
+  // Detecção de Link de Convite Recebido (Experiência Portal de Luz)
+  const [portalConviteData, setPortalConviteData] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('convite') || params.get('tipo') || params.get('de')) {
+      return {
+        senderName: params.get('de') || 'Jonathan Oliveira',
+        senderAvatar: params.get('avatar') || '/favicon.png',
+        conviteType: params.get('tipo') || params.get('convite') || 'cafe',
+        customMessage: params.get('msg') || '',
+        vipCode: params.get('vip') || ''
+      };
+    }
+    return null;
+  });
+
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     if (typeof window === 'undefined') return true;
     const urlParams = new URLSearchParams(window.location.search);
@@ -1139,8 +1161,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.13.0';
-  const CURRENT_APP_BUILD = 2026112417;
+  const CURRENT_APP_VERSION = 'v2.14.0';
+  const CURRENT_APP_BUILD = 2026112418;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
@@ -2636,6 +2658,47 @@ Em nome de Jesus, Amém.`;
   }
 
 
+  // ── Renderização da Experiência Visual do 1Convite (Portal de Luz) ──
+  if (portalConviteData) {
+    return (
+      <ConvitePortalLuz 
+        senderName={portalConviteData.senderName}
+        senderAvatar={portalConviteData.senderAvatar}
+        conviteType={portalConviteData.conviteType}
+        customMessage={portalConviteData.customMessage}
+        vipCode={portalConviteData.vipCode}
+        onAccept={({ vipCode }) => {
+          setPortalConviteData(null);
+          setIsLoggedIn(true);
+          if (vipCode) {
+            adminAuthService.useVoucher(vipCode, profileEmail);
+            setIsPremiumUser(true);
+            setUserVipExpiry(Date.now() + 180 * 24 * 60 * 60 * 1000);
+          }
+          setActiveTab('dashboard');
+        }}
+        onDismiss={() => {
+          setPortalConviteData(null);
+        }}
+      />
+    );
+  }
+
+  // ── Renderização do Painel de Controle Administrativo (Master Admin) ──
+  if (isAdminMode && showAdminPanel) {
+    return (
+      <AdminPanel 
+        onOpenApp={() => setShowAdminPanel(false)}
+        onLogout={() => {
+          adminAuthService.setAdminSession(false);
+          setIsAdminMode(false);
+          setShowAdminPanel(false);
+          setIsLoggedIn(false);
+        }}
+      />
+    );
+  }
+
   if (showLanding) {
     return (
       <LandingPage onEnterApp={() => {
@@ -2653,14 +2716,24 @@ Em nome de Jesus, Amém.`;
           setIsLoggedIn(true);
           setProfileName(userData.name);
           setProfileEmail(userData.contact);
-          if (userData.isPremium) {
+          if (userData.isAdmin) {
+            setIsAdminMode(true);
+            setShowAdminPanel(true);
             setIsPremiumUser(true);
-            setUserVipExpiry(userData.expiry);
+          } else {
+            setIsAdminMode(false);
+            setShowAdminPanel(false);
+            if (userData.isPremium) {
+              setIsPremiumUser(true);
+              setUserVipExpiry(userData.expiry);
+            }
           }
           setActiveTab('dashboard');
         }}
         onExploreGuest={() => {
           setIsLoggedIn(true);
+          setIsAdminMode(false);
+          setShowAdminPanel(false);
           setActiveTab('dashboard');
         }}
       />
@@ -7254,7 +7327,10 @@ Em nome de Jesus, Amém.`;
                       try {
                         localStorage.removeItem('1convite_logged_in');
                         localStorage.removeItem('1convite_guest_mode');
+                        adminAuthService.setAdminSession(false);
                       } catch (e) {}
+                      setIsAdminMode(false);
+                      setShowAdminPanel(false);
                       setIsLoggedIn(false);
                     }}
                     style={{
@@ -7281,6 +7357,38 @@ Em nome de Jesus, Amém.`;
                     </svg>
                     <span>Sair da Conta / Trocar de Código VIP</span>
                   </button>
+
+                  {/* Acesso Rápido ao Painel do Administrador Mestre */}
+                  {isAdminMode && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminPanel(true)}
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.22) 0%, rgba(234, 179, 8, 0.22) 100%)',
+                        border: '1.5px solid #F59E0B',
+                        color: '#FCD34D',
+                        borderRadius: '12px',
+                        padding: '12px 14px',
+                        fontSize: '0.84rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        width: '100%',
+                        marginTop: '8px',
+                        boxShadow: '0 4px 14px rgba(245, 158, 11, 0.2)'
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                      </svg>
+                      <span>Abrir Painel do Administrador Mestre</span>
+                    </button>
+                  )}
 
                   {showChangelog && (
                     <div style={{

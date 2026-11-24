@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
-   TELA DE LOGIN CINEMATOGRÁFICA 1CONVITE - GOLDEN HOUR GLASSMORPHISM
+   TELA DE LOGIN & CADASTRO ULTRA CLEAN COM MOVIMENTO CINEMATOGRÁFICO (KEN BURNS)
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 .login-viewport {
@@ -10,57 +10,70 @@
   align-items: center;
   justify-content: center;
   background-color: #0B0F17;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 16px;
+  overflow: hidden;
+  padding: 16px;
+  box-sizing: border-box;
   font-family: inherit;
 }
 
-/* Background Imersivo com Pôr do Sol e Campo de Flores */
+/* Background com Movimento Cinematográfico Ken Burns Contínuo */
 .login-bg-media {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
   object-fit: cover;
-  object-position: center 35%;
-  filter: brightness(0.68) saturate(1.15) contrast(1.05);
-  transform: scale(1.02);
-  transition: transform 10s ease-out;
+  object-position: center 30%;
+  filter: brightness(0.72) saturate(1.2) contrast(1.05);
+  animation: kenBurnsSmooth 28s ease-in-out infinite alternate;
   pointer-events: none;
+  transform-origin: center center;
 }
 
-/* Vinheta e Gradiente Dourado Noturno */
+@keyframes kenBurnsSmooth {
+  0% {
+    transform: scale(1.0) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.12) translate(-1.5%, -1%);
+  }
+  100% {
+    transform: scale(1.05) translate(1.5%, 1%);
+  }
+}
+
+/* Vinheta Suave e Gradiente Noturno Sutil (Muito mais transparente para destacar a cena) */
 .login-bg-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(11, 15, 23, 0.25) 0%, rgba(11, 15, 23, 0.85) 85%),
-              linear-gradient(180deg, rgba(11, 15, 23, 0.4) 0%, rgba(11, 15, 23, 0.95) 100%);
+  background: radial-gradient(circle at center 40%, rgba(11, 15, 23, 0.15) 0%, rgba(11, 15, 23, 0.65) 85%),
+              linear-gradient(180deg, rgba(11, 15, 23, 0.25) 0%, rgba(11, 15, 23, 0.75) 100%);
   pointer-events: none;
 }
 
-/* Card Principal Glassmorphism */
+/* Card Principal: Vidro Translúcido Ultraleve */
 .login-card {
   position: relative;
   width: 100%;
-  max-width: 420px;
-  background: rgba(18, 24, 38, 0.78);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-top: 1px solid rgba(251, 191, 36, 0.35);
-  border-radius: 28px;
-  padding: 32px 24px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(249, 115, 22, 0.15);
+  max-width: 380px;
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(251, 191, 36, 0.45);
+  border-radius: 26px;
+  padding: 24px 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(249, 115, 22, 0.12);
   color: #FFFFFF;
   box-sizing: border-box;
-  animation: loginCardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 10;
+  animation: loginCardFadeIn 0.5s ease-out forwards;
 }
 
-@keyframes loginCardEnter {
+@keyframes loginCardFadeIn {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.97);
+    transform: translateY(16px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -68,72 +81,101 @@
   }
 }
 
-/* Cabeçalho da Tela de Login */
+/* Topo do Card */
 .login-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
-.login-flame-badge {
-  width: 64px;
-  height: 64px;
+.login-flame-icon-wrap {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.3) 0%, rgba(18, 24, 38, 0.8) 75%);
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.35) 0%, rgba(15, 23, 42, 0.7) 80%);
   border: 1.5px solid rgba(249, 115, 22, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.35);
+  margin-bottom: 10px;
+  box-shadow: 0 4px 18px rgba(249, 115, 22, 0.3);
 }
 
-.login-flame-img {
-  width: 40px;
-  height: 40px;
+.login-flame-icon-img {
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
 
-.login-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.3px;
+.login-impact-phrase {
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.4;
   color: #FFFFFF;
-  margin: 0 0 6px;
-  line-height: 1.25;
+  margin: 0 0 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.login-title span {
+.login-impact-phrase span {
   background: linear-gradient(135deg, #FDBA74, #F97316);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.login-subtitle {
-  font-size: 0.85rem;
-  color: #94A3B8;
+.login-sub-phrase {
+  font-size: 0.74rem;
+  color: #CBD5E1;
   margin: 0;
-  line-height: 1.45;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
-/* Formulário de Acesso */
+/* Abas Alternadoras Minimalistas (Entrar vs Cadastrar) */
+.login-tab-switcher {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  padding: 3px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.login-tab-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  background: transparent;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-tab-btn.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Formulário e Campos */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .login-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   text-align: left;
 }
 
 .login-label {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #E2E8F0;
   letter-spacing: 0.3px;
@@ -142,13 +184,13 @@
   justify-content: space-between;
 }
 
-.login-label-optional {
-  font-size: 0.7rem;
-  font-weight: 500;
+.login-label-highlight {
+  font-size: 0.68rem;
   color: #FBBF24;
+  font-weight: 600;
 }
 
-.login-input-wrapper {
+.login-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
@@ -156,133 +198,112 @@
 
 .login-input-icon {
   position: absolute;
-  left: 14px;
+  left: 12px;
   color: #94A3B8;
-  pointer-events: none;
   display: flex;
   align-items: center;
+  pointer-events: none;
 }
 
-.login-input {
+.login-input-clean {
   width: 100%;
-  height: 48px;
-  padding: 0 14px 0 44px;
-  border-radius: 14px;
-  background: rgba(11, 15, 23, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  height: 42px;
+  padding: 0 12px 0 38px;
+  border-radius: 11px;
+  background: rgba(11, 15, 23, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: #FFFFFF;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-family: inherit;
   outline: none;
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
-.login-input:focus {
+.login-input-clean:focus {
   border-color: #F97316;
-  background: rgba(11, 15, 23, 0.85);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  background: rgba(11, 15, 23, 0.8);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25);
 }
 
-.login-input::placeholder {
+.login-input-clean::placeholder {
   color: #64748B;
-  font-size: 0.86rem;
+  font-size: 0.82rem;
 }
 
-/* Campo Especial de Cupom / Código VIP */
-.login-vip-box {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%);
-  border: 1px dashed rgba(234, 179, 8, 0.45);
-  border-radius: 16px;
-  padding: 12px 14px;
-  margin-top: 4px;
-}
-
-.login-vip-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(234, 179, 8, 0.2);
-  color: #FACC15;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  letter-spacing: 0.4px;
+/* Caixa Especial de Cupom VIP */
+.login-vip-container {
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px dashed rgba(234, 179, 8, 0.4);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 2px;
 }
 
 .login-input-vip {
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  border-color: rgba(234, 179, 8, 0.35);
   color: #FEF08A;
+  border-color: rgba(234, 179, 8, 0.35);
 }
 
-.login-input-vip:focus {
-  border-color: #EAB308;
-  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.25);
-}
-
-/* Feedback de Sucesso e Erro */
-.login-feedback-msg {
-  font-size: 0.8rem;
-  padding: 10px 14px;
-  border-radius: 10px;
+/* Feedbacks */
+.login-alert-box {
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 0.76rem;
   line-height: 1.4;
-  margin-top: 6px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.login-feedback-error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.35);
+.login-alert-error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
   color: #FCA5A5;
 }
 
-.login-feedback-success {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.35);
+.login-alert-success {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
   color: #86EFAC;
 }
 
-/* Botões de Ação */
-.login-btn-primary {
+/* Botões */
+.login-submit-btn {
   width: 100%;
-  height: 50px;
-  border-radius: 14px;
+  height: 44px;
+  border-radius: 12px;
   border: none;
   background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   color: #FFFFFF;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
   transition: all 0.2s ease;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
-.login-btn-primary:hover {
+.login-submit-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(234, 88, 12, 0.5);
-  background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
+  box-shadow: 0 8px 22px rgba(234, 88, 12, 0.45);
 }
 
-.login-btn-guest {
+.login-guest-btn {
   width: 100%;
-  height: 44px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  height: 38px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #CBD5E1;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -292,33 +313,15 @@
   transition: all 0.2s ease;
 }
 
-.login-btn-guest:hover {
+.login-guest-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #FFFFFF;
 }
 
-.login-footer-links {
-  margin-top: 18px;
+.login-brand-footer {
+  margin-top: 14px;
   text-align: center;
-  font-size: 0.74rem;
-  color: #64748B;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.login-footer-links a,
-.login-footer-links button {
-  background: none;
-  border: none;
+  font-size: 0.68rem;
   color: #94A3B8;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: inherit;
-  padding: 0;
-}
-
-.login-footer-links a:hover,
-.login-footer-links button:hover {
-  color: #F97316;
+  letter-spacing: 0.3px;
 }
