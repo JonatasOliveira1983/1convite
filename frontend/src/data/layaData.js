@@ -33,8 +33,8 @@ export const LAYA_MENTORES = [
     saudacao_chat: 'A paz seja convosco. Eu conheço as aflições do seu coração e vi cada uma de suas lágrimas. O que tem pesado sobre a sua alma hoje?',
     exemplos_perguntas: [
       'Como encontrar paz no meio de tanta tribulação?',
-      'Como perdoar alguém que me feriu profundamente?',
-      'Como vencer o medo do amanhã e da morte?'
+      'O que preciso fazer para ser salvo?',
+      'Como perdoar alguém que me feriu profundamente?'
     ]
   },
   {
@@ -394,163 +394,400 @@ export function consultarOraculoLocal(texto, categoria = null) {
   };
 }
 
-// ── MOTOR DE CHAT EM PRIMEIRA PESSOA COM O MENTOR ──
-// Sempre objetivo, direto ao ponto e baseado nas Escrituras Sagradas
+// ═════════════════════════════════════════════════════════════════
+// LAYA INTEL — BASE DOUTRINÁRIA EXPANDIDA & VARIAÇÃO ANTI-REPETIÇÃO
+// Mapeamento amplo de intenções teológicas e práticas de vida
+// ═════════════════════════════════════════════════════════════════
+
+const BANCO_INTENCOES_MENTORES = {
+  // ── 1. JESUS CRISTO ──
+  jesus: [
+    {
+      intent: 'SALVACAO_ETERNIDADE',
+      palavras: ['salvo', 'salva', 'salvar', 'salvacao', 'ceu', 'vida eterna', 'eterna', 'paraíso', 'morte', 'morrer', 'inferno', 'condenacao', 'novo nascimento', 'nascer de novo', 'reino de deus', 'evangelho', 'salvação', 'perdido'],
+      respostas: [
+        {
+          texto: 'Em verdade, em verdade te digo que aquele que não nascer de novo não pode ver o Reino de Deus. A salvação não é uma conquista humana nem o resultado de boas obras para que ninguém se glorie; ela nasce do arrependimento sincero e da fé no Filho que o Pai enviou por amor. Eu sou o caminho, a verdade e a vida; ninguém vem ao Pai senão por mim.',
+          versiculo: 'João 3:3-5 & João 14:6',
+          acao: 'Faça agora uma oração sincera: "Senhor Jesus, eu creio que Tu és o Filho de Deus. Perdoa os meus pecados e escreve o meu nome no Livro da Vida".'
+        },
+        {
+          texto: 'Eu sou a porta das ovelhas; se alguém entrar por mim, salvar-se-á, e entrará, e sairá, e achará pastagens. Para ser salvo, você não precisa realizar o impossível: se com a sua boca você confessar que Eu sou o Senhor e em seu coração crer que Deus me ressuscitou dos mortos, serás salvo. Todo aquele que invocar o Meu nome jamais será confundido.',
+          versiculo: 'João 10:9 & Romanos 10:9-10',
+          acao: 'Declare com fé em voz alta: "Jesus Cristo é o único Senhor e Salvador da minha vida".'
+        },
+        {
+          texto: 'Lembra-se do jovem que me perguntou o que deveria fazer para herdar a vida eterna? Ele cumpria mandamentos, mas o seu coração estava aprisionado às suas posses e seguranças terrenas. Para ser salvo, é preciso abrir mão de salvar a si mesmo, renunciar à justiça própria e me seguir de coração inteiro. A salvação é gratuita pela graça, mas exige a entrega total do seu coração.',
+          versiculo: 'Marcos 10:17-21 & Efésios 2:8-9',
+          acao: 'Entregue no altar do Senhor a área que você mais tinha receio de renunciar.'
+        }
+      ]
+    },
+    {
+      intent: 'ANSIEDADE_MEDO_FUTURO',
+      palavras: ['ansiedade', 'ansioso', 'preocupacao', 'preocupado', 'futuro', 'amanha', 'paz', 'insonia', 'dormir', 'panico', 'angustia', 'desespero', 'acalm', 'medo', 'aperto'],
+      respostas: [
+        {
+          texto: 'Por que o seu coração está inquieto? Observe os lírios do campo: eles não trabalham nem fiam, contudo nem Salomão em toda a sua glória se vestiu como um deles. Não vos inquieteis pelo dia de amanhã; o dia de amanhã cuidará de si mesmo. Entregue o seu fardo a mim agora e busque em primeiro lugar o Reino e a Sua justiça.',
+          versiculo: 'Mateus 6:33-34',
+          acao: 'Respire fundo em paz agora mesmo e declare: "O Senhor cuida de mim no dia de hoje".'
+        },
+        {
+          texto: 'Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize. As tempestades ao redor não têm poder para afundar o barco quando Eu estou nele. Descanse na Minha soberania: nenhuma folha cai sem o consentimento do vosso Pai que está nos céus.',
+          versiculo: 'João 14:27 & Mateus 8:26',
+          acao: 'Feche os olhos por 2 minutos e repita mentalmente: "A paz de Cristo governa os meus pensamentos".'
+        },
+        {
+          texto: 'Quem de vós, por mais ansioso que esteja, pode acrescentar um único côvado ao curso da sua vida? A ansiedade é a tentativa da criatura de carregar o fardo que pertence apenas ao Criador. Vinde a mim vós todos que estais cansados e sobrecarregados, e Eu vos darei descanso verdadeiro.',
+          versiculo: 'Lucas 12:25-26 & Mateus 11:28',
+          acao: 'Escreva em um papel o motivo exato da sua aflição e diga a Deus: "Senhor, isto agora está nas Tuas mãos".'
+        }
+      ]
+    },
+    {
+      intent: 'PERDAO_MAGOA_OFENSA',
+      palavras: ['perdoar', 'perdao', 'magoa', 'rancor', 'ofensa', 'traicao', 'traiu', 'injustica', 'raiva', 'odio', 'vinganca', 'inimigo', 'machucou', 'feriu', 'ofendeu'],
+      respostas: [
+        {
+          texto: 'Se perdoardes aos homens as suas ofensas, também vosso Pai celeste vos perdoará; se, porém, não perdoardes, o vosso Pai também não vos perdoará. O perdão não valida o erro do outro; o perdão liberta a sua alma da prisão do ressentimento. Na cruz, eu roguei pelos que me cravavam os cravos: "Pai, perdoa-lhes, porque não sabem o que fazem".',
+          versiculo: 'Mateus 6:14-15 & Lucas 23:34',
+          acao: 'Diga em oração neste instante: "Em nome de Jesus, eu decido liberar perdão a quem me feriu".'
+        },
+        {
+          texto: 'Quando Pedro me perguntou se deveria perdoar até sete vezes, respondi: "Não te digo até sete vezes, mas até setenta vezes sete". O amor sacrificial não guarda registro de malícias. Não permita que a amargura crie raízes no seu peito; abençoe os que te perseguem e você experimentará a leveza dos filhos de Deus.',
+          versiculo: 'Mateus 18:21-22 & Romanos 12:14',
+          acao: 'Ore especificamente pela pessoa que te magoou, pedindo a Deus que a alcance com misericórdia.'
+        }
+      ]
+    },
+    {
+      intent: 'PECADO_CULPA_QUEDA',
+      palavras: ['pecado', 'pequei', 'errei', 'falhei', 'culpa', 'culpado', 'vergonha', 'impureza', 'vicio', 'queda', 'cair', 'restaurar', 'misericordia', 'condenado'],
+      respostas: [
+        {
+          texto: 'Nem eu tampouco te condeno; vá e não peques mais. Os sãos não precisam de médico, mas sim os doentes; eu não vim chamar justos, mas pecadores ao arrependimento. O Meu sangue vertido na cruz é poderoso para purificar a sua consciência de toda obra morta. Levante a cabeça: há festa no céu quando um coração se arrepende.',
+          versiculo: 'João 8:11 & Lucas 5:31-32',
+          acao: 'Abandone a culpa paralisante; confesse a Deus e receba a graça que te levanta para andar em santidade.'
+        },
+        {
+          texto: 'Se confessarmos os nossos pecados, Ele é fiel e justo para nos perdoar os pecados e nos purificar de toda injustiça. Não fuja da Minha presença como Adão fugiu no jardim; venha como o filho pródigo, sujo e cansado, pois os braços do Pai estão abertos para te vestir com vestes de honra.',
+          versiculo: '1 João 1:9 & Lucas 15:20-24',
+          acao: 'Faça uma oração de confissão sincera e tome a decisão prática de fugir da ocasião de pecado.'
+        }
+      ]
+    }
+  ],
+
+  // ── 2. REI SALOMÃO ──
+  salomao: [
+    {
+      intent: 'FINANCAS_DIVIDAS',
+      palavras: ['dinheiro', 'divida', 'dividas', 'financ', 'escassez', 'falta', 'desemprego', 'salario', 'rico', 'pobre', 'prosperidade', 'dizimo', 'oferta', 'gastar', 'comprar', 'cartao', 'empréstimo'],
+      respostas: [
+        {
+          texto: 'Ouça a voz da sabedoria prática: o rico domina sobre o pobre, e o que toma emprestado se torna servo do que empresta. A libertação das dívidas começa com honra e autodomínio. Os planos do diligente conduzem certamente à fartura, mas o apressado corre para a ruína. Elimine o supérfluo hoje e corte os laços da escravidão financeira.',
+          versiculo: 'Provérbios 21:5 & Provérbios 22:7',
+          acao: 'Coloque no papel todas as dívidas e corte imediatamente um gasto que você sabe que é desnecessário.'
+        },
+        {
+          texto: 'Honra ao Senhor com os teus bens e com as primícias de toda a tua renda; assim se encherão fartamente os teus celeiros. Quem retém o que deve dar empobrece, mas a alma generosa prosperará. Não gaste o que você ainda não ganhou e fuja da armadilha de parecer próspero diante dos homens enquanto deve nos bastidores.',
+          versiculo: 'Provérbios 3:9-10 & Provérbios 11:24-25',
+          acao: 'Separe as primícias do seu trabalho com gratidão antes de planejar qualquer outro consumo.'
+        },
+        {
+          texto: 'Vai ter com a formiga, ó preguiçoso; considera os seus caminhos e sê sábio! Ela não tem chefe nem comandante, contudo ajunta o seu mantimento no verão para o tempo da tempestade. O patrimônio sólido se constrói grão a grão com fidelidade diária, não com esquemas rápidos de enriquecimento.',
+          versiculo: 'Provérbios 6:6-8 & Provérbios 13:11',
+          acao: 'Crie hoje o compromisso inegociável de poupar uma fração de tudo o que entrar em suas mãos.'
+        }
+      ]
+    },
+    {
+      intent: 'DECISAO_SOCIETARIA_PRUDENCIA',
+      palavras: ['decisao', 'decidir', 'sociedade', 'socio', 'negocio', 'contrato', 'escolha', 'conselho', 'fiador', 'acordo', 'trabalho'],
+      respostas: [
+        {
+          texto: 'O homem prudente vê o perigo e se abriga, mas os ingênuos avançam e sofrem o dano. Nunca assine documentos sob o calor da emoção e jamais sejas fiador de ninguém. Não te comprometas com o estranho. Onde não há conselho os planos fracassam, mas na multidão de sábios conselheiros há segurança permanente.',
+          versiculo: 'Provérbios 11:14 & Provérbios 27:12',
+          acao: 'Consulte ao menos duas pessoas maduras na fé e prudentes nos negócios antes de firmar qualquer pacto.'
+        },
+        {
+          texto: 'Melhor é o pouco com o temor do Senhor do que grandes tesouros onde há inquietação. Avalie o caráter de quem caminha com você: quem anda com os sábios será cada vez mais sábio, mas o companheiro dos tolos acabará arruinado. Nos negócios, a reputação íntegra vale muito mais que o lucro rápido.',
+          versiculo: 'Provérbios 15:16 & Provérbios 13:20',
+          acao: 'Avalie suas parcerias profissionais e certifique-se de que nenhum compromisso fere a ética cristã.'
+        }
+      ]
+    }
+  ],
+
+  // ── 3. REI DAVI ──
+  davi: [
+    {
+      intent: 'MEDO_GIGANTES_BATALHA',
+      palavras: ['medo', 'temor', 'gigante', 'golias', 'batalha', 'guerra', 'inimigo', 'inimigos', 'perseguicao', 'ameaca', 'pressao', 'forca', 'espada', 'escudo', 'covardia', 'desespero'],
+      respostas: [
+        {
+          texto: 'Quando aquele filisteu afrontou Israel, os soldados experientes tremeram em suas tendas. Mas eu me lembrei de quem Deus é: Aquele que me livrou das garras do leão e do urso nas pastagens! Golias veio com espada, lança e escudo, mas eu fui contra ele em nome do Senhor dos Exércitos! O seu gigante pode ter estatura assustadora, mas ele cairá por terra. Firme seus passos!',
+          versiculo: '1 Samuel 17:45 & Salmo 27:1-3',
+          acao: 'Declare com autoridade santa: "O Senhor dos Exércitos está comigo; o Deus de Jacó é o meu refúgio".'
+        },
+        {
+          texto: 'Ainda que eu ande pelo vale da sombra da morte, não temerei mal nenhum, porque Tu estás comigo; o Teu bordão e o Teu cajado me consolam! Preparei uma mesa perante mim na presença dos meus adversários. O medo tenta paralisar sua voz, mas o louvor rompe as cadeias da opressão. Adore a Deus antes do milagre acontecer.',
+          versiculo: 'Salmo 23:4-5 & Salmo 34:1',
+          acao: 'Coloque um hino de exaltação a Deus agora mesmo e adore ao Senhor com o coração aberto.'
+        },
+        {
+          texto: 'Por que estás abatida, ó minha alma, e por que te perturbas dentro de mim? Espera em Deus, pois ainda o louvarei, a Ele que é o socorro da minha presença e o meu Deus. O Senhor é a fortaleza da minha vida; a quem temerei? Quando os malfeitores avançaram para me devorar, foram eles que tropeçaram e caíram.',
+          versiculo: 'Salmo 42:11 & Salmo 27:1-2',
+          acao: 'Leia o Salmo 27 em voz alta dentro da sua casa consagrando os seus caminhos ao Senhor.'
+        }
+      ]
+    },
+    {
+      intent: 'SOLIDAO_LAMENTO_ARREPENDIMENTO',
+      palavras: ['tristeza', 'choro', 'solidao', 'abandono', 'lagrimas', 'caverna', 'depressao', 'arrepender', 'arrependimento', 'perdao', 'errei', 'falhei', 'adulterio', 'sujo'],
+      respostas: [
+        {
+          texto: 'Eu morei na caverna escura de Adulão fugindo da fúria injusta de Saul. Molhei a minha cama com lágrimas noite após noite. Mas aprendi: o choro pode durar uma noite inteira, mas a alegria radiante vem pela manhã! Deus recolhe cada gota do seu pranto em Seu odre celestial. Você não foi esquecido no deserto.',
+          versiculo: 'Salmo 30:5 & Salmo 56:8',
+          acao: 'Derrame a sua alma sem máscaras perante o Senhor e descanse na certeza do Seu livramento.'
+        },
+        {
+          texto: 'Quando Nathan apontou o dedo e revelou o meu pecado com Bate-Seba, meus ossos envelheceram pelo meu bramido o dia todo. Mas quando confessei: "Pequei contra o Senhor!", Ele me perdoou. Cria em mim, ó Deus, um coração puro e renova dentro de mim um espírito inabalável! Um coração quebrantado e contrito Deus jamais desprezará.',
+          versiculo: 'Salmo 32:3-5 & Salmo 51:10-17',
+          acao: 'Rasgue o seu coração diante de Deus em arrependimento genuíno e receba a restauração do Espírito.'
+        }
+      ]
+    }
+  ],
+
+  // ── 4. APÓSTOLO PAULO ──
+  paulo: [
+    {
+      intent: 'CANSACO_DESANIMO_ESPINHO',
+      palavras: ['cansado', 'cansaco', 'desanimo', 'desanimado', 'desistir', 'fraco', 'fraqueza', 'nao aguento', 'espinho', 'dor', 'tribulacao', 'fardo', 'pressao', 'acabado'],
+      respostas: [
+        {
+          texto: 'Três vezes pedi ao Senhor que afastasse de mim um mensageiro de Satanás, um espinho terrível na minha carne. E Ele me respondeu com a maior verdade do Evangelho: "A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza". Portanto, de boa vontade me gloriarei nas fraquezas, para que sobre mim repouse o poder de Cristo. Quando sou fraco, aí é que sou forte!',
+          versiculo: '2 Coríntios 12:8-10',
+          acao: 'Renove suas forças espirituais declarando: "A graça de Deus me basta para vencer o dia de hoje".'
+        },
+        {
+          texto: 'Em tudo somos atribulados, porém não angustiados; perplexos, porém não desanimados; perseguidos, porém não desamparados; abatidos, porém não destruídos! Não olhamos para as coisas que se veem, que são temporárias, mas para as que não se veem, que são eternas. A nossa leve e momentânea tribulação produz para nós um peso eterno de glória.',
+          versiculo: '2 Coríntios 4:8-9 & 2 Coríntios 4:17-18',
+          acao: 'Mude a sua perspectiva: não foque na dor passageira, olhe para a recompensa eterna da sua fé.'
+        },
+        {
+          texto: 'Aprendi o segredo de viver contente em toda e qualquer situação: tanto sei estar humilhado como também ser honrado; sei ter abundância como passar necessidade. Tudo posso naquele que me fortalece! Não desista no meio do caminho; os que perseveram com paciência herdarão as promessas de Deus.',
+          versiculo: 'Filipenses 4:11-13 & Gálatas 6:9',
+          acao: 'Diga a Deus: "Senhor, não me deixes desfalecer na caminhada; fortalece o meu homem interior".'
+        }
+      ]
+    },
+    {
+      intent: 'PROPOSITO_ALVO_CHAMADO',
+      palavras: ['proposito', 'chamado', 'vocacao', 'alvo', 'futuro', 'carreira', 'ministerio', 'passado', 'culpa', 'erros do passado', 'o que fazer'],
+      respostas: [
+        {
+          texto: 'Irmãos, quanto a mim, não julgo que o haja alcançado; mas uma coisa faço, e é que, esquecendo-me das coisas que para trás ficam e avançando para as que estão diante de mim, prossigo para o alvo, pelo prêmio da soberana vocação de Deus em Cristo Jesus. Não viva acorrentado ao que passou; em Cristo você é uma nova criatura!',
+          versiculo: 'Filipenses 3:13-14 & 2 Coríntios 5:17',
+          acao: 'Corte os laços emocionais com frustrações antigas e dê hoje um passo concreto em direção ao seu chamado.'
+        },
+        {
+          texto: 'Combati o bom combate, acabei a carreira, guardei a fé. Desde agora, a coroa da justiça me está guardada, a qual o Senhor, justo juiz, me dará naquele dia. Não viva para agradar aos homens nem busque aplausos terrenos transitórios. Viva para a glória Daquele que te chamou das trevas para a Sua maravilhosa luz.',
+          versiculo: '2 Timóteo 4:7-8 & Gálatas 1:10',
+          acao: 'Escreva em uma frase qual é a sua principal missão espiritual e ore pedindo fidelidade para cumpri-la.'
+        }
+      ]
+    }
+  ],
+
+  // ── 5. MOISÉS ──
+  moises: [
+    {
+      intent: 'LIDERANCA_DESERTO_ESPERA',
+      palavras: ['lideranca', 'liderar', 'deserto', 'espera', 'esperar', 'tempo', 'demora', 'paciencia', 'murmuracao', 'reclamacao', 'mar vermelho', 'impasse', 'sem saida'],
+      respostas: [
+        {
+          texto: 'Quando chegamos às margens do Mar Vermelho, com as muralhas de água à nossa frente e os carros armados do Faraó atrás, o povo entrou em pavor e gritou. Mas a palavra do Senhor veio com trovão: "Não temais; aquietai-vos e vede o livramento do Senhor que hoje vos fará! O Senhor pelejará por vós, e vós vos calareis". Deus abre o mar na hora exata.',
+          versiculo: 'Êxodo 14:13-14',
+          acao: 'Cale o desespero e a queixa. Espere com firmeza: a mão de Deus se moverá a seu favor.'
+        },
+        {
+          texto: 'Passei 40 anos cuidando de ovelhas em Midiã pensando que nada mais aconteceria, até que a sarça ardeu sem se consumir. O tempo de Deus não obedece ao relógio dos homens. O deserto não foi desperdício, foi o lugar onde aprendi que a força não vem dos palácios, mas da voz que troveja no monte santo. Espere com mansidão.',
+          versiculo: 'Êxodo 3:1-5 & Salmo 90:1-4',
+          acao: 'Agradeça a Deus pelo tempo de aprendizado em que você está, sem tentar forçar portas fechadas.'
+        },
+        {
+          texto: 'Eu supliquei ao Todo-Poderoso: "Se a Tua presença não for conosco, não nos faças subir deste lugar!". Não busque vitórias sem a presença de Deus; não tome decisões importantes confiando na inteligência humana. Quando a nuvem da glória descansa, descanse; quando a nuvem se mover, marche com ousadia.',
+          versiculo: 'Êxodo 33:14-15 & Números 9:17',
+          acao: 'Consagre a sua rotina: "Senhor, se a Tua presença não for adiante de mim hoje, eu não darei nenhum passo".'
+        }
+      ]
+    }
+  ],
+
+  // ── 6. RAINHA ESTER ──
+  ester: [
+    {
+      intent: 'CORAGEM_POSICIONAMENTO',
+      palavras: ['coragem', 'posicionamento', 'posicionar', 'falar', 'timidez', 'vergonha', 'covardia', 'crise', 'arriscar', 'justica', 'defender', 'arriscar a vida', 'jejum'],
+      respostas: [
+        {
+          texto: 'Entrar nos átrios do rei Assuero sem ser convidada era sentença de morte sob as leis da Pérsia. Tive receio? Todo ser humano teme a dor. Mas Mardoqueu me advertiu: "Quem sabe se não foi exatamente para um momento decisivo como este que você chegou ao reino?". Convoquei o jejum e decidi: "Se perecer, pereci". O silêncio quando a verdade está em jogo é pecado. Posicione-se!',
+          versiculo: 'Ester 4:14-16',
+          acao: 'Não fuja da responsabilidade moral. Tome a posição santa que você vinha adiando por medo da reação alheia.'
+        },
+        {
+          texto: 'Não lute com a agressividade da carne. Antes de me apresentar ao trono terreno, dobrei os joelhos diante do Trono Celestial por três dias. A verdadeira coragem não é espalhafatosa; ela se veste de dignidade, momento oportuno, mansidão e intercessão poderosa. A forca que o adversário armou para destruir a justiça se tornará o palco da vitória de Deus.',
+          versiculo: 'Ester 5:1-3 & Ester 7:9-10',
+          acao: 'Dedique um momento de consagração e jejum antes de ter aquela conversa difícil ou tomar aquela grande atitude.'
+        }
+      ]
+    }
+  ],
+
+  // ── 7. MARIA MÃE DE JESUS ──
+  maria: [
+    {
+      intent: 'DEVOCAO_ENTREGA_FAMILIA',
+      palavras: ['mae', 'filho', 'filhos', 'familia', 'lar', 'casa', 'maternidade', 'devoção', 'entrega', 'confiar', 'humildade', 'misterio', 'dor de mae', 'lagrimas'],
+      respostas: [
+        {
+          texto: 'Quando o anjo Gabriel entrou em minha casa humilde trazendo o anúncio mais surpreendente da história, meu coração estremeceu, mas minha alma descansou na soberania do Pai: "Eis aqui a serva do Senhor; cumpra-se em mim segundo a Tua palavra". O segredo da paz não é ter o controle de tudo, é entregar o controle Àquele que governa o universo.',
+          versiculo: 'Lucas 1:38 & Lucas 1:46-48',
+          acao: 'Diga a Deus com mansidão: "Senhor, cumpra-se na minha vida e na minha casa a Tua boa e perfeita vontade".'
+        },
+        {
+          texto: 'Quantas coisas aconteceram desde a estrela de Belém até as profecias no Templo que eu não compreendia na hora... Mas a Escritura diz que Maria guardava todas essas palavras, meditando-as no íntimo do coração. Não reaja por impulso diante das crises da vida familiar; guarde as promessas de Deus e confie na fidelidade Dele.',
+          versiculo: 'Lucas 2:19 & Lucas 2:51',
+          acao: 'Passe alguns minutos em oração silenciosa entregando seus filhos e familiares nas mãos do Pai celestial.'
+        },
+        {
+          texto: 'Eu estive aos pés da cruz no Monte Calvário, vendo o fruto do meu ventre padecer pelas dores do mundo. Uma espada atravessou a minha alma, exatamente como o profeta Simeão havia dito. Mas mesmo na hora mais escura da sexta-feira, o domingo da ressurreição já estava decretado nos céus. Nenhuma dor na presença de Deus é em vão.',
+          versiculo: 'João 19:25-27 & Lucas 2:34-35',
+          acao: 'Se você está sofrendo por alguém que ama, ancore sua esperança no Deus que faz a vida brotar da cinza.'
+        }
+      ]
+    }
+  ]
+};
+
+// ── MEMÓRIA DE ROTAÇÃO CONTEXTUAL ANTI-REPETIÇÃO ──
+// Mantém registro por mentor/intent para alternar as respostas consecutivas
+const _memoriaRotacao = {};
+
+// ── MOTOR SEMÂNTICO E DINÂMICO DE RESPOSTA DO MENTOR ──
 export function gerarRespostaMentor(mentorId, pergunta) {
   const mentor = LAYA_MENTORES.find(m => m.id === mentorId) || LAYA_MENTORES[0];
-  const q = (pergunta || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const queryNorm = (pergunta || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s]/gi, ' ')
+    .trim();
 
-  // 1. JESUS CRISTO
+  const words = queryNorm.split(/\s+/).filter(w => w.length >= 2);
+  const mentorIntents = BANCO_INTENCOES_MENTORES[mentor.id] || BANCO_INTENCOES_MENTORES.jesus;
+
+  let bestIntent = null;
+  let highestScore = 0;
+
+  for (const item of mentorIntents) {
+    let score = 0;
+    for (const w of words) {
+      for (const p of item.palavras) {
+        const pNorm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (w === pNorm) {
+          score += 4;
+        } else if (pNorm.includes(w) && w.length >= 4) {
+          score += 2;
+        } else if (w.includes(pNorm) && pNorm.length >= 4) {
+          score += 2;
+        }
+      }
+    }
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestIntent = item;
+    }
+  }
+
+  // Se encontrou uma intenção doutrinária com score relevante
+  if (bestIntent && highestScore >= 2) {
+    const key = `${mentor.id}_${bestIntent.intent}`;
+    const lastIndex = _memoriaRotacao[key] !== undefined ? _memoriaRotacao[key] : -1;
+    const nextIndex = (lastIndex + 1) % bestIntent.respostas.length;
+    _memoriaRotacao[key] = nextIndex;
+
+    return bestIntent.respostas[nextIndex];
+  }
+
+  // Fallback Inteligente e Rotativo por Mentor (sempre em 1ª pessoa)
+  const fallbackKey = `${mentor.id}_fallback`;
+  const fbIndex = ((_memoriaRotacao[fallbackKey] || 0) + 1) % 2;
+  _memoriaRotacao[fallbackKey] = fbIndex;
+
   if (mentor.id === 'jesus') {
-    if (q.includes('ansied') || q.includes('futuro') || q.includes('preocup') || q.includes('medo')) {
+    if (fbIndex === 0) {
       return {
-        texto: 'Por que o seu coração está inquieto? Observe os lírios do campo: eles não trabalham nem fiam, contudo nem Salomão em toda a sua glória se vestiu como um deles. Não vos inquieteis pelo dia de amanhã; o dia de amanhã cuidará de si mesmo. Entregue o seu fardo a mim agora e busque em primeiro lugar o Reino e a Sua justiça.',
-        versiculo: 'Mateus 6:33-34',
-        acao: 'Respire em paz agora mesmo e declare três vezes: "O Senhor é o meu descanso".'
+        texto: 'Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei. Tomai sobre vós o meu jugo e aprendei de mim, porque sou manso e humilde de coração, e encontrareis descanso para as vossas almas. Seja qual for a sua inquietação, Eu estou com você.',
+        versiculo: 'Mateus 11:28-29',
+        acao: 'Acalme a sua mente e faça uma prece de entrega sincera a Cristo agora.'
+      };
+    } else {
+      return {
+        texto: 'Em tudo o que você pedir em oração, crendo, você receberá. Não olhe para a pequenez das circunstâncias terrenas; olhe para a grandeza e a misericórdia do Pai que está nos céus. Firme a sua fé na Minha Palavra e ande em novidade de vida.',
+        versiculo: 'Mateus 21:22 & João 15:7',
+        acao: 'Declare com convicção: "Eu creio no poder de Deus para transformar a minha história".'
       };
     }
-    if (q.includes('perdo') || q.includes('magoa') || q.includes('ofens') || q.includes('traic') || q.includes('raiva')) {
-      return {
-        texto: 'Se perdoardes aos homens as suas ofensas, também vosso Pai celeste vos perdoará. O perdão não significa que o que fizeram foi correto, mas que você se recusa a carregar o veneno da amargura na sua alma. Solte essa pessoa diante do Meu altar; a paz que o mundo não pode dar inundará o seu peito.',
-        versiculo: 'Marcos 11:25 & Lucas 23:34',
-        acao: 'Ore em voz baixa abençoando o nome dessa pessoa para que as cadeias da mágoa se quebrem.'
-      };
-    }
-    if (q.includes('pecad') || q.includes('culpa') || q.includes('falh') || q.includes('errei')) {
-      return {
-        texto: 'Nem eu te condeno; vá e não peques mais. A Minha graça não veio para os que se acham perfeitos, mas para os doentes e quebrantados. Se confessares os teus pecados, sou fiel e justo para te perdoar e te purificar de toda injustiça. Levante a sua cabeça: você é lavado no Meu sangue.',
-        versiculo: 'João 8:11 & 1 João 1:9',
-        acao: 'Agradeça a Deus pelo perdão agora e dê as costas ao erro sem olhar para trás.'
-      };
-    }
-    return {
-      texto: 'Vinde a mim, vós todos que estais cansados e oprimidos, e eu vos aliviarei. Tomai sobre vós o meu jugo e aprendei de mim, porque sou manso e humilde de coração, e encontrareis descanso para as vossas almas. Confie na Minha graça: Eu estou convosco todos os dias.',
-      versiculo: 'Mateus 11:28-29',
-      acao: 'Coloque a sua mão sobre o coração e faça uma oração de entrega total ao Senhor.'
-    };
   }
 
-  // 2. REI SALOMÃO
   if (mentor.id === 'salomao') {
-    if (q.includes('dinheiro') || q.includes('divida') || q.includes('financ') || q.includes('escassez') || q.includes('contas')) {
-      return {
-        texto: 'Ouça com atenção: o que toma emprestado é servo do que empresta. A libertação das dívidas não exige milagres mágicos, mas ordem, honestidade e diligência. Os planos do diligente conduzem com certeza à abundância, mas a pressa precipitada leva à penúria. Elimine gastos supérfluos hoje mesmo e honre ao Senhor com as primícias da sua renda.',
-        versiculo: 'Provérbios 21:5 & Provérbios 22:7',
-        acao: 'Faça uma lista honesta de cada centavo devido e corte uma despesa imediata hoje.'
-      };
-    }
-    if (q.includes('decis') || q.includes('socied') || q.includes('negoc') || q.includes('escolh')) {
-      return {
-        texto: 'O homem prudente vê o perigo e se esconde, mas os insensatos avançam e sofrem a pena. Nunca assine acordos com pressa e não seja fiador de estranhos. Na multidão de conselheiros sábios há segurança. Avalie o fruto moral das pessoas antes de confiar-lhes suas portas e seus recursos.',
-        versiculo: 'Provérbios 11:14 & Provérbios 27:12',
-        acao: 'Não tome essa decisão antes de ouvir ao menos duas pessoas sábias e maduras na fé.'
-      };
-    }
     return {
-      texto: 'A sabedoria é a coisa principal; adquire, pois, a sabedoria; sim, com tudo o que possuis adquire o entendimento. O temor do Senhor é o princípio de todo saber. Trabalhe com esmero, fuja da preguiça e a bênção que enriquece e não traz dores acompanhará a sua casa.',
-      versiculo: 'Provérbios 4:7 & Provérbios 10:22',
-      acao: 'Organize suas prioridades do dia escrevendo apenas o que é essencial para honrar a Deus.'
+      texto: 'A sabedoria é a coisa principal; adquire, pois, a sabedoria; sim, com tudo o que possuis adquire o entendimento. O temor do Senhor é o princípio de todo o saber. Em qualquer decisão, avalie os frutos a longo prazo e fuja das ilusões imediatistas.',
+      versiculo: 'Provérbios 4:7 & Provérbios 16:3',
+      acao: 'Consagre a Deus os seus projetos antes de agir e peça discernimento prático.'
     };
   }
 
-  // 3. REI DAVI
   if (mentor.id === 'davi') {
-    if (q.includes('medo') || q.includes('gigant') || q.includes('ameac') || q.includes('inimig') || q.includes('pressao')) {
-      return {
-        texto: 'Quando Golias zombou do exército de Israel, todos tremeram, mas eu me lembrei do leão e do urso que o Senhor havia entregue nas minhas mãos no pasto. Aquele filisteu não lutava contra mim, mas contra o Deus vivo! O seu problema pode parecer uma montanha, mas o nome do Senhor dos Exércitos o despedaçará. Firme seus pés e não recue!',
-        versiculo: '1 Samuel 17:45 & Salmo 27:1',
-        acao: 'Declare com autoridade: "O Senhor é o meu escudo e a minha fortaleza, não temerei".'
-      };
-    }
-    if (q.includes('trist') || q.includes('solidao') || q.includes('abandono') || q.includes('choro') || q.includes('caverna')) {
-      return {
-        texto: 'Eu morei na caverna de Adulão, perseguido como caça nos montes. Sei o que é molhar o leito com lágrimas. Mas aprendi: o choro pode durar uma noite, mas a alegria vem pela manhã! Rasgue a sua alma diante do Senhor em louvor, porque Ele recolhe cada lágrima em Seu odre e jamais te desamparará.',
-        versiculo: 'Salmo 30:5 & Salmo 56:8',
-        acao: 'Coloque um cântico de louvor e adore a Deus com o coração sincero por 5 minutos.'
-      };
-    }
     return {
-      texto: 'O Senhor é o meu pastor; nada me faltará. Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque Tu estás comigo; a Tua vara e o Teu cajado me consolam. Confie: a bondade e a misericórdia de Deus te seguirão todos os dias da sua vida!',
-      versiculo: 'Salmo 23:1-4',
-      acao: 'Leia o Salmo 23 em voz alta consagrando a sua família ao Bom Pastor.'
+      texto: 'O Senhor é o meu pastor; de nada terei falta. Ele me faz repousar em pastos verdejantes e guia-me mansamente a águas tranquilas. Refrigera a minha alma. Firme seu coração na fidelidade de Deus e nenhum gigante prevalecerá contra você.',
+      versiculo: 'Salmo 23:1-3',
+      acao: 'Agradeça a Deus por três livramentos passados que Ele já operou em sua vida.'
     };
   }
 
-  // 4. APÓSTOLO PAULO
   if (mentor.id === 'paulo') {
-    if (q.includes('cansad') || q.includes('desanim') || q.includes('desist') || q.includes('fraco') || q.includes('espinho')) {
-      return {
-        texto: 'Pedi três vezes ao Senhor para afastar de mim um espinho na carne que me esbofeteava. Sabe o que Ele me respondeu? "A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza". Por isso me glorio nas tribulações: pois quando sou fraco, aí é que sou forte em Cristo! Não desanime da corrida; a coroa da justiça está guardada para você.',
-        versiculo: '2 Coríntios 12:9-10 & 2 Timóteo 4:7-8',
-        acao: 'Renove a sua decisão hoje: "Posso todas as coisas naquele que me fortalece".'
-      };
-    }
-    if (q.includes('proposito') || q.includes('chamado') || q.includes('vontade') || q.includes('futuro')) {
-      return {
-        texto: 'Uma coisa eu faço: esquecendo-me das coisas que ficaram para trás e avançando para as que estão adiante, prossigo para o alvo, pelo prêmio da soberana vocação de Deus em Cristo Jesus. Não viva preso ao seu passado ou aos seus erros antigos; quem está em Cristo é nova criatura. O seu propósito é manifestar a glória do Evangelho onde quer que você pise.',
-        versiculo: 'Filipenses 3:13-14 & 2 Coríntios 5:17',
-        acao: 'Escreva um compromisso de serviço a Deus e pratique um ato de generosidade hoje.'
-      };
-    }
     return {
-      texto: 'Em tudo somos atribulados, porém não angustiados; perplexos, porém não desanimados; perseguidos, porém não desamparados; abatidos, porém não destruídos. Alegrai-vos sempre no Senhor; outra vez digo: alegrai-vos! A paz de Deus, que excede todo o entendimento, guardará o vosso coração.',
-      versiculo: '2 Coríntios 4:8-9 & Filipenses 4:4-7',
-      acao: 'Agradeça a Deus especificamente por 3 bênçãos espirituais recebidas esta semana.'
+      texto: 'Não andeis ansiosos de coisa alguma; em tudo, porém, sejam conhecidas diante de Deus as vossas petições, pela oração e pela súplica, com ações de graças. E a paz de Deus, que excede todo o entendimento, guardará os vossos corações e as vossas mentes em Cristo Jesus.',
+      versiculo: 'Filipenses 4:6-7',
+      acao: 'Transforme a sua preocupação em uma oração objetiva de gratidão e súplica agora.'
     };
   }
 
-  // 5. MOISÉS
   if (mentor.id === 'moises') {
-    if (q.includes('espera') || q.includes('deserto') || q.includes('tempo') || q.includes('demora') || q.includes('pacienc')) {
-      return {
-        texto: 'Passei quarenta anos no palácio pensando que era alguém, quarenta anos apascentando ovelhas no deserto aprendendo que nada era, e quarenta anos liderando o povo vendo o que Deus pode fazer com quem nada é. O deserto não é castigo para quem ama a Deus, é a escola onde a soberba morre e a dependência do maná diário nasce. Espere na nuvem do Senhor; no tempo certo as águas se abrirão.',
-        versiculo: 'Êxodo 14:14 & Salmo 90:12',
-        acao: 'Cale as reclamações e agradeça pelo pão de hoje sem exigir o banquete de amanhã.'
-      };
-    }
     return {
-      texto: 'Disse eu ao Senhor: "Se a Tua presença não for comigo, não nos faças subir deste lugar". Não dê um passo sequer confiando na força do seu próprio braço. O Senhor pelejará por você; apenas guarde a quietude e marche em obediência à Palavra.',
-      versiculo: 'Êxodo 14:13 & Êxodo 33:14-15',
-      acao: 'Faça 5 minutos de silêncio absoluto entregando a liderança da sua vida a Deus.'
+      texto: 'Disse o Senhor: "A minha presença irá contigo, e eu te darei descanso". Não se perturbe pelas dificuldades do caminho pelo deserto. O Senhor peleja pelos que são Seus; confie na nuvem da Sua glória.',
+      versiculo: 'Êxodo 33:14',
+      acao: 'Dedique um momento de quietude entregando a condução da sua jornada a Deus.'
     };
   }
 
-  // 6. RAINHA ESTER
   if (mentor.id === 'ester') {
-    if (q.includes('medo') || q.includes('posicion') || q.includes('coragem') || q.includes('fal') || q.includes('vergonha')) {
-      return {
-        texto: 'Apresentar-se diante do rei Assuero sem ser chamada significava sentença de morte. Tive medo? Sim, a carne treme diante do perigo. Mas Mardoqueu me lembrou: "Quem sabe se não foi para uma hora como esta que você chegou ao reino?". Convoquei o povo ao jejum e declarei: "Se perecer, pereci". O silêncio na hora da verdade é covardia. Dobre os joelhos primeiro, revista-se de graça e tome a sua posição.',
-        versiculo: 'Ester 4:14-16 & Provérbios 31:25',
-        acao: 'Dê hoje aquele passo corajoso ou tenha aquela conversa sincera que você vinha adiando.'
-      };
-    }
     return {
-      texto: 'A força e a dignidade são os seus vestidos, e você há de rir-se do dia venturoso. Não tema as armadilhas tecidas contra a sua integridade: a forca que o adversário prepara para os justos cairá sobre a própria soberba dele. Mantenha a pureza e a fidelidade ao Rei dos Reis.',
-      versiculo: 'Ester 7:10 & Provérbios 31:25-26',
-      acao: 'Dedique um momento de jejum ou renúncia nesta semana consagrando seus desafios a Deus.'
+      texto: 'O Senhor ergue os humildes e frustra as maquinações da soberba. Quando você une a oração fervorosa à coragem ética, o céu se move em seu favor. Não tema os desafios do ambiente; permaneça firme na dignidade da fé.',
+      versiculo: 'Ester 4:14 & Provérbios 31:25',
+      acao: 'Tome hoje uma atitude de integridade e confie o resultado à providência divina.'
     };
   }
 
-  // 7. MARIA MÃE DE JESUS
-  if (mentor.id === 'maria') {
-    if (q.includes('filho') || q.includes('mae') || q.includes('familia') || q.includes('casa') || q.includes('lar') || q.includes('dor')) {
-      return {
-        texto: 'Eu acompanhei o meu Filho desde a palha fria da manjedoura até a dor dilacerante da cruz no Gólgota, onde uma espada atravessou a minha própria alma como Simeão profetizou. Mas eu sabia em quem havia crido: Deus nunca abandona uma mãe que ora de joelhos. Entregue os seus filhos e o seu lar nos braços do Pai; Ele cuida deles muito melhor do que nós.',
-        versiculo: 'Lucas 1:46-48 & Lucas 2:35',
-        acao: 'Ore agora estendendo as mãos em bênção sobre a sua família e declare paz sobre o seu teto.'
-      };
-    }
-    return {
-      texto: 'Quando o anjo Gabriel me trouxe o anúncio mais estarrecedor da história, respondi com mansidão: "Eis aqui a serva do Senhor; cumpra-se em mim segundo a Tua palavra". O segredo da paz não é entender tudo, é confiar Naquele que tudo pode. Guarde as promessas de Deus e medite nelas no seu coração.',
-      versiculo: 'Lucas 1:38 & Lucas 2:19',
-      acao: 'Passe alguns minutos em oração contemplativa, agradecendo a Deus com o coração manso.'
-    };
-  }
-
-  // Resposta padrão
+  // Maria
   return {
-    texto: `A paz do Senhor. Como seu mentor nas Escrituras, afirmo com certeza: não ande ansioso por coisa alguma, mas em tudo, pela oração e súplicas, apresente seus pedidos a Deus. Ele guia os mansos no que é justo e ensina aos humildes o Seu caminho.`,
-    versiculo: mentor.versiculo_chave || 'Filipenses 4:6-7',
-    acao: 'Medite no versículo bíblico e dê o primeiro passo de obediência prática hoje.'
+    texto: 'Minha alma engrandece ao Senhor, e o meu espírito se alegra em Deus, meu Salvador, porque contemplou a humildade da Sua serva. Confie no agir silencioso e perfeito do Pai: Ele cumpre cada uma das Suas promessas no tempo certo.',
+    versiculo: 'Lucas 1:46-49',
+    acao: 'Guarde as promessas de Deus e medite nelas com o coração em paz.'
   };
 }
