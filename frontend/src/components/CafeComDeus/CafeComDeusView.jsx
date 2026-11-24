@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import cafeData from '../../data/cafe_com_deus_365.json';
 import sinteseData from '../../data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from '../../services/neuralAudioPlayer';
@@ -41,7 +42,7 @@ export default function CafeComDeusView({
 
   const todayDayNumber = getDayOfYear();
   const [selectedDay, setSelectedDay] = useState(todayDayNumber);
-  const [currentStep, setCurrentStep] = useState(initialStep || 1); // 1 = Meditação, 2 = Síntese & Ação, 3 = Oração & 1Convite
+  const [currentStep, setCurrentStep] = useState(initialStep || 1); // 1 = Meditação, 2 = Síntese, 3 = Oração, 4 = Criar 1Convite
 
   const [completedDays, setCompletedDays] = useState(() => {
     try {
@@ -64,9 +65,13 @@ export default function CafeComDeusView({
   const [selectedVoice, setSelectedVoice] = useState('pt-BR-FranciscaNeural');
   const [ambientPiano, setAmbientPiano] = useState(true);
 
-  // Estados do Módulo 1Convite (Passo 3)
-  const [selectedInviteType, setSelectedInviteType] = useState('cafe');
-  const [inviteRecipientName, setInviteRecipientName] = useState('');
+  // Estados do Estúdio 1Convite (Passo 4)
+  const [cardFormat, setCardFormat] = useState('square'); // 'square' (1:1) ou 'story' (9:16)
+  const [cardSelectedIntent, setCardSelectedIntent] = useState('palavra'); // 'palavra', 'cafe', 'treino', 'igreja', 'custom'
+  const [cardCustomText, setCardCustomText] = useState('');
+  const [cardSelectedBg, setCardSelectedBg] = useState(0);
+  const [isGeneratingCard, setIsGeneratingCard] = useState(false);
+  const cardPreviewRef = useRef(null);
 
   // Interrompe o áudio ao trocar de dia ou passo
   useEffect(() => {
@@ -103,6 +108,87 @@ export default function CafeComDeusView({
 
   const isCompleted = completedDays.includes(selectedDay);
 
+  // Fundos visuais cinematográficos locais curados (sem URLs externas com erro 404)
+  const CARD_BACKGROUNDS = [
+    {
+      id: 'alvorada',
+      label: 'Alvorada',
+      type: 'image',
+      url: '/assets/feed/hero_mountains.jpg'
+    },
+    {
+      id: 'templo',
+      label: 'Templo',
+      type: 'image',
+      url: '/assets/feed/treino_templo.jpg'
+    },
+    {
+      id: 'dourado',
+      label: 'Dourado',
+      type: 'gradient',
+      css: 'linear-gradient(145deg, #1A1308 0%, #2E1F0B 50%, #0F0A04 100%)'
+    },
+    {
+      id: 'purpura',
+      label: 'Púrpura',
+      type: 'gradient',
+      css: 'linear-gradient(145deg, #150A26 0%, #2D1454 50%, #0D0518 100%)'
+    },
+    {
+      id: 'esmeralda',
+      label: 'Esmeralda',
+      type: 'gradient',
+      css: 'linear-gradient(145deg, #061A12 0%, #0D3827 50%, #03100B 100%)'
+    },
+    {
+      id: 'noite',
+      label: 'Noite',
+      type: 'gradient',
+      css: 'linear-gradient(145deg, #080D1A 0%, #111D36 50%, #050811 100%)'
+    }
+  ];
+
+  const activeBg = CARD_BACKGROUNDS[cardSelectedBg] || CARD_BACKGROUNDS[0];
+
+  // Textos para o Card baseado na intenção escolhida
+  const getCardContent = () => {
+    switch (cardSelectedIntent) {
+      case 'cafe':
+        return {
+          title: 'CONVITE PARA UM CAFÉ',
+          text: 'Que tal a gente tomar um café hoje ou esses dias para colocar a conversa em dia? Você é muito especial para mim.',
+          ref: '1Convite • Relacionamento Intencional'
+        };
+      case 'treino':
+        return {
+          title: 'CUIDADO DO TEMPLO',
+          text: 'Cuidar da saúde e do corpo é honrar o Templo do Espírito. Bora treinar ou fazer uma caminhada juntos?',
+          ref: '1Convite • Saúde & Vitalidade'
+        };
+      case 'igreja':
+        return {
+          title: 'CONVITE ESPECIAL',
+          text: 'Gostaria muito de te fazer um convite: vamos comigo à igreja neste fim de semana? Adoraria ter a sua companhia na casa de Deus.',
+          ref: '1Convite • Comunhão & Fé'
+        };
+      case 'custom':
+        return {
+          title: 'MENSAGEM DO CORAÇÃO',
+          text: cardCustomText || 'Escreva aqui a sua mensagem de carinho ou convite especial...',
+          ref: '1Convite'
+        };
+      case 'palavra':
+      default:
+        return {
+          title: 'A PALAVRA DE HOJE',
+          text: currentMeditation.verse,
+          ref: currentMeditation.title
+        };
+    }
+  };
+
+  const cardContent = getCardContent();
+
   const startAudioPlayback = (voiceToUse = selectedVoice, stepToUse = currentStep, ambientToUse = ambientPiano) => {
     stopNeuralSpeech();
     let textToSpeak = '';
@@ -111,7 +197,7 @@ export default function CafeComDeusView({
       // Passo 3: Oração Guiada
       textToSpeak = `Oração do 1Convite para hoje. ${currentMeditation.prayer || currentSintese.oracao_sintese || 'Senhor Deus, abençoa este dia, enche o meu coração de paz e usa a minha vida como um instrumento de amor e convite para alcançar o próximo. Em nome de Jesus, amém.'}`;
     } else {
-      // Passo 1: Meditação Diária (sem oração no final para eliminar redundância)
+      // Passo 1: Meditação Diária
       textToSpeak = `Café com Deus. ${currentMeditation.title}. Versículo bíblico: ${currentMeditation.verse}. ${currentMeditation.body}`;
     }
 
@@ -177,36 +263,6 @@ export default function CafeComDeusView({
     }
   };
 
-  // Gerador de Mensagens do 1Convite (WhatsApp)
-  const getInviteMessage = (type) => {
-    const nome = inviteRecipientName.trim() ? ` ${inviteRecipientName.trim()}` : '';
-    const link = 'https://1convite.com.br';
-
-    switch (type) {
-      case 'cafe':
-        return `Oi${nome}! Pensei em você hoje. Que tal tomarmos um café ou batermos um papo rápido esses dias para colocar a conversa em dia? Você é muito importante para mim!`;
-      case 'treino':
-        return `E aí${nome}! Bora treinar juntos ou fazer uma caminhada essa semana? Cuidar da saúde e do corpo é honrar a Deus. Topa vir comigo?`;
-      case 'igreja':
-        return `Oi${nome}! Gostaria de te fazer um convite muito especial: vamos comigo à igreja neste fim de semana? Adoraria ter a sua companhia!`;
-      case 'meditacao':
-      default:
-        return `Oi${nome}! Comecei meu dia ouvindo a reflexão de hoje ("${currentMeditation.title}") no 1Convite e lembrei de você: "${currentMeditation.verse}". Dá uma olhada, vai abençoar seu dia: ${link}`;
-    }
-  };
-
-  const handleSendWhatsAppInvite = () => {
-    const msg = getInviteMessage(selectedInviteType);
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
-  };
-
-  const handleCopy = (customText) => {
-    const textToCopy = customText || `${currentMeditation.title}\n${currentDateInfo.formatted} (Dia ${currentMeditation.day})\n\n${currentMeditation.verse}\n\n${currentMeditation.body}`;
-    navigator.clipboard.writeText(textToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
-
   const handlePrev = () => {
     if (selectedDay > 1) {
       setSelectedDay(selectedDay - 1);
@@ -226,6 +282,55 @@ export default function CafeComDeusView({
     setIsAudioPlaying(false);
     setCurrentStep(step);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Exportação e Download do Card com html2canvas
+  const handleExportCard = async (shareMode = 'download') => {
+    if (!cardPreviewRef.current || isGeneratingCard) return;
+    setIsGeneratingCard(true);
+    try {
+      const canvas = await html2canvas(cardPreviewRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#0F1117'
+      });
+
+      const dataUrl = canvas.toDataURL('image/png');
+
+      if (shareMode === 'share' && navigator.share && navigator.canShare) {
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          const file = new File([blob], '1convite-card.png', { type: 'image/png' });
+          try {
+            await navigator.share({
+              files: [file],
+              title: '1Convite',
+              text: 'Um convite especial para você. https://1convite.com.br'
+            });
+          } catch (err) {
+            downloadDataUrl(dataUrl);
+          }
+        }, 'image/png');
+      } else {
+        downloadDataUrl(dataUrl);
+      }
+    } catch (err) {
+      console.error('[Card Export Error]:', err);
+    } finally {
+      setIsGeneratingCard(false);
+    }
+  };
+
+  const downloadDataUrl = (dataUrl) => {
+    const link = document.createElement('a');
+    link.download = `1convite-card-dia-${selectedDay}.png`;
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
   };
 
   return (
@@ -356,11 +461,12 @@ export default function CafeComDeusView({
         </button>
       </div>
 
-      {/* ════════════ STEPPER VISUAL DA JORNADA (3 EM 1) ════════════ */}
+      {/* ════════════ STEPPER VISUAL DA JORNADA (4 PASSOS) ════════════ */}
       <nav className="cafe-stepper-wrap" aria-label="Progresso da Jornada Diária">
         <button
           onClick={() => goToStep(1)}
           className={`cafe-step-item ${currentStep === 1 ? 'is-active' : ''} ${currentStep > 1 ? 'is-passed' : ''}`}
+          title="1. Meditação da Palavra"
         >
           <div className="cafe-step-circle">{currentStep > 1 ? '✓' : '1'}</div>
           <span className="cafe-step-label">1. Meditação</span>
@@ -371,19 +477,32 @@ export default function CafeComDeusView({
         <button
           onClick={() => goToStep(2)}
           className={`cafe-step-item ${currentStep === 2 ? 'is-active' : ''} ${currentStep > 2 ? 'is-passed' : ''}`}
+          title="2. Síntese e Prática"
         >
           <div className="cafe-step-circle">{currentStep > 2 ? '✓' : '2'}</div>
-          <span className="cafe-step-label">2. Síntese & Ação</span>
+          <span className="cafe-step-label">2. Síntese</span>
         </button>
 
         <div className={`cafe-step-line ${currentStep >= 3 ? 'is-passed' : ''}`} />
 
         <button
           onClick={() => goToStep(3)}
-          className={`cafe-step-item ${currentStep === 3 ? 'is-active' : ''}`}
+          className={`cafe-step-item ${currentStep === 3 ? 'is-active' : ''} ${currentStep > 3 ? 'is-passed' : ''}`}
+          title="3. Oração e Selagem"
         >
-          <div className="cafe-step-circle">3</div>
-          <span className="cafe-step-label">3. Oração & 1Convite</span>
+          <div className="cafe-step-circle">{currentStep > 3 ? '✓' : '3'}</div>
+          <span className="cafe-step-label">3. Oração</span>
+        </button>
+
+        <div className={`cafe-step-line ${currentStep >= 4 ? 'is-passed' : ''}`} />
+
+        <button
+          onClick={() => goToStep(4)}
+          className={`cafe-step-item ${currentStep === 4 ? 'is-active' : ''}`}
+          title="4. Criar Card 1Convite"
+        >
+          <div className="cafe-step-circle">4</div>
+          <span className="cafe-step-label">4. 1Convite</span>
         </button>
       </nav>
 
@@ -504,7 +623,7 @@ export default function CafeComDeusView({
                 className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
                 title="Ligar ou desligar música de piano de fundo"
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                 <span>{ambientPiano ? 'Piano Suave: Ligado' : 'Piano: Desligado'}</span>
               </button>
             </div>
@@ -663,7 +782,7 @@ export default function CafeComDeusView({
               onClick={() => goToStep(3)}
               className="cafe-primary-action-btn"
             >
-              <span>Selar em Oração & 1Convite (Passo 3)</span>
+              <span>Selar em Oração (Passo 3)</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -672,22 +791,22 @@ export default function CafeComDeusView({
         </div>
       )}
 
-      {/* ════════════ PASSO 3: ORAÇÃO GUIADA & O SEU 1CONVITE ════════════ */}
+      {/* ════════════ PASSO 3: ORAÇÃO GUIADA & SELAGEM DO DIA ════════════ */}
       {currentStep === 3 && (
         <div className="cafe-step-content animate-fade-in">
-          {/* A. ORAÇÃO GUIADA OFICIAL */}
+          {/* Card da Oração Guiada */}
           <section className="cafe-prayer-card">
             <div className="cafe-prayer-header">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
               <div>
-                <span className="cafe-sintese-tag" style={{ color: '#A855F7', borderColor: 'rgba(168, 85, 247, 0.3)' }}>ORAÇÃO DO DIA</span>
-                <h3 className="cafe-prayer-title">Alinhamento & Consagração Diária</h3>
+                <span className="cafe-sintese-tag" style={{ color: '#A855F7', borderColor: 'rgba(168, 85, 247, 0.3)' }}>PASSO 3 • ORAÇÃO GUIADA</span>
+                <h3 className="cafe-prayer-title">Consagração & Alinhamento com Deus</h3>
               </div>
             </div>
 
-            {/* Mini Player para a Oração */}
+            {/* Mini Player de Áudio para a Oração */}
             <div className="cafe-mini-audio-row">
               <button
                 onClick={togglePlayAudio}
@@ -710,21 +829,20 @@ export default function CafeComDeusView({
               </button>
 
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: '800', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '0.84rem', fontWeight: '800', color: '#F8FAFC' }}>
                   {isAudioPlaying ? 'Ouvindo Oração Guiada...' : 'Ouvir Oração em Áudio'}
                 </div>
-                <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
-                  Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca (Serena)' : 'Antônio (Pastoral)'}
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                  Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'} com piano
                 </div>
               </div>
 
-              {/* Botão rápido para alternar voz na oração */}
               <button
                 type="button"
                 onClick={() => handleSelectVoice(selectedVoice === 'pt-BR-FranciscaNeural' ? 'pt-BR-AntonioNeural' : 'pt-BR-FranciscaNeural')}
                 className="cafe-opt-chip"
                 style={{ fontSize: '0.68rem', padding: '4px 8px' }}
-                title="Trocar voz da oração"
+                title="Trocar voz"
               >
                 Trocar: {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Antônio' : 'Francisca'}
               </button>
@@ -735,103 +853,53 @@ export default function CafeComDeusView({
             </p>
           </section>
 
-          {/* B. O SEU 1CONVITE DE HOJE (O CLÍMAX DA MISSÃO) */}
-          <section className="cafe-invite-box">
-            <div className="cafe-invite-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          {/* Card de Conclusão do Dia (Meta Pessoal Concluída) */}
+          <div className="cafe-completion-card">
+            <div className="cafe-completion-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
-              <span>A SUA MISSÃO DE HOJE</span>
+            </div>
+            <div className="cafe-completion-info">
+              <h4>Objetivo Espiritual Concluído!</h4>
+              <p>Você alimentou a alma, entendeu a prática para hoje e orou na presença de Deus.</p>
             </div>
 
-            <h3 className="cafe-invite-main-title">Quem você vai convidar hoje?</h3>
-            <p className="cafe-invite-sub">
-              Você só consegue alcançar de verdade quem está próximo: no trabalho, em casa, na academia ou numa conversa de negócios. Às vezes, tudo o que o seu próximo precisa é de <strong>1 Convite</strong>.
-            </p>
-
-            {/* Escolha do Tipo de Convite */}
-            <div className="cafe-invite-types-grid">
-              <button
-                onClick={() => setSelectedInviteType('cafe')}
-                className={`cafe-invite-type-card ${selectedInviteType === 'cafe' ? 'active' : ''}`}
-              >
-                <div className="cafe-invite-type-icon">☕</div>
-                <strong>Café & Conversa</strong>
-                <span>Papo intencional</span>
-              </button>
-
-              <button
-                onClick={() => setSelectedInviteType('treino')}
-                className={`cafe-invite-type-card ${selectedInviteType === 'treino' ? 'active' : ''}`}
-              >
-                <div className="cafe-invite-type-icon">🏋️‍♂️</div>
-                <strong>Cuidar do Templo</strong>
-                <span>Treino ou caminhada</span>
-              </button>
-
-              <button
-                onClick={() => setSelectedInviteType('igreja')}
-                className={`cafe-invite-type-card ${selectedInviteType === 'igreja' ? 'active' : ''}`}
-              >
-                <div className="cafe-invite-type-icon">⛪</div>
-                <strong>Igreja & Fé</strong>
-                <span>Comunhão de domingo</span>
-              </button>
-
-              <button
-                onClick={() => setSelectedInviteType('meditacao')}
-                className={`cafe-invite-type-card ${selectedInviteType === 'meditacao' ? 'active' : ''}`}
-              >
-                <div className="cafe-invite-type-icon">✦</div>
-                <strong>App 1Convite</strong>
-                <span>Palavra de esperança</span>
-              </button>
-            </div>
-
-            {/* Nome Opcional para Personalizar */}
-            <div className="cafe-recipient-input-wrap">
-              <label htmlFor="recipientName">Para quem é este convite? (Opcional):</label>
-              <input
-                id="recipientName"
-                type="text"
-                placeholder="Ex: Carlos, Ana, Pastor Marcos..."
-                value={inviteRecipientName}
-                onChange={(e) => setInviteRecipientName(e.target.value)}
-                className="cafe-recipient-input"
-                maxLength={40}
-              />
-            </div>
-
-            {/* Pré-visualização da Mensagem */}
-            <div className="cafe-message-preview-box">
-              <span className="cafe-preview-badge">Prévia da Mensagem:</span>
-              <p className="cafe-preview-body">
-                "{getInviteMessage(selectedInviteType)}"
-              </p>
-            </div>
-
-            {/* Botão de Envio no WhatsApp */}
-            <button
-              onClick={handleSendWhatsAppInvite}
-              className="cafe-whatsapp-submit-btn"
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-              </svg>
-              <span>Enviar este 1Convite no WhatsApp</span>
-            </button>
-          </section>
-
-          {/* Botão de Conclusão da Jornada */}
-          <div className="cafe-finish-row">
             <button 
               onClick={toggleComplete}
               className={`cafe-complete-btn ${isCompleted ? 'is-done' : ''}`}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              <span>{isCompleted ? 'Jornada Concluída com Sucesso!' : 'Concluir Jornada de Hoje'}</span>
+              <span>{isCompleted ? 'Jornada Concluída ✓' : 'Marcar como Concluída'}</span>
+            </button>
+          </div>
+
+          {/* Convite Opcional para o Passo 4 (Criar Card) */}
+          <div className="cafe-invite-cta-card">
+            <div className="cafe-invite-cta-content">
+              <div className="cafe-invite-cta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+                <span>PASSO 4 OPCIONAL • O SEU 1CONVITE</span>
+              </div>
+              <h3 className="cafe-invite-cta-title">Abençoe o dia de alguém hoje</h3>
+              <p className="cafe-invite-cta-text">
+                Crie um card visual em alta definição e convide alguém próximo para um café, para treinar o templo ou para a palavra de Deus.
+              </p>
+            </div>
+
+            <button 
+              onClick={() => goToStep(4)}
+              className="cafe-primary-action-btn"
+            >
+              <span>Criar Card do 1Convite (Passo 4)</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </button>
 
             <button 
@@ -848,9 +916,231 @@ export default function CafeComDeusView({
         </div>
       )}
 
+      {/* ════════════ PASSO 4: ESTÚDIO 1CONVITE (CRIAR CARD VISUAL) ════════════ */}
+      {currentStep === 4 && (
+        <div className="cafe-step-content animate-fade-in">
+          {/* Header do Estúdio de Cards */}
+          <div className="cafe-studio-intro">
+            <span className="cafe-sintese-tag" style={{ color: '#F97316' }}>ESTÚDIO 1CONVITE</span>
+            <h2 className="cafe-studio-title">Crie o seu Card Visual do Dia</h2>
+            <p className="cafe-studio-sub">
+              Escolha a mensagem, selecione o fundo e compartilhe um convite elegante no WhatsApp ou Instagram.
+            </p>
+          </div>
+
+          {/* Formato: Post Quadrado ou Story Vertical */}
+          <div className="cafe-format-bar">
+            <button
+              onClick={() => setCardFormat('square')}
+              className={`cafe-format-btn ${cardFormat === 'square' ? 'active' : ''}`}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+              </svg>
+              <span>Post Quadrado (1:1)</span>
+            </button>
+
+            <button
+              onClick={() => setCardFormat('story')}
+              className={`cafe-format-btn ${cardFormat === 'story' ? 'active' : ''}`}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="5" y="2" width="14" height="20" rx="3" />
+              </svg>
+              <span>Story / Status (9:16)</span>
+            </button>
+          </div>
+
+          {/* ── CARD VISUAL PREVIEW (GLASSMORPHISM & ALTA DEFINIÇÃO) ── */}
+          <div className="cafe-card-preview-container">
+            <div 
+              ref={cardPreviewRef}
+              className={`cafe-card-preview-art ${cardFormat === 'story' ? 'is-story' : 'is-square'}`}
+              style={{
+                backgroundImage: activeBg.type === 'image' ? `url(${activeBg.url})` : 'none',
+                background: activeBg.type === 'gradient' ? activeBg.css : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              {/* Overlay Escuro com Degradê Suave para Contraste Perfeito */}
+              <div className="cafe-card-overlay-gradient" />
+
+              {/* Moldura de Vidro Translúcida (Glassmorphism) */}
+              <div className="cafe-card-glass-frame">
+                <span className="cafe-card-badge-tag">
+                  {cardContent.title}
+                </span>
+
+                <blockquote className="cafe-card-quote-text">
+                  &ldquo;{cardContent.text}&rdquo;
+                </blockquote>
+
+                <span className="cafe-card-ref-text">
+                  {cardContent.ref}
+                </span>
+
+                {/* Marca d'água oficial 1Convite com ícone de chama em SVG */}
+                <div className="cafe-card-watermark">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#F97316">
+                    <path d="M12 2C8 7 5 11 5 15C5 18.87 8.13 22 12 22C15.87 22 19 18.87 19 15C19 11 16 7 12 2ZM12 20C9.79 20 8 18.21 8 16C8 13.5 10.5 10 12 8.5C13.5 10 16 13.5 16 16C16 18.21 14.21 20 12 20Z" />
+                  </svg>
+                  <span>1CONVITE.COM.BR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── CONTROLE 1: ESCOLHA DA INTENÇÃO / MENSAGEM ── */}
+          <section className="cafe-studio-section">
+            <label className="cafe-studio-label">1. Escolha a Mensagem do Card:</label>
+            <div className="cafe-intent-grid">
+              <button
+                onClick={() => setCardSelectedIntent('palavra')}
+                className={`cafe-intent-pill ${cardSelectedIntent === 'palavra' ? 'active' : ''}`}
+                title="Versículo e tema de hoje"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <span>Palavra de Hoje</span>
+              </button>
+
+              <button
+                onClick={() => setCardSelectedIntent('cafe')}
+                className={`cafe-intent-pill ${cardSelectedIntent === 'cafe' ? 'active' : ''}`}
+                title="Convite para um café"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                  <line x1="6" y1="1" x2="6" y2="4"/>
+                  <line x1="10" y1="1" x2="10" y2="4"/>
+                </svg>
+                <span>Café & Conversa</span>
+              </button>
+
+              <button
+                onClick={() => setCardSelectedIntent('treino')}
+                className={`cafe-intent-pill ${cardSelectedIntent === 'treino' ? 'active' : ''}`}
+                title="Cuidar do templo"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12" />
+                </svg>
+                <span>Cuidar do Templo</span>
+              </button>
+
+              <button
+                onClick={() => setCardSelectedIntent('igreja')}
+                className={`cafe-intent-pill ${cardSelectedIntent === 'igreja' ? 'active' : ''}`}
+                title="Convite para a igreja"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                <span>Igreja & Fé</span>
+              </button>
+
+              <button
+                onClick={() => setCardSelectedIntent('custom')}
+                className={`cafe-intent-pill ${cardSelectedIntent === 'custom' ? 'active' : ''}`}
+                title="Escrever mensagem própria"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>Texto Próprio</span>
+              </button>
+            </div>
+
+            {/* Campo para texto próprio se selecionado */}
+            {cardSelectedIntent === 'custom' && (
+              <div className="cafe-custom-text-wrap animate-fade-in">
+                <textarea
+                  value={cardCustomText}
+                  onChange={(e) => setCardCustomText(e.target.value)}
+                  placeholder="Digite a sua mensagem personalizada para o card..."
+                  rows={3}
+                  className="cafe-custom-textarea"
+                  maxLength={180}
+                />
+              </div>
+            )}
+          </section>
+
+          {/* ── CONTROLE 2: ESCOLHA DO FUNDO VISUAL ── */}
+          <section className="cafe-studio-section">
+            <label className="cafe-studio-label">2. Escolha o Fundo Cinematográfico:</label>
+            <div className="cafe-bg-selector-grid">
+              {CARD_BACKGROUNDS.map((bg, idx) => (
+                <button
+                  key={bg.id}
+                  onClick={() => setCardSelectedBg(idx)}
+                  className={`cafe-bg-thumb-btn ${cardSelectedBg === idx ? 'selected' : ''}`}
+                  style={{
+                    backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
+                    background: bg.type === 'gradient' ? bg.css : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                  title={bg.label}
+                >
+                  <span className="cafe-bg-thumb-label">{bg.label}</span>
+                  {cardSelectedBg === idx && (
+                    <span className="cafe-bg-thumb-check">✓</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* ── AÇÕES DE COMPARTILHAMENTO E DOWNLOAD ── */}
+          <div className="cafe-studio-actions-row">
+            <button
+              onClick={() => handleExportCard('share')}
+              disabled={isGeneratingCard}
+              className="cafe-whatsapp-submit-btn"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+              <span>{isGeneratingCard ? 'Gerando Imagem...' : 'Compartilhar no WhatsApp'}</span>
+            </button>
+
+            <button
+              onClick={() => handleExportCard('download')}
+              disabled={isGeneratingCard}
+              className="cafe-download-card-btn"
+              title="Baixar imagem em resolução 1080p para postar no Instagram"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Baixar Card HD (Instagram)</span>
+            </button>
+
+            <button 
+              onClick={() => goToStep(3)}
+              className="cafe-secondary-step-btn"
+              style={{ width: '100%', justifyContent: 'center' }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              <span>Voltar para Passo 3 (Oração)</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {copied && (
         <div className="cafe-toast animate-fade-in">
-          Copiado para a área de transferência!
+          Imagem salva com sucesso!
         </div>
       )}
     </div>
