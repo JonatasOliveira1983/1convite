@@ -1,12 +1,14 @@
 {
-  "version": "v2.8.1",
-  "build": "2026112407",
+  "version": "v2.9.0",
+  "build": "2026112408",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Correção Definitiva de Rota de Áudio: Eliminação do erro 405 Method Not Allowed ao apontar diretamente para o motor neural de alta velocidade.",
-    "Seletor Visual Exclusivo de Vozes: Botões individuais lado a lado para Francisca (Serena) e Antônio (Pastoral) com destaque visual imediato.",
-    "Troca Dinâmica de Voz em Execução: Alterne entre a voz de Antônio e Francisca instantaneamente durante a reprodução da meditação e oração."
+    "Jornada Diária 1Convite Unificada (3 em 1): Eliminação de redundâncias e fluxo contínuo de 3 passos harmônicos.",
+    "Passo 1 (Meditação Nutritiva): Café com Deus diário com versículo e narração neural em alta definição (Francisca ou Antônio com piano suave).",
+    "Passo 2 (Síntese & Aplicação): Pensamento central marcante, síntese prática para o dia a dia e desafio do Cuidado do Templo (OpenGym).",
+    "Passo 3 (Oração & O Seu 1Convite): Oração guiada consagrando o dia e card interativo para enviar 1Convite personalizado via WhatsApp.",
+    "Navegação com Stepper Visual: Acompanhamento de progresso com 1 toque entre os passos e celebração de conclusão da jornada."
   ],
-  "updateTimestamp": 1795528200000
+  "updateTimestamp": 1795529400000
 }

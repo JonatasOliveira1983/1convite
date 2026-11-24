@@ -965,4 +965,612 @@ body:not(.dark-mode) .cafe-voice-pill-text small {
   color: #F97316;
 }
 
+/* ════════════ STEPPER VISUAL DA JORNADA 3 EM 1 ════════════ */
+.cafe-stepper-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body:not(.dark-mode) .cafe-stepper-wrap {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.cafe-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.cafe-step-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cafe-step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
+  font-size: 0.76rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cafe-step-item.is-active .cafe-step-circle {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+  transform: scale(1.08);
+}
+
+.cafe-step-item.is-passed .cafe-step-circle {
+  background: #16A34A;
+  color: #FFFFFF;
+}
+
+.cafe-step-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94A3B8;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+.cafe-step-item.is-active .cafe-step-label {
+  color: #F97316;
+  font-weight: 800;
+}
+
+.cafe-step-line {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 6px;
+  transition: background 0.3s ease;
+}
+
+body:not(.dark-mode) .cafe-step-line {
+  background: #E2E8F0;
+}
+
+.cafe-step-line.is-passed {
+  background: linear-gradient(90deg, #F97316 0%, #16A34A 100%);
+}
+
+/* Botões de Ação de Avanço / Voltar */
+.cafe-next-action-wrap {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body:not(.dark-mode) .cafe-next-action-wrap {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.cafe-primary-action-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cafe-primary-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(249, 115, 22, 0.55);
+}
+
+.cafe-primary-action-btn:active {
+  transform: scale(0.98);
+}
+
+.cafe-step-nav-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cafe-secondary-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #CBD5E1;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+body:not(.dark-mode) .cafe-secondary-step-btn {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
+}
+
+.cafe-secondary-step-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+/* ════════════ PASSO 2: SÍNTESE & PRÁTICA ════════════ */
+.cafe-sintese-card {
+  background: rgba(20, 16, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+body:not(.dark-mode) .cafe-sintese-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.cafe-sintese-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.cafe-sintese-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cafe-sintese-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F97316;
+  margin-bottom: 2px;
+}
+
+.cafe-sintese-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #F8FAFC;
+}
+
+body:not(.dark-mode) .cafe-sintese-title {
+  color: #0F172A;
+}
+
+.cafe-pensamento-box {
+  background: rgba(249, 115, 22, 0.08);
+  border-left: 4px solid #F97316;
+  border-radius: 0 14px 14px 0;
+  padding: 14px 16px;
+}
+
+.cafe-pensamento-box p {
+  margin: 0;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 600;
+  color: #FED7AA;
+  line-height: 1.5;
+}
+
+body:not(.dark-mode) .cafe-pensamento-box p {
+  color: #C2410C;
+}
+
+.cafe-sintese-text {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #E2E8F0;
+}
+
+body:not(.dark-mode) .cafe-sintese-text {
+  color: #334155;
+}
+
+/* Card Cuidado do Templo (OpenGym) */
+.cafe-templo-box {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(20, 28, 22, 0.95) 100%);
+  border: 1.5px solid rgba(34, 197, 94, 0.35);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+body:not(.dark-mode) .cafe-templo-box {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.cafe-templo-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #22C55E;
+  margin-bottom: 2px;
+}
+
+.cafe-templo-text {
+  margin: 0 0 14px 0;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: #DCFCE7;
+}
+
+body:not(.dark-mode) .cafe-templo-text {
+  color: #166534;
+}
+
+.cafe-templo-shortcut-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #22C55E;
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.cafe-templo-shortcut-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* ════════════ PASSO 3: ORAÇÃO & 1CONVITE ════════════ */
+.cafe-prayer-card {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(20, 16, 26, 0.95) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+}
+
+body:not(.dark-mode) .cafe-prayer-card {
+  background: linear-gradient(135deg, #FAF5FF 0%, #FFFFFF 100%);
+  border-color: rgba(139, 92, 246, 0.25);
+}
+
+.cafe-prayer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: #A855F7;
+}
+
+.cafe-prayer-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #F8FAFC;
+}
+
+body:not(.dark-mode) .cafe-prayer-title {
+  color: #1E1B4B;
+}
+
+.cafe-mini-audio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body:not(.dark-mode) .cafe-mini-audio-row {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.15);
+}
+
+.cafe-mini-play-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  border: none;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.cafe-prayer-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #E9D5FF;
+  font-style: italic;
+}
+
+body:not(.dark-mode) .cafe-prayer-text {
+  color: #4C1D95;
+}
+
+/* Card Central do 1Convite de Hoje */
+.cafe-invite-box {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, rgba(15, 12, 22, 0.98) 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.4);
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
+  text-align: left;
+}
+
+body:not(.dark-mode) .cafe-invite-box {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 100%);
+  border-color: rgba(249, 115, 22, 0.35);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+}
+
+.cafe-invite-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(249, 115, 22, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  color: #F97316;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.cafe-invite-main-title {
+  margin: 0 0 6px 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
+}
+
+body:not(.dark-mode) .cafe-invite-main-title {
+  color: #0F172A;
+}
+
+.cafe-invite-sub {
+  margin: 0 0 18px 0;
+  font-size: 0.85rem;
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+body:not(.dark-mode) .cafe-invite-sub {
+  color: #475569;
+}
+
+.cafe-invite-types-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.cafe-invite-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: left;
+}
+
+body:not(.dark-mode) .cafe-invite-type-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.cafe-invite-type-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.cafe-invite-type-card.active {
+  background: rgba(249, 115, 22, 0.2);
+  border-color: #F97316;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
+}
+
+.cafe-invite-type-icon {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.cafe-invite-type-card strong {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  line-height: 1.2;
+}
+
+body:not(.dark-mode) .cafe-invite-type-card strong {
+  color: #0F172A;
+}
+
+.cafe-invite-type-card span {
+  font-size: 0.68rem;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+body:not(.dark-mode) .cafe-invite-type-card span {
+  color: #64748B;
+}
+
+/* Campo para Nome da Pessoa */
+.cafe-recipient-input-wrap {
+  margin-bottom: 14px;
+}
+
+.cafe-recipient-input-wrap label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94A3B8;
+  margin-bottom: 6px;
+}
+
+body:not(.dark-mode) .cafe-recipient-input-wrap label {
+  color: #64748B;
+}
+
+.cafe-recipient-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+body:not(.dark-mode) .cafe-recipient-input {
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  color: #0F172A;
+}
+
+.cafe-recipient-input:focus {
+  border-color: #F97316;
+}
+
+/* Prévia da Mensagem do Convite */
+.cafe-message-preview-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px dashed rgba(249, 115, 22, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+body:not(.dark-mode) .cafe-message-preview-box {
+  background: rgba(249, 115, 22, 0.05);
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.cafe-preview-badge {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #F97316;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cafe-preview-body {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #E2E8F0;
+  font-style: italic;
+}
+
+body:not(.dark-mode) .cafe-preview-body {
+  color: #334155;
+}
+
+/* Botão Verde de Disparo no WhatsApp */
+.cafe-whatsapp-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.94rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cafe-whatsapp-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(34, 197, 94, 0.55);
+}
+
+.cafe-whatsapp-submit-btn:active {
+  transform: scale(0.98);
+}
+
+.cafe-finish-row {
+  margin-top: 14px;
+}
+
+
 

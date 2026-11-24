@@ -380,7 +380,13 @@ const COUNSELORS = [
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [cafeInitialStep, setCafeInitialStep] = useState(1);
   const [feedFilter, setFeedFilter] = useState('todos'); // 'todos', 'palavra', 'treino', 'mentores', 'desafios'
+
+  const openCafeStep = (step = 1) => {
+    setCafeInitialStep(step);
+    setActiveTab('cafe-com-deus');
+  };
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
   
@@ -3130,7 +3136,7 @@ Em nome de Jesus, Amém.`;
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   cursor: 'pointer'
                 }}
-                onClick={() => setActiveTab('cafe-com-deus')}
+                onClick={() => openCafeStep(1)}
               >
                 <img 
                   src={heroMountainsImg} 
@@ -3176,7 +3182,7 @@ Em nome de Jesus, Amém.`;
 
                   <div style={{ display: 'flex', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
                     <button 
-                      onClick={() => setActiveTab('cafe-com-deus')}
+                      onClick={() => openCafeStep(1)}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -3517,13 +3523,14 @@ Em nome de Jesus, Amém.`;
                   <div
                     key={card.id}
                     onClick={() => {
+                      if (card.id === 'sabado') {
+                        openCafeStep(2);
+                        return;
+                      }
                       setActiveTab(card.id);
                       if (card.id === 'biblia') {
                         setBibleViewMode('reading');
                         setBibleSelectedVerse(null);
-                      }
-                      if (card.id === 'sabado') {
-                        setActiveSabadoBlock('menu');
                       }
                       if (card.id === 'criar-card') {
                         setCardSelectedText('');
@@ -8798,6 +8805,8 @@ Em nome de Jesus, Amém.`;
             onOpenUpgrade={() => setShowUpgradeModal(true)}
             isDarkMode={darkMode}
             onToggleDarkMode={() => setDarkMode(prev => !prev)}
+            initialStep={cafeInitialStep || 1}
+            onNavigateTemplo={() => setActiveTab('treino-templo')}
           />
         )}
 

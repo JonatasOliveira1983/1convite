@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import cafeData from '../../data/cafe_com_deus_365.json';
+import sinteseData from '../../data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from '../../services/neuralAudioPlayer';
 import './CafeComDeusView.css';
 
-export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrade, isDarkMode, onToggleDarkMode }) {
+export default function CafeComDeusView({ 
+  onBack, 
+  isPremium = true, 
+  onOpenUpgrade, 
+  isDarkMode, 
+  onToggleDarkMode, 
+  initialStep = 1,
+  onNavigateTemplo 
+}) {
   // Calcula o dia atual do ano (1 a 365)
   const getDayOfYear = () => {
     const now = new Date();
@@ -32,6 +41,8 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
 
   const todayDayNumber = getDayOfYear();
   const [selectedDay, setSelectedDay] = useState(todayDayNumber);
+  const [currentStep, setCurrentStep] = useState(initialStep || 1); // 1 = Meditação, 2 = Síntese & Ação, 3 = Oração & 1Convite
+
   const [completedDays, setCompletedDays] = useState(() => {
     try {
       const saved = localStorage.getItem('cafe-com-deus-completed');
@@ -51,10 +62,13 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState('pt-BR-FranciscaNeural');
-  const [audioMode, setAudioMode] = useState('meditacao'); // 'meditacao' ou 'oracao'
   const [ambientPiano, setAmbientPiano] = useState(true);
 
-  // Interrompe o áudio ao trocar de dia
+  // Estados do Módulo 1Convite (Passo 3)
+  const [selectedInviteType, setSelectedInviteType] = useState('cafe');
+  const [inviteRecipientName, setInviteRecipientName] = useState('');
+
+  // Interrompe o áudio ao trocar de dia ou passo
   useEffect(() => {
     stopNeuralSpeech();
     setIsAudioPlaying(false);
@@ -62,7 +76,7 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
     setAudioProgress(0);
     setAudioCurrentTime(0);
     setAudioDuration(0);
-  }, [selectedDay]);
+  }, [selectedDay, currentStep]);
 
   // Limpeza de áudio ao sair da tela
   useEffect(() => {
@@ -78,15 +92,27 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const startAudioPlayback = (voiceToUse = selectedVoice, modeToUse = audioMode, ambientToUse = ambientPiano) => {
+  // Informações de data do dia selecionado
+  const currentDateInfo = getDateInfo(selectedDay);
+  const prevDateInfo = selectedDay > 1 ? getDateInfo(selectedDay - 1) : null;
+  const nextDateInfo = selectedDay < 365 ? getDateInfo(selectedDay + 1) : null;
+
+  // Busca a meditação e a síntese correspondentes
+  const currentMeditation = cafeData.find(item => item.day === selectedDay) || cafeData[0];
+  const currentSintese = sinteseData.find(item => item.day === selectedDay) || sinteseData[0];
+
+  const isCompleted = completedDays.includes(selectedDay);
+
+  const startAudioPlayback = (voiceToUse = selectedVoice, stepToUse = currentStep, ambientToUse = ambientPiano) => {
     stopNeuralSpeech();
     let textToSpeak = '';
-    if (modeToUse === 'oracao') {
-      textToSpeak = currentMeditation.prayer
-        ? `Oração do Café com Deus para hoje. ${currentMeditation.prayer}`
-        : `Oração do dia. Senhor, abençoa o nosso dia e guia os nossos passos. Em nome de Jesus, amém.`;
+    
+    if (stepToUse === 3) {
+      // Passo 3: Oração Guiada
+      textToSpeak = `Oração do 1Convite para hoje. ${currentMeditation.prayer || currentSintese.oracao_sintese || 'Senhor Deus, abençoa este dia, enche o meu coração de paz e usa a minha vida como um instrumento de amor e convite para alcançar o próximo. Em nome de Jesus, amém.'}`;
     } else {
-      textToSpeak = `Café com Deus. ${currentMeditation.title}. ${currentMeditation.verse}. ${currentMeditation.body}. Oração do dia: ${currentMeditation.prayer || ''}`;
+      // Passo 1: Meditação Diária (sem oração no final para eliminar redundância)
+      textToSpeak = `Café com Deus. ${currentMeditation.title}. Versículo bíblico: ${currentMeditation.verse}. ${currentMeditation.body}`;
     }
 
     setIsAudioLoading(true);
@@ -126,32 +152,15 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
       setIsAudioLoading(false);
       return;
     }
-    startAudioPlayback(selectedVoice, audioMode, ambientPiano);
+    startAudioPlayback(selectedVoice, currentStep, ambientPiano);
   };
 
   const handleSelectVoice = (voiceKey) => {
     setSelectedVoice(voiceKey);
     if (isAudioPlaying) {
-      startAudioPlayback(voiceKey, audioMode, ambientPiano);
+      startAudioPlayback(voiceKey, currentStep, ambientPiano);
     }
   };
-
-  const handleSelectMode = (modeKey) => {
-    setAudioMode(modeKey);
-    if (isAudioPlaying) {
-      startAudioPlayback(selectedVoice, modeKey, ambientPiano);
-    }
-  };
-
-  // Informações de data do dia selecionado
-  const currentDateInfo = getDateInfo(selectedDay);
-  const prevDateInfo = selectedDay > 1 ? getDateInfo(selectedDay - 1) : null;
-  const nextDateInfo = selectedDay < 365 ? getDateInfo(selectedDay + 1) : null;
-
-  // Busca a meditação correspondente ao dia selecionado
-  const currentMeditation = cafeData.find(item => item.day === selectedDay) || cafeData[0];
-
-  const isCompleted = completedDays.includes(selectedDay);
 
   const toggleComplete = () => {
     let updated;
@@ -168,28 +177,55 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
     }
   };
 
-  const handleShareWhatsApp = () => {
-    const text = `*Café com Deus • ${currentDateInfo.formatted} (Dia ${currentMeditation.day})*\n` +
-      `*${currentMeditation.title}*\n\n` +
-      `"${currentMeditation.verse}"\n\n` +
-      `${currentMeditation.body.substring(0, 320)}...\n\n` +
-      `☕ _Meditação diária no aplicativo 1Convite:_ https://1convite.com.br`;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+  // Gerador de Mensagens do 1Convite (WhatsApp)
+  const getInviteMessage = (type) => {
+    const nome = inviteRecipientName.trim() ? ` ${inviteRecipientName.trim()}` : '';
+    const link = 'https://1convite.com.br';
+
+    switch (type) {
+      case 'cafe':
+        return `Oi${nome}! Pensei em você hoje. Que tal tomarmos um café ou batermos um papo rápido esses dias para colocar a conversa em dia? Você é muito importante para mim!`;
+      case 'treino':
+        return `E aí${nome}! Bora treinar juntos ou fazer uma caminhada essa semana? Cuidar da saúde e do corpo é honrar a Deus. Topa vir comigo?`;
+      case 'igreja':
+        return `Oi${nome}! Gostaria de te fazer um convite muito especial: vamos comigo à igreja neste fim de semana? Adoraria ter a sua companhia!`;
+      case 'meditacao':
+      default:
+        return `Oi${nome}! Comecei meu dia ouvindo a reflexão de hoje ("${currentMeditation.title}") no 1Convite e lembrei de você: "${currentMeditation.verse}". Dá uma olhada, vai abençoar seu dia: ${link}`;
+    }
   };
 
-  const handleCopy = () => {
-    const fullText = `${currentMeditation.title}\n${currentDateInfo.formatted} (Dia ${currentMeditation.day})\n\n${currentMeditation.verse}\n\n${currentMeditation.body}\n\nOração:\n${currentMeditation.prayer}`;
-    navigator.clipboard.writeText(fullText);
+  const handleSendWhatsAppInvite = () => {
+    const msg = getInviteMessage(selectedInviteType);
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
+  const handleCopy = (customText) => {
+    const textToCopy = customText || `${currentMeditation.title}\n${currentDateInfo.formatted} (Dia ${currentMeditation.day})\n\n${currentMeditation.verse}\n\n${currentMeditation.body}`;
+    navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handlePrev = () => {
-    if (selectedDay > 1) setSelectedDay(selectedDay - 1);
+    if (selectedDay > 1) {
+      setSelectedDay(selectedDay - 1);
+      setCurrentStep(1);
+    }
   };
 
   const handleNext = () => {
-    if (selectedDay < 365) setSelectedDay(selectedDay + 1);
+    if (selectedDay < 365) {
+      setSelectedDay(selectedDay + 1);
+      setCurrentStep(1);
+    }
+  };
+
+  const goToStep = (step) => {
+    stopNeuralSpeech();
+    setIsAudioPlaying(false);
+    setCurrentStep(step);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -205,13 +241,12 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
         <div className="cafe-title-wrap">
           <div className="cafe-badge">
             <span className="cafe-badge-dot" />
-            <span>DEVOCIONAL 365 DIAS</span>
+            <span>JORNADA DIÁRIA 1CONVITE</span>
           </div>
           <h1 className="cafe-main-title">Café com Deus</h1>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Botão de Alternar Modo Claro / Escuro Rápido */}
           {onToggleDarkMode && (
             <button
               onClick={onToggleDarkMode}
@@ -220,7 +255,6 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
               title={isDarkMode ? 'Mudar para Modo Claro' : 'Mudar para Modo Escuro'}
             >
               {isDarkMode ? (
-                // Ícone Sol (Modo Claro)
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="5" />
                   <line x1="12" y1="1" x2="12" y2="3" />
@@ -233,7 +267,6 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                 </svg>
               ) : (
-                // Ícone Lua (Modo Escuro)
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
@@ -257,7 +290,7 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
         </div>
       </header>
 
-      {/* Seletor / Dropdown de Calendário */}
+      {/* Calendário 365 Dias */}
       {showCalendar && (
         <div className="cafe-calendar-panel animate-scale-up">
           <div className="cafe-calendar-header">
@@ -267,7 +300,7 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
 
           <div className="cafe-quick-actions">
             <button 
-              onClick={() => { setSelectedDay(todayDayNumber); setShowCalendar(false); }}
+              onClick={() => { setSelectedDay(todayDayNumber); setCurrentStep(1); setShowCalendar(false); }}
               className="cafe-btn-today"
             >
               Ir para Hoje ({getDateInfo(todayDayNumber).short} • Dia {todayDayNumber})
@@ -278,7 +311,7 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
             {Array.from({ length: 365 }, (_, i) => i + 1).map(day => (
               <button
                 key={day}
-                onClick={() => { setSelectedDay(day); setShowCalendar(false); }}
+                onClick={() => { setSelectedDay(day); setCurrentStep(1); setShowCalendar(false); }}
                 className={`cafe-day-dot ${selectedDay === day ? 'selected' : ''} ${completedDays.includes(day) ? 'completed' : ''} ${day === todayDayNumber ? 'is-today' : ''}`}
                 title={`Dia ${day}: ${getDateInfo(day).short}`}
               >
@@ -289,7 +322,7 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
         </div>
       )}
 
-      {/* Navegação com Data do Calendário e Número do Dia */}
+      {/* Navegação Dia a Dia */}
       <div className="cafe-nav-bar">
         <button 
           onClick={handlePrev} 
@@ -323,250 +356,503 @@ export default function CafeComDeusView({ onBack, isPremium = true, onOpenUpgrad
         </button>
       </div>
 
-      {/* Player Devocional com Voz Neural de Estúdio */}
-      <section className="cafe-audio-card" aria-label="Player de Áudio Devocional">
-        <div className="cafe-audio-header">
-          <div className="cafe-audio-title-group">
-            <span className="cafe-audio-badge-ai">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+      {/* ════════════ STEPPER VISUAL DA JORNADA (3 EM 1) ════════════ */}
+      <nav className="cafe-stepper-wrap" aria-label="Progresso da Jornada Diária">
+        <button
+          onClick={() => goToStep(1)}
+          className={`cafe-step-item ${currentStep === 1 ? 'is-active' : ''} ${currentStep > 1 ? 'is-passed' : ''}`}
+        >
+          <div className="cafe-step-circle">{currentStep > 1 ? '✓' : '1'}</div>
+          <span className="cafe-step-label">1. Meditação</span>
+        </button>
+
+        <div className={`cafe-step-line ${currentStep >= 2 ? 'is-passed' : ''}`} />
+
+        <button
+          onClick={() => goToStep(2)}
+          className={`cafe-step-item ${currentStep === 2 ? 'is-active' : ''} ${currentStep > 2 ? 'is-passed' : ''}`}
+        >
+          <div className="cafe-step-circle">{currentStep > 2 ? '✓' : '2'}</div>
+          <span className="cafe-step-label">2. Síntese & Ação</span>
+        </button>
+
+        <div className={`cafe-step-line ${currentStep >= 3 ? 'is-passed' : ''}`} />
+
+        <button
+          onClick={() => goToStep(3)}
+          className={`cafe-step-item ${currentStep === 3 ? 'is-active' : ''}`}
+        >
+          <div className="cafe-step-circle">3</div>
+          <span className="cafe-step-label">3. Oração & 1Convite</span>
+        </button>
+      </nav>
+
+      {/* ════════════ PASSO 1: MEDITAÇÃO CAFÉ COM DEUS ════════════ */}
+      {currentStep === 1 && (
+        <div className="cafe-step-content animate-fade-in">
+          {/* Player Devocional com Voz Neural de Estúdio */}
+          <section className="cafe-audio-card" aria-label="Player de Áudio Devocional">
+            <div className="cafe-audio-header">
+              <div className="cafe-audio-title-group">
+                <span className="cafe-audio-badge-ai">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                  </svg>
+                  VOZ NEURAL HD
+                </span>
+                <span className="cafe-audio-sub">Narração com Piano Instrumental</span>
+              </div>
+
+              {isAudioPlaying && !isAudioLoading && (
+                <div className="cafe-equalizer" title="Áudio em reprodução">
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                </div>
+              )}
+            </div>
+
+            <div className="cafe-audio-main-row">
+              <button
+                onClick={togglePlayAudio}
+                className={`cafe-audio-play-btn ${isAudioLoading ? 'is-loading' : ''}`}
+                aria-label={isAudioPlaying ? 'Pausar áudio' : 'Ouvir meditação'}
+                title={isAudioPlaying ? 'Pausar narração' : 'Ouvir meditação do dia'}
+              >
+                {isAudioLoading ? (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                ) : isAudioPlaying ? (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '2px' }}>
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                  </svg>
+                )}
+              </button>
+
+              <div className="cafe-audio-info-col">
+                <div className="cafe-audio-track-name">
+                  Meditação: {currentMeditation.title}
+                  <span className="cafe-audio-voice-badge">
+                    • Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}
+                  </span>
+                </div>
+
+                <div className="cafe-progress-track">
+                  <div 
+                    className="cafe-progress-fill" 
+                    style={{ width: `${Math.min(100, Math.max(0, audioProgress))}%` }} 
+                  />
+                </div>
+
+                <div className="cafe-audio-times">
+                  <span>{formatAudioTime(audioCurrentTime)}</span>
+                  <span>{isAudioLoading ? 'Conectando áudio...' : (audioDuration > 0 ? formatAudioTime(audioDuration) : 'Voz Humana')}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Seletor Visível das Vozes: Francisca e Antônio Lado a Lado */}
+            <div className="cafe-voice-bar">
+              <span className="cafe-voice-bar-title">Escolha quem narra para você:</span>
+              <div className="cafe-voice-pills-wrap">
+                <button
+                  type="button"
+                  onClick={() => handleSelectVoice('pt-BR-FranciscaNeural')}
+                  className={`cafe-voice-pill ${selectedVoice === 'pt-BR-FranciscaNeural' ? 'is-active' : ''}`}
+                  title="Voz feminina serena, aveludada e reflexiva"
+                >
+                  <span className="cafe-voice-avatar-badge fem">F</span>
+                  <div className="cafe-voice-pill-text">
+                    <strong>Francisca</strong>
+                    <small>Serena & Acolhedora</small>
+                  </div>
+                  {selectedVoice === 'pt-BR-FranciscaNeural' && <span className="cafe-voice-pill-check">✓</span>}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectVoice('pt-BR-AntonioNeural')}
+                  className={`cafe-voice-pill ${selectedVoice === 'pt-BR-AntonioNeural' ? 'is-active' : ''}`}
+                  title="Voz masculina grave, acolhedora e pastoral"
+                >
+                  <span className="cafe-voice-avatar-badge masc">A</span>
+                  <div className="cafe-voice-pill-text">
+                    <strong>Antônio</strong>
+                    <small>Pastoral & Firme</small>
+                  </div>
+                  {selectedVoice === 'pt-BR-AntonioNeural' && <span className="cafe-voice-pill-check">✓</span>}
+                </button>
+              </div>
+            </div>
+
+            {/* Alternador de Som Ambiente (Piano) */}
+            <div className="cafe-audio-options-bar">
+              <button
+                onClick={() => {
+                  const nextAmbient = !ambientPiano;
+                  setAmbientPiano(nextAmbient);
+                  if (isAudioPlaying) {
+                    startAudioPlayback(selectedVoice, currentStep, nextAmbient);
+                  }
+                }}
+                className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
+                title="Ligar ou desligar música de piano de fundo"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <span>{ambientPiano ? 'Piano Suave: Ligado' : 'Piano: Desligado'}</span>
+              </button>
+            </div>
+          </section>
+
+          {/* Card da Meditação */}
+          <article className="cafe-card">
+            <div className="cafe-card-top-row">
+              <div className="cafe-icon-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                  <line x1="6" y1="1" x2="6" y2="4" />
+                  <line x1="10" y1="1" x2="10" y2="4" />
+                  <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+              </div>
+
+              <div className="cafe-date-pill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <span>{currentDateInfo.formatted}</span>
+              </div>
+            </div>
+
+            <h2 className="cafe-card-title">{currentMeditation.title}</h2>
+
+            {/* Versículo Bíblico Chave */}
+            <div className="cafe-verse-box">
+              <svg className="cafe-quote-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+              </svg>
+              <blockquote className="cafe-verse-text">
+                {currentMeditation.verse}
+              </blockquote>
+            </div>
+
+            {/* Corpo da Meditação */}
+            <div className="cafe-body-content">
+              {currentMeditation.body.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="cafe-paragraph">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Botão de Transição para o Passo 2 */}
+            <div className="cafe-next-action-wrap">
+              <button 
+                onClick={() => goToStep(2)}
+                className="cafe-primary-action-btn"
+              >
+                <span>Avançar para Síntese & Ação (Passo 2)</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </article>
+        </div>
+      )}
+
+      {/* ════════════ PASSO 2: SÍNTESE DO DIA & PRÁTICA ════════════ */}
+      {currentStep === 2 && (
+        <div className="cafe-step-content animate-fade-in">
+          {/* Card 1: Pensamento Principal para o Coração */}
+          <section className="cafe-sintese-card">
+            <div className="cafe-sintese-header">
+              <div className="cafe-sintese-icon-wrap" style={{ background: 'rgba(249, 115, 22, 0.15)', color: '#F97316' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <div>
+                <span className="cafe-sintese-tag">PENSAMENTO DO DIA</span>
+                <h3 className="cafe-sintese-title">Grave isto no coração hoje</h3>
+              </div>
+            </div>
+
+            <div className="cafe-pensamento-box">
+              <p>"{currentSintese.pensamento_principal || currentMeditation.verse}"</p>
+            </div>
+          </section>
+
+          {/* Card 2: Síntese Prática para o Cotidiano */}
+          <section className="cafe-sintese-card">
+            <div className="cafe-sintese-header">
+              <div className="cafe-sintese-icon-wrap" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#3B82F6' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div>
+                <span className="cafe-sintese-tag" style={{ color: '#3B82F6', borderColor: 'rgba(59, 130, 246, 0.3)' }}>APLICAÇÃO NO HOJE</span>
+                <h3 className="cafe-sintese-title">O que isso significa na prática</h3>
+              </div>
+            </div>
+
+            <p className="cafe-sintese-text">
+              {currentSintese.sintese || currentMeditation.body.substring(0, 320)}
+            </p>
+          </section>
+
+          {/* Card 3: Cuidado do Templo (OpenGym & Vitalidade) */}
+          <section className="cafe-templo-box">
+            <div className="cafe-sintese-header">
+              <div className="cafe-sintese-icon-wrap" style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#22C55E' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              </div>
+              <div>
+                <span className="cafe-templo-tag">CUIDADO DO TEMPLO • SAÚDE & VITALIDADE</span>
+                <h3 className="cafe-sintese-title">Ação Corporal & Mental de Hoje</h3>
+              </div>
+            </div>
+
+            <p className="cafe-templo-text">
+              {currentSintese.desafio_pratico || 'Faça 5 ciclos de respiração consciente, hidrate o seu corpo e reserve 15 minutos para movimentar o seu templo com gratidão.'}
+            </p>
+
+            {onNavigateTemplo && (
+              <button 
+                onClick={onNavigateTemplo}
+                className="cafe-templo-shortcut-btn"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12" />
+                </svg>
+                <span>Abrir Treino do Templo (OpenGym)</span>
+              </button>
+            )}
+          </section>
+
+          {/* Navegação Entre Passos */}
+          <div className="cafe-step-nav-row">
+            <button 
+              onClick={() => goToStep(1)}
+              className="cafe-secondary-step-btn"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              <span>Passo 1: Meditação</span>
+            </button>
+
+            <button 
+              onClick={() => goToStep(3)}
+              className="cafe-primary-action-btn"
+            >
+              <span>Selar em Oração & 1Convite (Passo 3)</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════ PASSO 3: ORAÇÃO GUIADA & O SEU 1CONVITE ════════════ */}
+      {currentStep === 3 && (
+        <div className="cafe-step-content animate-fade-in">
+          {/* A. ORAÇÃO GUIADA OFICIAL */}
+          <section className="cafe-prayer-card">
+            <div className="cafe-prayer-header">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+              <div>
+                <span className="cafe-sintese-tag" style={{ color: '#A855F7', borderColor: 'rgba(168, 85, 247, 0.3)' }}>ORAÇÃO DO DIA</span>
+                <h3 className="cafe-prayer-title">Alinhamento & Consagração Diária</h3>
+              </div>
+            </div>
+
+            {/* Mini Player para a Oração */}
+            <div className="cafe-mini-audio-row">
+              <button
+                onClick={togglePlayAudio}
+                className={`cafe-mini-play-btn ${isAudioLoading ? 'is-loading' : ''}`}
+                title="Ouvir oração narrada"
+              >
+                {isAudioLoading ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ animation: 'spin 1s linear infinite' }}>
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                ) : isAudioPlaying ? (
+                  <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '2px' }}>
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                  </svg>
+                )}
+              </button>
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: '800', color: '#F8FAFC' }}>
+                  {isAudioPlaying ? 'Ouvindo Oração Guiada...' : 'Ouvir Oração em Áudio'}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                  Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca (Serena)' : 'Antônio (Pastoral)'}
+                </div>
+              </div>
+
+              {/* Botão rápido para alternar voz na oração */}
+              <button
+                type="button"
+                onClick={() => handleSelectVoice(selectedVoice === 'pt-BR-FranciscaNeural' ? 'pt-BR-AntonioNeural' : 'pt-BR-FranciscaNeural')}
+                className="cafe-opt-chip"
+                style={{ fontSize: '0.68rem', padding: '4px 8px' }}
+                title="Trocar voz da oração"
+              >
+                Trocar: {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Antônio' : 'Francisca'}
+              </button>
+            </div>
+
+            <p className="cafe-prayer-text">
+              {currentMeditation.prayer || currentSintese.oracao_sintese}
+            </p>
+          </section>
+
+          {/* B. O SEU 1CONVITE DE HOJE (O CLÍMAX DA MISSÃO) */}
+          <section className="cafe-invite-box">
+            <div className="cafe-invite-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
               </svg>
-              VOZ NEURAL
-            </span>
-            <span className="cafe-audio-sub">Narração com Piano Instrumental</span>
-          </div>
-
-          {isAudioPlaying && !isAudioLoading && (
-            <div className="cafe-equalizer" title="Áudio em reprodução">
-              <span className="cafe-eq-bar" />
-              <span className="cafe-eq-bar" />
-              <span className="cafe-eq-bar" />
-              <span className="cafe-eq-bar" />
-            </div>
-          )}
-        </div>
-
-        <div className="cafe-audio-main-row">
-          <button
-            onClick={togglePlayAudio}
-            className={`cafe-audio-play-btn ${isAudioLoading ? 'is-loading' : ''}`}
-            aria-label={isAudioPlaying ? 'Pausar áudio' : 'Ouvir devocional'}
-            title={isAudioPlaying ? 'Pausar narração' : 'Ouvir narração do dia'}
-          >
-            {isAudioLoading ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
-            ) : isAudioPlaying ? (
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
-              </svg>
-            ) : (
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '2px' }}>
-                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
-              </svg>
-            )}
-          </button>
-
-          <div className="cafe-audio-info-col">
-            <div className="cafe-audio-track-name">
-              {audioMode === 'meditacao' ? `Meditação: ${currentMeditation.title}` : `Oração do Dia ${selectedDay}`}
-              <span className="cafe-audio-voice-badge">
-                • Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}
-              </span>
+              <span>A SUA MISSÃO DE HOJE</span>
             </div>
 
-            <div className="cafe-progress-track">
-              <div 
-                className="cafe-progress-fill" 
-                style={{ width: `${Math.min(100, Math.max(0, audioProgress))}%` }} 
+            <h3 className="cafe-invite-main-title">Quem você vai convidar hoje?</h3>
+            <p className="cafe-invite-sub">
+              Você só consegue alcançar de verdade quem está próximo: no trabalho, em casa, na academia ou numa conversa de negócios. Às vezes, tudo o que o seu próximo precisa é de <strong>1 Convite</strong>.
+            </p>
+
+            {/* Escolha do Tipo de Convite */}
+            <div className="cafe-invite-types-grid">
+              <button
+                onClick={() => setSelectedInviteType('cafe')}
+                className={`cafe-invite-type-card ${selectedInviteType === 'cafe' ? 'active' : ''}`}
+              >
+                <div className="cafe-invite-type-icon">☕</div>
+                <strong>Café & Conversa</strong>
+                <span>Papo intencional</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedInviteType('treino')}
+                className={`cafe-invite-type-card ${selectedInviteType === 'treino' ? 'active' : ''}`}
+              >
+                <div className="cafe-invite-type-icon">🏋️‍♂️</div>
+                <strong>Cuidar do Templo</strong>
+                <span>Treino ou caminhada</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedInviteType('igreja')}
+                className={`cafe-invite-type-card ${selectedInviteType === 'igreja' ? 'active' : ''}`}
+              >
+                <div className="cafe-invite-type-icon">⛪</div>
+                <strong>Igreja & Fé</strong>
+                <span>Comunhão de domingo</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedInviteType('meditacao')}
+                className={`cafe-invite-type-card ${selectedInviteType === 'meditacao' ? 'active' : ''}`}
+              >
+                <div className="cafe-invite-type-icon">✦</div>
+                <strong>App 1Convite</strong>
+                <span>Palavra de esperança</span>
+              </button>
+            </div>
+
+            {/* Nome Opcional para Personalizar */}
+            <div className="cafe-recipient-input-wrap">
+              <label htmlFor="recipientName">Para quem é este convite? (Opcional):</label>
+              <input
+                id="recipientName"
+                type="text"
+                placeholder="Ex: Carlos, Ana, Pastor Marcos..."
+                value={inviteRecipientName}
+                onChange={(e) => setInviteRecipientName(e.target.value)}
+                className="cafe-recipient-input"
+                maxLength={40}
               />
             </div>
 
-            <div className="cafe-audio-times">
-              <span>{formatAudioTime(audioCurrentTime)}</span>
-              <span>{isAudioLoading ? 'Carregando voz...' : (audioDuration > 0 ? formatAudioTime(audioDuration) : 'Voz Humana')}</span>
+            {/* Pré-visualização da Mensagem */}
+            <div className="cafe-message-preview-box">
+              <span className="cafe-preview-badge">Prévia da Mensagem:</span>
+              <p className="cafe-preview-body">
+                "{getInviteMessage(selectedInviteType)}"
+              </p>
             </div>
-          </div>
-        </div>
 
-        {/* Seletor Visível das Vozes: Francisca e Antônio Lado a Lado */}
-        <div className="cafe-voice-bar">
-          <span className="cafe-voice-bar-title">Escolha quem narra para você:</span>
-          <div className="cafe-voice-pills-wrap">
+            {/* Botão de Envio no WhatsApp */}
             <button
-              type="button"
-              onClick={() => handleSelectVoice('pt-BR-FranciscaNeural')}
-              className={`cafe-voice-pill ${selectedVoice === 'pt-BR-FranciscaNeural' ? 'is-active' : ''}`}
-              title="Voz feminina serena, aveludada e reflexiva"
+              onClick={handleSendWhatsAppInvite}
+              className="cafe-whatsapp-submit-btn"
             >
-              <span className="cafe-voice-avatar-badge fem">F</span>
-              <div className="cafe-voice-pill-text">
-                <strong>Francisca</strong>
-                <small>Serena & Doce</small>
-              </div>
-              {selectedVoice === 'pt-BR-FranciscaNeural' && <span className="cafe-voice-pill-check">✓</span>}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSelectVoice('pt-BR-AntonioNeural')}
-              className={`cafe-voice-pill ${selectedVoice === 'pt-BR-AntonioNeural' ? 'is-active' : ''}`}
-              title="Voz masculina grave, acolhedora e pastoral"
-            >
-              <span className="cafe-voice-avatar-badge masc">A</span>
-              <div className="cafe-voice-pill-text">
-                <strong>Antônio</strong>
-                <small>Pastoral & Firme</small>
-              </div>
-              {selectedVoice === 'pt-BR-AntonioNeural' && <span className="cafe-voice-pill-check">✓</span>}
-            </button>
-          </div>
-        </div>
-
-        {/* Barra de Ajustes Secundários: Modo e Piano */}
-        <div className="cafe-audio-options-bar">
-          {/* Seletor de Modo */}
-          <button
-            onClick={() => handleSelectMode('meditacao')}
-            className={`cafe-opt-chip ${audioMode === 'meditacao' ? 'active' : ''}`}
-            title="Ouvir reflexão bíblica e oração completas"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span>Meditação Completa</span>
-          </button>
-
-          <button
-            onClick={() => handleSelectMode('oracao')}
-            className={`cafe-opt-chip ${audioMode === 'oracao' ? 'active' : ''}`}
-            title="Ouvir apenas a oração matinal"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <span>Apenas Oração</span>
-          </button>
-
-          {/* Toggle de Piano Suave */}
-          <button
-            onClick={() => {
-              const nextAmbient = !ambientPiano;
-              setAmbientPiano(nextAmbient);
-              if (isAudioPlaying) {
-                startAudioPlayback(selectedVoice, audioMode, nextAmbient);
-              }
-            }}
-            className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
-            title="Ligar ou desligar piano de fundo"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            <span>{ambientPiano ? 'Piano: Ligado' : 'Piano: Desligado'}</span>
-          </button>
-        </div>
-      </section>
-
-      {/* Card da Meditação */}
-      <article className="cafe-card">
-        {/* Topo do Card com Data e Ícone */}
-        <div className="cafe-card-top-row">
-          <div className="cafe-icon-badge">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-              <line x1="6" y1="1" x2="6" y2="4" />
-              <line x1="10" y1="1" x2="10" y2="4" />
-              <line x1="14" y1="1" x2="14" y2="4" />
-            </svg>
-          </div>
-
-          <div className="cafe-date-pill">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            <span>{currentDateInfo.formatted}</span>
-          </div>
-        </div>
-
-        <h2 className="cafe-card-title">{currentMeditation.title}</h2>
-
-        {/* Versículo Bíblico Chave */}
-        <div className="cafe-verse-box">
-          <svg className="cafe-quote-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-          </svg>
-          <blockquote className="cafe-verse-text">
-            {currentMeditation.verse}
-          </blockquote>
-        </div>
-
-        {/* Corpo da Meditação */}
-        <div className="cafe-body-content">
-          {currentMeditation.body.split('\n\n').map((paragraph, idx) => (
-            <p key={idx} className="cafe-paragraph">
-              {paragraph}
-            </p>
-          ))}
-        </div>
-
-        {/* Bloco da Oração Matinal */}
-        {currentMeditation.prayer && (
-          <div className="cafe-prayer-card">
-            <div className="cafe-prayer-header">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              <span>Oração do Café com Deus</span>
-            </div>
-            <p className="cafe-prayer-text">{currentMeditation.prayer}</p>
-          </div>
-        )}
-
-        {/* Barra de Ações: Concluir / Compartilhar / Copiar */}
-        <div className="cafe-actions-row">
-          <button 
-            onClick={toggleComplete}
-            className={`cafe-complete-btn ${isCompleted ? 'is-done' : ''}`}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            <span>{isCompleted ? 'Meditação Concluída' : 'Marcar como Concluída'}</span>
-          </button>
-
-          <div className="cafe-secondary-actions">
-            <button 
-              onClick={handleShareWhatsApp}
-              className="cafe-icon-btn cafe-whatsapp-btn"
-              title="Compartilhar no WhatsApp"
-              aria-label="Compartilhar no WhatsApp"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
               </svg>
+              <span>Enviar este 1Convite no WhatsApp</span>
+            </button>
+          </section>
+
+          {/* Botão de Conclusão da Jornada */}
+          <div className="cafe-finish-row">
+            <button 
+              onClick={toggleComplete}
+              className={`cafe-complete-btn ${isCompleted ? 'is-done' : ''}`}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span>{isCompleted ? 'Jornada Concluída com Sucesso!' : 'Concluir Jornada de Hoje'}</span>
             </button>
 
             <button 
-              onClick={handleCopy}
-              className="cafe-icon-btn"
-              title="Copiar texto"
-              aria-label="Copiar texto"
+              onClick={() => goToStep(2)}
+              className="cafe-secondary-step-btn"
+              style={{ marginTop: '10px', width: '100%', justifyContent: 'center' }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
+              <span>Voltar para Passo 2 (Síntese)</span>
             </button>
           </div>
         </div>
+      )}
 
-        {copied && (
-          <div className="cafe-toast animate-fade-in">
-            Meditação copiada para a área de transferência!
-          </div>
-        )}
-      </article>
+      {copied && (
+        <div className="cafe-toast animate-fade-in">
+          Copiado para a área de transferência!
+        </div>
+      )}
     </div>
   );
 }
