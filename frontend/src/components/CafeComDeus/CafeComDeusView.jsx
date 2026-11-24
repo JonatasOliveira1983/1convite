@@ -855,15 +855,17 @@ export default function CafeComDeusView({
 
           {/* Card de Conclusão do Dia (Meta Pessoal Concluída) */}
           <div className="cafe-completion-card">
-            <div className="cafe-completion-icon-badge">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-              </svg>
-            </div>
-            <div className="cafe-completion-info">
-              <h4>Objetivo Espiritual Concluído!</h4>
-              <p>Você alimentou a alma, entendeu a prática para hoje e orou na presença de Deus.</p>
+            <div className="cafe-completion-top-row">
+              <div className="cafe-completion-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div className="cafe-completion-info">
+                <h4>Objetivo Espiritual Concluído!</h4>
+                <p>Você alimentou a alma, entendeu a prática para hoje e orou na presença de Deus.</p>
+              </div>
             </div>
 
             <button 
@@ -879,18 +881,16 @@ export default function CafeComDeusView({
 
           {/* Convite Opcional para o Passo 4 (Criar Card) */}
           <div className="cafe-invite-cta-card">
-            <div className="cafe-invite-cta-content">
-              <div className="cafe-invite-cta-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                </svg>
-                <span>PASSO 4 OPCIONAL • O SEU 1CONVITE</span>
-              </div>
-              <h3 className="cafe-invite-cta-title">Abençoe o dia de alguém hoje</h3>
-              <p className="cafe-invite-cta-text">
-                Crie um card visual em alta definição e convide alguém próximo para um café, para treinar o templo ou para a palavra de Deus.
-              </p>
+            <div className="cafe-invite-cta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+              </svg>
+              <span>PASSO 4 OPCIONAL • O SEU 1CONVITE</span>
             </div>
+            <h3 className="cafe-invite-cta-title">Abençoe o dia de alguém hoje</h3>
+            <p className="cafe-invite-cta-text">
+              Crie um card visual em alta definição e convide alguém próximo para um café, para treinar o templo ou para a palavra de Deus.
+            </p>
 
             <button 
               onClick={() => goToStep(4)}
@@ -905,7 +905,7 @@ export default function CafeComDeusView({
             <button 
               onClick={() => goToStep(2)}
               className="cafe-secondary-step-btn"
-              style={{ marginTop: '10px', width: '100%', justifyContent: 'center' }}
+              style={{ marginTop: '12px' }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -1045,14 +1045,14 @@ export default function CafeComDeusView({
 
               <button
                 onClick={() => setCardSelectedIntent('custom')}
-                className={`cafe-intent-pill ${cardSelectedIntent === 'custom' ? 'active' : ''}`}
+                className={`cafe-intent-pill is-full-width ${cardSelectedIntent === 'custom' ? 'active' : ''}`}
                 title="Escrever mensagem própria"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 20h9"/>
                   <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                 </svg>
-                <span>Texto Próprio</span>
+                <span>Escrever Mensagem Própria</span>
               </button>
             </div>
 
@@ -1080,18 +1080,22 @@ export default function CafeComDeusView({
                   key={bg.id}
                   onClick={() => setCardSelectedBg(idx)}
                   className={`cafe-bg-thumb-btn ${cardSelectedBg === idx ? 'selected' : ''}`}
-                  style={{
-                    backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
-                    background: bg.type === 'gradient' ? bg.css : undefined,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
                   title={bg.label}
                 >
+                  <div 
+                    className="cafe-bg-thumb-preview"
+                    style={{
+                      backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
+                      background: bg.type === 'gradient' ? bg.css : undefined,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  >
+                    {cardSelectedBg === idx && (
+                      <span className="cafe-bg-thumb-check">✓</span>
+                    )}
+                  </div>
                   <span className="cafe-bg-thumb-label">{bg.label}</span>
-                  {cardSelectedBg === idx && (
-                    <span className="cafe-bg-thumb-check">✓</span>
-                  )}
                 </button>
               ))}
             </div>

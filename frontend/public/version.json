@@ -1,15 +1,13 @@
 {
-  "version": "v2.10.2",
-  "build": "2026112411",
+  "version": "v2.10.3",
+  "build": "2026112412",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Passo 4 (Criar 1Convite Visual): Estúdio de Cards simplificado, direto e ultra premium integrado à jornada diária.",
-    "Design 100% Glassmorphism: Molduras de vidro translúcido com desfoque de fundo (blur) e iluminação sutil sem sobrecarregar a tela.",
-    "Zero Emojis: Interface estritamente elegante com ícones vetoriais SVG nítidos.",
-    "Seleção Rápida de Intenção com 1 Toque: Palavra do Dia, Café & Conversa, Cuidar do Templo, Igreja & Fé ou Mensagem Própria.",
-    "Cenários de Fundo Locais Curados: 0 links externos quebrados, alta resolução e suporte instantâneo a Post (1:1) e Stories (9:16).",
-    "Compartilhamento Imediato: Disparo direto no WhatsApp e download de card em alta definição (1080p)."
+    "Refinamento de Design & Espaçamentos (Padrão Freepik Dark Glass): Respiro inferior de 140px garantindo que o menu flutuante nunca sobreponha conteúdo.",
+    "Moldura de Vidro Proporcional: Cards sem texto vazando com quebras equilibradas e fontes dimensionadas.",
+    "Menu Inferior Flutuante Elevado: Cantos de 28px, vidro com blur de 24px e sombreamento de profundidade limpo.",
+    "Estúdio 1Convite Otimizado: Formatos Post e Story com preview centralizado, seleção de fundos com miniaturas separadas e botões empilhados com conforto mobile."
   ],
-  "updateTimestamp": 1795532000000
+  "updateTimestamp": 1795533000000
 }
