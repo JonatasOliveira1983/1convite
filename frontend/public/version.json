@@ -1,12 +1,12 @@
 {
-  "version": "v2.11.1",
-  "build": "2026112414",
+  "version": "v2.12.0",
+  "build": "2026112415",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Correção de Renderização Visual das Imagens: Substituição de background inline conflitante por tags de imagem nativas com object-fit cover nos cards e miniaturas.",
-    "2+ Imagens Locais Ativas e Visíveis por Categoria: Palavra de Hoje, Café & Conversa, Cuidar do Templo e Igreja & Fé renderizando instantaneamente.",
-    "Motor Canvas 1080p Nativo: Download em alta fidelidade e compartilhamento com link direto 1convite.com.br."
+    "Identidade Visual Oficial: Nova logomarca oficial '1Convite - Compartilhando o Reino' com a chama 3D integrada.",
+    "Logomarca Adaptativa: Suporte automático a alto contraste nos modos claro e escuro.",
+    "Ícones Oficiais do Aplicativo: Nova chama 3D aplicada em alta resolução para Favicon, PWA, Apple Touch e Android (App & Launcher)."
   ],
-  "updateTimestamp": 1795536000000
+  "updateTimestamp": 1795537000000
 }
