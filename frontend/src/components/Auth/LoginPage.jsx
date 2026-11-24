@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
 import adminAuthService from '../../services/adminAuthService';
+import appLogoWhite from '../../assets/logomarca_dark.png';
 
 export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
   // viewMode: 'initial' (estilo C6 Bank), 'login' (gaveta login), 'register' (gaveta cadastro)
@@ -163,7 +164,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
       {/* ── TOPO: LOGOMARCA OFICIAL ── */}
       <header className="c6-top-header">
         <img 
-          src="/LOGOMARCA.png" 
+          src={appLogoWhite} 
           alt="1Convite" 
           className="c6-top-logo"
         />

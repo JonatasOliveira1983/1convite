@@ -1,12 +1,12 @@
 {
-  "version": "v2.15.0",
-  "build": "2026112419",
+  "version": "v2.16.0",
+  "build": "2026112420",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Interface Inicial Estilo C6 Bank: Logomarca superior minimalista, centro 100% desobstruído com as crianças no pôr do sol florido e Bottom Sheet com atalhos e gavetas expansíveis.",
-    "Fotografia Oficial das Crianças: Menina de 4 anos com vestido camponesa e menino de topete brincando no campo florido com movimento Ken Burns contínuo.",
-    "Painel Administrativo Mestre: Gestão de códigos VIP com limite de cadastros e credenciais exclusivas do administrador."
+    "Fotografia Oficial das Crianças: Menina de 4 anos com vestido camponesa florido e irmão de 12 anos no campo de flores ao pôr do sol em altíssima resolução.",
+    "Logomarca Oficial Branca Transparente: Fundo preto removido com precisão preservando a chama 3D e tipografia oficial.",
+    "Card Flutuante Estilo C6 Bank: Espaçamento lateral e inferior generoso, cantos arredondados de 28px nos 4 cantos e movimento sutil de respiração."
   ],
-  "updateTimestamp": 1795541000000
+  "updateTimestamp": 1795542000000
 }
