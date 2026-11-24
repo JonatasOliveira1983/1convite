@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@300;400;600;700;800&display=swap');
+
 /* ═══════════════════════════════════════════════════════════════════════════════
-   EXPERIÊNCIA VISUAL 1CONVITE - OPÇÃO 2: O PORTAL DE LUZ CINEMATOGRÁFICO
+   EXPERIÊNCIA VISUAL 1CONVITE - VALE-PRESENTE DIGITAL PREMIUM (VERTICAL LUXO)
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 .portal-viewport {
@@ -79,6 +81,268 @@
     opacity: 1;
     transform: translateY(0) scale(1) rotateX(0deg);
   }
+}
+
+/* ── CARTÃO GIFT VOUCHER VERTICAL DE LUXO ── */
+.gv-card {
+  position: relative;
+  background: linear-gradient(160deg, #161619 0%, #0b0b0e 55%, #19140a 100%);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 22px;
+  padding: 12px;
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(212, 175, 55, 0.14);
+  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+}
+
+.gv-inner-frame {
+  position: relative;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 15px;
+  padding: 26px 22px 22px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.gv-gold-bars {
+  position: absolute;
+  top: 18px;
+  left: -10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.gv-gold-bar {
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #AA7C11 0%, #F5E199 55%, #D4AF37 100%);
+  opacity: 0.85;
+}
+
+.gv-gold-bar-1 { width: 64px; }
+.gv-gold-bar-2 { width: 42px; opacity: 0.55; }
+
+.gv-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+}
+
+.gv-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.gv-seal-circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FFF7CC 0%, #E5C158 42%, #B8860B 82%, #8A6204 100%);
+  color: #161104;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(212, 175, 55, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(255, 248, 200, 0.7);
+  flex-shrink: 0;
+  line-height: 1.05;
+}
+
+.gv-seal-big {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.gv-seal-small {
+  font-size: 0.54rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gv-kicker {
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: #E5C158;
+  margin-bottom: 6px;
+}
+
+.gv-serif-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.15rem;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #FFF7D6 0%, #E5C158 55%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gv-sender-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  margin-bottom: 14px;
+}
+
+.gv-sender-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #E5C158;
+}
+
+.gv-sender-text {
+  font-size: 0.74rem;
+  color: #E2E8F0;
+  font-weight: 400;
+}
+
+.gv-sender-text strong {
+  color: #FDE68A;
+  font-weight: 700;
+}
+
+.gv-message {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: #CBD5E1;
+  line-height: 1.55;
+  margin: 0 0 16px 0;
+}
+
+.gv-pillars-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #FDE68A;
+  padding: 9px 10px;
+  border-top: 1px solid rgba(212, 175, 55, 0.18);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.gv-coupon-divider {
+  position: relative;
+  border-top: 1.5px dashed rgba(212, 175, 55, 0.4);
+  margin: 0 -22px 18px;
+}
+
+.gv-coupon-divider::before,
+.gv-coupon-divider::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #060911;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.gv-coupon-divider::before { left: -9px; }
+.gv-coupon-divider::after { right: -9px; }
+
+.gv-code-box {
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.gv-code-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E5C158;
+  margin-bottom: 4px;
+}
+
+.gv-code-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gv-code-value {
+  font-size: 1.28rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #FFFFFF;
+}
+
+.gv-copy-btn {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  color: #FDE68A;
+  border-radius: 7px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gv-btn-gold {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #FBF0B2 0%, #D4AF37 52%, #B8860B 100%);
+  color: #181203;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 10px 26px rgba(212, 175, 55, 0.28);
+  margin-bottom: 10px;
+  transition: transform 0.15s ease;
+}
+
+.gv-btn-gold:hover {
+  transform: translateY(-1px);
+}
+
+.gv-btn-outline {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(255, 255, 255, 0.03);
+  color: #F8FAFC;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 /* O Card Vivo Levitação Suave */
