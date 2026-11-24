@@ -21,6 +21,27 @@
     <meta property="og:url" content="https://1convite.com.br" />
     <meta property="og:image" content="/LOGOMARCA.png" />
     <title>Movimento 1Convite</title>
+    <!-- Limpeza de emergência de caches corrompidos e desregistro de Service Workers -->
+    <script>
+      try {
+        if ('caches' in window) {
+          caches.keys().then(function(names) {
+            names.forEach(function(name) {
+              caches.delete(name);
+            });
+          });
+        }
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            for (var r of regs) {
+              r.unregister();
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Erro ao limpar caches:', e);
+      }
+    </script>
     <!-- Previne erros do React Fast Refresh em compilações locais -->
     <script>
       if (!window.$RefreshReg$) window.$RefreshReg$ = () => {};
@@ -40,26 +61,11 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
+      // Garante que nenhum Service Worker antigo permaneça ativo na aba
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            // Desregistra qualquer Service Worker ativo no localhost para não quebrar o Vite HMR
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-              for (let registration of registrations) {
-                registration.unregister().then(() => {
-                  console.log('Service Worker antigo desregistrado no localhost.');
-                  window.location.reload();
-                });
-              }
-            });
-          } else {
-            // Registra em produção e força verificação de versão do SW
-            navigator.serviceWorker.register('/sw.js')
-              .then(reg => {
-                console.log('Service Worker registrado:', reg.scope);
-                reg.update();
-              })
-              .catch(err => console.error('Erro ao registrar Service Worker:', err));
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var reg of registrations) {
+            reg.unregister();
           }
         });
       }

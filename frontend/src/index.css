@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ═══════════════════════════════════════════════════
-   TOKENS DE DESIGN — 60% Branco / 30% Laranja / 10% Ardósia
+   TOKENS DE DESIGN (v2.10.2 - Fresh Hash) — 60% Branco / 30% Laranja / 10% Ardósia
 ═══════════════════════════════════════════════════ */
 :root {
   font-family: 'Inter', system-ui, sans-serif;
@@ -3037,4 +3037,8 @@ body.dark-mode .memoria-card-front {
 }
 body.dark-mode .memoria-card-back {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.cb-v2102 {
+  opacity: 0.9999;
 }
