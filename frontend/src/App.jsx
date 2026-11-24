@@ -6781,7 +6781,7 @@ Em nome de Jesus, Amém.`;
         {/* ── ABA MINHA CONTA & PERFIL ────────────────────────── */}
         {activeTab === 'conta' && (
           <div className="page-enter flex-column gap-md">
-            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '24px 18px', position: 'relative' }}>
+            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '28px 18px 64px', position: 'relative' }}>
               <div className="hero-content">
                 <div className="profile-avatar-container" style={{ position: 'relative', display: 'inline-block', margin: '0 auto 12px' }}>
                   <img 
@@ -6848,23 +6848,23 @@ Em nome de Jesus, Amém.`;
                 </span>
 
                 {isAdminMode && (
-                  <div style={{ marginTop: '14px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
+                  <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', position: 'relative', zIndex: 3 }}>
                     <button
                       type="button"
                       onClick={() => setShowAdminPanel(true)}
                       style={{
-                        background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(234, 179, 8, 0.25) 100%)',
+                        background: 'rgba(15, 23, 42, 0.88)',
                         border: '1.5px solid #F59E0B',
                         color: '#FCD34D',
                         borderRadius: '24px',
-                        padding: '9px 20px',
+                        padding: '10px 18px',
                         fontSize: '0.84rem',
                         fontWeight: '800',
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '6px',
-                        boxShadow: '0 4px 14px rgba(245, 158, 11, 0.2)'
+                        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.35)'
                       }}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -6879,17 +6879,18 @@ Em nome de Jesus, Amém.`;
                       type="button"
                       onClick={() => setShowLanding(true)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        border: '1px solid var(--slate-border)',
-                        color: 'var(--text-primary)',
+                        background: 'rgba(15, 23, 42, 0.88)',
+                        border: '1.5px solid rgba(255, 255, 255, 0.45)',
+                        color: '#FFFFFF',
                         borderRadius: '24px',
-                        padding: '9px 18px',
+                        padding: '10px 18px',
                         fontSize: '0.84rem',
                         fontWeight: '700',
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '6px'
+                        gap: '6px',
+                        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.35)'
                       }}
                     >
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
