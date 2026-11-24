@@ -3,9 +3,10 @@ import './LoginPage.css';
 import adminAuthService from '../../services/adminAuthService';
 
 export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
-  const [mode, setMode] = useState('login'); // 'login' ou 'register'
+  // viewMode: 'initial' (estilo C6 Bank), 'login' (gaveta login), 'register' (gaveta cadastro)
+  const [viewMode, setViewMode] = useState('initial');
   
-  // Estados do formulário
+  // Dados do formulário
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -14,6 +15,9 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Nome salvo previamente ou convidado padrão
+  const savedName = localStorage.getItem('1convite_user_name') || 'Convidado';
 
   // Formatação de telefone / WhatsApp
   const handleContactChange = (e) => {
@@ -59,7 +63,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     }
 
     if (res.isAdmin) {
-      setSuccessMsg('Acesso Mestre Concedido! Entrando no Painel Administrativo...');
+      setSuccessMsg('Acesso Mestre Reconhecido! Entrando no Painel Administrativo...');
     } else {
       setSuccessMsg(`Bem-vindo de volta, ${res.user.name}!`);
     }
@@ -76,7 +80,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
           expiry: res.user.expiryTimestamp || null
         });
       }
-    }, 900);
+    }, 800);
   };
 
   const handleRegisterSubmit = (e) => {
@@ -85,7 +89,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     setSuccessMsg('');
 
     if (!name.trim()) {
-      setErrorMsg('Informe seu nome para personalizar seu devocional.');
+      setErrorMsg('Informe seu nome para personalizar sua experiência.');
       return;
     }
     if (!contact.trim()) {
@@ -93,7 +97,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
       return;
     }
     if (!password.trim()) {
-      setErrorMsg('Defina uma senha simples para seu acesso.');
+      setErrorMsg('Defina uma senha simples de acesso.');
       return;
     }
 
@@ -115,7 +119,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     if (res.isAdmin) {
       setSuccessMsg('Conta de Administrador reconhecida! Entrando...');
     } else if (res.isVip) {
-      setSuccessMsg(`Voucher aceito! 6 Meses de Acesso Total liberados com sucesso.`);
+      setSuccessMsg(`Voucher aceito! 6 Meses de Acesso Total liberados.`);
     } else {
       setSuccessMsg(`Cadastro realizado com sucesso, ${res.user.name}!`);
     }
@@ -132,103 +136,167 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
           expiry: res.expiryTimestamp
         });
       }
-    }, 1100);
+    }, 900);
   };
 
-  const handleGuest = () => {
+  const handlePillarClick = (pillarName) => {
     try {
       localStorage.setItem('1convite_guest_mode', 'true');
     } catch (e) {
       console.warn(e);
     }
     if (onExploreGuest) {
-      onExploreGuest();
+      onExploreGuest(pillarName);
     }
   };
 
   return (
-    <div className="login-viewport">
-      {/* Background com Movimento Ken Burns Contínuo */}
+    <div className="c6-login-viewport">
+      {/* Background com Movimento Ken Burns das Crianças no Pôr do Sol */}
       <img 
         src="/assets/auth/login_sunset_bg.jpg" 
-        alt="Pôr do Sol no Campo" 
-        className="login-bg-media"
+        alt="Crianças no Campo Florido ao Pôr do Sol" 
+        className="c6-bg-media"
       />
-      <div className="login-bg-overlay" />
+      <div className="c6-bg-overlay" />
 
-      {/* Card Flutuante Translúcido em Vidro */}
-      <div className="login-card">
-        {/* Cabeçalho Minimalista com Frase de Impacto */}
-        <div className="login-header">
-          <div className="login-flame-icon-wrap">
-            <img 
-              src="/favicon.png" 
-              alt="Chama 1Convite" 
-              className="login-flame-icon-img" 
-            />
-          </div>
-          <h1 className="login-impact-phrase">
-            Seu momento matinal com <span>Deus</span>
-          </h1>
-          <p className="login-sub-phrase">
-            Palavra, quietude, oração e cuidado com o corpo.
-          </p>
+      {/* ── TOPO: LOGOMARCA OFICIAL ── */}
+      <header className="c6-top-header">
+        <img 
+          src="/LOGOMARCA.png" 
+          alt="1Convite" 
+          className="c6-top-logo"
+        />
+        <div className="c6-top-tagline">
+          Compartilhando o Reino
         </div>
+      </header>
 
-        {/* Abas Alternadoras (Entrar vs Cadastrar) */}
-        <div className="login-tab-switcher">
-          <button 
-            type="button"
-            className={`login-tab-btn ${mode === 'login' ? 'active' : ''}`}
-            onClick={() => { setMode('login'); setErrorMsg(''); setSuccessMsg(''); }}
-          >
-            Entrar
-          </button>
-          <button 
-            type="button"
-            className={`login-tab-btn ${mode === 'register' ? 'active' : ''}`}
-            onClick={() => { setMode('register'); setErrorMsg(''); setSuccessMsg(''); }}
-          >
-            Cadastrar-se
-          </button>
-        </div>
+      {/* ── CENTRO: PALCO LIVRE PARA A CENA ── */}
+      <div className="c6-center-stage" />
 
-        {/* Formulário: MODO LOGIN */}
-        {mode === 'login' && (
-          <form onSubmit={handleLoginSubmit} className="login-form">
-            <div className="login-field">
-              <label className="login-label">WhatsApp ou E-mail</label>
-              <div className="login-input-wrap">
-                <span className="login-input-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </span>
+      {/* ── BASE: BOTTOM SHEET ESTILO C6 BANK ── */}
+      <div className="c6-bottom-sheet">
+        {/* MODO INICIAL (IDÊNTICO AO C6 BANK) */}
+        {viewMode === 'initial' && (
+          <>
+            {/* Linha 1: Saudação */}
+            <div className="c6-greeting-row">
+              <button 
+                type="button" 
+                className="c6-greeting-btn"
+                onClick={() => setViewMode('login')}
+              >
+                <span>Olá, {savedName}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="c6-greeting-chevron">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Linha 2: Os 3 Pilares com Divisórias Verticais Finas */}
+            <div className="c6-pillars-row">
+              <button 
+                type="button" 
+                className="c6-pillar-item"
+                onClick={() => handlePillarClick('cafe')}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="c6-pillar-icon">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                  <line x1="6" y1="1" x2="6" y2="4" />
+                  <line x1="10" y1="1" x2="10" y2="4" />
+                  <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+                <span className="c6-pillar-label">Café Diário</span>
+              </button>
+
+              <div className="c6-pillar-divider" />
+
+              <button 
+                type="button" 
+                className="c6-pillar-item"
+                onClick={() => handlePillarClick('oracao')}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="c6-pillar-icon">
+                  <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+                <span className="c6-pillar-label">Orar Junto</span>
+              </button>
+
+              <div className="c6-pillar-divider" />
+
+              <button 
+                type="button" 
+                className="c6-pillar-item"
+                onClick={() => handlePillarClick('templo')}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="c6-pillar-icon">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <span className="c6-pillar-label">Cuidar do Templo</span>
+              </button>
+            </div>
+
+            {/* Linha 3: Botão Principal Dourado/Amarelo */}
+            <button 
+              type="button" 
+              className="c6-btn-primary"
+              onClick={() => { setViewMode('login'); setErrorMsg(''); }}
+            >
+              <span>Acessar conta</span>
+            </button>
+
+            {/* Linha 4: Botão Secundário Noturno */}
+            <button 
+              type="button" 
+              className="c6-btn-secondary"
+              onClick={() => { setViewMode('register'); setErrorMsg(''); }}
+            >
+              <span>Criar nova conta ou Ativar VIP</span>
+            </button>
+          </>
+        )}
+
+        {/* GAVETA: ACESSAR CONTA (LOGIN) */}
+        {viewMode === 'login' && (
+          <div className="c6-expanded-drawer">
+            <div className="c6-drawer-header">
+              <h2 className="c6-drawer-title">Acessar minha conta</h2>
+              <button 
+                type="button" 
+                className="c6-drawer-back-btn"
+                onClick={() => setViewMode('initial')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                <span>Voltar</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleLoginSubmit} className="c6-drawer-form">
+              <div className="c6-drawer-field">
+                <label className="c6-drawer-label">WhatsApp ou E-mail</label>
                 <input
                   type="text"
-                  className="login-input-clean"
-                  placeholder="Seu e-mail ou WhatsApp"
+                  className="c6-drawer-input"
+                  placeholder="Seu WhatsApp ou e-mail"
                   value={contact}
                   onChange={handleContactChange}
                   autoComplete="username"
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            <div className="login-field">
-              <label className="login-label">Senha</label>
-              <div className="login-input-wrap">
-                <span className="login-input-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </span>
+              <div className="c6-drawer-field">
+                <label className="c6-drawer-label">Senha</label>
                 <input
                   type="password"
-                  className="login-input-clean"
+                  className="c6-drawer-input"
                   placeholder="Sua senha de acesso"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -236,182 +304,114 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            {errorMsg && (
-              <div className="login-alert-box login-alert-error">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            {successMsg && (
-              <div className="login-alert-box login-alert-success">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span>{successMsg}</span>
-              </div>
-            )}
-
-            <button type="submit" className="login-submit-btn" disabled={loading}>
-              {loading ? (
-                <span>Acessando...</span>
-              ) : (
-                <>
-                  <span>Entrar no 1Convite</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </>
+              {errorMsg && (
+                <div className="c6-alert-msg c6-alert-error">
+                  {errorMsg}
+                </div>
               )}
-            </button>
+              {successMsg && (
+                <div className="c6-alert-msg c6-alert-success">
+                  {successMsg}
+                </div>
+              )}
 
-            <button type="button" className="login-guest-btn" onClick={handleGuest} disabled={loading}>
-              <span>Explorar como Visitante</span>
-            </button>
-          </form>
+              <button type="submit" className="c6-btn-primary" disabled={loading}>
+                {loading ? 'Entrando...' : 'Entrar no 1Convite'}
+              </button>
+            </form>
+          </div>
         )}
 
-        {/* Formulário: MODO CADASTRO */}
-        {mode === 'register' && (
-          <form onSubmit={handleRegisterSubmit} className="login-form">
-            <div className="login-field">
-              <label className="login-label">Seu Nome</label>
-              <div className="login-input-wrap">
-                <span className="login-input-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </span>
+        {/* GAVETA: CRIAR CONTA OU ATIVAR VIP (CADASTRO) */}
+        {viewMode === 'register' && (
+          <div className="c6-expanded-drawer">
+            <div className="c6-drawer-header">
+              <h2 className="c6-drawer-title">Criar nova conta</h2>
+              <button 
+                type="button" 
+                className="c6-drawer-back-btn"
+                onClick={() => setViewMode('initial')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                <span>Voltar</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleRegisterSubmit} className="c6-drawer-form">
+              <div className="c6-drawer-field">
+                <label className="c6-drawer-label">Seu Nome</label>
                 <input
                   type="text"
-                  className="login-input-clean"
+                  className="c6-drawer-input"
                   placeholder="Ex: Jonathan Oliveira"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  autoComplete="name"
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            <div className="login-field">
-              <label className="login-label">WhatsApp ou E-mail</label>
-              <div className="login-input-wrap">
-                <span className="login-input-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                </span>
+              <div className="c6-drawer-field">
+                <label className="c6-drawer-label">WhatsApp ou E-mail</label>
                 <input
                   type="text"
-                  className="login-input-clean"
+                  className="c6-drawer-input"
                   placeholder="(DDD) Celular ou E-mail"
                   value={contact}
                   onChange={handleContactChange}
-                  autoComplete="tel"
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            <div className="login-field">
-              <label className="login-label">Crie uma Senha</label>
-              <div className="login-input-wrap">
-                <span className="login-input-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </span>
+              <div className="c6-drawer-field">
+                <label className="c6-drawer-label">Defina uma Senha</label>
                 <input
                   type="password"
-                  className="login-input-clean"
-                  placeholder="Defina sua senha"
+                  className="c6-drawer-input"
+                  placeholder="Sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="new-password"
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            {/* Código VIP Opcional no Cadastro */}
-            <div className="login-vip-container">
-              <div className="login-field">
-                <label className="login-label">
-                  <span>Tem um Código VIP?</span>
-                  <span className="login-label-highlight">6 Meses Grátis</span>
-                </label>
-                <div className="login-input-wrap">
-                  <span className="login-input-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="6 3 18 3 22 9 12 22 2 9 6 3" />
-                    </svg>
-                  </span>
+              <div className="c6-vip-input-wrap">
+                <div className="c6-drawer-field">
+                  <label className="c6-drawer-label">
+                    <span>Código VIP (Opcional)</span>
+                    <span style={{ color: '#FACC15', fontWeight: '800' }}>6 Meses Grátis</span>
+                  </label>
                   <input
                     type="text"
-                    className="login-input-clean login-input-vip"
+                    className="c6-drawer-input"
                     placeholder="Ex: REINO6M"
+                    style={{ textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', color: '#FEF08A' }}
                     value={vipCode}
                     onChange={(e) => setVipCode(e.target.value)}
-                    maxLength={16}
                     disabled={loading}
                   />
                 </div>
               </div>
-            </div>
 
-            {errorMsg && (
-              <div className="login-alert-box login-alert-error">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            {successMsg && (
-              <div className="login-alert-box login-alert-success">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span>{successMsg}</span>
-              </div>
-            )}
-
-            <button type="submit" className="login-submit-btn" disabled={loading}>
-              {loading ? (
-                <span>Criando Conta...</span>
-              ) : (
-                <>
-                  <span>Concluir Cadastro & Entrar</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </>
+              {errorMsg && (
+                <div className="c6-alert-msg c6-alert-error">
+                  {errorMsg}
+                </div>
               )}
-            </button>
+              {successMsg && (
+                <div className="c6-alert-msg c6-alert-success">
+                  {successMsg}
+                </div>
+              )}
 
-            <button type="button" className="login-guest-btn" onClick={handleGuest} disabled={loading}>
-              <span>Explorar como Visitante</span>
-            </button>
-          </form>
+              <button type="submit" className="c6-btn-primary" disabled={loading}>
+                {loading ? 'Cadastrando...' : 'Concluir Cadastro & Entrar'}
+              </button>
+            </form>
+          </div>
         )}
-
-        <div className="login-brand-footer">
-          1convite.com.br • Compartilhando o Reino
-        </div>
       </div>
     </div>
   );

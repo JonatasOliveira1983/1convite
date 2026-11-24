@@ -1,13 +1,12 @@
 {
-  "version": "v2.14.0",
-  "build": "2026112418",
+  "version": "v2.15.0",
+  "build": "2026112419",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Painel Administrativo Mestre: Gestão de usuários, estatísticas e gerador de códigos VIP com limite de cadastros por código.",
-    "Acesso Master Oficial: Login exclusivo do administrador (jonatasprojetos2013@gmail.com).",
-    "Login Minimalista com Movimento Ken Burns: Animação fluida e suave do pôr do sol campestre e vidro translúcido leve.",
-    "Experiência Visual 1Convite (Portal de Luz 3D): Levitação imersiva e névoa dourada para quem recebe o convite."
+    "Interface Inicial Estilo C6 Bank: Logomarca superior minimalista, centro 100% desobstruído com as crianças no pôr do sol florido e Bottom Sheet com atalhos e gavetas expansíveis.",
+    "Fotografia Oficial das Crianças: Menina de 4 anos com vestido camponesa e menino de topete brincando no campo florido com movimento Ken Burns contínuo.",
+    "Painel Administrativo Mestre: Gestão de códigos VIP com limite de cadastros e credenciais exclusivas do administrador."
   ],
-  "updateTimestamp": 1795540000000
+  "updateTimestamp": 1795541000000
 }

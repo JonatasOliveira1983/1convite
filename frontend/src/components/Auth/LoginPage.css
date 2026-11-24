@@ -1,327 +1,378 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
-   TELA DE LOGIN & CADASTRO ULTRA CLEAN COM MOVIMENTO CINEMATOGRÁFICO (KEN BURNS)
+   TELA DE ENTRADA & LOGIN 1CONVITE - ARQUITETURA PREMIUM INSPIRADA NO C6 BANK
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-.login-viewport {
+.c6-login-viewport {
   position: fixed;
   inset: 0;
   z-index: 9999;
+  background-color: #070A10;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #0B0F17;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
-  padding: 16px;
-  box-sizing: border-box;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
-/* Background com Movimento Cinematográfico Ken Burns Contínuo */
-.login-bg-media {
+/* Background Imersivo com Movimento Ken Burns Contínuo */
+.c6-bg-media {
   position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
   object-fit: cover;
   object-position: center 30%;
-  filter: brightness(0.72) saturate(1.2) contrast(1.05);
-  animation: kenBurnsSmooth 28s ease-in-out infinite alternate;
+  filter: brightness(0.72) saturate(1.15) contrast(1.05);
+  animation: c6KenBurns 28s ease-in-out infinite alternate;
   pointer-events: none;
   transform-origin: center center;
 }
 
-@keyframes kenBurnsSmooth {
+@keyframes c6KenBurns {
   0% {
     transform: scale(1.0) translate(0%, 0%);
   }
   50% {
-    transform: scale(1.12) translate(-1.5%, -1%);
+    transform: scale(1.1) translate(-1.5%, -1%);
   }
   100% {
-    transform: scale(1.05) translate(1.5%, 1%);
+    transform: scale(1.04) translate(1.5%, 1%);
   }
 }
 
-/* Vinheta Suave e Gradiente Noturno Sutil (Muito mais transparente para destacar a cena) */
-.login-bg-overlay {
+/* Vinheta Superior e Inferior para legibilidade perfeita */
+.c6-bg-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center 40%, rgba(11, 15, 23, 0.15) 0%, rgba(11, 15, 23, 0.65) 85%),
-              linear-gradient(180deg, rgba(11, 15, 23, 0.25) 0%, rgba(11, 15, 23, 0.75) 100%);
+  background: 
+    linear-gradient(180deg, rgba(7, 10, 16, 0.75) 0%, rgba(7, 10, 16, 0.1) 30%, rgba(7, 10, 16, 0.3) 65%, rgba(7, 10, 16, 0.95) 100%),
+    radial-gradient(circle at center, transparent 30%, rgba(7, 10, 16, 0.6) 100%);
   pointer-events: none;
 }
 
-/* Card Principal: Vidro Translúcido Ultraleve */
-.login-card {
+/* ── TOPO: LOGOMARCA OFICIAL CENTRALIZADA ── */
+.c6-top-header {
   position: relative;
-  width: 100%;
-  max-width: 380px;
-  background: rgba(15, 23, 42, 0.52);
-  backdrop-filter: blur(20px) saturate(170%);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(251, 191, 36, 0.45);
-  border-radius: 26px;
-  padding: 24px 22px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(249, 115, 22, 0.12);
-  color: #FFFFFF;
-  box-sizing: border-box;
   z-index: 10;
-  animation: loginCardFadeIn 0.5s ease-out forwards;
-}
-
-@keyframes loginCardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Topo do Card */
-.login-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding-top: calc(env(safe-area-inset-top, 20px) + 24px);
+  padding-bottom: 12px;
   text-align: center;
-  margin-bottom: 16px;
 }
 
-.login-flame-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.35) 0%, rgba(15, 23, 42, 0.7) 80%);
-  border: 1.5px solid rgba(249, 115, 22, 0.45);
+.c6-top-logo {
+  height: 38px;
+  max-width: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.7));
+}
+
+.c6-top-tagline {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 6px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ── CENTRO LIVRE: ÁREA DESOBSTRUÍDA PARA A CENA DAS CRIANÇAS ── */
+.c6-center-stage {
+  flex: 1;
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 18px rgba(249, 115, 22, 0.3);
+  pointer-events: none;
 }
 
-.login-flame-icon-img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+/* ── BASE: BOTTOM CARD ESTILO C6 BANK ── */
+.c6-bottom-sheet {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(18, 22, 34, 0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px 28px 0 0;
+  padding: 24px 22px calc(env(safe-area-inset-bottom, 16px) + 20px);
+  box-shadow: 0 -15px 45px rgba(0, 0, 0, 0.65);
+  box-sizing: border-box;
+  animation: c6SheetUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.login-impact-phrase {
-  font-size: 0.96rem;
-  font-weight: 700;
-  line-height: 1.4;
-  color: #FFFFFF;
-  margin: 0 0 4px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+@keyframes c6SheetUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.login-impact-phrase span {
-  background: linear-gradient(135deg, #FDBA74, #F97316);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.login-sub-phrase {
-  font-size: 0.74rem;
-  color: #CBD5E1;
-  margin: 0;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
-}
-
-/* Abas Alternadoras Minimalistas (Entrar vs Cadastrar) */
-.login-tab-switcher {
+/* Linha 1: Saudação com Chevron */
+.c6-greeting-row {
   display: flex;
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 12px;
-  padding: 3px;
-  margin-bottom: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 0 4px;
 }
 
-.login-tab-btn {
-  flex: 1;
-  padding: 8px 10px;
+.c6-greeting-btn {
+  background: none;
   border: none;
-  background: transparent;
-  color: #94A3B8;
-  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 1.05rem;
   font-weight: 700;
-  border-radius: 9px;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.c6-greeting-chevron {
+  color: #94A3B8;
+  transition: transform 0.2s ease;
+}
+
+.c6-greeting-btn:hover .c6-greeting-chevron {
+  color: #FFFFFF;
+  transform: translateY(2px);
+}
+
+/* Linha 2: Os 3 Pilares com Divisórias Verticais Finas */
+.c6-pillars-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(11, 15, 23, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 12px 6px;
+  margin-bottom: 20px;
+}
+
+.c6-pillar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #E2E8F0;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: transform 0.15s ease, color 0.15s ease;
+  font-family: inherit;
+}
+
+.c6-pillar-item:hover {
+  transform: translateY(-2px);
+  color: #FBBF24;
+}
+
+.c6-pillar-icon {
+  width: 22px;
+  height: 22px;
+  color: #F97316;
+}
+
+.c6-pillar-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.c6-pillar-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Linha 3: Botão Principal Dourado/Amarelo C6 Bank */
+.c6-btn-primary {
+  width: 100%;
+  height: 50px;
+  border-radius: 16px;
+  border: none;
+  background: #FACC15;
+  color: #0F172A;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(250, 204, 21, 0.35);
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.c6-btn-primary:hover {
+  background: #FDE047;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(250, 204, 21, 0.45);
+}
+
+.c6-btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Linha 4: Botão Secundário Noturno */
+.c6-btn-secondary {
+  width: 100%;
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(30, 41, 59, 0.65);
+  color: #93C5FD;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: inherit;
 }
 
-.login-tab-btn.active {
-  background: rgba(255, 255, 255, 0.14);
+.c6-btn-secondary:hover {
+  background: rgba(30, 41, 59, 0.9);
+  color: #BFDBFE;
+  border-color: rgba(147, 197, 253, 0.3);
+}
+
+/* ── GAVETA EXPANSÍVEL DE LOGIN & CADASTRO ── */
+.c6-expanded-drawer {
+  animation: c6DrawerFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes c6DrawerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.c6-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.c6-drawer-title {
+  font-size: 1.05rem;
+  font-weight: 800;
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin: 0;
 }
 
-/* Formulário e Campos */
-.login-form {
+.c6-drawer-back-btn {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.c6-drawer-back-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.c6-drawer-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.login-field {
+.c6-drawer-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  text-align: left;
 }
 
-.login-label {
+.c6-drawer-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #E2E8F0;
-  letter-spacing: 0.3px;
+  color: #CBD5E1;
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
-.login-label-highlight {
-  font-size: 0.68rem;
-  color: #FBBF24;
-  font-weight: 600;
-}
-
-.login-input-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.login-input-icon {
-  position: absolute;
-  left: 12px;
-  color: #94A3B8;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-}
-
-.login-input-clean {
+.c6-drawer-input {
   width: 100%;
-  height: 42px;
-  padding: 0 12px 0 38px;
-  border-radius: 11px;
-  background: rgba(11, 15, 23, 0.55);
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: rgba(11, 15, 23, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #FFFFFF;
   font-size: 0.88rem;
   font-family: inherit;
   outline: none;
-  transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
-.login-input-clean:focus {
-  border-color: #F97316;
-  background: rgba(11, 15, 23, 0.8);
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25);
+.c6-drawer-input:focus {
+  border-color: #FACC15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
 }
 
-.login-input-clean::placeholder {
-  color: #64748B;
-  font-size: 0.82rem;
-}
-
-/* Caixa Especial de Cupom VIP */
-.login-vip-container {
+.c6-vip-input-wrap {
   background: rgba(234, 179, 8, 0.1);
   border: 1px dashed rgba(234, 179, 8, 0.4);
   border-radius: 12px;
-  padding: 10px 12px;
-  margin-top: 2px;
+  padding: 8px 10px;
 }
 
-.login-input-vip {
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #FEF08A;
-  border-color: rgba(234, 179, 8, 0.35);
-}
-
-/* Feedbacks */
-.login-alert-box {
+.c6-alert-msg {
   padding: 8px 12px;
-  border-radius: 9px;
+  border-radius: 8px;
   font-size: 0.76rem;
   line-height: 1.4;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.login-alert-error {
+.c6-alert-error {
   background: rgba(239, 68, 68, 0.2);
   border: 1px solid rgba(239, 68, 68, 0.4);
   color: #FCA5A5;
 }
 
-.login-alert-success {
+.c6-alert-success {
   background: rgba(34, 197, 94, 0.2);
   border: 1px solid rgba(34, 197, 94, 0.4);
   color: #86EFAC;
-}
-
-/* Botões */
-.login-submit-btn {
-  width: 100%;
-  height: 44px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
-  color: #FFFFFF;
-  font-size: 0.88rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
-  transition: all 0.2s ease;
-  margin-top: 4px;
-}
-
-.login-submit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(234, 88, 12, 0.45);
-}
-
-.login-guest-btn {
-  width: 100%;
-  height: 38px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #CBD5E1;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.login-guest-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-}
-
-.login-brand-footer {
-  margin-top: 14px;
-  text-align: center;
-  font-size: 0.68rem;
-  color: #94A3B8;
-  letter-spacing: 0.3px;
 }

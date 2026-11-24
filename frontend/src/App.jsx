@@ -1161,8 +1161,8 @@ function App() {
   const [profileSavedMsg, setProfileSavedMsg] = useState('');
 
   // ── Versão do Sistema & Atualizações Automáticas em Tempo Real ────────────────
-  const CURRENT_APP_VERSION = 'v2.14.0';
-  const CURRENT_APP_BUILD = 2026112418;
+  const CURRENT_APP_VERSION = 'v2.15.0';
+  const CURRENT_APP_BUILD = 2026112419;
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState('');
   const [showChangelog, setShowChangelog] = useState(false);
