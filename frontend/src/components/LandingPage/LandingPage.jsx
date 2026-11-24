@@ -5,6 +5,7 @@ import appLogoWhite from '../../assets/logomarca_dark.png';
 import imgTreinoTemplo from '../../assets/landing/treino_templo.jpg';
 import imgMeditacaoNarrada from '../../assets/landing/meditacao_narrada.jpg';
 import imgConviteVip from '../../assets/landing/convite_vip.jpg';
+import imgHeroMockup from '../../assets/landing/hero_mockup_1convite.jpg';
 
 import jesusImg from '../../assets/mentores/jesus.png';
 import salomaoImg from '../../assets/mentores/salomao.png';
@@ -445,11 +446,12 @@ export default function LandingPage({ onEnterApp }) {
 
             <h1 className="sp-hero-title">
               A Palavra Viva.<br />
-              <span className="sp-gradient-text">O Reino no seu bolso.</span>
+              <span style={{ color: '#F97316' }}>O Reino no seu </span>
+              <span style={{ color: '#1ED760' }}>bolso.</span>
             </h1>
 
             <p className="sp-hero-sub">
-              Bíblia Sagrada ACF com áudio, meditação diária que você pode ler ou ouvir de forma narrativa, Treino Templo para saúde física, Mentores Bíblicos e um sistema de convites para abençoar outras vidas.
+              Seu ecossistema diário completo: Bíblia Sagrada ACF com áudio, meditações que você pode ler ou ouvir narradas, Treino Templo para saúde física, Oração Guiada, Mentores Bíblicos, Espaço Kids e Convites para abençoar vidas.
             </p>
 
             <div className="sp-hero-actions">
@@ -467,17 +469,17 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-hero-stats">
               <div className="sp-stat-item">
                 <span className="sp-stat-num">31.106</span>
-                <span className="sp-stat-label">Versículos Indexados</span>
+                <span className="sp-stat-label">Versículos & Áudio</span>
               </div>
               <div className="sp-stat-divider" />
               <div className="sp-stat-item">
                 <span className="sp-stat-num">365</span>
-                <span className="sp-stat-label">Desafios Práticos</span>
+                <span className="sp-stat-label">Meditações Narradas</span>
               </div>
               <div className="sp-stat-divider" />
               <div className="sp-stat-item">
-                <span className="sp-stat-num">7</span>
-                <span className="sp-stat-label">Mentores Bíblicos</span>
+                <span className="sp-stat-num">10+</span>
+                <span className="sp-stat-label">Módulos do Reino</span>
               </div>
             </div>
           </div>
@@ -485,7 +487,7 @@ export default function LandingPage({ onEnterApp }) {
           <div className="sp-hero-media">
             <div className="sp-card-frame">
               <img
-                src="/app_mobile_mockup.png"
+                src={imgHeroMockup}
                 alt="1Convite Mobile Experience"
                 className="sp-mockup-img"
               />
@@ -494,8 +496,8 @@ export default function LandingPage({ onEnterApp }) {
                   <IconHeadphones />
                 </div>
                 <div>
-                  <div className="sp-chip-title">Salmos 23 — Narrado</div>
-                  <div className="sp-chip-subtitle">O Senhor é o meu Pastor</div>
+                  <div className="sp-chip-title">Meditação do Dia — Narrada</div>
+                  <div className="sp-chip-subtitle">Leia ou ouça onde estiver</div>
                 </div>
               </div>
             </div>
