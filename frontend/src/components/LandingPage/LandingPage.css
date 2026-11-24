@@ -1246,7 +1246,7 @@
 }
 
 .sp-plan-vouchers-grid-1 {
-  grid-template-columns: minmax(0, 150px);
+  grid-template-columns: minmax(0, 96px);
   justify-content: center;
 }
 
@@ -1260,18 +1260,64 @@
 
 .sp-plan-voucher-thumb {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: 6px;
+  aspect-ratio: 3 / 4;
+  border-radius: 7px;
   overflow: hidden;
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  background: #0b0b0e;
+  border: 1px solid rgba(229, 193, 88, 0.55);
+  background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, #121216 45%, #1c1508 100%);
+  padding: 5px 4px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-.sp-plan-voucher-thumb img {
+.sp-mini-gv-top {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.sp-mini-gv-brand {
+  font-size: 0.42rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+}
+
+.sp-mini-gv-seal {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FFFBEB, #D4AF37 70%, #8A6204);
+  color: #181203;
+  font-size: 0.34rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sp-mini-gv-title {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: #FDE68A;
+  line-height: 1.05;
+}
+
+.sp-mini-gv-bar {
+  width: 85%;
+  height: 7px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #FBF0B2 0%, #D4AF37 60%, #B8860B 100%);
 }
 
 .sp-plan-invites-pill {

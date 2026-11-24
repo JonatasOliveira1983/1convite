@@ -650,7 +650,12 @@ export default function LandingPage({ onEnterApp }) {
               <div className="sp-plan-vouchers-preview" aria-label="1 convite incluído">
                 <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-1">
                   <div className="sp-plan-voucher-thumb">
-                    <img src={imgConviteVip} alt="Convite 1Convite" />
+                    <div className="sp-mini-gv-top">
+                      <span className="sp-mini-gv-brand">1Convite</span>
+                      <span className="sp-mini-gv-seal">180</span>
+                    </div>
+                    <span className="sp-mini-gv-title">Você é Especial</span>
+                    <span className="sp-mini-gv-bar" />
                   </div>
                 </div>
               </div>
@@ -690,7 +695,12 @@ export default function LandingPage({ onEnterApp }) {
                 <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-5">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
-                      <img src={imgConviteVip} alt={`Convite ${idx + 1}`} />
+                      <div className="sp-mini-gv-top">
+                        <span className="sp-mini-gv-brand">1C</span>
+                        <span className="sp-mini-gv-seal">180</span>
+                      </div>
+                      <span className="sp-mini-gv-title">VIP</span>
+                      <span className="sp-mini-gv-bar" />
                     </div>
                   ))}
                 </div>
@@ -730,7 +740,12 @@ export default function LandingPage({ onEnterApp }) {
                 <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-10">
                   {Array.from({ length: 10 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
-                      <img src={imgConviteVip} alt={`Convite ${idx + 1}`} />
+                      <div className="sp-mini-gv-top">
+                        <span className="sp-mini-gv-brand">1C</span>
+                        <span className="sp-mini-gv-seal">180</span>
+                      </div>
+                      <span className="sp-mini-gv-title">VIP</span>
+                      <span className="sp-mini-gv-bar" />
                     </div>
                   ))}
                 </div>

@@ -327,6 +327,14 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                       <td>
                         <button 
                           className="admin-btn-copy-link"
+                          onClick={() => window.open(`${window.location.origin}?convite=vip&de=Jonatas&vip=${v.code}`, '_blank')}
+                          style={{ background: 'rgba(212, 175, 55, 0.16)', color: '#FDE68A', borderColor: 'rgba(212, 175, 55, 0.4)', marginRight: '6px' }}
+                          title="Abrir o Gift Voucher desse código"
+                        >
+                          <span>Ver Voucher</span>
+                        </button>
+                        <button 
+                          className="admin-btn-copy-link"
                           onClick={() => handleSendWhatsApp(v.code, v.notes)}
                           style={{ background: 'rgba(37, 211, 102, 0.16)', color: '#4ADE80', borderColor: 'rgba(37, 211, 102, 0.35)', marginRight: '6px' }}
                         >
