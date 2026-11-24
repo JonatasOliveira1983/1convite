@@ -1,14 +1,12 @@
 {
-  "version": "v2.11.0",
-  "build": "2026112413",
+  "version": "v2.11.1",
+  "build": "2026112414",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Motor de Renderização Nativa Full HD 1080p: Fim dos artefatos do html2canvas. Imagens exportadas em 1080x1080 (Post) e 1080x1920 (Story) cristalinas.",
-    "Acervo Curado com 2+ Imagens por Categoria: Palavra de Hoje (Montanhas e Bíblia Sagrada), Café & Conversa (Xícara e Comunhão), Cuidar do Templo (Atleta e Vitalidade) e Igreja & Fé (Santuário e Adoração).",
-    "Link Oficial 1convite.com.br na Imagem: Marca d'água oficial e endereço web renderizados de forma elegante na base de cada card.",
-    "Seleção Inteligente por Intenção: Ao escolher a categoria, os cenários específicos são destacados e ativados com 1 toque.",
-    "Formatação Tipográfica Impecável: Correção de aspas duplicadas e quebra de linha com proporções áureas de design."
+    "Correção de Renderização Visual das Imagens: Substituição de background inline conflitante por tags de imagem nativas com object-fit cover nos cards e miniaturas.",
+    "2+ Imagens Locais Ativas e Visíveis por Categoria: Palavra de Hoje, Café & Conversa, Cuidar do Templo e Igreja & Fé renderizando instantaneamente.",
+    "Motor Canvas 1080p Nativo: Download em alta fidelidade e compartilhamento com link direto 1convite.com.br."
   ],
-  "updateTimestamp": 1795535000000
+  "updateTimestamp": 1795536000000
 }

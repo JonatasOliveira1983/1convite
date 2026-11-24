@@ -1029,13 +1029,17 @@ export default function CafeComDeusView({
             <div 
               ref={cardPreviewRef}
               className={`cafe-card-preview-art ${cardFormat === 'story' ? 'is-story' : 'is-square'}`}
-              style={{
-                backgroundImage: activeBg.type === 'image' ? `url(${activeBg.url})` : 'none',
-                background: activeBg.type === 'gradient' ? activeBg.css : undefined,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
+              style={activeBg.type === 'gradient' ? { background: activeBg.css } : { backgroundColor: '#0F1422' }}
             >
+              {/* Imagem de Fundo Real */}
+              {activeBg.type === 'image' && (
+                <img 
+                  src={activeBg.url} 
+                  alt={activeBg.label} 
+                  className="cafe-card-bg-cover" 
+                />
+              )}
+
               {/* Overlay Escuro com Degradê Suave para Contraste Perfeito */}
               <div className="cafe-card-overlay-gradient" />
 
@@ -1158,15 +1162,19 @@ export default function CafeComDeusView({
                     className={`cafe-bg-thumb-btn ${isSelected ? 'selected' : ''}`}
                     title={bg.label}
                   >
-                    <div 
-                      className="cafe-bg-thumb-preview"
-                      style={{
-                        backgroundImage: bg.type === 'image' ? `url(${bg.url})` : 'none',
-                        background: bg.type === 'gradient' ? bg.css : undefined,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                      }}
-                    >
+                    <div className="cafe-bg-thumb-preview">
+                      {bg.type === 'image' ? (
+                        <img 
+                          src={bg.url} 
+                          alt={bg.label} 
+                          className="cafe-thumb-img" 
+                        />
+                      ) : (
+                        <div 
+                          className="cafe-thumb-grad" 
+                          style={{ background: bg.css }} 
+                        />
+                      )}
                       {isSelected && (
                         <span className="cafe-bg-thumb-check">✓</span>
                       )}
