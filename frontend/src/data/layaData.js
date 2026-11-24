@@ -491,6 +491,44 @@ const BANCO_INTENCOES_MENTORES = {
           acao: 'Trate hoje o próximo com a mesma paciência e generosidade que você gostaria de receber.'
         }
       ]
+    },
+    {
+      intent: 'CASAMENTO_ESPOSA_RELACIONAMENTO',
+      palavras: ['esposa', 'esposo', 'marido', 'mulher', 'casamento', 'casar', 'namoro', 'namorada', 'namorado', 'noiva', 'noivo', 'relacionamento', 'solteiro', 'solteira', 'conjugue'],
+      respostas: [
+        {
+          texto: 'No princípio da criação, Deus os fez homem e mulher. Por isso deixará o homem a seu pai e a sua mãe e se unirá à sua mulher, e serão os dois uma só carne. Não ande com o coração ansioso ou precipitado para conseguir uma esposa; busque em primeiro lugar o Reino de Deus e a Sua justiça. Antes de procurar a pessoa certa, torne-se o homem certo perante Deus, aprendendo a amar com renúncia e fidelidade.',
+          versiculo: 'Mateus 19:4-6 & Mateus 6:33',
+          acao: 'Consagre a sua vida afetiva ao Senhor em oração e peça que Ele prepare o seu caráter para liderar com amor.'
+        },
+        {
+          texto: 'Aquele que encontra uma esposa encontra o bem e alcança a benevolência do Senhor. Mas não se iluda com o brilho passageiro do mundo: a beleza física se desvanece, mas a mulher que teme ao Senhor, essa será louvada. Peça ao Pai celestial discernimento espiritual para reconhecer alguém com quem você possa edificar um altar de adoração mútua.',
+          versiculo: 'Provérbios 18:22 & Provérbios 31:30',
+          acao: 'Escreva em um caderno quais virtudes espirituais você busca e ore por sua futura esposa com paciência santa.'
+        }
+      ]
+    },
+    {
+      intent: 'CURA_SAUDE_ENFERMIDADE',
+      palavras: ['cura', 'curar', 'doenca', 'enfermidade', 'dor', 'doente', 'hospital', 'remedio', 'saude', 'medico', 'sarar'],
+      respostas: [
+        {
+          texto: 'Eu sou o Senhor que te sara. Certamente Ele tomou sobre si as nossas enfermidades e as nossas dores levou sobre si; e pelas Suas pisaduras fomos sarados. Creia no poder de Deus que renova a sua saúde. Não temas, crê somente.',
+          versiculo: 'Isaías 53:4-5 & Marcos 5:36',
+          acao: 'Coloque a sua mão sobre a área enferma e declare com fé: "O poder de Cristo restaura o meu corpo e a minha paz".'
+        }
+      ]
+    },
+    {
+      intent: 'ORACAO_PAI_NOSSO_INTIMIDADE',
+      palavras: ['como orar', 'oracao', 'orar', 'pai nosso', 'ensina a orar', 'falar com deus', 'intimidade com deus'],
+      respostas: [
+        {
+          texto: 'Quando você for orar, não seja como os hipócritas que gostam de orar nas esquinas para serem vistos pelos homens. Entre no seu quarto, feche a porta e ore ao seu Pai que está em secreto; e o seu Pai, que vê em secreto, te recompensará. Ore com simplicidade de filho: Pai nosso que estás nos céus, santificado seja o Teu nome...',
+          versiculo: 'Mateus 6:6-13',
+          acao: 'Retire-se para um lugar silencioso hoje e ore o Pai Nosso pausadamente, meditando em cada frase.'
+        }
+      ]
     }
   ],
 
@@ -688,6 +726,15 @@ const BANCO_INTENCOES_MENTORES = {
   ]
 };
 
+// ── STOPWORDS DA LÍNGUA PORTUGUESA (EVITA FALSOS POSITIVOS DE SUBSTRING) ──
+const STOPWORDS_PT = new Set([
+  'para', 'como', 'com', 'que', 'uma', 'seu', 'sua', 'dele', 'dela', 'eles', 'elas',
+  'onde', 'qual', 'quem', 'isso', 'este', 'esta', 'esse', 'essa', 'voce', 'mais',
+  'muito', 'pelo', 'pela', 'pelos', 'pelas', 'numa', 'num', 'uns', 'umas', 'ter',
+  'estar', 'ser', 'fazer', 'conseguir', 'preciso', 'precisa', 'quero', 'quer',
+  'dar', 'pode', 'podemos', 'tenho', 'tem', 'acho', 'sobre', 'algo', 'mesmo', 'diz'
+]);
+
 // ── MEMÓRIA DE ROTAÇÃO CONTEXTUAL ANTI-REPETIÇÃO ──
 // Mantém registro por mentor/intent para alternar as respostas consecutivas
 const _memoriaRotacao = {};
@@ -702,7 +749,8 @@ export function gerarRespostaMentor(mentorId, pergunta) {
     .replace(/[^\w\s]/gi, ' ')
     .trim();
 
-  const words = queryNorm.split(/\s+/).filter(w => w.length >= 2);
+  // Filtra stopwords comuns
+  const words = queryNorm.split(/\s+/).filter(w => w.length >= 3 && !STOPWORDS_PT.has(w));
   const mentorIntents = BANCO_INTENCOES_MENTORES[mentor.id] || BANCO_INTENCOES_MENTORES.jesus;
 
   let bestIntent = null;
@@ -710,15 +758,25 @@ export function gerarRespostaMentor(mentorId, pergunta) {
 
   for (const item of mentorIntents) {
     let score = 0;
+
+    // 1. Verifica expressões compostas completas primeiro (ex: "vida eterna", "bom samaritano")
+    for (const p of item.palavras) {
+      const pNorm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+      if (pNorm.includes(' ') && queryNorm.includes(pNorm)) {
+        score += 8;
+      }
+    }
+
+    // 2. Pontua palavras significativas individuais
     for (const w of words) {
       for (const p of item.palavras) {
-        const pNorm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const pNorm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
         if (w === pNorm) {
-          score += 4;
-        } else if (pNorm.includes(w) && w.length >= 4) {
-          score += 2;
-        } else if (w.includes(pNorm) && pNorm.length >= 4) {
-          score += 2;
+          score += 5; // Match exato de palavra-chave
+        } else if (w.length >= 5 && pNorm.length >= 5) {
+          if (w.startsWith(pNorm) || pNorm.startsWith(w)) {
+            score += 2; // Match de radical (ex: "perdoar" / "perdoo")
+          }
         }
       }
     }
@@ -730,7 +788,7 @@ export function gerarRespostaMentor(mentorId, pergunta) {
   }
 
   // Se encontrou uma intenção doutrinária com score relevante
-  if (bestIntent && highestScore >= 2) {
+  if (bestIntent && highestScore >= 3) {
     const key = `${mentor.id}_${bestIntent.intent}`;
     const lastIndex = _memoriaRotacao[key] !== undefined ? _memoriaRotacao[key] : -1;
     const nextIndex = (lastIndex + 1) % bestIntent.respostas.length;
