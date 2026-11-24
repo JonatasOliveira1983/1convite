@@ -9,6 +9,7 @@ import pool from './database/pool.js';
 import { LayaEngine, LAYA_MENTORES, LAYA_CONSELHOS, LAYA_ORACULO_TEMAS } from './services/layaEngine.js';
 import { ragService } from './services/ragService.js';
 import { mcpServer } from './services/mcpServer.js';
+import { synthesizeNeuralTTS } from './services/ttsService.js';
 
 dotenv.config();
 
@@ -858,6 +859,39 @@ app.post('/api/v1/laya/consultar', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// ---------------- ENDPOINT DE ÁUDIO NEURAL (TTS ESTÚDIO) ----------------
+const handleTtsRequest = async (req, res) => {
+  try {
+    const text = req.method === 'POST' ? req.body.text : req.query.text;
+    const voice = (req.method === 'POST' ? req.body.voice : req.query.voice) || 'pt-BR-FranciscaNeural';
+    const rate = (req.method === 'POST' ? req.body.rate : req.query.rate) || '-4%';
+    const pitch = (req.method === 'POST' ? req.body.pitch : req.query.pitch) || '0%';
+
+    if (!text || typeof text !== 'string' || !text.trim()) {
+      return res.status(400).json({ error: 'Parâmetro text é obrigatório.' });
+    }
+
+    const audioBuffer = await synthesizeNeuralTTS({ text, voice, rate, pitch });
+
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': audioBuffer.length,
+      'Cache-Control': 'public, max-age=604800, immutable',
+      'Accept-Ranges': 'bytes'
+    });
+
+    return res.end(audioBuffer);
+  } catch (error) {
+    console.error('[TTS Endpoint Error]:', error);
+    return res.status(500).json({ error: 'Falha na síntese de áudio neural.', details: error.message });
+  }
+};
+
+app.post('/api/v1/tts/synthesize', handleTtsRequest);
+app.get('/api/v1/tts/synthesize', handleTtsRequest);
+app.post('/api/tts', handleTtsRequest);
+app.get('/api/tts', handleTtsRequest);
 
 // ---------------- ROTAS DO CORE ----------------
 

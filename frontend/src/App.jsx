@@ -1051,6 +1051,7 @@ function App() {
   const [activeAmbient, setActiveAmbient] = useState('none');
   const [ambientVolume, setAmbientVolume] = useState(0.15);
   const [narrationRate, setNarrationRate] = useState(0.82);
+  const [meditationVoice, setMeditationVoice] = useState('pt-BR-FranciscaNeural');
   const ambientAudioRef = useRef(null);
   const meditationTimeoutRef = useRef(null);
   const currentSegmentIndexRef = useRef(0);
@@ -2344,8 +2345,19 @@ Em nome de Jesus, Amém.`;
       setMeditationCurrentTime(Math.min(elapsed, estimatedDuration));
     }, 1000);
 
+    const neuralRate = narrationRate <= 0.75 ? '-12%' : narrationRate <= 0.82 ? '-6%' : narrationRate <= 0.95 ? '0%' : '+6%';
+
     playNeuralSpeech(cleanPrayerSpeech, {
+      voice: meditationVoice,
+      rate: neuralRate,
+      ambient: false,
       onStart: () => setMeditationPlaying(true),
+      onProgress: (current, duration) => {
+        if (duration) {
+          setMeditationDuration(Math.round(duration));
+          setMeditationCurrentTime(Math.round(current));
+        }
+      },
       onEnd: () => {
         setMeditationCompleted(true);
         // Mantém som ambiente por mais 10s antes de concluir
@@ -4157,7 +4169,7 @@ Em nome de Jesus, Amém.`;
                         const nextIndex = (rates.indexOf(narrationRate) + 1) % rates.length;
                         setNarrationRate(rates[nextIndex]);
                         if (meditationPlaying) {
-                          window.speechSynthesis.cancel();
+                          stopNeuralSpeech();
                           setMeditationPlaying(false);
                           setTimeout(() => toggleMeditationTTS(), 100);
                         }
@@ -4172,8 +4184,39 @@ Em nome de Jesus, Amém.`;
                         fontWeight: '800',
                         cursor: 'pointer'
                       }}
+                      title="Velocidade de fala"
                     >
                       {narrationRate === 0.75 ? 'Lento' : narrationRate === 0.82 ? 'Sereno' : narrationRate === 0.95 ? 'Normal' : 'Rápido'}
+                    </button>
+
+                    {/* Alternar Voz Neural: Francisca (Serena) / Antônio (Pastoral) */}
+                    <button
+                      onClick={() => {
+                        const nextVoice = meditationVoice === 'pt-BR-FranciscaNeural' ? 'pt-BR-AntonioNeural' : 'pt-BR-FranciscaNeural';
+                        setMeditationVoice(nextVoice);
+                        if (meditationPlaying) {
+                          stopNeuralSpeech();
+                          setMeditationPlaying(false);
+                          setTimeout(() => toggleMeditationTTS(), 100);
+                        }
+                      }}
+                      style={{
+                        background: darkMode ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)',
+                        border: '1.5px solid rgba(139, 92, 246, 0.4)',
+                        padding: '10px 14px',
+                        borderRadius: '20px',
+                        color: darkMode ? '#C4B5FD' : '#6D28D9',
+                        fontSize: '0.82rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '5px'
+                      }}
+                      title="Clique para alternar entre voz feminina serena e masculina pastoral"
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                      <span>{meditationVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}</span>
                     </button>
                   </div>
 

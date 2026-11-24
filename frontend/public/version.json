@@ -1,14 +1,14 @@
 {
-  "version": "v2.7.0",
-  "build": "2026112405",
+  "version": "v2.8.0",
+  "build": "2026112406",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Muscle Map Anatômico Interativo (OpenGym): Avatar vetorial com iluminação dos grupos musculares trabalhados (frente e costas).",
-    "Stats Board do OpenGym: Painel de métricas no topo com sessões concluídas, sequência de dias e peso corporal.",
-    "Weekly Streak Tracker: Régua dos 7 dias da semana com status de consistência em tempo real.",
-    "Tabela de Séries com Checkboxes Interativos: Marque cada série concluída e acompanhe o rest timer.",
-    "Modal de Registro de Peso Corporal: Controle de evolução física diária integrado ao cuidado do templo."
+    "Motor de Narração Neural Natural de Estúdio: Substituição definitiva de vozes robóticas por IA de alta definição (Microsoft Edge Neural TTS).",
+    "Player Devocional no Café com Deus: Novo reprodutor de áudio com equalizador visual e barra de progresso.",
+    "Seletor de Vozes Humanizadas: Alterne facilmente entre Francisca (Voz Serena) e Antônio (Voz Pastoral).",
+    "Trilha Instrumental de Piano: Ambientação suave e relaxante integrada durante a audição do devocional e oração.",
+    "Modos de Reprodução Flexíveis: Opção de ouvir a Meditação Completa ou apenas a Oração Diária."
   ],
-  "updateTimestamp": 1795526500000
+  "updateTimestamp": 1795527600000
 }

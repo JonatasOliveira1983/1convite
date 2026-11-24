@@ -1,56 +1,20 @@
 // ═════════════════════════════════════════════════════════════════════
-// MOTOR DE ÁUDIO NEURAL NATURAL (ESTÚDIO & DEVOCIONAL)
+// MOTOR DE ÁUDIO NEURAL NATURAL (MICROSOFT EDGE TTS + SOM AMBIENTE)
 // ═════════════════════════════════════════════════════════════════════
-// Elimina vozes robóticas reproduzindo áudio natural de alta definição (MP3)
-// em celulares (Android/iOS) e navegadores desktop (Chrome/Edge/Firefox).
+// Elimina vozes robóticas reproduzindo voz humana de estúdio (MP3)
+// com ambientação suave de piano para meditações e orações no 1Convite.
 // ═════════════════════════════════════════════════════════════════════
 
 let currentAudio = null;
+let currentAmbientAudio = null;
 let currentSessionId = 0;
 let isPlayingInternal = false;
+let isPausedInternal = false;
+let currentBlobUrl = null;
 
-// Divide o texto em fragmentos naturais de fala respeitando pontuações (máx ~160 chars)
-function splitIntoNaturalChunks(text) {
-  if (!text) return [];
-  // Limpa espaços extras e quebras excessivas
-  const clean = text.replace(/\s+/g, ' ').trim();
-  
-  // Divide por pontuação forte ou pausas naturais
-  const rawSentences = clean.match(/[^.!?:]+[.!?:]+/g) || [clean];
-  const chunks = [];
+const API_FALLBACK_URL = 'https://oneconvite.onrender.com/api/v1/tts/synthesize';
 
-  for (let s of rawSentences) {
-    s = s.trim();
-    if (!s) continue;
-    
-    // Se a sentença for maior que 160 caracteres, divide por vírgula ou ponto-e-vírgula
-    if (s.length > 160) {
-      const subParts = s.split(/([,;]|\s+e\s+|\s+mas\s+)/);
-      let buffer = '';
-      for (const p of subParts) {
-        if ((buffer + p).length > 160 && buffer.trim()) {
-          chunks.push(buffer.trim());
-          buffer = p;
-        } else {
-          buffer += p;
-        }
-      }
-      if (buffer.trim()) chunks.push(buffer.trim());
-    } else {
-      chunks.push(s);
-    }
-  }
-
-  return chunks.filter(c => c.length > 0);
-}
-
-// Gera a URL de áudio natural MP3 do Google TTS Neural (pt-BR)
-function getAudioUrl(textChunk) {
-  const encoded = encodeURIComponent(textChunk);
-  return `https://translate.google.com/translate_tts?ie=UTF-8&tl=pt-BR&client=tw-ob&q=${encoded}`;
-}
-
-// Fallback com Web Speech API usando a melhor voz neural disponível
+// Fallback nativo calibrado em caso de falta de conexão
 function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
   if (typeof window === 'undefined' || !window.speechSynthesis) {
     if (onEnd) onEnd();
@@ -59,15 +23,14 @@ function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
 
   try {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
+    const clean = text.replace(/[*#_`]/g, ' ').replace(/\s+/g, ' ').trim();
+    const utterance = new SpeechSynthesisUtterance(clean);
     utterance.lang = 'pt-BR';
-    utterance.rate = 0.88; // Cadência calma e meditativa
+    utterance.rate = 0.88;
     utterance.pitch = 1.0;
 
     const voices = window.speechSynthesis.getVoices() || [];
     const ptVoices = voices.filter(v => v.lang && (v.lang.includes('pt-BR') || v.lang.includes('pt_BR') || v.lang.startsWith('pt')));
-    
-    // Prioriza vozes neurais e de alta fidelidade
     const bestVoice = ptVoices.find(v => 
       v.name.includes('Google') || 
       v.name.includes('Natural') || 
@@ -81,6 +44,7 @@ function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
 
     utterance.onend = () => {
       if (sessionId === currentSessionId) {
+        stopAmbientSound();
         isPlayingInternal = false;
         if (onEnd) onEnd();
       }
@@ -88,6 +52,7 @@ function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
 
     utterance.onerror = (e) => {
       if (sessionId === currentSessionId) {
+        stopAmbientSound();
         isPlayingInternal = false;
         if (onError) onError(e);
       }
@@ -95,92 +60,200 @@ function speakWithBestNativeVoice(text, sessionId, onEnd, onError) {
 
     window.speechSynthesis.speak(utterance);
   } catch (err) {
+    stopAmbientSound();
     isPlayingInternal = false;
     if (onEnd) onEnd();
   }
 }
 
-/**
- * Reproduz o texto com voz neural natural em sequência contínua
- * @param {string} text - Texto completo da reflexão ou oração
- * @param {object} callbacks - { onStart, onEnd, onChunkChange, onError }
- */
-export function playNeuralSpeech(text, callbacks = {}) {
-  const { onStart, onEnd, onChunkChange, onError } = callbacks;
+// Inicia música ambiente suave (Piano)
+function startAmbientSound(volume = 0.12) {
+  try {
+    if (!currentAmbientAudio) {
+      currentAmbientAudio = new Audio('/piano.mp3');
+      currentAmbientAudio.loop = true;
+    }
+    currentAmbientAudio.volume = volume;
+    currentAmbientAudio.play().catch(() => {
+      // Autoplay de som secundário pode ser ignorado sem interromper a voz
+    });
+  } catch (_) {}
+}
 
-  // Interrompe qualquer reprodução anterior
+// Interrompe música ambiente com fade out suave
+function stopAmbientSound() {
+  if (currentAmbientAudio) {
+    try {
+      const audio = currentAmbientAudio;
+      let vol = audio.volume;
+      const fadeInterval = setInterval(() => {
+        vol = Math.max(0, vol - 0.03);
+        audio.volume = vol;
+        if (vol <= 0.01) {
+          clearInterval(fadeInterval);
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      }, 50);
+    } catch (_) {
+      try {
+        currentAmbientAudio.pause();
+        currentAmbientAudio.currentTime = 0;
+      } catch (e) {}
+    }
+  }
+}
+
+/**
+ * Reproduz o texto com voz neural natural em MP3 e trilha instrumental suave
+ * @param {string} text - Texto completo
+ * @param {object} options - Opções e callbacks
+ * @param {string} [options.voice='pt-BR-FranciscaNeural'] - 'pt-BR-FranciscaNeural' ou 'pt-BR-AntonioNeural'
+ * @param {string} [options.rate='-4%'] - Velocidade de leitura meditativa
+ * @param {boolean} [options.ambient=true] - Ativar piano suave de fundo
+ * @param {number} [options.ambientVolume=0.12] - Volume da música ambiente
+ * @param {function} [options.onStart]
+ * @param {function} [options.onEnd]
+ * @param {function} [options.onProgress] - (currentTime, duration, percent)
+ * @param {function} [options.onError]
+ */
+export async function playNeuralSpeech(text, options = {}) {
+  const {
+    voice = 'pt-BR-FranciscaNeural',
+    rate = '-4%',
+    ambient = true,
+    ambientVolume = 0.12,
+    onStart,
+    onEnd,
+    onProgress,
+    onError
+  } = options;
+
   stopNeuralSpeech();
 
-  const sessionId = ++currentSessionId;
-  const chunks = splitIntoNaturalChunks(text);
-
-  if (chunks.length === 0) {
+  if (!text || !text.trim()) {
     if (onEnd) onEnd();
     return;
   }
 
+  const sessionId = ++currentSessionId;
   isPlayingInternal = true;
+  isPausedInternal = false;
+
   if (onStart) onStart();
 
-  let currentIndex = 0;
+  // Inicia som ambiente se solicitado
+  if (ambient) {
+    startAmbientSound(ambientVolume);
+  }
 
-  // Função interna que toca o chunk da vez e pré-carrega o seguinte
-  const playNextChunk = () => {
+  // Tenta obter o áudio sintetizado via API do Cloudflare Pages / Render
+  try {
+    let response;
+    const requestBody = JSON.stringify({ text, voice, rate });
+
+    try {
+      // 1. Tenta endpoint relativo (Pages Function ou Proxy)
+      response = await fetch('/api/v1/tts/synthesize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: requestBody
+      });
+    } catch (_) {}
+
+    // 2. Se falhar ou não for ok, tenta a URL direta do Render
+    if (!response || !response.ok) {
+      try {
+        response = await fetch(API_FALLBACK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: requestBody
+        });
+      } catch (_) {}
+    }
+
+    if (!response || !response.ok) {
+      throw new Error('Falha na resposta do servidor de áudio neural');
+    }
+
+    const audioBlob = await response.blob();
     if (sessionId !== currentSessionId) return;
 
-    if (currentIndex >= chunks.length) {
-      isPlayingInternal = false;
-      currentAudio = null;
-      if (onEnd) onEnd();
-      return;
+    if (currentBlobUrl) {
+      URL.revokeObjectURL(currentBlobUrl);
     }
+    currentBlobUrl = URL.createObjectURL(audioBlob);
 
-    const chunk = chunks[currentIndex];
-    if (onChunkChange) onChunkChange(currentIndex, chunks.length, chunk);
-
-    const url = getAudioUrl(chunk);
-    const audio = new Audio(url);
+    const audio = new Audio(currentBlobUrl);
     currentAudio = audio;
 
-    // Pré-carrega o próximo áudio para transição instantânea
-    if (currentIndex + 1 < chunks.length) {
-      const nextUrl = getAudioUrl(chunks[currentIndex + 1]);
-      const preloadAudio = new Audio();
-      preloadAudio.src = nextUrl;
-      preloadAudio.preload = 'auto';
-    }
+    // Monitora progresso da narração
+    audio.ontimeupdate = () => {
+      if (sessionId === currentSessionId && onProgress && audio.duration) {
+        onProgress(audio.currentTime, audio.duration, (audio.currentTime / audio.duration) * 100);
+      }
+    };
 
     audio.onended = () => {
       if (sessionId === currentSessionId) {
-        currentIndex++;
-        // Pequena pausa natural de 150ms entre frases para respiração
-        setTimeout(playNextChunk, 150);
+        isPlayingInternal = false;
+        stopAmbientSound();
+        if (onEnd) onEnd();
       }
     };
 
     audio.onerror = (err) => {
-      console.warn('[NeuralTTS] Falha ao carregar áudio MP3, acionando voz nativa calibrada:', err);
-      // Se o endpoint MP3 for bloqueado no dispositivo, usa o fallback nativo com a melhor voz pt-BR
-      const remainingText = chunks.slice(currentIndex).join(' ');
-      speakWithBestNativeVoice(remainingText, sessionId, onEnd, onError);
+      console.warn('[NeuralTTS] Erro no áudio recebido, usando voz nativa:', err);
+      speakWithBestNativeVoice(text, sessionId, onEnd, onError);
     };
 
-    audio.play().catch(playErr => {
-      console.warn('[NeuralTTS] Autoplay restrito ou erro no play, acionando fallback nativo:', playErr);
-      const remainingText = chunks.slice(currentIndex).join(' ');
-      speakWithBestNativeVoice(remainingText, sessionId, onEnd, onError);
-    });
-  };
+    await audio.play();
 
-  playNextChunk();
+  } catch (error) {
+    console.warn('[NeuralTTS] Backend indisponível ou offline. Ativando voz nativa de fallback:', error);
+    speakWithBestNativeVoice(text, sessionId, onEnd, onError);
+  }
 }
 
 /**
- * Interrompe imediatamente qualquer áudio ou voz neural em execução
+ * Pausa a reprodução atual
+ */
+export function pauseNeuralSpeech() {
+  isPausedInternal = true;
+  if (currentAudio) {
+    try { currentAudio.pause(); } catch (_) {}
+  }
+  if (currentAmbientAudio) {
+    try { currentAmbientAudio.pause(); } catch (_) {}
+  }
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    try { window.speechSynthesis.pause(); } catch (_) {}
+  }
+}
+
+/**
+ * Retoma a reprodução pausada
+ */
+export function resumeNeuralSpeech() {
+  isPausedInternal = false;
+  if (currentAudio) {
+    try { currentAudio.play(); } catch (_) {}
+  }
+  if (currentAmbientAudio) {
+    try { currentAmbientAudio.play(); } catch (_) {}
+  }
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    try { window.speechSynthesis.resume(); } catch (_) {}
+  }
+}
+
+/**
+ * Interrompe imediatamente qualquer áudio em execução
  */
 export function stopNeuralSpeech() {
   currentSessionId++;
   isPlayingInternal = false;
+  isPausedInternal = false;
 
   if (currentAudio) {
     try {
@@ -190,6 +263,13 @@ export function stopNeuralSpeech() {
     currentAudio = null;
   }
 
+  if (currentBlobUrl) {
+    URL.revokeObjectURL(currentBlobUrl);
+    currentBlobUrl = null;
+  }
+
+  stopAmbientSound();
+
   if (typeof window !== 'undefined' && window.speechSynthesis) {
     try {
       window.speechSynthesis.cancel();
@@ -198,8 +278,8 @@ export function stopNeuralSpeech() {
 }
 
 /**
- * Retorna se o motor está reproduzindo áudio no momento
+ * Retorna se o áudio neural está tocando no momento
  */
 export function isNeuralSpeaking() {
-  return isPlayingInternal;
+  return isPlayingInternal && !isPausedInternal;
 }
