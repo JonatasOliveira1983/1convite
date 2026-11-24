@@ -23,8 +23,8 @@
   width: 104%;
   height: 104%;
   object-fit: cover;
-  object-position: center 28%;
-  filter: brightness(0.92) saturate(1.08);
+  object-position: center 22%;
+  filter: brightness(0.96) saturate(1.06);
   animation: c6KenBurnsSmooth 24s ease-in-out infinite alternate;
   pointer-events: none;
   transform-origin: center center;

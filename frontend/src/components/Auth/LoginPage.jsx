@@ -159,6 +159,11 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
         src={loginSunsetBg} 
         alt="Crianças no Campo Florido ao Pôr do Sol" 
         className="c6-bg-media"
+        loading="eager"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = '/assets/auth/login_sunset_bg.jpg';
+        }}
       />
       <div className="c6-bg-overlay" />
 
