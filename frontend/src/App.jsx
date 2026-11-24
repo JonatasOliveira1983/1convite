@@ -2644,7 +2644,7 @@ Em nome de Jesus, Amém.`;
   }
 
 
-  // ── Renderização da Experiência Visual do 1Convite (Portal de Luz) ──
+  // ── Renderização da Experiência Visual do 1Convite (Portal de Luz / Vale-Presente) ──
   if (portalConviteData) {
     return (
       <ConvitePortalLuz 
@@ -2653,15 +2653,15 @@ Em nome de Jesus, Amém.`;
         conviteType={portalConviteData.conviteType}
         customMessage={portalConviteData.customMessage}
         vipCode={portalConviteData.vipCode}
-        onAccept={({ vipCode }) => {
-          setPortalConviteData(null);
-          setIsLoggedIn(true);
+        onAccept={({ vipCode, action }) => {
           if (vipCode) {
-            adminAuthService.useVoucher(vipCode, profileEmail);
-            setIsPremiumUser(true);
-            setUserVipExpiry(Date.now() + 180 * 24 * 60 * 60 * 1000);
+            try { localStorage.setItem('1convite_pending_vip_code', vipCode); } catch (e) {}
           }
-          setActiveTab('dashboard');
+          if (action === 'download') {
+            window.open('https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk', '_blank');
+          }
+          setPortalConviteData(null);
+          setIsLoggedIn(false);
         }}
         onDismiss={() => {
           setPortalConviteData(null);
@@ -6720,6 +6720,7 @@ Em nome de Jesus, Amém.`;
                     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px', marginBottom: '14px' }}>
                       <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>R$</span>
                       <span style={{ fontSize: '2.4rem', fontWeight: '900', color: 'var(--orange)', lineHeight: 1 }}>{plan.price}</span>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '700' }}>/ano</span>
                     </div>
                     <button
                       className="btn-primary"

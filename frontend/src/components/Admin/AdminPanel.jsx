@@ -57,10 +57,18 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
 
   const handleCopyLink = (code) => {
     const origin = window.location.origin;
-    const link = `${origin}?vip=${code}`;
+    const link = `${origin}?convite=vip&de=Jonatas&vip=${code}`;
     navigator.clipboard.writeText(link);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(''), 3000);
+  };
+
+  const handleSendWhatsApp = (code, notes = '') => {
+    const origin = window.location.origin;
+    const link = `${origin}?convite=vip&de=Jonatas&vip=${code}`;
+    const saudacao = notes ? `Olá ${notes}! ` : 'Olá! ';
+    const msg = `${saudacao}Separei um Vale-Presente Digital do 1Convite para você: 6 meses (180 dias) gratuitos de acesso completo! Abra seu convite aqui: ${link} (Código: ${code})`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   return (
@@ -317,6 +325,13 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                         </button>
                       </td>
                       <td>
+                        <button 
+                          className="admin-btn-copy-link"
+                          onClick={() => handleSendWhatsApp(v.code, v.notes)}
+                          style={{ background: 'rgba(37, 211, 102, 0.16)', color: '#4ADE80', borderColor: 'rgba(37, 211, 102, 0.35)', marginRight: '6px' }}
+                        >
+                          <span>WhatsApp</span>
+                        </button>
                         <button 
                           className="admin-btn-copy-link"
                           onClick={() => handleCopyLink(v.code)}

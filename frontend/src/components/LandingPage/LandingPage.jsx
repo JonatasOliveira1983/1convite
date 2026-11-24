@@ -635,28 +635,36 @@ export default function LandingPage({ onEnterApp }) {
           <div className="sp-plans-grid">
             {/* Plano Básico */}
             <div className="sp-plan-card">
-              <span className="sp-plan-tier">Plano Básico</span>
+              <span className="sp-plan-tier">Plano Básico • Anual</span>
               <h3 className="sp-plan-title">Semente</h3>
               <p className="sp-plan-subtitle">Ideal para sua jornada diária pessoal + 1 pessoa especial.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">67</span>
+                <span className="sp-plan-period">/ano</span>
               </div>
               <div className="sp-plan-invites-pill">
                 <IconCheck />
-                <span>Inclui 1 Convite Gratuito</span>
+                <span>Inclui 1 Vale-Presente (180 dias grátis)</span>
+              </div>
+              <div className="sp-plan-vouchers-preview" aria-label="1 convite incluído">
+                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-1">
+                  <div className="sp-plan-voucher-thumb">
+                    <img src={imgConviteVip} alt="Convite 1Convite" />
+                  </div>
+                </div>
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Acesso completo à Bíblia ACF + Áudio</span></li>
+                <li><IconCheck /><span>Acesso anual completo à Bíblia ACF + Áudio</span></li>
                 <li><IconCheck /><span>Meditação Diária (Leitura + Narração)</span></li>
                 <li><IconCheck /><span>Treino Templo, Mentores e Espaço Kids</span></li>
-                <li><IconCheck /><span>1 código exclusivo para liberar acesso total a um convidado</span></li>
+                <li><IconCheck /><span>1 código exclusivo para liberar 6 meses grátis a um convidado</span></li>
               </ul>
               <button
                 type="button"
                 className="sp-btn-cta-dark"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67+-+1+Convite)+do+1Convite!', '_blank')}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67%2Fano+-+1+Convite)+do+1Convite!', '_blank')}
               >
                 <span>Garantir Plano Básico</span>
                 <IconArrowRight />
@@ -666,28 +674,38 @@ export default function LandingPage({ onEnterApp }) {
             {/* Plano Mais Popular */}
             <div className="sp-plan-card sp-plan-card-featured">
               <div className="sp-plan-popular-pill">MAIS POPULAR</div>
-              <span className="sp-plan-tier">Mais Popular</span>
+              <span className="sp-plan-tier">Mais Popular • Anual</span>
               <h3 className="sp-plan-title">Edificação</h3>
               <p className="sp-plan-subtitle">Perfeito para sua casa, família e amigos próximos.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">97</span>
+                <span className="sp-plan-period">/ano</span>
               </div>
               <div className="sp-plan-invites-pill">
                 <IconCheck />
-                <span>Inclui 5 Convites Gratuitos</span>
+                <span>Inclui 5 Vales-Presente (180 dias grátis)</span>
+              </div>
+              <div className="sp-plan-vouchers-preview" aria-label="5 convites incluídos">
+                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-5">
+                  {Array.from({ length: 5 }).map((_, idx) => (
+                    <div key={idx} className="sp-plan-voucher-thumb">
+                      <img src={imgConviteVip} alt={`Convite ${idx + 1}`} />
+                    </div>
+                  ))}
+                </div>
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Tudo do Plano Básico liberado</span></li>
+                <li><IconCheck /><span>Tudo do Plano Básico por 1 ano</span></li>
                 <li><IconCheck /><span>Mulher Virtuosa, Biblioteca do Pregador & E-books</span></li>
                 <li><IconCheck /><span>Studio de Cards e Oração Guiada completa</span></li>
-                <li><IconCheck /><span>5 códigos exclusivos para seus convidados usarem de graça</span></li>
+                <li><IconCheck /><span>5 códigos exclusivos para seus convidados usarem 6 meses grátis</span></li>
               </ul>
               <button
                 type="button"
                 className="sp-btn-cta-green"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97+-+5+Convites)+do+1Convite!', '_blank')}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97%2Fano+-+5+Convites)+do+1Convite!', '_blank')}
               >
                 <span>Garantir Plano Popular</span>
                 <IconArrowRight />
@@ -696,28 +714,38 @@ export default function LandingPage({ onEnterApp }) {
 
             {/* Plano Avançado */}
             <div className="sp-plan-card">
-              <span className="sp-plan-tier">Plano Avançado</span>
+              <span className="sp-plan-tier">Plano Avançado • Anual</span>
               <h3 className="sp-plan-title">Reino</h3>
               <p className="sp-plan-subtitle">Para líderes, células, ministérios e famílias grandes.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">147</span>
+                <span className="sp-plan-period">/ano</span>
               </div>
               <div className="sp-plan-invites-pill">
                 <IconCheck />
-                <span>Inclui 10 Convites Gratuitos</span>
+                <span>Inclui 10 Vales-Presente (180 dias grátis)</span>
+              </div>
+              <div className="sp-plan-vouchers-preview" aria-label="10 convites incluídos">
+                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-10">
+                  {Array.from({ length: 10 }).map((_, idx) => (
+                    <div key={idx} className="sp-plan-voucher-thumb">
+                      <img src={imgConviteVip} alt={`Convite ${idx + 1}`} />
+                    </div>
+                  ))}
+                </div>
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Acesso total a todos os recursos do ecossistema</span></li>
+                <li><IconCheck /><span>Acesso anual total a todos os recursos</span></li>
                 <li><IconCheck /><span>Todos os E-books, Trilhas e Mentores Bíblicos</span></li>
                 <li><IconCheck /><span>10 códigos exclusivos para distribuir na sua célula ou igreja</span></li>
-                <li><IconCheck /><span>Quem recebe o código acessa tudo gratuitamente</span></li>
+                <li><IconCheck /><span>Cada convidado ganha 6 meses gratuitos no app</span></li>
               </ul>
               <button
                 type="button"
                 className="sp-btn-cta-dark"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147+-+10+Convites)+do+1Convite!', '_blank')}
+                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147%2Fano+-+10+Convites)+do+1Convite!', '_blank')}
               >
                 <span>Garantir Plano Avançado</span>
                 <IconArrowRight />

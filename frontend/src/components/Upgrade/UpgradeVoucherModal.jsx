@@ -85,7 +85,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
               <div className="uv-plan-price">
                 <span className="uv-currency">R$</span>
                 <span className="uv-value">67</span>
-                <span className="uv-period">/único</span>
+                <span className="uv-period">/ano</span>
               </div>
               <ul className="uv-plan-features">
                 <li>Bíblia ACF com Narração Imersiva</li>
@@ -112,7 +112,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
               <div className="uv-plan-price">
                 <span className="uv-currency">R$</span>
                 <span className="uv-value">97</span>
-                <span className="uv-period">/único</span>
+                <span className="uv-period">/ano</span>
               </div>
               <ul className="uv-plan-features">
                 <li>Tudo do Plano Básico liberado</li>
@@ -138,7 +138,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
               <div className="uv-plan-price">
                 <span className="uv-currency">R$</span>
                 <span className="uv-value">147</span>
-                <span className="uv-period">/único</span>
+                <span className="uv-period">/ano</span>
               </div>
               <ul className="uv-plan-features">
                 <li>Acesso Total a Todos os Módulos</li>

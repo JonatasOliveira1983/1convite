@@ -5,14 +5,24 @@ import appLogoWhite from '../../assets/logomarca_dark.png';
 import loginSunsetBg from '../../assets/auth/login_sunset_bg.jpg';
 
 export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
+  const pendingVip = (() => {
+    try {
+      const urlVip = new URLSearchParams(window.location.search).get('vip');
+      const storedVip = localStorage.getItem('1convite_pending_vip_code');
+      return (urlVip || storedVip || '').trim().toUpperCase();
+    } catch {
+      return '';
+    }
+  })();
+
   // viewMode: 'initial' (estilo C6 Bank), 'login' (gaveta login), 'register' (gaveta cadastro)
-  const [viewMode, setViewMode] = useState('initial');
+  const [viewMode, setViewMode] = useState(pendingVip ? 'register' : 'initial');
   
   // Dados do formulário
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [vipCode, setVipCode] = useState('');
+  const [vipCode, setVipCode] = useState(pendingVip);
 
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
