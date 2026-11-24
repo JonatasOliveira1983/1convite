@@ -798,8 +798,6 @@ function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('app-theme') || 'theme-green');
   const [fontSizeScale, setFontSizeScale] = useState(() => parseInt(localStorage.getItem('app-font-size') || '16'));
   const [enableCustomFontSize, setEnableCustomFontSize] = useState(() => localStorage.getItem('app-enable-font-size') === 'true');
-  const [voiceGender, setVoiceGender] = useState(() => localStorage.getItem('app-voice-gender') || 'feminino');
-  const [voiceSpeed, setVoiceSpeed] = useState(() => parseFloat(localStorage.getItem('app-voice-speed') || '1.0'));
   const [currentPath, setCurrentPath] = useState(() => window.location.pathname);
 
   // CONFIGURAÇÃO DO WHATSAPP COMERCIAL (FUNIL DE VENDAS)
@@ -6763,7 +6761,13 @@ Em nome de Jesus, Amém.`;
                   </label>
                 </div>
 
-                <h2 className="hero-title" style={{ fontSize: '1.35rem', marginBottom: '4px' }}>{profileName}</h2>
+                <h2 className="hero-title" style={{ fontSize: '1.35rem', marginBottom: '6px' }}>
+                  {isAdminMode
+                    ? 'Jonatas'
+                    : (localStorage.getItem('1convite_guest_mode') === 'true' || !profileName || profileName.includes('Administrador Mestre'))
+                      ? 'Visitante'
+                      : profileName}
+                </h2>
                 <span className="pedagio-badge badge-proposito" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -6772,13 +6776,15 @@ Em nome de Jesus, Amém.`;
                     {isAdminMode 
                       ? 'Administrador Mestre • Acesso Total'
                       : userVipExpiry 
-                        ? `Membro VIP 6 Meses • Até ${new Date(userVipExpiry).toLocaleDateString('pt-BR')}` 
-                        : 'Membro Convidado • Modo Visitante'}
+                        ? `Membro VIP • Até ${new Date(userVipExpiry).toLocaleDateString('pt-BR')}` 
+                        : localStorage.getItem('1convite_guest_mode') === 'true'
+                          ? 'Modo Visitante'
+                          : 'Membro Convidado'}
                   </span>
                 </span>
 
                 {isAdminMode && (
-                  <div style={{ marginTop: '10px' }}>
+                  <div style={{ marginTop: '14px' }}>
                     <button
                       type="button"
                       onClick={() => setShowAdminPanel(true)}
@@ -6787,8 +6793,8 @@ Em nome de Jesus, Amém.`;
                         border: '1.5px solid #F59E0B',
                         color: '#FCD34D',
                         borderRadius: '24px',
-                        padding: '8px 18px',
-                        fontSize: '0.82rem',
+                        padding: '9px 20px',
+                        fontSize: '0.84rem',
                         fontWeight: '800',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -6803,96 +6809,6 @@ Em nome de Jesus, Amém.`;
                         <path d="M2 12l10 5 10-5" />
                       </svg>
                       <span>Abrir Painel Administrativo</span>
-                    </button>
-                  </div>
-                )}
-
-                {/* Seletor rápido de Avatar Padrão (Homem / Mulher) */}
-                <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                    Avatares padrão disponíveis:
-                  </span>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <button
-                      type="button"
-                      onClick={() => handleSelectDefaultAvatar('homem')}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '6px 12px',
-                        borderRadius: '20px',
-                        border: userGender === 'homem' && !isCustomAvatar ? '2px solid #38BDF8' : '1px solid var(--slate-border)',
-                        background: userGender === 'homem' && !isCustomAvatar ? 'rgba(56, 189, 248, 0.15)' : 'var(--slate-light)',
-                        color: 'var(--text-primary)',
-                        cursor: 'pointer',
-                        fontSize: '0.78rem',
-                        fontWeight: '700',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <img src={DEFAULT_AVATAR_MAN} alt="Avatar Homem" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                      <span>Homem</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleSelectDefaultAvatar('mulher')}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '6px 12px',
-                        borderRadius: '20px',
-                        border: userGender === 'mulher' && !isCustomAvatar ? '2px solid #F472B6' : '1px solid var(--slate-border)',
-                        background: userGender === 'mulher' && !isCustomAvatar ? 'rgba(244, 114, 182, 0.15)' : 'var(--slate-light)',
-                        color: 'var(--text-primary)',
-                        cursor: 'pointer',
-                        fontSize: '0.78rem',
-                        fontWeight: '700',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <img src={DEFAULT_AVATAR_WOMAN} alt="Avatar Mulher" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                      <span>Mulher</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Banner Convidativo para foto personalizada */}
-                {!isCustomAvatar ? (
-                  <div style={{
-                    marginTop: '16px',
-                    background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.14) 0%, rgba(234, 179, 8, 0.12) 100%)',
-                    border: '1.5px dashed #F59E0B',
-                    borderRadius: '16px',
-                    padding: '14px 16px',
-                    textAlign: 'center'
-                  }}>
-                    <p style={{ margin: '0 0 10px', fontSize: '0.84rem', fontWeight: '600', color: 'var(--text-primary)', lineHeight: '1.4' }}>
-                      Sinta o 1Convite como seu! Adicione uma foto sua para personalizar sua jornada diária.
-                    </p>
-                    <label className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '9px 18px', cursor: 'pointer', borderRadius: '500px', fontSize: '0.82rem', fontWeight: '800' }}>
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                      <span>Escolher Foto do Celular</span>
-                      <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
-                    </label>
-                  </div>
-                ) : (
-                  <div style={{ marginTop: '12px' }}>
-                    <button
-                      type="button"
-                      onClick={handleResetToDefaultAvatar}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: 'var(--text-secondary)',
-                        fontSize: '0.74rem',
-                        cursor: 'pointer',
-                        textDecoration: 'underline'
-                      }}
-                    >
-                      Voltar ao avatar padrão
                     </button>
                   </div>
                 )}
@@ -7012,79 +6928,13 @@ Em nome de Jesus, Amém.`;
                       <span style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Aa</span>
                     </div>
                     <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '12px 0 0', textAlign: 'center', opacity: 0.9 }}>
-                      Clique e arraste a barra para alterar o tamanho da letra.
+                      Ajusta o tamanho dos textos de leitura do aplicativo.
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* 3. Configurações de Voz da Narração */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Voz da Narração</h3>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Masculina</span>
-                    <input
-                      type="radio"
-                      name="voiceGender"
-                      checked={voiceGender === 'masculino'}
-                      onChange={() => {
-                        setVoiceGender('masculino');
-                        localStorage.setItem('app-voice-gender', 'masculino');
-                      }}
-                      style={{ width: '18px', height: '18px', accentColor: 'var(--orange)', cursor: 'pointer' }}
-                    />
-                  </label>
-
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Feminina</span>
-                    <input
-                      type="radio"
-                      name="voiceGender"
-                      checked={voiceGender === 'feminino'}
-                      onChange={() => {
-                        setVoiceGender('feminino');
-                        localStorage.setItem('app-voice-gender', 'feminino');
-                      }}
-                      style={{ width: '18px', height: '18px', accentColor: 'var(--orange)', cursor: 'pointer' }}
-                    />
-                  </label>
-
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px', borderTop: '1px solid var(--slate-border)', paddingTop: '12px' }}>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Velocidade de reprodução</span>
-                    <select
-                      value={voiceSpeed}
-                      onChange={(e) => {
-                        const val = parseFloat(e.target.value);
-                        setVoiceSpeed(val);
-                        localStorage.setItem('app-voice-speed', val);
-                      }}
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--slate-border)',
-                        backgroundColor: 'var(--bg-app)',
-                        color: 'var(--text-primary)',
-                        fontSize: '0.85rem',
-                        fontWeight: '500',
-                        outline: 'none',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <option value="0.8">0.8x</option>
-                      <option value="1.0">1x</option>
-                      <option value="1.2">1.2x</option>
-                      <option value="1.5">1.5x</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* 4. Informações Pessoais */}
+              {/* 3. Informações Pessoais */}
               <div className="glass-panel" style={{ marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -7255,7 +7105,7 @@ Em nome de Jesus, Amém.`;
                 margin: '10px 0'
               }}>
                 <img 
-                  src={appLogomarcaLight} 
+                  src={darkMode ? appLogomarcaDark : appLogomarcaLight} 
                   alt="1Convite - Compartilhando o Reino" 
                   style={{ 
                     width: '180px', 

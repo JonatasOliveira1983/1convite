@@ -5,9 +5,16 @@
 const ADMIN_CREDENTIALS = {
   email: 'jonatasprojetos2013@gmail.com',
   password: 'adm123',
-  name: 'Jonatas (Administrador Mestre)',
+  name: 'Jonatas',
   role: 'admin'
 };
+
+const API_BASE = '/api/v1';
+
+const getAdminHeaders = () => ({
+  'Content-Type': 'application/json',
+  'x-admin-email': ADMIN_CREDENTIALS.email
+});
 
 const STORAGE_KEYS = {
   ADMIN_LOGGED: '1convite_admin_logged',
@@ -70,6 +77,7 @@ export const adminAuthService = {
       if (isAdm) {
         localStorage.setItem(STORAGE_KEYS.ADMIN_LOGGED, 'true');
         localStorage.setItem('1convite_logged_in', 'true');
+        localStorage.removeItem('1convite_guest_mode');
         localStorage.setItem('1convite_user_name', ADMIN_CREDENTIALS.name);
         localStorage.setItem('1convite_user_email', ADMIN_CREDENTIALS.email);
         localStorage.setItem('1convite-premium', 'true');
@@ -77,6 +85,21 @@ export const adminAuthService = {
       } else {
         localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
       }
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+
+  logout() {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
+      localStorage.removeItem('1convite_logged_in');
+      localStorage.removeItem('1convite_guest_mode');
+      localStorage.removeItem('1convite_user_name');
+      localStorage.removeItem('1convite_user_email');
+      localStorage.removeItem('1convite-premium');
+      localStorage.removeItem('1convite_premium_plan');
+      localStorage.removeItem('1convite_premium_expiry');
     } catch (e) {
       console.warn(e);
     }
@@ -354,9 +377,131 @@ export const adminAuthService = {
       totalVouchers,
       activeVouchers,
       totalVoucherUses,
-      recentUsers: [...users].reverse().slice(0, 10),
+      recentUsers: [...users].reverse().slice(0, 50),
       vouchers
     };
+  },
+
+  // ── MÉTODOS SINCRONIZADOS COM O BACKEND (NUVEM) ─────────────────────
+
+  async registerUserAsync({ name, contact, password = '', vipCode = '' }) {
+    try {
+      const resp = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, contact, password, vipCode })
+      });
+      const data = await resp.json();
+      if (data && typeof data.success === 'boolean') {
+        if (data.success) {
+          if (data.isAdmin) {
+            this.setAdminSession(true);
+          } else {
+            localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
+            localStorage.removeItem('1convite_guest_mode');
+            localStorage.setItem('1convite_logged_in', 'true');
+            localStorage.setItem('1convite_user_name', data.user?.name || name.trim());
+            localStorage.setItem('1convite_user_email', data.user?.contact || contact.trim());
+            localStorage.setItem('1convite-premium', data.isVip ? 'true' : 'false');
+            if (data.user?.plan) localStorage.setItem('1convite_premium_plan', data.user.plan);
+            if (data.expiryTimestamp) localStorage.setItem('1convite_premium_expiry', String(data.expiryTimestamp));
+          }
+        }
+        return data;
+      }
+    } catch (e) {
+      console.warn('Fallback local em registerUserAsync:', e);
+    }
+    return this.registerUser({ name, contact, password, vipCode });
+  },
+
+  async loginUserAsync({ contact, password = '' }) {
+    try {
+      const resp = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contact, password })
+      });
+      const data = await resp.json();
+      if (data && typeof data.success === 'boolean') {
+        if (data.success) {
+          if (data.isAdmin) {
+            this.setAdminSession(true);
+          } else {
+            localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
+            localStorage.removeItem('1convite_guest_mode');
+            localStorage.setItem('1convite_logged_in', 'true');
+            localStorage.setItem('1convite_user_name', data.user?.name || 'Membro');
+            localStorage.setItem('1convite_user_email', data.user?.contact || contact.trim());
+            localStorage.setItem('1convite-premium', data.isVip ? 'true' : 'false');
+            if (data.user?.plan) localStorage.setItem('1convite_premium_plan', data.user.plan);
+            if (data.user?.expiryTimestamp) localStorage.setItem('1convite_premium_expiry', String(data.user.expiryTimestamp));
+          }
+        }
+        return data;
+      }
+    } catch (e) {
+      console.warn('Fallback local em loginUserAsync:', e);
+    }
+    return this.loginUser({ contact, password });
+  },
+
+  async getDashboardStatsAsync() {
+    try {
+      const resp = await fetch(`${API_BASE}/admin/dashboard`, {
+        headers: getAdminHeaders()
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data?.success) return data;
+      }
+    } catch (e) {
+      console.warn('Fallback local em getDashboardStatsAsync:', e);
+    }
+    return this.getDashboardStats();
+  },
+
+  async createVoucherAsync({ code, maxUses = 1, daysValid = 180, notes = '' }) {
+    try {
+      const resp = await fetch(`${API_BASE}/admin/vouchers`, {
+        method: 'POST',
+        headers: getAdminHeaders(),
+        body: JSON.stringify({ code, maxUses, daysValid, notes })
+      });
+      const data = await resp.json();
+      if (data && typeof data.success === 'boolean') return data;
+    } catch (e) {
+      console.warn('Fallback local em createVoucherAsync:', e);
+    }
+    return this.createVoucher({ code, maxUses, daysValid, notes });
+  },
+
+  async toggleVoucherStatusAsync(code) {
+    try {
+      const resp = await fetch(`${API_BASE}/admin/vouchers/${encodeURIComponent(code)}/toggle`, {
+        method: 'PATCH',
+        headers: getAdminHeaders()
+      });
+      const data = await resp.json();
+      if (data && typeof data.success === 'boolean') return data;
+    } catch (e) {
+      console.warn('Fallback local em toggleVoucherStatusAsync:', e);
+    }
+    return this.toggleVoucherStatus(code);
+  },
+
+  async deleteVoucherAsync(code) {
+    try {
+      const resp = await fetch(`${API_BASE}/admin/vouchers/${encodeURIComponent(code)}`, {
+        method: 'DELETE',
+        headers: getAdminHeaders()
+      });
+      const data = await resp.json();
+      if (data && typeof data.success === 'boolean') return data;
+    } catch (e) {
+      console.warn('Fallback local em deleteVoucherAsync:', e);
+    }
+    return this.deleteVoucher(code);
   }
 };
 

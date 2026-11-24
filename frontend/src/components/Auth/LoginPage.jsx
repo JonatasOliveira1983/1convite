@@ -37,7 +37,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     setContact(val);
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
@@ -53,7 +53,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
 
     setLoading(true);
 
-    const res = adminAuthService.loginUser({
+    const res = await adminAuthService.loginUserAsync({
       contact: contact.trim(),
       password: password.trim()
     });
@@ -85,7 +85,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
     }, 800);
   };
 
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
@@ -105,7 +105,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
 
     setLoading(true);
 
-    const res = adminAuthService.registerUser({
+    const res = await adminAuthService.registerUserAsync({
       name: name.trim(),
       contact: contact.trim(),
       password: password.trim(),

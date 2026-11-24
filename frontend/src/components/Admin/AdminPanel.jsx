@@ -10,16 +10,22 @@ export default function AdminPanel({ onOpenApp, onLogout }) {
   const [newNotes, setNewNotes] = useState('');
   const [copiedCode, setCopiedCode] = useState('');
   const [msgFeedback, setMsgFeedback] = useState('');
+  const [accessFilter, setAccessFilter] = useState('todos'); // 'todos' | 'acessaram' | 'nao_acessaram'
 
-  const refreshStats = () => {
-    setStats(adminAuthService.getDashboardStats());
+  const refreshStats = async () => {
+    const data = await adminAuthService.getDashboardStatsAsync();
+    if (data) setStats(data);
   };
 
-  const handleCreateVoucher = (e) => {
+  useEffect(() => {
+    refreshStats();
+  }, []);
+
+  const handleCreateVoucher = async (e) => {
     e.preventDefault();
     if (!newCode.trim()) return;
 
-    const res = adminAuthService.createVoucher({
+    const res = await adminAuthService.createVoucherAsync({
       code: newCode,
       maxUses: parseInt(newMaxUses, 10),
       daysValid: parseInt(newDays, 10),
@@ -30,22 +36,22 @@ export default function AdminPanel({ onOpenApp, onLogout }) {
       setMsgFeedback(`Código ${res.voucher.code} criado com sucesso com limite de ${res.voucher.maxUses} cadastros.`);
       setNewCode('');
       setNewNotes('');
-      refreshStats();
+      await refreshStats();
       setTimeout(() => setMsgFeedback(''), 4000);
     } else {
       setMsgFeedback(res.message);
     }
   };
 
-  const handleToggleStatus = (code) => {
-    adminAuthService.toggleVoucherStatus(code);
-    refreshStats();
+  const handleToggleStatus = async (code) => {
+    await adminAuthService.toggleVoucherStatusAsync(code);
+    await refreshStats();
   };
 
-  const handleDelete = (code) => {
+  const handleDelete = async (code) => {
     if (window.confirm(`Deseja realmente remover o código ${code}?`)) {
-      adminAuthService.deleteVoucher(code);
-      refreshStats();
+      await adminAuthService.deleteVoucherAsync(code);
+      await refreshStats();
     }
   };
 
@@ -327,46 +333,119 @@ export default function AdminPanel({ onOpenApp, onLogout }) {
           </div>
         </section>
 
-        {/* Tabela de Usuários Recentes */}
+        {/* Tabela de Usuários e Controle de Acessos */}
         <section className="admin-section-card">
-          <h2 className="admin-section-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="#38BDF8">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-            </svg>
-            <span>Usuários Registrados no Sistema ({stats.totalUsers})</span>
-          </h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '16px' }}>
+            <h2 className="admin-section-title" style={{ margin: 0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="#38BDF8">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+              </svg>
+              <span>Controle de Acessos ({stats.totalUsers})</span>
+            </h2>
 
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Contato (WhatsApp / E-mail)</th>
-                  <th>Tipo / Plano</th>
-                  <th>Voucher Usado</th>
-                  <th>Último Acesso</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.recentUsers.map((u) => (
-                  <tr key={u.id || u.contact}>
-                    <td style={{ fontWeight: '700', color: '#FFFFFF' }}>{u.name}</td>
-                    <td>{u.contact}</td>
-                    <td>
-                      <span className={`admin-type-badge admin-type-${u.type}`}>
-                        {u.type === 'admin' ? 'Administrador Mestre' : u.type === 'vip' ? 'VIP 6 Meses' : 'Gratuito'}
-                      </span>
-                    </td>
-                    <td>{u.vipCode ? <span className="admin-code-badge" style={{ fontSize: '0.7rem' }}>{u.vipCode}</span> : '—'}</td>
-                    <td style={{ fontSize: '0.74rem', color: '#64748B' }}>
-                      {u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('pt-BR') : 'Hoje'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'todos', label: 'Todos que Acessaram' },
+                { id: 'acessaram', label: 'Com Código VIP' },
+                { id: 'nao_acessaram', label: `Códigos Não Acessados (${stats.vouchers.filter(v => (v.usedCount || 0) === 0).length})` }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setAccessFilter(tab.id)}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: '999px',
+                    border: accessFilter === tab.id ? '1px solid #38BDF8' : '1px solid rgba(148, 163, 184, 0.25)',
+                    background: accessFilter === tab.id ? 'rgba(56, 189, 248, 0.18)' : 'rgba(15, 23, 42, 0.5)',
+                    color: accessFilter === tab.id ? '#38BDF8' : '#94A3B8',
+                    fontSize: '0.76rem',
+                    fontWeight: '700',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {accessFilter === 'nao_acessaram' ? (
+            <div className="admin-table-wrap">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Código Criado</th>
+                    <th>Destinatário / Nota</th>
+                    <th>Validade</th>
+                    <th>Status</th>
+                    <th>Situação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.vouchers.filter(v => (v.usedCount || 0) === 0).length === 0 ? (
+                    <tr>
+                      <td colSpan="5" style={{ textAlign: 'center', color: '#94A3B8', padding: '18px' }}>
+                        Todos os códigos criados já tiveram pelo menos 1 acesso.
+                      </td>
+                    </tr>
+                  ) : (
+                    stats.vouchers
+                      .filter(v => (v.usedCount || 0) === 0)
+                      .map((v) => (
+                        <tr key={v.code}>
+                          <td><span className="admin-code-badge">{v.code}</span></td>
+                          <td style={{ color: '#E2E8F0' }}>{v.notes || 'Sem destinatário informado'}</td>
+                          <td>{v.daysValid} dias</td>
+                          <td>{v.active ? 'Ativo' : 'Pausado'}</td>
+                          <td>
+                            <span style={{ color: '#FBBF24', fontWeight: '700', fontSize: '0.78rem' }}>
+                              Ainda não acessou (0 / {v.maxUses >= 999999 ? '∞' : v.maxUses})
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="admin-table-wrap">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Contato (WhatsApp / E-mail)</th>
+                    <th>Tipo / Plano</th>
+                    <th>Código Usado</th>
+                    <th>Acessos</th>
+                    <th>Último Acesso</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.recentUsers
+                    .filter((u) => accessFilter === 'todos' || Boolean(u.vipCode))
+                    .map((u) => (
+                      <tr key={u.id || u.contact}>
+                        <td style={{ fontWeight: '700', color: '#FFFFFF' }}>{u.name}</td>
+                        <td>{u.contact}</td>
+                        <td>
+                          <span className={`admin-type-badge admin-type-${u.type}`}>
+                            {u.type === 'admin' ? 'Administrador Mestre' : u.type === 'vip' ? 'VIP' : 'Gratuito'}
+                          </span>
+                        </td>
+                        <td>{u.vipCode ? <span className="admin-code-badge" style={{ fontSize: '0.7rem' }}>{u.vipCode}</span> : '—'}</td>
+                        <td style={{ fontWeight: '700', color: '#38BDF8' }}>{u.accessCount || 1}x</td>
+                        <td style={{ fontSize: '0.74rem', color: '#94A3B8' }}>
+                          {u.lastLogin ? new Date(u.lastLogin).toLocaleString('pt-BR') : 'Hoje'}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       </div>
     </div>

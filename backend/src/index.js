@@ -111,7 +111,55 @@ async function ensureTables() {
         const sql2 = readFileSync(pathLayaSql, 'utf-8');
         await runStatements(sql2);
       }
-      console.log('[DB] Tabelas 1Convite & LAYA verificadas com sucesso');
+
+      // Tabelas de Gestão de Vouchers e Acessos (Admin / Auth)
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_vouchers (
+          code TEXT PRIMARY KEY,
+          max_uses INTEGER DEFAULT 1,
+          used_count INTEGER DEFAULT 0,
+          days_valid INTEGER DEFAULT 180,
+          active INTEGER DEFAULT 1,
+          notes TEXT,
+          created_at TEXT
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_acessos_usuarios (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          contact TEXT UNIQUE NOT NULL,
+          password TEXT,
+          type TEXT DEFAULT 'gratis',
+          plan TEXT,
+          vip_code TEXT,
+          expiry_timestamp TEXT,
+          created_at TEXT,
+          last_login TEXT,
+          access_count INTEGER DEFAULT 1
+        )
+      `);
+
+      // Seed inicial de vouchers padrão caso a tabela esteja vazia
+      const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
+      const totalVouchers = Number(vCount.rows?.[0]?.total || 0);
+      if (totalVouchers === 0) {
+        const nowIso = new Date().toISOString();
+        const defaults = [
+          ['REINO6M', 100, 0, 180, 1, 'Código de Boas-Vindas do Reino (6 Meses)', nowIso],
+          ['VIP2026', 50, 0, 180, 1, 'Voucher Promocional de Lançamento 2026', nowIso],
+          ['FAMILIA1C', 10, 0, 180, 1, 'Acesso Especial para Família', nowIso],
+        ];
+        for (const v of defaults) {
+          await client.query(
+            'INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            v
+          );
+        }
+      }
+
+      console.log('[DB] Tabelas 1Convite, LAYA & Admin/Vouchers verificadas com sucesso');
     } finally {
       client.release();
     }
@@ -1803,6 +1851,297 @@ app.post('/api/v1/admin/definir-plano', async (req, res) => {
     res.json({ success: true, plano });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ── AUTH & GESTÃO DE VOUCHERS / ACESSOS (ADMIN) ──────────────────────
+const ADMIN_EMAIL = 'jonatasprojetos2013@gmail.com';
+const ADMIN_PASS = 'adm123';
+
+function requireAdminHeader(req, res, next) {
+  const adminEmail = (req.headers['x-admin-email'] || '').toString().trim().toLowerCase();
+  if (adminEmail !== ADMIN_EMAIL) {
+    return res.status(403).json({ success: false, message: 'Acesso restrito ao administrador.' });
+  }
+  next();
+}
+
+app.post('/api/v1/auth/register', async (req, res) => {
+  try {
+    const { name, contact, password = '', vipCode = '' } = req.body || {};
+    const cleanName = (name || '').trim();
+    const cleanContact = (contact || '').trim();
+    const cleanContactLower = cleanContact.toLowerCase();
+    const cleanPass = (password || '').trim();
+    const cleanVip = (vipCode || '').trim().toUpperCase();
+
+    if (!cleanName || !cleanContact) {
+      return res.status(400).json({ success: false, message: 'Informe nome e contato.' });
+    }
+
+    if (cleanContactLower === ADMIN_EMAIL && cleanPass === ADMIN_PASS) {
+      return res.json({
+        success: true,
+        isAdmin: true,
+        isVip: true,
+        user: { name: 'Jonatas', contact: ADMIN_EMAIL, type: 'admin', plan: 'Administrador Mestre' }
+      });
+    }
+
+    let isVip = false;
+    let daysValid = 0;
+    let plan = 'Membro Convidado';
+
+    if (cleanVip) {
+      const voucher = await dbGet('SELECT * FROM tb_vouchers WHERE code = $1', [cleanVip]);
+      if (!voucher) {
+        return res.json({ success: false, message: 'Código de convite não encontrado.' });
+      }
+      if (!Number(voucher.active)) {
+        return res.json({ success: false, message: 'Este código foi desativado pelo administrador.' });
+      }
+      if (Number(voucher.max_uses) > 0 && Number(voucher.used_count || 0) >= Number(voucher.max_uses)) {
+        return res.json({ success: false, message: 'Este código atingiu o limite máximo de utilizações permitidas.' });
+      }
+
+      await dbRun('UPDATE tb_vouchers SET used_count = COALESCE(used_count, 0) + 1 WHERE code = $1', [cleanVip]);
+      isVip = true;
+      daysValid = Number(voucher.days_valid) || 180;
+      plan = `Membro VIP (${cleanVip})`;
+    }
+
+    const nowIso = new Date().toISOString();
+    const expiryTimestamp = isVip ? String(Date.now() + daysValid * 24 * 60 * 60 * 1000) : null;
+    const existing = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanContactLower]);
+
+    let userObj;
+    if (existing) {
+      const nextType = isVip ? 'vip' : (existing.type || 'gratis');
+      const nextPlan = isVip ? plan : (existing.plan || plan);
+      const nextVip = cleanVip || existing.vip_code || null;
+      const nextExp = expiryTimestamp || existing.expiry_timestamp || null;
+      const nextCount = Number(existing.access_count || 0) + 1;
+      await dbRun(
+        `UPDATE tb_acessos_usuarios
+         SET name = $1, password = COALESCE(NULLIF($2, ''), password), type = $3, plan = $4, vip_code = $5, expiry_timestamp = $6, last_login = $7, access_count = $8
+         WHERE id = $9`,
+        [cleanName, cleanPass, nextType, nextPlan, nextVip, nextExp, nowIso, nextCount, existing.id]
+      );
+      userObj = {
+        id: existing.id,
+        name: cleanName,
+        contact: existing.contact,
+        type: nextType,
+        plan: nextPlan,
+        vipCode: nextVip,
+        expiryTimestamp: nextExp ? Number(nextExp) : null,
+        createdAt: existing.created_at,
+        lastLogin: nowIso,
+        accessCount: nextCount
+      };
+    } else {
+      const newId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+      const type = isVip ? 'vip' : 'gratis';
+      await dbRun(
+        `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+        [newId, cleanName, cleanContact, cleanPass, type, plan, cleanVip || null, expiryTimestamp, nowIso, nowIso, 1]
+      );
+      userObj = {
+        id: newId,
+        name: cleanName,
+        contact: cleanContact,
+        type,
+        plan,
+        vipCode: cleanVip || null,
+        expiryTimestamp: expiryTimestamp ? Number(expiryTimestamp) : null,
+        createdAt: nowIso,
+        lastLogin: nowIso,
+        accessCount: 1
+      };
+    }
+
+    res.json({
+      success: true,
+      isAdmin: false,
+      isVip: userObj.type === 'vip',
+      expiryTimestamp: userObj.expiryTimestamp,
+      user: userObj
+    });
+  } catch (err) {
+    console.error('Erro em /auth/register:', err);
+    res.status(500).json({ success: false, message: 'Erro interno ao registrar usuário.' });
+  }
+});
+
+app.post('/api/v1/auth/login', async (req, res) => {
+  try {
+    const { contact, password = '' } = req.body || {};
+    const cleanContact = (contact || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
+
+    if (cleanContact === ADMIN_EMAIL && cleanPass === ADMIN_PASS) {
+      return res.json({
+        success: true,
+        isAdmin: true,
+        isVip: true,
+        user: { name: 'Jonatas', contact: ADMIN_EMAIL, type: 'admin', plan: 'Administrador Mestre' }
+      });
+    }
+
+    const existing = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanContact]);
+    if (!existing) {
+      return res.json({
+        success: false,
+        message: 'Usuário não encontrado. Se for sua primeira vez, clique em "Cadastrar-se".'
+      });
+    }
+
+    if (existing.password && cleanPass && existing.password !== cleanPass) {
+      return res.json({
+        success: false,
+        message: 'Senha incorreta. Tente novamente.'
+      });
+    }
+
+    const nowIso = new Date().toISOString();
+    const nextCount = Number(existing.access_count || 0) + 1;
+    await dbRun(
+      'UPDATE tb_acessos_usuarios SET last_login = $1, access_count = $2 WHERE id = $3',
+      [nowIso, nextCount, existing.id]
+    );
+
+    const isVip = existing.type === 'vip' || existing.type === 'admin';
+    res.json({
+      success: true,
+      isAdmin: false,
+      isVip,
+      user: {
+        id: existing.id,
+        name: existing.name,
+        contact: existing.contact,
+        type: existing.type,
+        plan: existing.plan,
+        vipCode: existing.vip_code,
+        expiryTimestamp: existing.expiry_timestamp ? Number(existing.expiry_timestamp) : null,
+        createdAt: existing.created_at,
+        lastLogin: nowIso,
+        accessCount: nextCount
+      }
+    });
+  } catch (err) {
+    console.error('Erro em /auth/login:', err);
+    res.status(500).json({ success: false, message: 'Erro interno ao entrar.' });
+  }
+});
+
+app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
+  try {
+    const vouchersRaw = await dbAll('SELECT * FROM tb_vouchers ORDER BY created_at DESC');
+    const usersRaw = await dbAll('SELECT id, name, contact, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count FROM tb_acessos_usuarios ORDER BY last_login DESC');
+
+    const vouchers = vouchersRaw.map(v => ({
+      code: v.code,
+      maxUses: Number(v.max_uses),
+      usedCount: Number(v.used_count || 0),
+      daysValid: Number(v.days_valid || 180),
+      active: Boolean(Number(v.active)),
+      notes: v.notes || '',
+      createdAt: v.created_at
+    }));
+
+    const users = usersRaw.map(u => ({
+      id: u.id,
+      name: u.name,
+      contact: u.contact,
+      type: u.type,
+      plan: u.plan,
+      vipCode: u.vip_code,
+      expiryTimestamp: u.expiry_timestamp ? Number(u.expiry_timestamp) : null,
+      createdAt: u.created_at,
+      lastLogin: u.last_login,
+      accessCount: Number(u.access_count || 1)
+    }));
+
+    const totalUsers = users.length;
+    const adminCount = users.filter(u => u.type === 'admin').length;
+    const vipCount = users.filter(u => u.type === 'vip').length;
+    const gratisCount = users.filter(u => u.type === 'gratis').length;
+    const totalVouchers = vouchers.length;
+    const activeVouchers = vouchers.filter(v => v.active).length;
+    const totalVoucherUses = vouchers.reduce((acc, curr) => acc + (curr.usedCount || 0), 0);
+
+    res.json({
+      success: true,
+      totalUsers,
+      adminCount,
+      vipCount,
+      gratisCount,
+      totalVouchers,
+      activeVouchers,
+      totalVoucherUses,
+      recentUsers: users,
+      vouchers
+    });
+  } catch (err) {
+    console.error('Erro em /admin/dashboard:', err);
+    res.status(500).json({ success: false, message: 'Erro ao carregar painel administrativo.' });
+  }
+});
+
+app.post('/api/v1/admin/vouchers', requireAdminHeader, async (req, res) => {
+  try {
+    const { code, maxUses = 1, daysValid = 180, notes = '' } = req.body || {};
+    const cleanCode = (code || '').trim().toUpperCase();
+    if (!cleanCode) {
+      return res.status(400).json({ success: false, message: 'Informe um código válido.' });
+    }
+    const existing = await dbGet('SELECT code FROM tb_vouchers WHERE code = $1', [cleanCode]);
+    if (existing) {
+      return res.json({ success: false, message: `O código "${cleanCode}" já existe.` });
+    }
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      'INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, created_at) VALUES ($1, $2, 0, $3, 1, $4, $5)',
+      [cleanCode, Number(maxUses) || 1, Number(daysValid) || 180, (notes || '').trim(), nowIso]
+    );
+    res.json({
+      success: true,
+      voucher: {
+        code: cleanCode,
+        maxUses: Number(maxUses) || 1,
+        usedCount: 0,
+        daysValid: Number(daysValid) || 180,
+        active: true,
+        notes: (notes || '').trim(),
+        createdAt: nowIso
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao criar código.' });
+  }
+});
+
+app.patch('/api/v1/admin/vouchers/:code/toggle', requireAdminHeader, async (req, res) => {
+  try {
+    const cleanCode = (req.params.code || '').trim().toUpperCase();
+    const v = await dbGet('SELECT active FROM tb_vouchers WHERE code = $1', [cleanCode]);
+    if (!v) return res.status(404).json({ success: false });
+    const nextActive = Number(v.active) ? 0 : 1;
+    await dbRun('UPDATE tb_vouchers SET active = $1 WHERE code = $2', [nextActive, cleanCode]);
+    res.json({ success: true, active: Boolean(nextActive) });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
+
+app.delete('/api/v1/admin/vouchers/:code', requireAdminHeader, async (req, res) => {
+  try {
+    const cleanCode = (req.params.code || '').trim().toUpperCase();
+    await dbRun('DELETE FROM tb_vouchers WHERE code = $1', [cleanCode]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
   }
 });
 
