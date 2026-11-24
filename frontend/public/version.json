@@ -1,13 +1,14 @@
 {
-  "version": "v2.6.1",
-  "build": "2026112404",
+  "version": "v2.7.0",
+  "build": "2026112405",
   "releaseDate": "2026-11-24",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Hotfix: Correção de renderização dos avatares de mentores no Feed Home.",
-    "Redesign Visual Imersivo 3.0: Estética moderna em modo escuro gradiente.",
-    "Módulo OpenGym (Treino do Templo): Rotinas em casa e academia, timer e consistência física.",
-    "Bottom Navigation Bar Flutuante Translúcida com Glassmorphism."
+    "Muscle Map Anatômico Interativo (OpenGym): Avatar vetorial com iluminação dos grupos musculares trabalhados (frente e costas).",
+    "Stats Board do OpenGym: Painel de métricas no topo com sessões concluídas, sequência de dias e peso corporal.",
+    "Weekly Streak Tracker: Régua dos 7 dias da semana com status de consistência em tempo real.",
+    "Tabela de Séries com Checkboxes Interativos: Marque cada série concluída e acompanhe o rest timer.",
+    "Modal de Registro de Peso Corporal: Controle de evolução física diária integrado ao cuidado do templo."
   ],
-  "updateTimestamp": 1795525200000
+  "updateTimestamp": 1795526500000
 }

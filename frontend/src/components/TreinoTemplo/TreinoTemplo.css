@@ -1,7 +1,7 @@
 /* ── ESTILOS DO MÓDULO DE TREINO DO TEMPLO (OPENGYM INTEGRADO) ── */
 
 .treino-templo-container {
-  padding: 16px 16px 80px;
+  padding: 16px 16px 90px;
   box-sizing: border-box;
   max-width: 600px;
   margin: 0 auto;
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .treino-back-btn {
@@ -53,17 +53,149 @@
   color: #FFFFFF;
 }
 
-.treino-streak-badge {
+/* ── PAINEL 1: STATS BOARD DO OPENGYM (MÉTRICAS NO TOPO) ── */
+.treino-stats-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.treino-stat-card {
+  background: #15171E;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 12px 10px;
+  text-align: center;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.treino-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.treino-stat-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.treino-stat-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  margin: 4px 0;
+}
+
+.treino-stat-number {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #10B981;
+}
+
+.treino-stat-unit {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.treino-stat-sub {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── PAINEL 2: WEEKLY STREAK TRACKER (RÉGUA DOS 7 DIAS) ── */
+.treino-weekly-tracker {
+  background: #15171E;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.treino-weekly-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.treino-weekly-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.treino-weekly-info {
+  font-size: 0.7rem;
+  color: #10B981;
+  font-weight: 700;
+}
+
+.treino-weekly-days {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.treino-day-pill {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 6px;
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
+  padding: 8px 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.treino-day-pill.today {
+  border-color: #F97316;
+  background: rgba(249, 115, 22, 0.08);
+}
+
+.treino-day-pill.done {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.treino-day-name {
+  font-size: 0.66rem;
   font-weight: 700;
-  color: #F97316;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.treino-day-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #0B0C10;
+}
+
+.treino-day-pill.done .treino-day-dot {
+  background: #10B981;
+  color: #0B0C10;
 }
 
 /* HERO CARD */
@@ -188,7 +320,7 @@
 .treino-rotina-card {
   background: #15171E;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px;
   transition: all 0.2s ease;
 }
@@ -198,10 +330,21 @@
   transform: translateY(-2px);
 }
 
+.treino-mini-anatomy {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 2px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
 .treino-rotina-meta {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .treino-badge-duracao {
@@ -216,16 +359,16 @@
 }
 
 .treino-rotina-titulo {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 800;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: #FFF;
 }
 
 .treino-rotina-foco {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.65);
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   line-height: 1.4;
 }
 
@@ -234,11 +377,11 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 12px;
+  padding-top: 10px;
 }
 
 .treino-rotina-cal {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
 }
@@ -263,30 +406,34 @@
   color: #0B0C10;
 }
 
-/* SESSÃO ATIVA */
+/* SESSÃO ATIVA COM ANATOMIA & SÉRIES */
 .treino-active-card {
   background: #15171E;
   border: 1px solid rgba(16, 185, 129, 0.3);
   border-radius: 20px;
-  padding: 24px;
+  padding: 22px 18px;
   text-align: center;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-.treino-progress-bar-wrap {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 20px;
+.treino-active-anatomy-wrap {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 14px 10px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.treino-progress-bar-fill {
-  height: 100%;
-  background: #10B981;
-  transition: width 0.3s ease;
+.treino-anatomy-caption {
+  font-size: 0.68rem;
+  color: #10B981;
+  font-weight: 700;
+  margin-top: 8px;
+  text-transform: capitalize;
 }
 
 .treino-active-header {
@@ -294,14 +441,14 @@
   justify-content: space-between;
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 700;
 }
 
 .treino-active-name {
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   color: #FFF;
 }
 
@@ -310,17 +457,81 @@
   background: rgba(16, 185, 129, 0.2);
   color: #10B981;
   border: 1px solid rgba(16, 185, 129, 0.4);
-  padding: 8px 18px;
-  border-radius: 24px;
-  font-size: 1.1rem;
-  margin-bottom: 16px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 1rem;
+  margin-bottom: 12px;
 }
 
 .treino-active-tip {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.7);
-  line-height: 1.5;
-  margin: 0 0 24px;
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+
+/* TABELA DE SÉRIES COM CHECKBOX (OPENGYM WORKOUT TABLE) */
+.treino-series-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.treino-serie-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.treino-serie-row.done {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: #10B981;
+}
+
+.treino-serie-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.treino-serie-num {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.06em;
+}
+
+.treino-serie-target {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFF;
+}
+
+.treino-serie-check-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #0B0C10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.treino-serie-check-btn.checked {
+  background: #10B981;
+  border-color: #10B981;
 }
 
 /* TIMER DE DESCANSO */
@@ -328,22 +539,22 @@
   background: rgba(16, 185, 129, 0.1);
   border: 1.5px dashed #10B981;
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   margin-bottom: 16px;
 }
 
 .treino-timer-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   color: #10B981;
   font-weight: 800;
   letter-spacing: 0.08em;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .treino-timer-clock {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: #FFF;
   display: block;
@@ -355,27 +566,9 @@
   border: none;
   color: #10B981;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   cursor: pointer;
-  margin-top: 8px;
-}
-
-.treino-concluir-serie-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #10B981;
-  color: #0B0C10;
-  font-size: 1rem;
-  font-weight: 800;
-  border: none;
-  padding: 14px;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
-  margin-bottom: 12px;
+  margin-top: 6px;
 }
 
 .treino-cancelar-btn {
@@ -513,4 +706,97 @@
 .treino-history-info span {
   font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── MODAL DE PESO CORPORAL (BODY WEIGHT MODAL) ── */
+.treino-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.treino-modal-card {
+  background: #15171E;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8);
+}
+
+.treino-modal-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #FFF;
+}
+
+.treino-modal-card p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 20px;
+}
+
+.treino-input-weight-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+}
+
+.treino-input-weight-wrap input {
+  background: transparent;
+  border: none;
+  color: #FFF;
+  font-size: 1.8rem;
+  font-weight: 900;
+  width: 100px;
+  text-align: center;
+  outline: none;
+}
+
+.treino-input-weight-wrap span {
+  font-size: 1rem;
+  color: #38BDF8;
+  font-weight: 700;
+}
+
+.treino-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.treino-modal-cancel {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.treino-modal-save {
+  flex: 1;
+  background: #38BDF8;
+  border: none;
+  color: #0B0C10;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
 }

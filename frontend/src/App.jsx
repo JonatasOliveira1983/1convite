@@ -7088,7 +7088,7 @@ Em nome de Jesus, Amém.`;
                 <div style={{ background: 'var(--slate-light)', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Versão Atual:</span>
-                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.6.1 (Build 2026.11.24)</strong>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.7.0 (Build 2026.11.24)</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
