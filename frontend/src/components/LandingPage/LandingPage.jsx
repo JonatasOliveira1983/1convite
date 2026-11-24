@@ -651,10 +651,13 @@ export default function LandingPage({ onEnterApp }) {
                 <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-1">
                   <div className="sp-plan-voucher-thumb">
                     <div className="sp-mini-gv-top">
-                      <span className="sp-mini-gv-brand">1Convite</span>
+                      <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
                       <span className="sp-mini-gv-seal">180</span>
                     </div>
-                    <span className="sp-mini-gv-title">Você é Especial</span>
+                    <div>
+                      <div className="sp-mini-gv-kicker">GIFT VOUCHER</div>
+                      <span className="sp-mini-gv-title">Você é Especial</span>
+                    </div>
                     <span className="sp-mini-gv-bar" />
                   </div>
                 </div>
@@ -696,10 +699,10 @@ export default function LandingPage({ onEnterApp }) {
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
                       <div className="sp-mini-gv-top">
-                        <span className="sp-mini-gv-brand">1C</span>
+                        <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
                         <span className="sp-mini-gv-seal">180</span>
                       </div>
-                      <span className="sp-mini-gv-title">VIP</span>
+                      <span className="sp-mini-gv-title">Especial</span>
                       <span className="sp-mini-gv-bar" />
                     </div>
                   ))}
@@ -741,11 +744,11 @@ export default function LandingPage({ onEnterApp }) {
                   {Array.from({ length: 10 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
                       <div className="sp-mini-gv-top">
-                        <span className="sp-mini-gv-brand">1C</span>
-                        <span className="sp-mini-gv-seal">180</span>
+                        <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" style={{ height: '7px' }} />
+                        <span className="sp-mini-gv-seal" style={{ width: '13px', height: '13px', fontSize: '0.3rem' }}>180</span>
                       </div>
-                      <span className="sp-mini-gv-title">VIP</span>
-                      <span className="sp-mini-gv-bar" />
+                      <span className="sp-mini-gv-title" style={{ fontSize: '0.44rem' }}>VIP</span>
+                      <span className="sp-mini-gv-bar" style={{ height: '5px' }} />
                     </div>
                   ))}
                 </div>

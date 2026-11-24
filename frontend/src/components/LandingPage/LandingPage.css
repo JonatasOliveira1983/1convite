@@ -1246,33 +1246,42 @@
 }
 
 .sp-plan-vouchers-grid-1 {
-  grid-template-columns: minmax(0, 96px);
+  grid-template-columns: minmax(0, 120px);
   justify-content: center;
 }
 
 .sp-plan-vouchers-grid-5 {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sp-plan-vouchers-grid-5 .sp-plan-voucher-thumb {
+  width: calc(33.333% - 8px);
+  max-width: 78px;
 }
 
 .sp-plan-vouchers-grid-10 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
 }
 
 .sp-plan-voucher-thumb {
   width: 100%;
   aspect-ratio: 3 / 4;
-  border-radius: 7px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(229, 193, 88, 0.55);
-  background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, #121216 45%, #1c1508 100%);
-  padding: 5px 4px;
+  border: 1px solid rgba(229, 193, 88, 0.6);
+  background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, #111116 45%, #1d1608 100%);
+  padding: 6px 5px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .sp-mini-gv-top {
@@ -1284,38 +1293,46 @@
 }
 
 .sp-mini-gv-brand {
-  font-size: 0.42rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: -0.02em;
+  height: 10px;
+  width: auto;
+  object-fit: contain;
 }
 
 .sp-mini-gv-seal {
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #FFFBEB, #D4AF37 70%, #8A6204);
   color: #181203;
-  font-size: 0.34rem;
+  font-size: 0.38rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  border: 1px solid rgba(255, 248, 210, 0.7);
+}
+
+.sp-mini-gv-kicker {
+  font-size: 0.32rem;
+  letter-spacing: 0.14em;
+  color: #E5C158;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .sp-mini-gv-title {
   font-family: Georgia, serif;
   font-style: italic;
-  font-size: 0.52rem;
+  font-size: 0.56rem;
   font-weight: 700;
   color: #FDE68A;
   line-height: 1.05;
 }
 
 .sp-mini-gv-bar {
-  width: 85%;
-  height: 7px;
+  width: 88%;
+  height: 8px;
   border-radius: 3px;
   background: linear-gradient(135deg, #FBF0B2 0%, #D4AF37 60%, #B8860B 100%);
 }
