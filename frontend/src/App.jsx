@@ -20,6 +20,9 @@ import appLogomarcaDark from './assets/logomarca_dark.png';
 import banner1 from './assets/banners/1.png';
 import banner2 from './assets/banners/2.png';
 import banner3 from './assets/banners/3.png';
+import heroMountainsImg from './assets/feed/hero_mountains.jpg';
+import treinoTemploImg from './assets/feed/treino_templo.jpg';
+import TreinoTemploView from './components/TreinoTemplo/TreinoTemploView';
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -377,6 +380,7 @@ const COUNSELORS = [
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [feedFilter, setFeedFilter] = useState('todos'); // 'todos', 'palavra', 'treino', 'mentores', 'desafios'
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
   
@@ -3066,267 +3070,529 @@ Em nome de Jesus, Amém.`;
       {/* ── MAIN ──────────────────────────────── */}
       <main className="main-content">
 
-        {/* ════════════ TELA DASHBOARD PRINCIPAL ════════════ */}
+        {/* ════════════ TELA DASHBOARD PRINCIPAL (FEED IMERSIVO 1CONVITE 3.0) ════════════ */}
         {activeTab === 'dashboard' && (
-          <div className="page-enter animate-fade-in" style={{ padding: '16px', boxSizing: 'border-box' }}>
+          <div className="page-enter animate-fade-in" style={{ padding: '16px 16px 90px', boxSizing: 'border-box', maxWidth: '640px', margin: '0 auto' }}>
             
-            {/* Carrossel no topo */}
-            <div style={{ marginBottom: '16px' }}>
-              <div className="carousel-container">
-                <div className="carousel-wrapper" style={{ transform: `translateX(-${carouselIndex * 100}%)` }}>
-                  {carouselImages.map((src, idx) => (
-                    <img key={idx} src={src} alt={`Banner ${idx + 1}`} className="carousel-image" style={{ height: '140px' }} />
-                  ))}
-                </div>
-                <div className="carousel-dots">
-                  {carouselImages.map((_, idx) => (
-                    <button key={idx} className={`carousel-dot${idx === carouselIndex ? ' active' : ''}`} onClick={() => setCarouselIndex(idx)} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* CARD DESTAQUE CAFÉ COM DEUS (365 MEDITAÇÕES DIÁRIAS) */}
-            <div 
-              onClick={() => setActiveTab('cafe-com-deus')}
-              className="cafe-home-card animate-fade-in"
-            >
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '14px',
-                background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#FFF',
-                flexShrink: 0,
-                boxShadow: '0 4px 14px rgba(249, 115, 22, 0.35)'
-              }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-                  <line x1="6" y1="1" x2="6" y2="4" />
-                  <line x1="10" y1="1" x2="10" y2="4" />
-                  <line x1="14" y1="1" x2="14" y2="4" />
-                </svg>
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
-                  <span className="cafe-home-tag" style={{ fontSize: '0.68rem', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                    Café com Deus • {getTodayDateFormatted()}
-                  </span>
-                  <span style={{ fontSize: '0.62rem', background: '#22C55E', color: '#FFF', padding: '1px 6px', borderRadius: '10px', fontWeight: '800' }}>HOJE</span>
-                </div>
-                <h4 style={{ margin: '0 0 2px', fontSize: '0.94rem', fontWeight: '800', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {todayMeditation.title}
-                </h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {todayMeditation.verse}
-                </p>
-              </div>
-              <div style={{ color: '#F97316', flexShrink: 0 }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Grid de Módulos */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '14px',
-              paddingBottom: '20px'
-            }}>
+            {/* 1. CHIPS DE NAVEGAÇÃO RÁPIDA / FILTRO */}
+            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '14px', marginBottom: '8px', scrollbarWidth: 'none' }}>
               {[
-                { 
-                  id: 'biblia', 
-                  label: 'Bíblia Sagrada', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'sabado', 
-                  label: 'Desafio do Dia', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'cafe-com-deus', 
-                  label: 'Café com Deus',
-                  tag: '365 DIAS',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-                      <line x1="6" y1="1" x2="6" y2="4" strokeLinecap="round" />
-                      <line x1="10" y1="1" x2="10" y2="4" strokeLinecap="round" />
-                      <line x1="14" y1="1" x2="14" y2="4" strokeLinecap="round" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'chat', 
-                  label: 'Mentores Bíblicos', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'mulher-virtuosa', 
-                  label: 'Mulher Virtuosa', 
-                  isPremium: true,
-                  tag: 'PREMIUM',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'biblioteca-pregador', 
-                  label: 'Biblioteca do Pregador', 
-                  isPremium: true,
-                  tag: 'PREMIUM',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'ebooks-premium', 
-                  label: 'E-books & Livros', 
-                  isPremium: true,
-                  tag: 'PREMIUM',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'arcade', 
-                  label: 'Jogos & Kids', 
-                  isPremium: true,
-                  tag: 'PREMIUM',
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'contatos', 
-                  label: 'Conexões & Contatos', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'criar-card', 
-                  label: 'Criar Card', 
-                  icon: (
-                    <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="3" y="3" width="18" height="18" rx="3" ry="3" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <polyline points="21 15 16 10 5 21" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )
-                },
-                { 
-                  id: 'lojinha', 
-                  label: 'Lojinha', 
-                  icon: (
-                    <ChaminhaCoin size={32} />
-                  )
-                }
-              ].map(card => (
-                <div
-                  key={card.id}
-                  onClick={() => {
-                    setActiveTab(card.id);
-                    if (card.id === 'biblia') {
-                      setBibleViewMode('reading');
-                      setBibleSelectedVerse(null);
-                    }
-                    if (card.id === 'sabado') {
-                      setActiveSabadoBlock('menu');
-                    }
-                    if (card.id === 'criar-card') {
-                      setCardSelectedText('');
-                      setCardCategory('bomdia');
-                    }
+                { id: 'todos', label: '✦ Todos' },
+                { id: 'palavra', label: 'Palavra & Oração' },
+                { id: 'treino', label: 'Treino do Templo' },
+                { id: 'mentores', label: 'Mentores Canônicos' },
+                { id: 'desafios', label: 'Desafios & Reino' }
+              ].map(chip => (
+                <button
+                  key={chip.id}
+                  onClick={() => setFeedFilter(chip.id)}
+                  style={{
+                    whiteSpace: 'nowrap',
+                    background: feedFilter === chip.id ? 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)' : 'rgba(255, 255, 255, 0.05)',
+                    color: feedFilter === chip.id ? '#FFF' : 'rgba(255, 255, 255, 0.75)',
+                    border: feedFilter === chip.id ? '1px solid #F97316' : '1px solid rgba(255, 255, 255, 0.08)',
+                    padding: '8px 16px',
+                    borderRadius: '24px',
+                    fontSize: '0.78rem',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                    boxShadow: feedFilter === chip.id ? '0 4px 14px rgba(249, 115, 22, 0.35)' : 'none',
+                    transition: 'all 0.2s ease'
                   }}
-                  className="dashboard-card"
-                  style={{ position: 'relative' }}
                 >
-                  {card.tag === 'PREMIUM' && (
-                    <span className="gold-premium-badge">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                      </svg>
-                      PREMIUM
-                    </span>
-                  )}
-                  {card.tag === 'INFANTIL' && (
-                    <span className="badge-kids-cyan">
-                      INFANTIL
-                    </span>
-                  )}
-                  {card.tag === '365 DIAS' && (
-                    <span className="badge-cafe-orange">
-                      365 DIAS
-                    </span>
-                  )}
-                  <div className="dashboard-card-icon">
-                    {card.icon}
-                  </div>
-                  <span className="dashboard-card-label">
-                    {card.label}
-                  </span>
-                </div>
+                  {chip.label}
+                </button>
               ))}
             </div>
 
-            {/* BOTÃO LARGO TRILHA DO REINO */}
-            <div
-              onClick={() => setActiveTab('trail')}
-              className="dashboard-card"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '12px',
-                padding: '16px',
-                marginBottom: '20px',
-                background: 'linear-gradient(135deg, rgba(30, 215, 96, 0.12) 0%, rgba(20, 20, 24, 0.95) 100%)',
-                border: '1px solid rgba(30, 215, 96, 0.3)',
-                cursor: 'pointer'
-              }}
-            >
-              <div style={{ color: 'var(--sp-green, #1ED760)' }}>
-                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                </svg>
+            {/* 2. CARD HERO IMERSIVO: "O CONVITE DE HOJE" (ESTILO VANAHEIM DA REFERÊNCIA) */}
+            {(feedFilter === 'todos' || feedFilter === 'palavra') && (
+              <div 
+                style={{
+                  position: 'relative',
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  marginBottom: '22px',
+                  height: '280px',
+                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  cursor: 'pointer'
+                }}
+                onClick={() => setActiveTab('cafe-com-deus')}
+              >
+                <img 
+                  src={heroMountainsImg} 
+                  alt="O Convite de Hoje" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                />
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(11, 12, 16, 0.98) 12%, rgba(11, 12, 16, 0.55) 55%, rgba(11, 12, 16, 0.1) 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  padding: '20px',
+                  boxSizing: 'border-box'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <span style={{
+                      fontSize: '0.66rem',
+                      fontWeight: '800',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: '#F97316',
+                      background: 'rgba(249, 115, 22, 0.2)',
+                      border: '1px solid rgba(249, 115, 22, 0.4)',
+                      padding: '3px 10px',
+                      borderRadius: '14px'
+                    }}>
+                      ✦ O CONVITE DE HOJE • {getTodayDateFormatted()}
+                    </span>
+                    <span style={{ fontSize: '0.62rem', background: '#22C55E', color: '#FFF', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>
+                      AO VIVO
+                    </span>
+                  </div>
+
+                  <h3 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: '900', color: '#FFF', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                    {todayMeditation.title}
+                  </h3>
+
+                  <p style={{ margin: '0 0 14px', fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.8)', lineHeight: '1.4', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    "{todayMeditation.verse}"
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
+                    <button 
+                      onClick={() => setActiveTab('cafe-com-deus')}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: '#F97316',
+                        color: '#FFF',
+                        fontWeight: '800',
+                        fontSize: '0.82rem',
+                        border: 'none',
+                        padding: '10px 16px',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 14px rgba(249, 115, 22, 0.4)'
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                      <span>Ouvir Reflexão</span>
+                    </button>
+
+                    <button 
+                      onClick={() => {
+                        setActiveTab('biblia');
+                        setBibleViewMode('reading');
+                        setBibleSelectedVerse(null);
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'rgba(255, 255, 255, 0.12)',
+                        backdropFilter: 'blur(10px)',
+                        color: '#FFF',
+                        fontWeight: '700',
+                        fontSize: '0.82rem',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        padding: '10px 16px',
+                        borderRadius: '12px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <span>Abrir Escrituras</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <span style={{ fontSize: '0.98rem', fontWeight: '800', color: '#FFF' }}>
-                Trilha do Reino • 365 Dias
-              </span>
+            )}
+
+            {/* 3. CARROSSEL DOS GIGANTES DA FÉ (MENTORES BÍBLICOS CANÔNICOS) */}
+            {(feedFilter === 'todos' || feedFilter === 'mentores') && (
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div>
+                    <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#F97316', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      SABEDORIA CANÔNICA
+                    </span>
+                    <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800', color: '#FFF' }}>
+                      Conselho dos Mentores
+                    </h4>
+                  </div>
+                  <button 
+                    onClick={() => setActiveTab('chat')}
+                    style={{ background: 'transparent', border: 'none', color: '#F97316', fontSize: '0.78rem', fontWeight: '700', cursor: 'pointer' }}
+                  >
+                    Ver Todos →
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', gap: '14px', overflowX: 'auto', paddingBottom: '8px', scrollbarWidth: 'none' }}>
+                  {LAYA_MENTORES.map(mentor => (
+                    <div 
+                      key={mentor.id}
+                      onClick={() => {
+                        setActiveCounselor(mentor.id);
+                        setActiveTab('chat');
+                      }}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        flexShrink: 0,
+                        cursor: 'pointer',
+                        width: '74px',
+                        textAlign: 'center'
+                      }}
+                    >
+                      <div style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        padding: '2px',
+                        background: 'linear-gradient(135deg, #F97316 0%, rgba(249, 115, 22, 0.2) 100%)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                        transition: 'transform 0.2s ease'
+                      }}>
+                        <img 
+                          src={mentor.avatar} 
+                          alt={mentor.nome} 
+                          style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }} 
+                        />
+                      </div>
+                      <span style={{ fontSize: '0.74rem', fontWeight: '700', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                        {mentor.nome.split(' ')[0]}
+                      </span>
+                      <span style={{ fontSize: '0.64rem', color: 'rgba(255, 255, 255, 0.5)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                        {mentor.papel.split(' ')[0]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 4. CARD DESTAQUE CUIDADO DO TEMPLO (OPENGYM INTEGRADO) */}
+            {(feedFilter === 'todos' || feedFilter === 'treino') && (
+              <div 
+                style={{
+                  position: 'relative',
+                  borderRadius: '22px',
+                  overflow: 'hidden',
+                  marginBottom: '24px',
+                  height: '220px',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  cursor: 'pointer'
+                }}
+                onClick={() => setActiveTab('treino-templo')}
+              >
+                <img 
+                  src={treinoTemploImg} 
+                  alt="Treino do Templo" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                />
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(11, 12, 16, 0.96) 18%, rgba(11, 12, 16, 0.5) 65%, transparent 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  padding: '18px',
+                  boxSizing: 'border-box'
+                }}>
+                  <span style={{
+                    fontSize: '0.64rem',
+                    fontWeight: '800',
+                    color: '#10B981',
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                    padding: '3px 8px',
+                    borderRadius: '12px',
+                    alignSelf: 'flex-start',
+                    marginBottom: '6px'
+                  }}>
+                    TEMPLO DO ESPÍRITO • SAÚDE & FORÇA
+                  </span>
+
+                  <h3 style={{ margin: '0 0 4px', fontSize: '1.2rem', fontWeight: '800', color: '#FFF' }}>
+                    Treino do Dia: Fortalecimento & Vitalidade
+                  </h3>
+
+                  <p style={{ margin: '0 0 12px', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.75)' }}>
+                    15 min • Sem Equipamentos • Rotinas Rápidas do OpenGym
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setActiveTab('treino-templo'); }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        background: '#10B981',
+                        color: '#0B0C10',
+                        fontWeight: '800',
+                        fontSize: '0.8rem',
+                        border: 'none',
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)'
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                      <span>Iniciar Treino</span>
+                    </button>
+                    <span style={{ fontSize: '0.74rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                      Cuidando do Templo de Deus
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 5. SEÇÃO BIBLIOTECA & SABEDORIA (CARDS MODERNOS ESTILO DISCOVER) */}
+            <div style={{ marginBottom: '14px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <div>
+                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: 'rgba(255, 255, 255, 0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    ECOSSISTEMA DO REINO
+                  </span>
+                  <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800', color: '#FFF' }}>
+                    Biblioteca & Ferramentas
+                  </h4>
+                </div>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '12px',
+                paddingBottom: '16px'
+              }}>
+                {[
+                  { 
+                    id: 'biblia', 
+                    label: 'Bíblia Sagrada', 
+                    sub: 'ACF com Áudio & Estudo',
+                    accent: '#F97316',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'sabado', 
+                    label: 'Desafio do Dia', 
+                    sub: 'Prática & Meditação',
+                    accent: '#EAB308',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'trail', 
+                    label: 'Trilha do Reino', 
+                    sub: '365 Dias Cronológicos',
+                    accent: '#10B981',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'mulher-virtuosa', 
+                    label: 'Mulher Virtuosa', 
+                    sub: 'Graça & Família',
+                    isPremium: true,
+                    tag: 'PREMIUM',
+                    accent: '#EC4899',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'biblioteca-pregador', 
+                    label: 'Biblioteca Pregador', 
+                    sub: 'Esboços & Sermões',
+                    isPremium: true,
+                    tag: 'PREMIUM',
+                    accent: '#8B5CF6',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'ebooks-premium', 
+                    label: 'E-books & Livros', 
+                    sub: 'Leituras Edificantes',
+                    isPremium: true,
+                    tag: 'PREMIUM',
+                    accent: '#3B82F6',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'arcade', 
+                    label: 'Jogos & Kids', 
+                    sub: 'Quiz & Caça-Palavras',
+                    tag: 'INFANTIL',
+                    accent: '#06B6D4',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'contatos', 
+                    label: 'Conexões do Reino', 
+                    sub: 'Grupos & Irmãos',
+                    accent: '#14B8A6',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'criar-card', 
+                    label: 'Criar Card', 
+                    sub: 'Compartilhe Versículos',
+                    accent: '#A855F7',
+                    icon: (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="3" width="18" height="18" rx="3" ry="3" strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'lojinha', 
+                    label: 'Lojinha do Reino', 
+                    sub: 'Itens & Recompensas',
+                    accent: '#F59E0B',
+                    icon: (
+                      <ChaminhaCoin size={26} />
+                    )
+                  }
+                ].map(card => (
+                  <div
+                    key={card.id}
+                    onClick={() => {
+                      setActiveTab(card.id);
+                      if (card.id === 'biblia') {
+                        setBibleViewMode('reading');
+                        setBibleSelectedVerse(null);
+                      }
+                      if (card.id === 'sabado') {
+                        setActiveSabadoBlock('menu');
+                      }
+                      if (card.id === 'criar-card') {
+                        setCardSelectedText('');
+                        setCardCategory('bomdia');
+                      }
+                    }}
+                    style={{
+                      position: 'relative',
+                      background: '#15171E',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '18px',
+                      padding: '16px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      minHeight: '110px',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {card.tag === 'PREMIUM' && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        fontSize: '0.6rem',
+                        fontWeight: '800',
+                        color: '#FACC15',
+                        background: 'rgba(234, 179, 8, 0.15)',
+                        border: '1px solid rgba(234, 179, 8, 0.3)',
+                        padding: '2px 6px',
+                        borderRadius: '8px'
+                      }}>
+                        PREMIUM
+                      </span>
+                    )}
+                    {card.tag === 'INFANTIL' && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        fontSize: '0.6rem',
+                        fontWeight: '800',
+                        color: '#06B6D4',
+                        background: 'rgba(6, 182, 212, 0.15)',
+                        border: '1px solid rgba(6, 182, 212, 0.3)',
+                        padding: '2px 6px',
+                        borderRadius: '8px'
+                      }}>
+                        KIDS
+                      </span>
+                    )}
+
+                    <div style={{
+                      width: '42px',
+                      height: '42px',
+                      borderRadius: '12px',
+                      background: `rgba(${card.accent === '#10B981' ? '16, 185, 129' : card.accent === '#F97316' ? '249, 115, 22' : '255, 255, 255'}, 0.08)`,
+                      color: card.accent,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '12px'
+                    }}>
+                      {card.icon}
+                    </div>
+
+                    <div>
+                      <h5 style={{ margin: '0 0 2px', fontSize: '0.92rem', fontWeight: '800', color: '#FFF' }}>
+                        {card.label}
+                      </h5>
+                      <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+                        {card.sub}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
         )}
 
@@ -6822,7 +7088,7 @@ Em nome de Jesus, Amém.`;
                 <div style={{ background: 'var(--slate-light)', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Versão Atual:</span>
-                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.5.1 (Build 2026.11.24)</strong>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>v2.6.0 (Build 2026.11.24)</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Status da Nuvem:</span>
@@ -8472,7 +8738,126 @@ Em nome de Jesus, Amém.`;
           />
         )}
 
+        {/* ════════════ ABA TREINO DO TEMPLO (OPENGYM INTEGRADO) ════════════ */}
+        {activeTab === 'treino-templo' && (
+          <TreinoTemploView 
+            onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
       </main>
+
+      {/* ════════════ BOTTOM NAVIGATION BAR FLUTUANTE (GLASSMORPHISM) ════════════ */}
+      <nav 
+        className="floating-bottom-bar"
+        style={{
+          position: 'fixed',
+          bottom: '16px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 'calc(100% - 32px)',
+          maxWidth: '460px',
+          height: '62px',
+          background: 'rgba(15, 17, 23, 0.88)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '32px',
+          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          padding: '0 8px',
+          zIndex: 999
+        }}
+      >
+        {[
+          { 
+            id: 'dashboard', 
+            label: 'Início', 
+            icon: (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            )
+          },
+          { 
+            id: 'treino-templo', 
+            label: 'Corpo & Treino', 
+            accent: '#10B981',
+            icon: (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12"></path>
+              </svg>
+            )
+          },
+          { 
+            id: 'biblia', 
+            label: 'Bíblia', 
+            icon: (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            )
+          },
+          { 
+            id: 'chat', 
+            label: 'Mentores', 
+            icon: (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            )
+          },
+          { 
+            id: 'conta', 
+            label: 'Conta', 
+            icon: (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            )
+          }
+        ].map(item => {
+          const isActive = activeTab === item.id;
+          const activeColor = item.accent || '#F97316';
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'biblia') {
+                  setBibleViewMode('reading');
+                  setBibleSelectedVerse(null);
+                }
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '3px',
+                color: isActive ? activeColor : 'rgba(255, 255, 255, 0.45)',
+                cursor: 'pointer',
+                padding: '4px 10px',
+                borderRadius: '16px',
+                transition: 'all 0.2s ease',
+                transform: isActive ? 'scale(1.08)' : 'scale(1)'
+              }}
+            >
+              {item.icon}
+              <span style={{ fontSize: '0.66rem', fontWeight: isActive ? '800' : '600' }}>
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
 
       {/* ════════════ MODAL DE UPGRADE & RESGATE DE VOUCHER ════════════ */}
       <UpgradeVoucherModal

@@ -1,7 +1,14 @@
 {
-  "version": "2.5.1",
-  "build": 2026112402,
-  "timestamp": 1795493000000,
-  "formattedDate": "24 de Novembro de 2026",
-  "changelog": "Mentores Bíblicos com chat em 1ª pessoa, imagens em alta definição, botão de nova conversa, respostas bíblicas de casamento e amor ao próximo, e atualização contínua em tempo real."
+  "version": "v2.6.0",
+  "build": "2026112403",
+  "releaseDate": "2026-11-24",
+  "minAppVersion": "1.0.0",
+  "changelog": [
+    "Redesign Visual Imersivo 3.0: Estética moderna em modo escuro gradiente inspirada em apps nativos de alto padrão.",
+    "Integração do OpenGym (Treino do Templo): Exercícios guiados em casa e academia, timer de descanso e consistência física.",
+    "Card Hero Principal Cinematográfico: 'O Convite de Hoje' com imagem de alta definição ao amanhecer e ação direta.",
+    "Carrossel dos 7 Mentores Bíblicos Canônicos na Home com acesso imediato ao chat e perfil.",
+    "Bottom Navigation Bar Flutuante Translúcida com Glassmorphism (Início, Treino, Bíblia, Mentores e Conta)."
+  ],
+  "updateTimestamp": 1795524600000
 }
