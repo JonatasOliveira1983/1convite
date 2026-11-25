@@ -129,6 +129,12 @@ export default function LandingPage({ onEnterApp }) {
     return null;
   });
 
+  const [openFaq, setOpenFaq] = useState(0);
+  const [recentPurchases, setRecentPurchases] = useState([]);
+  const [socialIdx, setSocialIdx] = useState(0);
+  const [socialDismissed, setSocialDismissed] = useState(false);
+  const particlesCanvasRef = React.useRef(null);
+
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
     const path = (window.location.pathname || '/').toLowerCase();
@@ -190,11 +196,6 @@ export default function LandingPage({ onEnterApp }) {
     }, 18000);
     return () => clearInterval(id);
   }, [recentPurchases, socialDismissed]);
-  const [openFaq, setOpenFaq] = useState(0);
-  const [recentPurchases, setRecentPurchases] = useState([]);
-  const [socialIdx, setSocialIdx] = useState(0);
-  const [socialDismissed, setSocialDismissed] = useState(false);
-  const particlesCanvasRef = React.useRef(null);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
   React.useEffect(() => {
