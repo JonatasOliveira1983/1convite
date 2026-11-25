@@ -276,15 +276,56 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(90deg, rgba(249, 115, 22, 0.16), rgba(16, 185, 129, 0.14));
-  border: 1px solid rgba(249, 115, 22, 0.35);
-  color: #fed7aa;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.28), rgba(220, 38, 38, 0.2));
+  border: 1px solid #ef4444;
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.25);
+  color: #fecaca;
   font-size: 0.74rem;
-  font-weight: 600;
-  padding: 8px 12px;
+  font-weight: 700;
+  padding: 9px 12px;
   border-radius: 10px;
   margin-bottom: 14px;
   margin-right: 34px;
+  text-align: center;
+  animation: acScarcityPulse 1.8s ease-in-out infinite;
+}
+
+.ac-scarcity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff2e2e;
+  box-shadow: 0 0 8px #ff2e2e;
+  flex-shrink: 0;
+  animation: acDotBlink 1s ease-in-out infinite;
+}
+
+@keyframes acDotBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+@keyframes acScarcityPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(239, 68, 68, 0.22); }
+  50% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.48); }
+}
+
+.ac-btn-sandbox {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba(249, 115, 22, 0.65);
+  background: rgba(249, 115, 22, 0.14);
+  color: #fdba74;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ac-btn-sandbox:hover:not(:disabled) {
+  background: rgba(249, 115, 22, 0.24);
 }
 
 .ac-brand-row {

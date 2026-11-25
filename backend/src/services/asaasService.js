@@ -245,3 +245,18 @@ export async function createCharge({
 export async function getPayment(paymentId) {
   return asaasRequest(`/payments/${encodeURIComponent(paymentId)}`);
 }
+
+export async function confirmSandboxPayment(paymentId, valueReais) {
+  if (!isSandboxKey()) {
+    throw new Error('Simulação disponível apenas em ambiente Sandbox.');
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  return asaasRequest(`/payments/${encodeURIComponent(paymentId)}/receiveInCash`, {
+    method: 'POST',
+    body: JSON.stringify({
+      paymentDate: today,
+      value: Number(valueReais),
+      notifyCustomer: false,
+    }),
+  });
+}

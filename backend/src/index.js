@@ -16,10 +16,12 @@ import {
   PAID_STATUSES,
   getPlanById,
   isAsaasConfigured,
+  isSandboxKey,
   isValidCpfCnpj,
   upsertCustomer,
   createCharge,
   getPayment,
+  confirmSandboxPayment,
 } from './services/asaasService.js';
 import {
   isResendConfigured,
@@ -2123,6 +2125,7 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
 
     res.json({
       success: true,
+      sandbox: isSandboxKey(),
       orderId,
       paymentId: charge.paymentId,
       status: charge.status,
@@ -2181,6 +2184,29 @@ app.get('/api/v1/pagamentos/status/:paymentId', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/v1/pagamentos/sandbox-confirm/:paymentId', async (req, res) => {
+  try {
+    if (!isSandboxKey()) {
+      return res.status(403).json({ success: false, message: 'Disponível apenas em modo Sandbox.' });
+    }
+    const paymentId = String(req.params.paymentId || '').trim();
+    const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Pedido não encontrado.' });
+    }
+    await confirmSandboxPayment(paymentId, Number(order.value_cents || 0) / 100);
+    const fulfilled = await fulfillPaidOrder(paymentId, 'RECEIVED_IN_CASH');
+    return res.json({
+      success: true,
+      paid: true,
+      status: 'RECEIVED_IN_CASH',
+      ...fulfilled,
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 

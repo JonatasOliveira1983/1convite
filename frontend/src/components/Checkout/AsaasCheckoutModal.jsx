@@ -71,6 +71,7 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
   const [paidResult, setPaidResult] = useState(null);
   const [copiedCode, setCopiedCode] = useState('');
   const [secondsLeft, setSecondsLeft] = useState(899);
+  const [urgencyIdx, setUrgencyIdx] = useState(0);
   const pollRef = useRef(null);
 
   const plan = PLANOS_MAP[planId] || PLANOS_MAP.popular;
@@ -83,15 +84,27 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
       setPaidResult(null);
       setLoading(false);
       setSecondsLeft(899);
+      setUrgencyIdx(0);
       return;
     }
     const timer = setInterval(() => {
       setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
-    return () => clearInterval(timer);
+    const rot = setInterval(() => {
+      setUrgencyIdx((prev) => (prev + 1) % 3);
+    }, 4500);
+    return () => {
+      clearInterval(timer);
+      clearInterval(rot);
+    };
   }, [isOpen, planId]);
 
   const countdownLabel = `${String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:${String(secondsLeft % 60).padStart(2, '0')}`;
+  const urgencyMessages = [
+    `Condição reservada por ${countdownLabel} • 5 E-books PDF + Convites inclusos`,
+    `Últimas vagas com bônus liberado • Expira em ${countdownLabel}`,
+    `Oferta especial ativa por ${countdownLabel} • Acesso VIP imediato`,
+  ];
 
   useEffect(() => {
     if (!chargeData?.paymentId || paidResult) return;
@@ -175,6 +188,28 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
     }
   };
 
+  const handleSandboxConfirm = async () => {
+    if (!chargeData?.paymentId) return;
+    setLoading(true);
+    setError('');
+    try {
+      const apiBase = getApiBase();
+      const res = await fetch(`${apiBase}/pagamentos/sandbox-confirm/${encodeURIComponent(chargeData.paymentId)}`, {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.paid) {
+        throw new Error(data?.message || 'Não foi possível simular a confirmação.');
+      }
+      setPaidResult(data);
+      if (onSuccess) onSuccess(data);
+    } catch (err) {
+      setError(err.message || 'Erro ao confirmar pagamento Sandbox.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const copyText = (value, label) => {
     navigator.clipboard?.writeText(value);
     setCopiedCode(label);
@@ -185,8 +220,8 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
     <div className="ac-overlay" onClick={onClose}>
       <div className="ac-modal" onClick={(e) => e.stopPropagation()}>
         <div className="ac-scarcity-bar">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>Condição reservada por <strong>{countdownLabel}</strong> • 5 E-books PDF + Convites inclusos</span>
+          <span className="ac-scarcity-dot" aria-hidden="true" />
+          <span>{urgencyMessages[urgencyIdx]}</span>
         </div>
 
         <button type="button" className="ac-close" onClick={onClose} aria-label="Fechar checkout">
@@ -288,6 +323,16 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
               <button type="button" className="ac-btn-secondary" onClick={handleManualCheck} disabled={loading}>
                 {loading ? 'Verificando...' : 'Já paguei, verificar agora'}
               </button>
+              {chargeData.sandbox && (
+                <button
+                  type="button"
+                  className="ac-btn-sandbox"
+                  onClick={handleSandboxConfirm}
+                  disabled={loading}
+                >
+                  {loading ? 'Confirmando...' : 'Simular Pagamento Aprovado (Sandbox)'}
+                </button>
+              )}
             </div>
           </div>
         ) : (
