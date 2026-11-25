@@ -677,8 +677,8 @@ body:not(.dark-mode) .cafe-audio-sub {
 }
 
 .cafe-audio-play-btn {
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   border: none;
@@ -845,18 +845,19 @@ body:not(.dark-mode) .cafe-opt-chip {
   margin-left: 6px;
 }
 
-/* Seletor visual das vozes (Francisca & Antônio) */
+/* Seletor visual das vozes (Francisca & Antônio) — limpo sem caixa aninhada */
 .cafe-voice-bar {
-  margin: 10px 0 12px 0;
-  padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 12px 0 10px 0;
+  padding: 12px 0 0 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
 }
 
 body:not(.dark-mode) .cafe-voice-bar {
-  background: rgba(249, 115, 22, 0.05);
-  border-color: rgba(249, 115, 22, 0.15);
+  background: transparent;
+  border-top-color: rgba(249, 115, 22, 0.16);
 }
 
 .cafe-voice-bar-title {
@@ -965,18 +966,21 @@ body:not(.dark-mode) .cafe-voice-pill-text small {
   color: #F97316;
 }
 
-/* ════════════ STEPPER VISUAL DA JORNADA 3 EM 1 ════════════ */
+/* ════════════ STEPPER VISUAL DA JORNADA (4 PASSOS SEM CORTE) ════════════ */
 .cafe-stepper-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 10px 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  align-items: stretch;
+  margin-bottom: 18px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
+  border-radius: 16px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 body:not(.dark-mode) .cafe-stepper-wrap {
@@ -987,18 +991,26 @@ body:not(.dark-mode) .cafe-stepper-wrap {
 
 .cafe-step-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 5px;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 8px 4px;
+  min-height: 52px;
+  min-width: 0;
   border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .cafe-step-item:hover {
   background: rgba(255, 255, 255, 0.06);
+}
+
+.cafe-step-item.is-active {
+  background: rgba(249, 115, 22, 0.12);
 }
 
 .cafe-step-circle {
@@ -1012,6 +1024,7 @@ body:not(.dark-mode) .cafe-stepper-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -1019,7 +1032,7 @@ body:not(.dark-mode) .cafe-stepper-wrap {
   background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   color: #FFFFFF;
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .cafe-step-item.is-passed .cafe-step-circle {
@@ -1028,10 +1041,15 @@ body:not(.dark-mode) .cafe-stepper-wrap {
 }
 
 .cafe-step-label {
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #94A3B8;
   letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
   transition: color 0.2s ease;
 }
 
@@ -1041,19 +1059,7 @@ body:not(.dark-mode) .cafe-stepper-wrap {
 }
 
 .cafe-step-line {
-  flex: 1;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0 6px;
-  transition: background 0.3s ease;
-}
-
-body:not(.dark-mode) .cafe-step-line {
-  background: #E2E8F0;
-}
-
-.cafe-step-line.is-passed {
-  background: linear-gradient(90deg, #F97316 0%, #16A34A 100%);
+  display: none;
 }
 
 /* Botões de Ação de Avanço / Voltar */

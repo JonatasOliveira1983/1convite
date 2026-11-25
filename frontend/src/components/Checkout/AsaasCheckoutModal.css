@@ -1,0 +1,272 @@
+.ac-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ac-modal {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: #121215;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 28px 24px;
+  color: #ffffff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+.ac-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ac-header {
+  margin-bottom: 18px;
+}
+
+.ac-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #34d399;
+  margin-bottom: 6px;
+}
+
+.ac-title {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.ac-subtitle {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #a1a1aa;
+}
+
+.ac-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ac-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ac-field label {
+  font-size: 0.8rem;
+  color: #d4d4d8;
+  font-weight: 600;
+}
+
+.ac-field input {
+  background: #1c1c21;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #ffffff;
+  font-size: 0.92rem;
+  outline: none;
+}
+
+.ac-field input:focus {
+  border-color: #10b981;
+}
+
+.ac-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ac-method-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ac-method-toggle button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #1c1c21;
+  color: #a1a1aa;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.ac-method-toggle button.active {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.ac-btn-primary {
+  width: 100%;
+  margin-top: 6px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #10b981;
+  color: #052e16;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.ac-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ac-btn-secondary {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.ac-error {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+}
+
+.ac-payment-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ac-instruction {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #d4d4d8;
+  text-align: center;
+}
+
+.ac-qr-wrap {
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 14px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.ac-qr-img {
+  width: 190px;
+  height: 190px;
+  display: block;
+}
+
+.ac-copy-box {
+  display: flex;
+  gap: 8px;
+}
+
+.ac-copy-box input {
+  flex: 1;
+  background: #1c1c21;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 9px 10px;
+  color: #d4d4d8;
+  font-size: 0.8rem;
+}
+
+.ac-copy-box button {
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ac-success-box {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ac-badge-ok {
+  display: inline-block;
+  margin: 0 auto;
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ac-vouchers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ac-voucher-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1c1c21;
+  border: 1px solid rgba(249, 115, 22, 0.45);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fb923c;
+}
+
+.ac-voucher-item button {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fdba74;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}

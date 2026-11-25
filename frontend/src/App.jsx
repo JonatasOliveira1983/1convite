@@ -2755,7 +2755,7 @@ Em nome de Jesus, Amém.`;
   return (
     <div className="app-container">
       <header className="app-header" style={{
-        display: 'flex',
+        display: activeTab === 'cafe-com-deus' ? 'none' : 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '6px 16px',
@@ -3162,7 +3162,7 @@ Em nome de Jesus, Amém.`;
       )}
 
       {/* ── MAIN ──────────────────────────────── */}
-      <main className="main-content">
+      <main className="main-content" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 12px) + 92px)' }}>
 
         {/* ════════════ TELA DASHBOARD PRINCIPAL (FEED IMERSIVO 1CONVITE 3.0) ════════════ */}
         {activeTab === 'dashboard' && (
@@ -8808,22 +8808,23 @@ Em nome de Jesus, Amém.`;
         className="floating-bottom-bar"
         style={{
           position: 'fixed',
-          bottom: '18px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'calc(100% - 32px)',
-          maxWidth: '460px',
-          height: '64px',
-          background: 'rgba(18, 22, 34, 0.90)',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          maxWidth: '100%',
+          minHeight: '64px',
+          background: 'rgba(13, 17, 26, 0.98)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '28px',
-          boxShadow: '0 16px 42px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '20px 20px 0 0',
+          boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.55)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
-          padding: '0 8px',
+          padding: '6px 8px calc(env(safe-area-inset-bottom, 6px) + 6px)',
+          boxSizing: 'border-box',
           zIndex: 999
         }}
       >
@@ -8900,10 +8901,12 @@ Em nome de Jesus, Amém.`;
                 gap: '3px',
                 color: isActive ? activeColor : 'rgba(255, 255, 255, 0.45)',
                 cursor: 'pointer',
-                padding: '4px 10px',
-                borderRadius: '16px',
+                padding: '6px 10px',
+                minHeight: '48px',
+                minWidth: '52px',
+                borderRadius: '14px',
                 transition: 'all 0.2s ease',
-                transform: isActive ? 'scale(1.08)' : 'scale(1)'
+                transform: isActive ? 'scale(1.05)' : 'scale(1)'
               }}
             >
               {item.icon}

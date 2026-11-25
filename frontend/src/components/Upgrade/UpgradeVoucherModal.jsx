@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './UpgradeVoucherModal.css';
 import adminAuthService from '../../services/adminAuthService';
+import AsaasCheckoutModal from '../Checkout/AsaasCheckoutModal';
 
 export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium }) {
+  const [checkoutPlan, setCheckoutPlan] = useState(null);
   if (!isOpen) return null;
 
   const [activeTab, setActiveTab] = useState('planos'); // 'planos' ou 'voucher'
@@ -94,9 +96,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
                 <li><strong>1 Convite Gratuito</strong> para liberar o app a alguém</li>
               </ul>
               <button 
-                onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67+-+1+Convite)+do+1Convite', '_blank');
-                }}
+                onClick={() => setCheckoutPlan('basico')}
                 className="uv-plan-btn"
               >
                 Garantir Plano Básico
@@ -121,9 +121,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
                 <li><strong>5 Convites Gratuitos</strong> com código exclusivo</li>
               </ul>
               <button 
-                onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97+-+5+Convites)+do+1Convite', '_blank');
-                }}
+                onClick={() => setCheckoutPlan('popular')}
                 className="uv-plan-btn uv-btn-featured"
               >
                 Garantir Plano Popular
@@ -146,9 +144,7 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
                 <li><strong>10 Convites Gratuitos</strong> para sua igreja/célula</li>
               </ul>
               <button 
-                onClick={() => {
-                  window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147+-+10+Convites)+do+1Convite', '_blank');
-                }}
+                onClick={() => setCheckoutPlan('avancado')}
                 className="uv-plan-btn"
               >
                 Garantir Plano Avançado
@@ -190,6 +186,14 @@ export default function UpgradeVoucherModal({ isOpen, onClose, onActivatePremium
           </form>
         )}
       </div>
+      <AsaasCheckoutModal
+        isOpen={Boolean(checkoutPlan)}
+        planId={checkoutPlan}
+        onClose={() => setCheckoutPlan(null)}
+        onSuccess={() => {
+          if (onActivatePremium) onActivatePremium('ASAAS_VIP');
+        }}
+      />
     </div>
   );
 }

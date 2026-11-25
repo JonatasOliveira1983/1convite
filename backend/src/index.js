@@ -10,6 +10,21 @@ import { LayaEngine, LAYA_MENTORES, LAYA_CONSELHOS, LAYA_ORACULO_TEMAS } from '.
 import { ragService } from './services/ragService.js';
 import { mcpServer } from './services/mcpServer.js';
 import { synthesizeNeuralTTS } from './services/ttsService.js';
+import {
+  PLANOS_1CONVITE,
+  PAID_EVENTS,
+  PAID_STATUSES,
+  getPlanById,
+  isAsaasConfigured,
+  upsertCustomer,
+  createCharge,
+  getPayment,
+} from './services/asaasService.js';
+import {
+  isResendConfigured,
+  sendWelcomeAndVouchersEmail,
+  sendLeadWelcomeEmail,
+} from './services/resendService.js';
 
 dotenv.config();
 
@@ -138,6 +153,27 @@ async function ensureTables() {
           created_at TEXT,
           last_login TEXT,
           access_count INTEGER DEFAULT 1
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_pagamentos_asaas (
+          payment_id TEXT PRIMARY KEY,
+          order_id TEXT NOT NULL,
+          plan_id TEXT NOT NULL,
+          customer_name TEXT NOT NULL,
+          customer_email TEXT NOT NULL,
+          customer_cpf TEXT,
+          customer_phone TEXT,
+          asaas_customer_id TEXT,
+          billing_type TEXT DEFAULT 'PIX',
+          value_cents INTEGER NOT NULL,
+          status TEXT DEFAULT 'PENDING',
+          invoice_url TEXT,
+          vouchers_json TEXT,
+          email_sent INTEGER DEFAULT 0,
+          paid_at TEXT,
+          created_at TEXT NOT NULL
         )
       `);
 
@@ -1822,13 +1858,247 @@ app.post('/api/v1/trilhas/completar-dia', async (req, res) => {
 
 // ---------------- INTEGRACAO MERCADO PAGO ----------------
 
+// ── PAGAMENTOS ASAAS (PIX, CHECKOUT CARTÃO/BOLETO & WEBHOOK) + RESEND ──
+
+function generateInviteCode(planId) {
+  const prefix = planId === 'avancado' ? 'REINO' : planId === 'popular' ? 'EDIF' : 'SEM';
+  const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
+  return `${prefix}-${rand}`;
+}
+
+async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
+  const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
+  if (!order) {
+    return { found: false };
+  }
+
+  const plan = getPlanById(order.plan_id) || getPlanById('basico');
+  let vouchers = [];
+  try {
+    vouchers = order.vouchers_json ? JSON.parse(order.vouchers_json) : [];
+  } catch {
+    vouchers = [];
+  }
+
+  const nowIso = new Date().toISOString();
+  const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && vouchers.length > 0;
+
+  if (!alreadyFulfilled) {
+    // 1. Gerar os vouchers exclusivos do comprador (1, 5 ou 10 convites)
+    if (vouchers.length === 0) {
+      for (let i = 0; i < plan.convites; i++) {
+        const code = generateInviteCode(plan.id);
+        await dbRun(
+          `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, created_at)
+           VALUES ($1, 1, 0, $2, 1, $3, $4)`,
+          [code, plan.conviteDias, `Convite do ${plan.nome} (${order.customer_email})`, nowIso]
+        );
+        vouchers.push(code);
+      }
+    }
+
+    // 2. Liberar ou atualizar acesso VIP do comprador em tb_acessos_usuarios (1 ano)
+    const expiryMs = Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000;
+    const expiryTimestamp = String(expiryMs);
+    const cleanEmail = order.customer_email.trim().toLowerCase();
+    const existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
+
+    if (existingUser) {
+      await dbRun(
+        `UPDATE tb_acessos_usuarios
+         SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, last_login = $4
+         WHERE id = $5`,
+        [order.customer_name, plan.nome, expiryTimestamp, nowIso, existingUser.id]
+      );
+    } else {
+      const newUserId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+      await dbRun(
+        `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count)
+         VALUES ($1, $2, $3, '', 'vip', $4, NULL, $5, $6, $6, 1)`,
+        [newUserId, order.customer_name, cleanEmail, plan.nome, expiryTimestamp, nowIso]
+      );
+    }
+
+    await dbRun(
+      `UPDATE tb_pagamentos_asaas
+       SET status = $1, vouchers_json = $2, paid_at = COALESCE(paid_at, $3)
+       WHERE payment_id = $4`,
+      [paidStatus, JSON.stringify(vouchers), nowIso, paymentId]
+    );
+  }
+
+  // 3. Enviar e-mail via Resend (idempotente via email_sent)
+  if (!Number(order.email_sent) && isResendConfigured()) {
+    const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+    const mailRes = await sendWelcomeAndVouchersEmail({
+      to: order.customer_email,
+      name: order.customer_name,
+      planName: plan.nome,
+      vouchers,
+      expiryDateStr: expiryStr,
+      siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+    });
+    if (mailRes.ok) {
+      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+    }
+  }
+
+  return {
+    found: true,
+    paid: true,
+    status: paidStatus,
+    plan,
+    vouchers,
+    customerEmail: order.customer_email,
+  };
+}
+
+app.get('/api/v1/pagamentos/planos', (req, res) => {
+  res.json({
+    success: true,
+    asaasConfigured: isAsaasConfigured(),
+    resendConfigured: isResendConfigured(),
+    planos: Object.values(PLANOS_1CONVITE),
+  });
+});
+
+app.post('/api/v1/pagamentos/checkout', async (req, res) => {
+  try {
+    const { planId, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
+    const plan = getPlanById(planId);
+    if (!plan) {
+      return res.status(400).json({ success: false, message: 'Plano inválido.' });
+    }
+    const cleanName = String(name || '').trim();
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    if (!cleanName || !cleanEmail || !cleanEmail.includes('@')) {
+      return res.status(400).json({ success: false, message: 'Informe nome completo e um e-mail válido.' });
+    }
+    if (!isAsaasConfigured()) {
+      return res.status(503).json({
+        success: false,
+        message: 'Gateway de pagamento Asaas ainda não configurado no servidor (ASAAS_API_KEY).',
+      });
+    }
+
+    const orderId = `ord_1c_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const customer = await upsertCustomer({
+      name: cleanName,
+      email: cleanEmail,
+      cpfCnpj,
+      phone,
+      externalReference: orderId,
+    });
+
+    const charge = await createCharge({
+      customerId: customer.id,
+      valueCents: plan.valorCentavos,
+      description: `1Convite - ${plan.nome} (${plan.convites} convite${plan.convites > 1 ? 's' : ''})`,
+      externalReference: orderId,
+      billingType,
+    });
+
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      `INSERT INTO tb_pagamentos_asaas
+       (payment_id, order_id, plan_id, customer_name, customer_email, customer_cpf, customer_phone, asaas_customer_id, billing_type, value_cents, status, invoice_url, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+      [
+        charge.paymentId,
+        orderId,
+        plan.id,
+        cleanName,
+        cleanEmail,
+        cpfCnpj || null,
+        phone || null,
+        customer.id,
+        charge.billingType,
+        plan.valorCentavos,
+        charge.status || 'PENDING',
+        charge.invoiceUrl || '',
+        nowIso,
+      ]
+    );
+
+    res.json({
+      success: true,
+      orderId,
+      paymentId: charge.paymentId,
+      status: charge.status,
+      billingType: charge.billingType,
+      invoiceUrl: charge.invoiceUrl,
+      pix: charge.pix,
+      plan,
+    });
+  } catch (err) {
+    console.error('[ASAAS CHECKOUT ERROR]:', err);
+    res.status(500).json({ success: false, message: err.message || 'Erro ao criar cobrança no Asaas.' });
+  }
+});
+
+app.get('/api/v1/pagamentos/status/:paymentId', async (req, res) => {
+  try {
+    const paymentId = String(req.params.paymentId || '').trim();
+    if (!paymentId) {
+      return res.status(400).json({ success: false, message: 'paymentId obrigatório.' });
+    }
+
+    const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Pedido não encontrado.' });
+    }
+
+    let currentStatus = String(order.status || 'PENDING').toUpperCase();
+    if (!PAID_STATUSES.has(currentStatus) && isAsaasConfigured()) {
+      try {
+        const remote = await getPayment(paymentId);
+        if (remote?.status) {
+          currentStatus = String(remote.status).toUpperCase();
+        }
+      } catch (err) {
+        console.warn('[ASAAS STATUS CHECK]:', err.message);
+      }
+    }
+
+    if (PAID_STATUSES.has(currentStatus)) {
+      const fulfilled = await fulfillPaidOrder(paymentId, currentStatus);
+      return res.json({
+        success: true,
+        paid: true,
+        status: currentStatus,
+        vouchers: fulfilled.vouchers || [],
+        plan: fulfilled.plan,
+        customerEmail: fulfilled.customerEmail,
+      });
+    }
+
+    res.json({
+      success: true,
+      paid: false,
+      status: currentStatus,
+      invoiceUrl: order.invoice_url || '',
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.post('/api/v1/pagamentos/criar-preferencia', async (req, res) => {
   try {
-    const preferenceId = `pref_1convite_${Math.random().toString(36).substr(2, 9)}`;
-    res.json({
-      preferenceId,
-      checkoutUrl: `/simular-pagamento?pref_id=${preferenceId}`
+    const { planId = 'basico', name = 'Membro 1Convite', email, cpfCnpj, phone, billingType = 'UNDEFINED' } = req.body || {};
+    if (!email || !isAsaasConfigured()) {
+      const preferenceId = `pref_1convite_${Math.random().toString(36).substr(2, 9)}`;
+      return res.json({ preferenceId, checkoutUrl: `/#planos` });
+    }
+    const plan = getPlanById(planId) || getPlanById('basico');
+    const customer = await upsertCustomer({ name, email, cpfCnpj, phone });
+    const charge = await createCharge({
+      customerId: customer.id,
+      valueCents: plan.valorCentavos,
+      description: `1Convite - ${plan.nome}`,
+      billingType,
     });
+    res.json({ preferenceId: charge.paymentId, checkoutUrl: charge.invoiceUrl });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -1836,10 +2106,44 @@ app.post('/api/v1/pagamentos/criar-preferencia', async (req, res) => {
 
 app.post('/api/v1/pagamentos/webhook', async (req, res) => {
   try {
-    const { action, data, pref_id } = req.body;
-    await dbRun("UPDATE tb_usuario_progresso SET status_plano = 'PREMIUM'");
-    res.json({ success: true, message: 'Plano ativado para PREMIUM via webhook do Mercado Pago!' });
+    const expectedToken = (process.env.ASAAS_WEBHOOK_TOKEN || '').trim();
+    const receivedToken = (req.headers['asaas-access-token'] || '').toString().trim();
+    if (expectedToken && receivedToken !== expectedToken) {
+      return res.status(401).json({ success: false, message: 'Token de webhook inválido.' });
+    }
+
+    const payload = req.body || {};
+    const event = String(payload.event || '').toUpperCase();
+    const payment = payload.payment || {};
+    const paymentId = payment.id || payload.paymentId;
+
+    if (!paymentId) {
+      return res.json({ success: true, ignored: true, reason: 'No paymentId' });
+    }
+
+    if (PAID_EVENTS.has(event) || PAID_STATUSES.has(String(payment.status || '').toUpperCase())) {
+      let confirmedStatus = String(payment.status || 'CONFIRMED').toUpperCase();
+      if (isAsaasConfigured()) {
+        try {
+          const remote = await getPayment(paymentId);
+          if (remote?.status) confirmedStatus = String(remote.status).toUpperCase();
+        } catch (err) {
+          console.warn('[ASAAS WEBHOOK VERIFY]:', err.message);
+        }
+      }
+      if (PAID_STATUSES.has(confirmedStatus) || PAID_EVENTS.has(event)) {
+        const result = await fulfillPaidOrder(paymentId, confirmedStatus);
+        return res.json({ success: true, event, paymentId, ...result });
+      }
+    }
+
+    await dbRun('UPDATE tb_pagamentos_asaas SET status = $1 WHERE payment_id = $2', [
+      String(payment.status || event || 'UPDATED').toUpperCase(),
+      paymentId,
+    ]);
+    res.json({ success: true, event, paymentId, processed: false });
   } catch (err) {
+    console.error('[ASAAS WEBHOOK ERROR]:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -2180,6 +2484,11 @@ app.post('/api/v1/leads', async (req, res) => {
       'INSERT INTO tb_leads (telefone, nome, email, origem, pagina) VALUES ($1, $2, $3, $4, $5)',
       [phone || null, nome || null, email || null, origem || null, pagina || null]
     );
+    if (email && String(email).includes('@')) {
+      sendLeadWelcomeEmail({ to: email, name: nome }).catch((e) =>
+        console.warn('[RESEND LEAD]:', e.message)
+      );
+    }
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

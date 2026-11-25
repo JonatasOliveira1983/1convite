@@ -6,17 +6,21 @@
   min-height: 100vh;
   background: #080C14;
   color: #F8FAFC;
-  padding: 24px 20px 80px;
+  padding: 18px 14px 96px;
   box-sizing: border-box;
   font-family: inherit;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .admin-container {
   max-width: 1080px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  box-sizing: border-box;
 }
 
 /* Header do Painel Admin */
@@ -370,4 +374,70 @@
   background: rgba(249, 115, 22, 0.25);
   color: #FB923C;
   border: 1px solid rgba(249, 115, 22, 0.5);
+}
+
+/* ── RESPONSIVIDADE MOBILE (SEM CORTE LATERAL) ── */
+@media (max-width: 680px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .admin-header-left {
+    align-items: flex-start;
+  }
+
+  .admin-header-subtitle {
+    word-break: break-word;
+  }
+
+  .admin-header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .admin-btn-outline,
+  .admin-btn-danger {
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .admin-stat-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+
+  .admin-stat-label {
+    font-size: 0.66rem;
+  }
+
+  .admin-stat-value {
+    font-size: 1.45rem;
+  }
+
+  .admin-section-card {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
+  .admin-voucher-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-btn-create {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+  }
 }

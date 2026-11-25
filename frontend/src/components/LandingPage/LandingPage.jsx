@@ -8,6 +8,7 @@ import imgConviteVip from '../../assets/landing/convite_vip.jpg';
 import imgHeroMockup from '../../assets/landing/hero_mockup_1convite.jpg';
 import LegalModalPage from '../Legal/LegalModalPage';
 import LgpdBanner from '../Legal/LgpdBanner';
+import AsaasCheckoutModal from '../Checkout/AsaasCheckoutModal';
 
 import jesusImg from '../../assets/mentores/jesus.png';
 import salomaoImg from '../../assets/mentores/salomao.png';
@@ -116,6 +117,7 @@ export default function LandingPage({ onEnterApp }) {
   const [downloadToast, setDownloadToast] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [legalTab, setLegalTab] = useState(null);
+  const [checkoutPlan, setCheckoutPlan] = useState(null);
   const particlesCanvasRef = React.useRef(null);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
@@ -335,6 +337,7 @@ export default function LandingPage({ onEnterApp }) {
             <a href="#recursos">Recursos</a>
             <a href="#planos">Planos & Convites</a>
             <a href="#mentores">Mentores Bíblicos</a>
+            <a href="/blog">Blog</a>
             <a href="#baixar-app" className="sp-pill-link">
               <IconDownload />
               <span>Baixar o aplicativo</span>
@@ -675,7 +678,7 @@ export default function LandingPage({ onEnterApp }) {
                 type="button"
                 className="sp-btn-cta-dark"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+B%C3%A1sico+(R%24+67%2Fano+-+1+Convite)+do+1Convite!', '_blank')}
+                onClick={() => setCheckoutPlan('basico')}
               >
                 <span>Garantir Plano Básico</span>
                 <IconArrowRight />
@@ -721,7 +724,7 @@ export default function LandingPage({ onEnterApp }) {
                 type="button"
                 className="sp-btn-cta-green"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Mais+Popular+(R%24+97%2Fano+-+5+Convites)+do+1Convite!', '_blank')}
+                onClick={() => setCheckoutPlan('popular')}
               >
                 <span>Garantir Plano Popular</span>
                 <IconArrowRight />
@@ -766,7 +769,7 @@ export default function LandingPage({ onEnterApp }) {
                 type="button"
                 className="sp-btn-cta-dark"
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
-                onClick={() => window.open('https://api.whatsapp.com/send?text=Ol%C3%A1%2C+quero+adquirir+o+Plano+Avan%C3%A7ado+(R%24+147%2Fano+-+10+Convites)+do+1Convite!', '_blank')}
+                onClick={() => setCheckoutPlan('avancado')}
               >
                 <span>Garantir Plano Avançado</span>
                 <IconArrowRight />
@@ -998,6 +1001,7 @@ export default function LandingPage({ onEnterApp }) {
               <a href="#mentores" className="sp-footer-link">Mentores Bíblicos</a>
               <a href="#recursos" className="sp-footer-link">Matriz de 365 Dias</a>
               <a href="#planos" className="sp-footer-link">Planos & Convites</a>
+              <a href="/blog" className="sp-footer-link">Blog 1Convite</a>
             </div>
 
             <div className="sp-footer-col">
@@ -1021,6 +1025,11 @@ export default function LandingPage({ onEnterApp }) {
       {legalTab && (
         <LegalModalPage initialTab={legalTab} onClose={() => setLegalTab(null)} />
       )}
+      <AsaasCheckoutModal
+        isOpen={Boolean(checkoutPlan)}
+        planId={checkoutPlan}
+        onClose={() => setCheckoutPlan(null)}
+      />
       <LgpdBanner onOpenLegal={(tab) => setLegalTab(tab)} />
     </div>
   );

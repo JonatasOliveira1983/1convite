@@ -1,0 +1,216 @@
+/**
+ * Serviço de integração com a API v3 do Asaas (PIX, Checkout/Cartão e Webhook).
+ * Portado e adaptado da arquitetura do Dezafira para o ecossistema 1Convite.
+ */
+
+const ASAAS_PRODUCTION_URL = 'https://api.asaas.com/v3';
+const ASAAS_SANDBOX_URL = 'https://api-sandbox.asaas.com/v3';
+
+export const PAID_EVENTS = new Set([
+  'PAYMENT_CONFIRMED',
+  'PAYMENT_RECEIVED',
+  'PAYMENT_CREDIT_CARD_CAPTURED',
+]);
+
+export const PAID_STATUSES = new Set([
+  'RECEIVED',
+  'CONFIRMED',
+  'RECEIVED_IN_CASH',
+]);
+
+export const PLANOS_1CONVITE = {
+  basico: {
+    id: 'basico',
+    nome: 'Plano Básico — Semente',
+    tituloCurto: 'Plano Semente',
+    valorCentavos: 6700,
+    valorReais: 67,
+    diasValidade: 365,
+    convites: 1,
+    conviteDias: 180,
+  },
+  popular: {
+    id: 'popular',
+    nome: 'Plano Mais Popular — Edificação',
+    tituloCurto: 'Plano Edificação',
+    valorCentavos: 9700,
+    valorReais: 97,
+    diasValidade: 365,
+    convites: 5,
+    conviteDias: 180,
+  },
+  avancado: {
+    id: 'avancado',
+    nome: 'Plano Avançado — Reino',
+    tituloCurto: 'Plano Reino',
+    valorCentavos: 14700,
+    valorReais: 147,
+    diasValidade: 365,
+    convites: 10,
+    conviteDias: 180,
+  },
+};
+
+export function getPlanById(planId) {
+  return PLANOS_1CONVITE[String(planId || '').toLowerCase()] || null;
+}
+
+export function getAsaasApiKey() {
+  return (process.env.ASAAS_API_KEY || '').trim();
+}
+
+export function isAsaasConfigured() {
+  return Boolean(getAsaasApiKey());
+}
+
+export function isSandboxKey(token = getAsaasApiKey()) {
+  if (!token) return true;
+  return !token.startsWith('$aact_prod_');
+}
+
+function getBaseUrl() {
+  if (process.env.ASAAS_API_URL) {
+    return process.env.ASAAS_API_URL.replace(/\/$/, '');
+  }
+  return isSandboxKey() ? ASAAS_SANDBOX_URL : ASAAS_PRODUCTION_URL;
+}
+
+function centsToAsaasValue(cents) {
+  return Number((Number(cents) / 100).toFixed(2));
+}
+
+function dueDateDaysFromNow(days = 1) {
+  const d = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+  return d.toISOString().slice(0, 10);
+}
+
+function onlyDigits(str = '') {
+  return String(str).replace(/\D/g, '');
+}
+
+async function asaasRequest(path, options = {}) {
+  const apiKey = getAsaasApiKey();
+  if (!apiKey) {
+    throw new Error('ASAAS_API_KEY não configurado no servidor.');
+  }
+
+  const url = `${getBaseUrl()}${path}`;
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      access_token: apiKey,
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  });
+
+  const text = await response.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = { raw: text };
+  }
+
+  if (!response.ok) {
+    const errMsg = data?.errors?.map((e) => e.description).join('; ') || text.slice(0, 300);
+    throw new Error(`Asaas ${response.status}: ${errMsg}`);
+  }
+
+  if (Array.isArray(data?.errors) && data.errors.length > 0) {
+    const errMsg = data.errors.map((e) => e.description).join('; ');
+    throw new Error(`Asaas erros: ${errMsg}`);
+  }
+
+  return data;
+}
+
+export async function findCustomerByEmail(email) {
+  const cleanEmail = String(email || '').trim().toLowerCase();
+  if (!cleanEmail) return null;
+  const data = await asaasRequest(`/customers?email=${encodeURIComponent(cleanEmail)}&limit=1`);
+  return data?.data?.[0] || null;
+}
+
+export async function upsertCustomer({ name, email, cpfCnpj, phone, externalReference }) {
+  const cleanEmail = String(email || '').trim().toLowerCase();
+  const existing = await findCustomerByEmail(cleanEmail);
+  if (existing) {
+    // Atualiza CPF caso o cliente existente não tenha e tenha sido informado agora
+    const digitsCpf = onlyDigits(cpfCnpj);
+    if (digitsCpf && !existing.cpfCnpj) {
+      try {
+        return await asaasRequest(`/customers/${existing.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ cpfCnpj: digitsCpf }),
+        });
+      } catch {
+        return existing;
+      }
+    }
+    return existing;
+  }
+
+  const payload = {
+    name: String(name || '').trim() || 'Membro 1Convite',
+    email: cleanEmail,
+  };
+  const digitsCpf = onlyDigits(cpfCnpj);
+  const digitsPhone = onlyDigits(phone);
+  if (digitsCpf) payload.cpfCnpj = digitsCpf;
+  if (digitsPhone) payload.mobilePhone = digitsPhone;
+  if (externalReference) payload.externalReference = externalReference;
+
+  return asaasRequest('/customers', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function createCharge({
+  customerId,
+  valueCents,
+  description,
+  externalReference,
+  billingType = 'PIX',
+  dueDays = 1,
+}) {
+  const normalizedType = billingType === 'UNDEFINED' || billingType === 'CREDIT_CARD'
+    ? 'UNDEFINED'
+    : 'PIX';
+
+  const payment = await asaasRequest('/payments', {
+    method: 'POST',
+    body: JSON.stringify({
+      customer: customerId,
+      billingType: normalizedType,
+      value: centsToAsaasValue(valueCents),
+      dueDate: dueDateDaysFromNow(dueDays),
+      description: String(description || 'Assinatura 1Convite').slice(0, 200),
+      externalReference,
+    }),
+  });
+
+  let pix = null;
+  if (normalizedType === 'PIX') {
+    try {
+      pix = await asaasRequest(`/payments/${payment.id}/pixQrCode`);
+    } catch (err) {
+      console.warn('[ASAAS] Falha ao obter QR Code PIX:', err.message);
+    }
+  }
+
+  return {
+    paymentId: payment.id,
+    status: payment.status,
+    invoiceUrl: payment.invoiceUrl || '',
+    billingType: normalizedType,
+    value: payment.value,
+    dueDate: payment.dueDate,
+    pix,
+  };
+}
+
+export async function getPayment(paymentId) {
+  return asaasRequest(`/payments/${encodeURIComponent(paymentId)}`);
+}
