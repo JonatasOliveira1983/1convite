@@ -89,6 +89,11 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    const cleanDigits = cpfCnpj.replace(/\D/g, '');
+    if (cleanDigits && cleanDigits.length !== 11 && cleanDigits.length !== 14) {
+      setError('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.');
+      return;
+    }
     setLoading(true);
     try {
       const apiBase = getApiBase();
@@ -163,8 +168,16 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
             <div className="ac-badge-ok">PAGAMENTO CONFIRMADO</div>
             <h4>Seu acesso VIP está liberado!</h4>
             <p>
-              Enviamos uma cópia para <strong>{paidResult.customerEmail}</strong>. Abaixo estão seus códigos de convite para compartilhar:
+              Enviamos uma cópia para <strong>{paidResult.customerEmail}</strong>. Abaixo estão seus dados de acesso e códigos de convite:
             </p>
+            {paidResult.tempPassword && (
+              <div className="ac-voucher-item" style={{ marginBottom: '12px', borderColor: 'rgba(16,185,129,0.45)' }}>
+                <span>Senha: <strong>{paidResult.tempPassword}</strong></span>
+                <button type="button" onClick={() => copyText(paidResult.tempPassword, 'pass')}>
+                  {copiedCode === 'pass' ? 'Copiada!' : 'Copiar'}
+                </button>
+              </div>
+            )}
             <div className="ac-vouchers-list">
               {(paidResult.vouchers || []).map((code) => (
                 <div key={code} className="ac-voucher-item">
@@ -175,9 +188,13 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
                 </div>
               ))}
             </div>
-            <button type="button" className="ac-btn-primary" onClick={onClose}>
+            <a
+              href="/app"
+              className="ac-btn-primary"
+              style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}
+            >
               Concluir e Acessar App
-            </button>
+            </a>
           </div>
         ) : chargeData ? (
           <div className="ac-payment-step">

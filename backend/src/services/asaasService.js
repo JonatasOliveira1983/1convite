@@ -4,7 +4,7 @@
  */
 
 const ASAAS_PRODUCTION_URL = 'https://api.asaas.com/v3';
-const ASAAS_SANDBOX_URL = 'https://api-sandbox.asaas.com/v3';
+const ASAAS_SANDBOX_URL = 'https://sandbox.asaas.com/api/v3';
 
 export const PAID_EVENTS = new Set([
   'PAYMENT_CONFIRMED',
@@ -88,6 +88,36 @@ function onlyDigits(str = '') {
   return String(str).replace(/\D/g, '');
 }
 
+export function isValidCpfCnpj(value = '') {
+  const digits = onlyDigits(value);
+  if (!digits) return false;
+  if (digits.length === 11) {
+    if (/^(\d)\1{10}$/.test(digits)) return false;
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += Number(digits[i]) * (10 - i);
+    let d1 = (sum * 10) % 11;
+    if (d1 === 10) d1 = 0;
+    if (d1 !== Number(digits[9])) return false;
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += Number(digits[i]) * (11 - i);
+    let d2 = (sum * 10) % 11;
+    if (d2 === 10) d2 = 0;
+    return d2 === Number(digits[10]);
+  }
+  if (digits.length === 14) {
+    if (/^(\d)\1{13}$/.test(digits)) return false;
+    const calc = (len) => {
+      const weights = len === 12 ? [5,4,3,2,9,8,7,6,5,4,3,2] : [6,5,4,3,2,9,8,7,6,5,4,3,2];
+      let sum = 0;
+      for (let i = 0; i < len; i++) sum += Number(digits[i]) * weights[i];
+      const rem = sum % 11;
+      return rem < 2 ? 0 : 11 - rem;
+    };
+    return calc(12) === Number(digits[12]) && calc(13) === Number(digits[13]);
+  }
+  return false;
+}
+
 async function asaasRequest(path, options = {}) {
   const apiKey = getAsaasApiKey();
   if (!apiKey) {
@@ -100,6 +130,7 @@ async function asaasRequest(path, options = {}) {
     headers: {
       access_token: apiKey,
       'Content-Type': 'application/json',
+      'User-Agent': '1Convite/3.0',
       ...(options.headers || {}),
     },
   });

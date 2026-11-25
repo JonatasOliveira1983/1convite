@@ -16,6 +16,7 @@ import {
   PAID_STATUSES,
   getPlanById,
   isAsaasConfigured,
+  isValidCpfCnpj,
   upsertCustomer,
   createCharge,
   getPayment,
@@ -23,6 +24,7 @@ import {
 import {
   isResendConfigured,
   sendWelcomeAndVouchersEmail,
+  sendPixPendingEmail,
   sendLeadWelcomeEmail,
 } from './services/resendService.js';
 
@@ -1937,20 +1939,32 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
     const expiryTimestamp = String(expiryMs);
     const cleanEmail = order.customer_email.trim().toLowerCase();
     const existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
+    let tempPassword = '';
 
     if (existingUser) {
-      await dbRun(
-        `UPDATE tb_acessos_usuarios
-         SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, last_login = $4
-         WHERE id = $5`,
-        [order.customer_name, plan.nome, expiryTimestamp, nowIso, existingUser.id]
-      );
+      if (!existingUser.password) {
+        tempPassword = '1C' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        await dbRun(
+          `UPDATE tb_acessos_usuarios
+           SET name = $1, password = $2, type = 'vip', plan = $3, expiry_timestamp = $4, last_login = $5
+           WHERE id = $6`,
+          [order.customer_name, tempPassword, plan.nome, expiryTimestamp, nowIso, existingUser.id]
+        );
+      } else {
+        await dbRun(
+          `UPDATE tb_acessos_usuarios
+           SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, last_login = $4
+           WHERE id = $5`,
+          [order.customer_name, plan.nome, expiryTimestamp, nowIso, existingUser.id]
+        );
+      }
     } else {
+      tempPassword = '1C' + Math.random().toString(36).substring(2, 8).toUpperCase();
       const newUserId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
       await dbRun(
         `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count)
-         VALUES ($1, $2, $3, '', 'vip', $4, NULL, $5, $6, $6, 1)`,
-        [newUserId, order.customer_name, cleanEmail, plan.nome, expiryTimestamp, nowIso]
+         VALUES ($1, $2, $3, $4, 'vip', $5, NULL, $6, $7, $7, 1)`,
+        [newUserId, order.customer_name, cleanEmail, tempPassword, plan.nome, expiryTimestamp, nowIso]
       );
     }
 
@@ -1960,22 +1974,32 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
        WHERE payment_id = $4`,
       [paidStatus, JSON.stringify(vouchers), nowIso, paymentId]
     );
-  }
 
-  // 3. Enviar e-mail via Resend (idempotente via email_sent)
-  if (!Number(order.email_sent) && isResendConfigured()) {
-    const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
-    const mailRes = await sendWelcomeAndVouchersEmail({
-      to: order.customer_email,
-      name: order.customer_name,
-      planName: plan.nome,
-      vouchers,
-      expiryDateStr: expiryStr,
-      siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-    });
-    if (mailRes.ok) {
-      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+    if (!Number(order.email_sent) && isResendConfigured()) {
+      const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+      const mailRes = await sendWelcomeAndVouchersEmail({
+        to: order.customer_email,
+        name: order.customer_name,
+        planName: plan.nome,
+        vouchers,
+        expiryDateStr: expiryStr,
+        tempPassword,
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      });
+      if (mailRes.ok) {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+      }
     }
+
+    return {
+      found: true,
+      paid: true,
+      status: paidStatus,
+      plan,
+      vouchers,
+      tempPassword: tempPassword || undefined,
+      customerEmail: order.customer_email,
+    };
   }
 
   return {
@@ -2008,6 +2032,9 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
     const cleanEmail = String(email || '').trim().toLowerCase();
     if (!cleanName || !cleanEmail || !cleanEmail.includes('@')) {
       return res.status(400).json({ success: false, message: 'Informe nome completo e um e-mail válido.' });
+    }
+    if (cpfCnpj && !isValidCpfCnpj(cpfCnpj)) {
+      return res.status(400).json({ success: false, message: 'CPF ou CNPJ inválido. Verifique os dígitos informados.' });
     }
     if (!isAsaasConfigured()) {
       return res.status(503).json({
@@ -2054,6 +2081,16 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
         nowIso,
       ]
     );
+
+    if (isResendConfigured()) {
+      sendPixPendingEmail({
+        to: cleanEmail,
+        name: cleanName,
+        planName: plan.nome,
+        invoiceUrl: charge.invoiceUrl || '',
+        valueReais: plan.valorReais,
+      }).catch((e) => console.warn('[RESEND PENDING WARN]:', e.message));
+    }
 
     res.json({
       success: true,

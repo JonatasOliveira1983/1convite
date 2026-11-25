@@ -63,11 +63,13 @@ export async function sendWelcomeAndVouchersEmail({
   planName,
   vouchers = [],
   expiryDateStr = '',
+  tempPassword = '',
   siteUrl = 'https://1convite.com.br',
 }) {
   const safeName = escapeHtml(name || 'Irmão(ã)');
   const safePlan = escapeHtml(planName || 'Plano Premium 1Convite');
   const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const appUrl = `${safeSite}/app`;
 
   const vouchersHtml = vouchers
     .map(
@@ -78,6 +80,18 @@ export async function sendWelcomeAndVouchersEmail({
     )
     .join('');
 
+  const credentialsHtml = tempPassword
+    ? `
+      <div style="background:#09090b;border:1px solid #27272a;border-radius:10px;padding:14px 16px;margin:14px 0;">
+        <div style="font-size:13px;color:#a1a1aa;margin-bottom:6px;">Suas credenciais de acesso ao App:</div>
+        <div style="font-size:14px;color:#e4e4e7;margin-bottom:4px;"><strong>E-mail:</strong> <span style="font-family:monospace;color:#34d399;">${escapeHtml(to)}</span></div>
+        <div style="font-size:14px;color:#e4e4e7;"><strong>Senha Temporária:</strong> <span style="font-family:monospace;color:#fb923c;font-weight:800;">${escapeHtml(tempPassword)}</span></div>
+      </div>`
+    : `
+      <p style="margin:0 0 14px;color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Seu acesso VIP foi ativado na sua conta existente (<strong>${escapeHtml(to)}</strong>).
+      </p>`;
+
   const html = `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:32px 24px;border-radius:16px;border:1px solid #27272a;">
       <div style="text-align:center;margin-bottom:24px;">
@@ -87,12 +101,13 @@ export async function sendWelcomeAndVouchersEmail({
       </div>
 
       <div style="background:#121215;border:1px solid #27272a;border-radius:12px;padding:20px;margin-bottom:20px;">
-        <h2 style="margin:0 0 8px;font-size:16px;color:#ffffff;">Como acessar o aplicativo</h2>
-        <p style="margin:0 0 14px;color:#d4d4d8;font-size:14px;line-height:1.6;">
-          Entre em <a href="${safeSite}" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}</a> (ou no app Android) usando este mesmo e-mail: <strong>${escapeHtml(to)}</strong>.
+        <h2 style="margin:0 0 8px;font-size:16px;color:#ffffff;">Como acessar o aplicativo (Desktop & Celular)</h2>
+        ${credentialsHtml}
+        <p style="margin:0 0 16px;color:#a1a1aa;font-size:13px;line-height:1.5;">
+          Os seus 5 E-books Bônus em PDF, Bíblia Narrada, Café com Deus e Mentores Bíblicos já estão liberados na sua conta.
         </p>
         <div style="text-align:center;">
-          <a href="${safeSite}" style="display:inline-block;background:#10b981;color:#052e16;font-weight:800;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none;">Acessar 1Convite Agora</a>
+          <a href="${appUrl}" style="display:inline-block;background:#10b981;color:#052e16;font-weight:800;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none;">Acessar 1Convite Agora</a>
         </div>
       </div>
 
@@ -118,6 +133,38 @@ export async function sendWelcomeAndVouchersEmail({
   return sendEmail({
     to,
     subject: `Acesso liberado! Seu ${planName} + Códigos de Convite (1Convite)`,
+    html,
+  });
+}
+
+export async function sendPixPendingEmail({
+  to,
+  name,
+  planName,
+  invoiceUrl = '',
+  valueReais = 0,
+}) {
+  if (!to || !String(to).includes('@')) {
+    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
+  }
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safePlan = escapeHtml(planName || '1Convite');
+  const safeUrl = escapeHtml(invoiceUrl || 'https://1convite.com.br/#planos');
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <span style="display:inline-block;background:rgba(249,115,22,0.16);color:#fb923c;border:1px solid rgba(249,115,22,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">PAGAMENTO PENDENTE</span>
+      <h2 style="margin:14px 0 10px;color:#ffffff;">Finalize seu acesso ao 1Convite, ${safeName}</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Seu pedido do <strong>${safePlan}</strong> (R$ ${Number(valueReais).toFixed(2).replace('.', ',')}) foi gerado com sucesso. Assim que o pagamento for confirmado, enviaremos suas credenciais e códigos VIP automaticamente.
+      </p>
+      <div style="text-align:center;margin:22px 0;">
+        <a href="${safeUrl}" style="display:inline-block;background:#f97316;color:#09090b;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Abrir Fatura Segura Asaas</a>
+      </div>
+    </div>
+  `;
+  return sendEmail({
+    to,
+    subject: `Seu pedido 1Convite (${planName}) está aguardando pagamento`,
     html,
   });
 }
