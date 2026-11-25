@@ -6824,16 +6824,16 @@ Em nome de Jesus, Amém.`;
         {/* ── ABA MINHA CONTA & PERFIL ────────────────────────── */}
         {activeTab === 'conta' && (
           <div className="page-enter flex-column gap-md">
-            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '28px 18px 64px', position: 'relative' }}>
+            <div className="page-hero hero-sabado" style={{ textAlign: 'center', padding: '22px 16px 26px', position: 'relative' }}>
               <div className="hero-content">
-                <div className="profile-avatar-container" style={{ position: 'relative', display: 'inline-block', margin: '0 auto 12px' }}>
+                <div className="profile-avatar-container" style={{ position: 'relative', display: 'inline-block', margin: '0 auto 10px' }}>
                   <img 
                     src={profileAvatar} 
                     alt="Foto de Perfil" 
                     className="profile-avatar-img" 
                     style={{ 
-                      width: '92px', 
-                      height: '92px', 
+                      width: '76px', 
+                      height: '76px', 
                       borderRadius: '50%', 
                       objectFit: 'cover',
                       border: isCustomAvatar ? '3px solid #EAB308' : '3px solid var(--orange)',
@@ -6891,16 +6891,17 @@ Em nome de Jesus, Amém.`;
                 </span>
 
                 {isAdminMode && (
-                  <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', position: 'relative', zIndex: 3 }}>
+                  <div style={{ marginTop: '14px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', position: 'relative', zIndex: 3 }}>
                     <button
                       type="button"
                       onClick={() => setShowAdminPanel(true)}
                       style={{
-                        background: 'rgba(15, 23, 42, 0.88)',
+                        background: 'rgba(15, 23, 42, 0.9)',
                         border: '1.5px solid #F59E0B',
                         color: '#FCD34D',
                         borderRadius: '24px',
-                        padding: '10px 18px',
+                        minHeight: '44px',
+                        padding: '10px 16px',
                         fontSize: '0.84rem',
                         fontWeight: '800',
                         cursor: 'pointer',
@@ -6922,11 +6923,12 @@ Em nome de Jesus, Amém.`;
                       type="button"
                       onClick={() => setShowLanding(true)}
                       style={{
-                        background: 'rgba(15, 23, 42, 0.88)',
+                        background: 'rgba(15, 23, 42, 0.9)',
                         border: '1.5px solid rgba(255, 255, 255, 0.45)',
                         color: '#FFFFFF',
                         borderRadius: '24px',
-                        padding: '10px 18px',
+                        minHeight: '44px',
+                        padding: '10px 16px',
                         fontSize: '0.84rem',
                         fontWeight: '700',
                         cursor: 'pointer',
@@ -6948,17 +6950,14 @@ Em nome de Jesus, Amém.`;
               </div>
             </div>
 
-            <div className="page-content" style={{ paddingTop: '10px' }}>
-              {/* 1. Tema & Aparência (Unificado com Dark Mode) */}
+            <div className="page-content" style={{ paddingTop: '14px' }}>
+              {/* 1. Aparência & Leitura (Unificado: Cores, Dark Mode e Tamanho da Letra) */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-                  <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Tema & Cores de Destaque</h3>
+                  <h3 style={{ fontSize: '1rem', margin: 0 }}>Aparência & Leitura</h3>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.4' }}>
-                  Escolha a cor de destaque do seu aplicativo:
-                </p>
-                <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', alignItems: 'center', margin: '8px 0 16px' }}>
+                <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', alignItems: 'center', margin: '6px 0 16px' }}>
                   {[
                     { id: 'theme-orange', color: '#f97316', name: 'Laranja' },
                     { id: 'theme-blue', color: '#3b82f6', name: 'Azul' },
@@ -6971,13 +6970,13 @@ Em nome de Jesus, Amém.`;
                       onClick={() => setTheme(t.id)}
                       title={t.name}
                       style={{
-                        width: '36px',
-                        height: '36px',
+                        width: '40px',
+                        height: '40px',
                         borderRadius: '50%',
                         backgroundColor: t.color,
                         border: theme === t.id ? '3px solid var(--text-primary)' : '2px solid rgba(0,0,0,0.1)',
                         cursor: 'pointer',
-                        transform: theme === t.id ? 'scale(1.15)' : 'scale(1)',
+                        transform: theme === t.id ? 'scale(1.12)' : 'scale(1)',
                         transition: 'all 0.2s ease',
                         boxShadow: theme === t.id ? '0 4px 10px rgba(0,0,0,0.15)' : 'none'
                       }}
@@ -6985,7 +6984,7 @@ Em nome de Jesus, Amém.`;
                   ))}
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--slate-border)', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ borderTop: '1px solid var(--slate-border)', paddingTop: '12px', paddingBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     {darkMode ? (
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -6993,7 +6992,7 @@ Em nome de Jesus, Amém.`;
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     )}
                     <div>
-                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>Modo Escuro (Dark Mode)</strong>
+                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>Modo Escuro</strong>
                       <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>Alternar aparência da interface</span>
                     </div>
                   </div>
@@ -7002,14 +7001,14 @@ Em nome de Jesus, Amém.`;
                     <span className="toggle-slider"></span>
                   </label>
                 </div>
-              </div>
 
-              {/* 2. Ajuste de Tamanho da Letra */}
-              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)' }}>Aa</span>
-                    <h3 style={{ fontSize: '1.05rem', margin: 0 }}>Alterar tamanho da letra</h3>
+                <div style={{ borderTop: '1px solid var(--slate-border)', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--text-primary)', width: '18px', textAlign: 'center' }}>Aa</span>
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>Tamanho da letra</strong>
+                      <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>Ajuste personalizado de leitura</span>
+                    </div>
                   </div>
                   <label style={{ position: 'relative', display: 'inline-block', width: '42px', height: '22px', cursor: 'pointer' }}>
                     <input

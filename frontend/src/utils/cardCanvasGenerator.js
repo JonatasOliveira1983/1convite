@@ -240,6 +240,17 @@ export async function renderCardToHD(options) {
   ctx.fillText(tagText, tagX + tagTotalW / 2, currentY + tagHeight / 2 + 1);
   ctx.restore();
 
+  // Data do dia alinhada à direita dentro da moldura (se fornecida)
+  if (content.date) {
+    ctx.save();
+    ctx.font = '700 20px "Inter", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(String(content.date).toUpperCase(), cardMargin + cardWidth - 50, currentY + tagHeight / 2);
+    ctx.restore();
+  }
+
   currentY += tagHeight + 36;
 
   // 5. CITAÇÃO PRINCIPAL / VERSÍCULO / CONVITE
@@ -273,28 +284,40 @@ export async function renderCardToHD(options) {
   }
 
   // 7. RODAPÉ OFICIAL & LINK: 1CONVITE.COM.BR
-  const footerY = height - (format === 'story' ? 120 : 70);
+  const footerH = format === 'story' ? 160 : 112;
+  ctx.save();
+  ctx.fillStyle = 'rgba(9, 9, 11, 0.82)';
+  ctx.fillRect(0, height - footerH, width, footerH);
+  ctx.strokeStyle = 'rgba(249, 115, 22, 0.45)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, height - footerH);
+  ctx.lineTo(width, height - footerH);
+  ctx.stroke();
+  ctx.restore();
+
+  const footerY = height - (format === 'story' ? 96 : 68);
   const centerX = width / 2;
 
   // Mini chama de 1Convite
-  drawFlameIcon(ctx, centerX - 120, footerY, 26, '#F97316');
+  drawFlameIcon(ctx, centerX - 138, footerY, 28, '#F97316');
 
   // Marca d'água e Link em destaque
   ctx.save();
-  ctx.font = '800 24px "Outfit", "Inter", sans-serif';
+  ctx.font = '800 26px "Outfit", "Inter", sans-serif';
   ctx.fillStyle = '#FFFFFF';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.letterSpacing = '1.5px';
   ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
   ctx.shadowBlur = 10;
-  ctx.fillText('1CONVITE.COM.BR', centerX - 96, footerY);
+  ctx.fillText('1CONVITE.COM.BR', centerX - 110, footerY);
 
   // Sublegenda convidativa
   ctx.font = '600 18px "Inter", sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.fillStyle = '#FDBA74';
   ctx.textAlign = 'center';
-  ctx.fillText('Acesse a meditação diária em 1convite.com.br', centerX, footerY + 34);
+  ctx.fillText('Meditação Diária • Bíblia em Áudio • https://1convite.com.br', centerX, footerY + 34);
   ctx.restore();
 
   // Retorna Data URL JPEG de 1080p em alta fidelidade (95% de qualidade)

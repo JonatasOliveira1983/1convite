@@ -354,6 +354,7 @@ export default function CafeComDeusView({
         bg: activeBg,
         content: {
           tag: cardContent.title,
+          date: currentDateInfo.short,
           text: cardContent.text,
           ref: cardContent.ref,
           link: '1convite.com.br'
@@ -361,7 +362,8 @@ export default function CafeComDeusView({
       });
 
       if (shareMode === 'share') {
-        const shareText = `*${cardContent.title}*\n\n"${cardContent.text}"\n\n${cardContent.ref ? `_${cardContent.ref}_\n\n` : ''}✨ Acesse e participe do movimento: https://1convite.com.br`;
+        const cleanQuote = String(cardContent.text || '').replace(/^["“”]+|["“”]+$/g, '').trim();
+        const shareText = `*${cardContent.title}* (${currentDateInfo.short})\n\n“${cleanQuote}”\n\n${cardContent.ref ? `_${cardContent.ref}_\n\n` : ''}Acesse a meditação completa e a Bíblia em áudio: https://1convite.com.br`;
 
         // Tenta compartilhar imagem nativamente se o dispositivo suportar Web Share API de arquivos
         let sharedNatively = false;
