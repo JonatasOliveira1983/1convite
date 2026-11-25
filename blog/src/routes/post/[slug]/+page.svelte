@@ -754,6 +754,18 @@
           </div>
         </footer>
 
+        <!-- CTA de Conversão 1Convite -->
+        <section style="margin: 28px 0; padding: 24px 20px; border-radius: 18px; background: linear-gradient(135deg, #121215 0%, #1c1917 100%); border: 1px solid rgba(249, 115, 22, 0.35); color: #ffffff; text-align: center;">
+          <span style="display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #fb923c; margin-bottom: 8px;">1CONVITE • O REINO NO SEU BOLSO</span>
+          <h3 style="margin: 0 0 8px; font-size: 1.25rem; font-weight: 800; color: #ffffff;">Viva a Palavra Todos os Dias</h3>
+          <p style="margin: 0 0 18px; font-size: 0.92rem; color: #d4d4d8; line-height: 1.5;">
+            Tenha acesso à Bíblia ACF narrada em áudio, meditações diárias, Treino Templo, Mentores Bíblicos e vales-presente para abençoar quem você ama.
+          </p>
+          <a href="https://1convite.com.br/#planos" style="display: inline-block; padding: 12px 24px; border-radius: 999px; background: #10b981; color: #052e16; font-weight: 800; font-size: 0.92rem; text-decoration: none;">
+            Conhecer Planos do 1Convite →
+          </a>
+        </section>
+
         {#if data.relatedPosts && data.relatedPosts.length > 0}
           {@const hasCollaborative = data.relatedPosts.some(p => (p as any).isCollaborative)}
           <section class="organic-related">
