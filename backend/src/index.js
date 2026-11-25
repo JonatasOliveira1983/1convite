@@ -55,7 +55,7 @@ app.use(cors({
     if (allowedOrigins.includes(origin) || origin.endsWith('.pages.dev') || origin.endsWith('.1convite.com.br')) {
       return callback(null, true);
     }
-    return callback(null, true); // Permissivo para evitar bloqueios de clientes mobile/PWA
+    return callback(new Error('Origin not allowed by CORS'));
   },
   credentials: true
 }));
@@ -2223,19 +2223,21 @@ app.post('/api/v1/pagamentos/webhook', async (req, res) => {
     }
 
     if (PAID_EVENTS.has(event) || PAID_STATUSES.has(String(payment.status || '').toUpperCase())) {
-      let confirmedStatus = String(payment.status || 'CONFIRMED').toUpperCase();
-      if (isAsaasConfigured()) {
-        try {
-          const remote = await getPayment(paymentId);
-          if (remote?.status) confirmedStatus = String(remote.status).toUpperCase();
-        } catch (err) {
-          console.warn('[ASAAS WEBHOOK VERIFY]:', err.message);
-        }
+      if (!isAsaasConfigured()) {
+        return res.status(503).json({ success: false, message: 'Asaas não configurado para validar pagamento.' });
       }
-      if (PAID_STATUSES.has(confirmedStatus) || PAID_EVENTS.has(event)) {
+      let confirmedStatus = '';
+      try {
+        const remote = await getPayment(paymentId);
+        if (remote?.status) confirmedStatus = String(remote.status).toUpperCase();
+      } catch (err) {
+        console.warn('[ASAAS WEBHOOK VERIFY]:', err.message);
+      }
+      if (PAID_STATUSES.has(confirmedStatus)) {
         const result = await fulfillPaidOrder(paymentId, confirmedStatus);
         return res.json({ success: true, event, paymentId, ...result });
       }
+      return res.status(202).json({ success: true, ignored: true, reason: 'Pagamento não confirmado na API Asaas' });
     }
 
     await dbRun('UPDATE tb_pagamentos_asaas SET status = $1 WHERE payment_id = $2', [
@@ -2249,7 +2251,7 @@ app.post('/api/v1/pagamentos/webhook', async (req, res) => {
   }
 });
 
-app.post('/api/v1/admin/definir-plano', async (req, res) => {
+app.post('/api/v1/admin/definir-plano', requireAdminHeader, async (req, res) => {
   try {
     const { plano } = req.body;
     await dbRun('UPDATE tb_usuario_progresso SET status_plano = $1', [plano]);
@@ -2623,9 +2625,9 @@ app.get('/api/v1/rag/search', async (req, res) => {
 app.get('/api/v1/health', async (req, res) => {
   try {
     const r = await pool.query('SELECT NOW()');
-    res.json({ status: 'ok', db: 'connected', blogMounted, blogError, lastBlogError: globalThis.__lastBlogError || null, time: r.rows[0].now });
+    res.json({ status: 'ok', db: 'connected', blogMounted, time: r.rows[0].now });
   } catch (err) {
-    res.json({ status: 'ok', db: 'disconnected', blogMounted, blogError, lastBlogError: globalThis.__lastBlogError || null, warning: err.message });
+    res.json({ status: 'ok', db: 'disconnected', blogMounted, warning: 'DB check failed' });
   }
 });
 
