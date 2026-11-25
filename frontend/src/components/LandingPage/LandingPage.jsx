@@ -166,7 +166,34 @@ export default function LandingPage({ onEnterApp }) {
       glowTargets.forEach((el) => el.removeEventListener('mousemove', onGlowMove));
     };
   }, []);
+
+  React.useEffect(() => {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const apiBase = isLocalhost
+      ? 'http://localhost:3001/api/v1'
+      : (import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1');
+
+    fetch(`${apiBase}/pagamentos/recentes`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data?.recent) && data.recent.length > 0) {
+          setRecentPurchases(data.recent);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  React.useEffect(() => {
+    if (recentPurchases.length <= 1 || socialDismissed) return;
+    const id = setInterval(() => {
+      setSocialIdx((prev) => (prev + 1) % recentPurchases.length);
+    }, 18000);
+    return () => clearInterval(id);
+  }, [recentPurchases, socialDismissed]);
   const [openFaq, setOpenFaq] = useState(0);
+  const [recentPurchases, setRecentPurchases] = useState([]);
+  const [socialIdx, setSocialIdx] = useState(0);
+  const [socialDismissed, setSocialDismissed] = useState(false);
   const particlesCanvasRef = React.useRef(null);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
@@ -1178,6 +1205,28 @@ export default function LandingPage({ onEnterApp }) {
         planId={checkoutPlan}
         onClose={() => setCheckoutPlan(null)}
       />
+      {!socialDismissed && recentPurchases.length > 0 && (
+        <div className="sp-social-toast" role="status" aria-live="polite">
+          <div className="sp-social-toast-icon">
+            <IconCheck />
+          </div>
+          <div className="sp-social-toast-body">
+            <strong>{recentPurchases[socialIdx]?.name}</strong> garantiu o{' '}
+            <span>{recentPurchases[socialIdx]?.planTitle}</span>
+            <small>
+              {recentPurchases[socialIdx]?.convites} convite{recentPurchases[socialIdx]?.convites > 1 ? 's' : ''} • {recentPurchases[socialIdx]?.timeLabel}
+            </small>
+          </div>
+          <button
+            type="button"
+            className="sp-social-toast-close"
+            onClick={() => setSocialDismissed(true)}
+            aria-label="Fechar aviso"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <LgpdBanner onOpenLegal={(tab) => setLegalTab(tab)} />
     </div>
   );

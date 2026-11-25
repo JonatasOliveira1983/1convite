@@ -1,5 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AsaasCheckoutModal.css';
+import appLogoDark from '../../assets/logomarca_dark.png';
+
+function formatCpfCnpj(val = '') {
+  const d = String(val).replace(/\D/g, '').slice(0, 14);
+  if (d.length <= 11) {
+    return d
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1-$2');
+  }
+  return d
+    .replace(/^(\d{2})(\d)/, '$1.$2')
+    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+    .replace(/\.(\d{3})(\d)/, '.$1/$2')
+    .replace(/(\d{4})(\d)/, '$1-$2');
+}
+
+function formatPhone(val = '') {
+  const d = String(val).replace(/\D/g, '').slice(0, 11);
+  if (d.length <= 2) return d;
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
 
 const PLANOS_MAP = {
   basico: {
@@ -46,6 +70,7 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
   const [chargeData, setChargeData] = useState(null);
   const [paidResult, setPaidResult] = useState(null);
   const [copiedCode, setCopiedCode] = useState('');
+  const [secondsLeft, setSecondsLeft] = useState(899);
   const pollRef = useRef(null);
 
   const plan = PLANOS_MAP[planId] || PLANOS_MAP.popular;
@@ -57,8 +82,16 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
       setChargeData(null);
       setPaidResult(null);
       setLoading(false);
+      setSecondsLeft(899);
+      return;
     }
+    const timer = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
   }, [isOpen, planId]);
+
+  const countdownLabel = `${String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:${String(secondsLeft % 60).padStart(2, '0')}`;
 
   useEffect(() => {
     if (!chargeData?.paymentId || paidResult) return;
@@ -90,8 +123,8 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
     e.preventDefault();
     setError('');
     const cleanDigits = cpfCnpj.replace(/\D/g, '');
-    if (cleanDigits && cleanDigits.length !== 11 && cleanDigits.length !== 14) {
-      setError('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.');
+    if (cleanDigits.length !== 11 && cleanDigits.length !== 14) {
+      setError('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido para emissão no Asaas.');
       return;
     }
     setLoading(true);
@@ -151,16 +184,29 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
   return (
     <div className="ac-overlay" onClick={onClose}>
       <div className="ac-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="ac-scarcity-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Condição reservada por <strong>{countdownLabel}</strong> • 5 E-books PDF + Convites inclusos</span>
+        </div>
+
         <button type="button" className="ac-close" onClick={onClose} aria-label="Fechar checkout">
           ×
         </button>
 
+        <div className="ac-brand-row">
+          <img src={appLogoDark} alt="1Convite" className="ac-brand-logo" />
+          <span className="ac-ssl-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Ambiente Seguro SSL
+          </span>
+        </div>
+
         <div className="ac-header">
           <span className="ac-kicker">CHECKOUT SEGURO ASAAS</span>
           <h3 className="ac-title">{plan.titulo}</h3>
-          <p className="ac-subtitle">
-            {plan.valor} • Inclui {plan.convites} código{plan.convites > 1 ? 's' : ''} de convite (180 dias grátis cada)
-          </p>
+          <div className="ac-order-summary">
+            <span><strong>{plan.valor}</strong> • 365 dias VIP + {plan.convites} convite{plan.convites > 1 ? 's' : ''} (180 dias) + 5 E-books PDF</span>
+          </div>
         </div>
 
         {paidResult ? (
@@ -270,12 +316,13 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
 
             <div className="ac-row-2">
               <div className="ac-field">
-                <label>CPF / CNPJ</label>
+                <label>CPF / CNPJ *</label>
                 <input
                   type="text"
+                  required
                   placeholder="000.000.000-00"
                   value={cpfCnpj}
-                  onChange={(e) => setCpfCnpj(e.target.value)}
+                  onChange={(e) => setCpfCnpj(formatCpfCnpj(e.target.value))}
                 />
               </div>
               <div className="ac-field">
@@ -284,7 +331,7 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
                   type="tel"
                   placeholder="(11) 99999-9999"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => setPhone(formatPhone(e.target.value))}
                 />
               </div>
             </div>
@@ -295,24 +342,56 @@ export default function AsaasCheckoutModal({ isOpen, planId, onClose, onSuccess 
                 className={billingType === 'PIX' ? 'active' : ''}
                 onClick={() => setBillingType('PIX')}
               >
-                PIX Instantâneo
+                <span>PIX Instantâneo</span>
+                <small>Liberação imediata</small>
               </button>
               <button
                 type="button"
                 className={billingType === 'UNDEFINED' ? 'active' : ''}
                 onClick={() => setBillingType('UNDEFINED')}
               >
-                Cartão / Link Asaas
+                <span>Cartão / Link Asaas</span>
+                <small>Crédito ou Boleto</small>
               </button>
             </div>
 
             {error && <div className="ac-error">{error}</div>}
 
-            <button type="submit" className="ac-btn-primary" disabled={loading}>
-              {loading ? 'Gerando cobrança...' : `Continuar para Pagamento (${plan.valor})`}
+            <button type="submit" className="ac-btn-primary ac-btn-lock" disabled={loading}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>{loading ? 'Gerando cobrança segura...' : `Pagar com Segurança • ${plan.valor}`}</span>
             </button>
           </form>
         )}
+
+        {/* ── SELOS DE CREDIBILIDADE, BANDEIRAS & GARANTIA (SVG) ── */}
+        <div className="ac-trust-footer">
+          <div className="ac-payment-brands" aria-label="Meios de pagamento aceitos">
+            <span className="ac-brand-pill ac-brand-pix">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg>
+              PIX
+            </span>
+            <span className="ac-brand-pill">VISA</span>
+            <span className="ac-brand-pill">Mastercard</span>
+            <span className="ac-brand-pill">Elo</span>
+            <span className="ac-brand-pill">Amex</span>
+          </div>
+
+          <div className="ac-trust-badges">
+            <div className="ac-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span>7 Dias de Garantia</span>
+            </div>
+            <div className="ac-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Processado por <strong>Asaas</strong></span>
+            </div>
+            <div className="ac-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>SSL 256-bit</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

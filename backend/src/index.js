@@ -2021,6 +2021,35 @@ app.get('/api/v1/pagamentos/planos', (req, res) => {
   });
 });
 
+app.get('/api/v1/pagamentos/recentes', async (req, res) => {
+  try {
+    const rows = await dbAll(
+      `SELECT customer_name, plan_id, paid_at, created_at
+       FROM tb_pagamentos_asaas
+       WHERE UPPER(COALESCE(status, '')) IN ('CONFIRMED', 'RECEIVED', 'RECEIVED_IN_CASH')
+       ORDER BY COALESCE(paid_at, created_at) DESC
+       LIMIT 8`
+    );
+    const recent = (rows || []).map((r) => {
+      const parts = String(r.customer_name || 'Membro').trim().split(/\s+/);
+      const first = parts[0] || 'Membro';
+      const initial = parts.length > 1 ? ` ${parts[1][0].toUpperCase()}.` : '';
+      const plan = getPlanById(r.plan_id) || getPlanById('popular');
+      const refTime = new Date(r.paid_at || r.created_at || Date.now()).getTime();
+      const mins = Math.max(1, Math.floor((Date.now() - refTime) / 60000));
+      return {
+        name: `${first}${initial}`,
+        planTitle: plan.tituloCurto,
+        convites: plan.convites,
+        timeLabel: mins < 60 ? `há ${mins} min` : `há ${Math.floor(mins / 60)}h`,
+      };
+    });
+    res.json({ success: true, recent });
+  } catch {
+    res.json({ success: true, recent: [] });
+  }
+});
+
 app.post('/api/v1/pagamentos/checkout', async (req, res) => {
   try {
     const { planId, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
