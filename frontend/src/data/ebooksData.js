@@ -5,6 +5,8 @@ export const EBOOKS_DATA = [
     title: 'As Parábolas de Jesus',
     author: 'Estudos Canônicos',
     badge: 'ESTUDO TEOLÓGICO',
+    cover: '/ebooks/covers/as-parabolas-de-jesus.jpg',
+    pdfUrl: '/ebooks/pdfs/as-parabolas-de-jesus.pdf',
     desc: 'Uma análise teológica completa das parábolas do Novo Testamento explicadas com aplicações práticas e espirituais para o seu dia a dia.',
     chapters: [
       {
@@ -77,6 +79,8 @@ Lições cruciais desta parábola:
     title: 'Cristo como Centro das Escrituras',
     author: 'Teologia Bíblica',
     badge: 'ESSENCIAL',
+    cover: '/ebooks/covers/cristo-centro-escrituras.jpg',
+    pdfUrl: '/ebooks/pdfs/cristo-centro-escrituras.pdf',
     desc: 'Descubra como cada livro da Bíblia aponta profética e tipologicamente para o Messias prometido, desde a criação até a eternidade.',
     chapters: [
       {
@@ -130,6 +134,8 @@ E o salmo termina não em derrota, mas em vitória retumbante: "Ele o fez" (cons
     title: 'O Poder da Oração do Salmo 91',
     author: 'Edificação Diária',
     badge: 'PROTEÇÃO',
+    cover: '/ebooks/covers/poder-oracao-salmo-91.jpg',
+    pdfUrl: '/ebooks/pdfs/poder-oracao-salmo-91.pdf',
     desc: 'O manual de refúgio espiritual e oração de proteção para o seu lar. Aprenda a habitar no esconderijo do Altíssimo e descansar sob a sombra do Onipotente.',
     chapters: [
       {
@@ -182,6 +188,8 @@ O salmo prossegue declarando que você pisará o leão e a serpente (Salmo 91:13
     title: 'Tesouros do Conhecimento Bíblico',
     author: 'Cultura & Contexto',
     badge: 'HISTÓRIA & ARQUEOLOGIA',
+    cover: '/ebooks/covers/tesouros-conhecimento-biblico.jpg',
+    pdfUrl: '/ebooks/pdfs/tesouros-conhecimento-biblico.pdf',
     desc: 'Um guia completo sobre a geografia sagrada, os costumes, o hebraico e o grego bíblico para desvendar as entrelinhas dos textos sagrados.',
     chapters: [
       {
@@ -211,6 +219,25 @@ O salmo prossegue declarando que você pisará o leão e a serpente (Salmo 91:13
 
 3. RUACH (רוּחַ): Significa sopro, fôlego de vida, vento e Espírito. É o mesmo fôlego divino que soprou nas narinas de Adão, o vento que abriu o Mar Vermelho e o Espírito que ressuscitou os ossos secos na visão de Ezequiel.`,
         application: 'Receba hoje o Shalom de Deus em sua mente, descanse no Hesed incondicional do Pai e seja renovado pelo Ruach Santo.'
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: 'Devocional Café com Deus',
+    author: '1Convite Edificação',
+    badge: 'DEVOCIONAL DIÁRIO',
+    cover: '/ebooks/covers/devocional-cafe-com-deus.jpg',
+    pdfUrl: '/ebooks/pdfs/devocional-cafe-com-deus.pdf',
+    desc: 'Meditações diárias para começar o dia na presença de Deus com direção prática, versículos-chave e oração guiada.',
+    chapters: [
+      {
+        id: 1,
+        title: 'O Primeiro Encontro da Manhã',
+        verse: 'Pela manhã ouvirás a minha voz, ó Senhor; pela manhã apresentarei a ti a minha oração, e vigiarei. — Salmos 5:3',
+        intro: 'Antes que as urgências do dia disputem sua atenção, reserve os primeiros minutos para alinhar o coração com o Criador.',
+        content: `Quando entregamos as primícias do dia em oração e leitura da Palavra, nossa mente encontra clareza, paz e direção para cada decisão.\n\nNão se trata apenas de cumprir um hábito religioso, mas de cultivar uma conversa viva com o Pai antes de abrir portas, responder mensagens ou enfrentar pressões.`,
+        application: 'Separe 10 minutos logo ao acordar para ler o devocional do dia e entregar sua agenda nas mãos do Senhor.'
       }
     ]
   }

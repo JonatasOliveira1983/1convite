@@ -5,11 +5,13 @@ import './BibliotecaEbooksView.css';
 export default function BibliotecaEbooksView({ onBack }) {
   const [selectedEbook, setSelectedEbook] = useState(null);
   const [readingChapter, setReadingChapter] = useState(null);
+  const [readingPdf, setReadingPdf] = useState(false);
   const [fontSize, setFontSize] = useState(16); // 14, 16, 18, 20
 
   const handleOpenBook = (book) => {
     setSelectedEbook(book);
     setReadingChapter(null);
+    setReadingPdf(false);
   };
 
   const handleOpenChapter = (chapter) => {
@@ -40,7 +42,9 @@ export default function BibliotecaEbooksView({ onBack }) {
       <header className="eb-header">
         <button 
           onClick={() => {
-            if (readingChapter) {
+            if (readingPdf) {
+              setReadingPdf(false);
+            } else if (readingChapter) {
               setReadingChapter(null);
             } else if (selectedEbook) {
               setSelectedEbook(null);
@@ -98,6 +102,11 @@ export default function BibliotecaEbooksView({ onBack }) {
               onClick={() => handleOpenBook(b)}
               className="eb-card"
             >
+              {b.cover && (
+                <div className="eb-card-cover-wrap">
+                  <img src={b.cover} alt={b.title} className="eb-card-cover" loading="lazy" />
+                </div>
+              )}
               <div className="eb-card-header">
                 <span className="eb-badge">{b.badge}</span>
                 <span className="eb-author">{b.author}</span>
@@ -105,9 +114,9 @@ export default function BibliotecaEbooksView({ onBack }) {
               <h3 className="eb-card-title">{b.title}</h3>
               <p className="eb-card-desc">{b.desc}</p>
               <div className="eb-card-footer">
-                <span className="eb-cap-count">{b.chapters.length} capítulos liberados</span>
+                <span className="eb-cap-count">PDF Completo + {b.chapters.length} estudos</span>
                 <div className="eb-card-action">
-                  <span>Ler Agora</span>
+                  <span>Abrir E-book</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6" />
                   </svg>
@@ -119,15 +128,43 @@ export default function BibliotecaEbooksView({ onBack }) {
       )}
 
       {/* ── ESTADO 2: SUMÁRIO E DETALHES DO LIVRO SELECIONADO ── */}
-      {selectedEbook && !readingChapter && (
+      {selectedEbook && !readingChapter && !readingPdf && (
         <article className="eb-detail-view animate-fade-in">
-          <div className="eb-detail-badge-row">
-            <span className="eb-badge">{selectedEbook.badge}</span>
-            <span className="eb-author">{selectedEbook.author}</span>
+          <div className="eb-detail-hero">
+            {selectedEbook.cover && (
+              <img src={selectedEbook.cover} alt={selectedEbook.title} className="eb-detail-cover" />
+            )}
+            <div className="eb-detail-meta">
+              <div className="eb-detail-badge-row">
+                <span className="eb-badge">{selectedEbook.badge}</span>
+                <span className="eb-author">{selectedEbook.author}</span>
+              </div>
+              <h2 className="eb-detail-title">{selectedEbook.title}</h2>
+              <p className="eb-detail-intro">{selectedEbook.desc}</p>
+              {selectedEbook.pdfUrl && (
+                <div className="eb-pdf-actions">
+                  <button
+                    type="button"
+                    className="eb-pdf-btn-primary"
+                    onClick={() => setReadingPdf(true)}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Ler PDF Completo</span>
+                  </button>
+                  <a
+                    href={selectedEbook.pdfUrl}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="eb-pdf-btn-secondary"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Baixar PDF</span>
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
-
-          <h2 className="eb-detail-title">{selectedEbook.title}</h2>
-          <p className="eb-detail-intro">{selectedEbook.desc}</p>
 
           <div className="eb-chapters-header">
             <h3 className="eb-chapters-title">Capítulos & Estudos Completos</h3>
@@ -169,6 +206,23 @@ export default function BibliotecaEbooksView({ onBack }) {
             <span>Recomendar Livro no WhatsApp</span>
           </button>
         </article>
+      )}
+
+      {/* ── ESTADO 2B: LEITOR DE PDF INTEGRADO ── */}
+      {selectedEbook && readingPdf && selectedEbook.pdfUrl && (
+        <div className="eb-pdf-reader animate-fade-in">
+          <div className="eb-pdf-reader-bar">
+            <span>{selectedEbook.title} • PDF Completo</span>
+            <a href={selectedEbook.pdfUrl} download target="_blank" rel="noopener noreferrer" className="eb-pdf-btn-secondary">
+              Baixar PDF
+            </a>
+          </div>
+          <iframe
+            src={selectedEbook.pdfUrl}
+            title={selectedEbook.title}
+            className="eb-pdf-viewer-frame"
+          />
+        </div>
       )}
 
       {/* ── ESTADO 3: LEITOR COMPLETO DO CAPÍTULO ── */}
