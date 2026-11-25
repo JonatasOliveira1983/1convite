@@ -420,6 +420,7 @@ function App() {
   });
   const [isBooting, setIsBooting] = useState(true);
   const [previewWallpaper, setPreviewWallpaper] = useState(null);
+  const [wallpaperStatus, setWallpaperStatus] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => setIsBooting(false), 1400);
@@ -9053,50 +9054,62 @@ Em nome de Jesus, Amém.`;
               }}
             />
             <p style={{ margin: 0, fontSize: '0.78rem', color: '#a1a1aa', textAlign: 'center', lineHeight: 1.4 }}>
-              No celular, <strong>toque e segure na imagem</strong> para salvar ou escolha uma opção abaixo:
+              Qualidade <strong>4K</strong> • No celular, toque em <strong>Baixar 4K</strong> ou segure na imagem acima para salvar.
             </p>
+            {wallpaperStatus && (
+              <div style={{
+                background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)',
+                color: '#34d399', borderRadius: '10px', padding: '8px 12px', fontSize: '0.78rem',
+                fontWeight: '700', textAlign: 'center'
+              }}>
+                {wallpaperStatus}
+              </div>
+            )}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               <button
                 type="button"
                 onClick={async () => {
+                  const fileName = previewWallpaper.url.split('/').pop();
+                  setWallpaperStatus('Preparando imagem 4K...');
                   try {
-                    const res = await fetch(previewWallpaper.url);
-                    const blob = await res.blob();
-                    const file = new File([blob], previewWallpaper.filename, { type: 'image/jpeg' });
-                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                      await navigator.share({ files: [file], title: previewWallpaper.title });
-                      return;
+                    if (navigator.share) {
+                      const res = await fetch(previewWallpaper.url);
+                      const blob = await res.blob();
+                      const file = new File([blob], previewWallpaper.filename, { type: 'image/jpeg' });
+                      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file], title: previewWallpaper.title });
+                        setWallpaperStatus('Pronto! Escolha "Salvar imagem" ou seu app.');
+                        return;
+                      }
                     }
-                    const blobUrl = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = previewWallpaper.filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
                   } catch {
-                    window.open(`https://1convite.com.br${previewWallpaper.url}`, '_blank');
+                    // fallback para download direto abaixo
                   }
+                  setWallpaperStatus('Iniciando download 4K...');
+                  window.location.assign(`/download-wallpaper/${fileName}`);
                 }}
                 style={{
                   minHeight: '46px', borderRadius: '12px', border: 'none',
                   background: '#F97316', color: '#fff', fontWeight: '800', fontSize: '0.82rem', cursor: 'pointer'
                 }}
               >
-                Compartilhar / Salvar
+                Salvar / Compartilhar
               </button>
-              <a
-                href={`/download-wallpaper/${previewWallpaper.url.split('/').pop()}`}
-                download={previewWallpaper.filename}
+              <button
+                type="button"
+                onClick={() => {
+                  const fileName = previewWallpaper.url.split('/').pop();
+                  setWallpaperStatus('Iniciando download 4K...');
+                  window.location.assign(`/download-wallpaper/${fileName}`);
+                }}
                 style={{
                   minHeight: '46px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)',
                   background: 'rgba(255,255,255,0.08)', color: '#fff', fontWeight: '700', fontSize: '0.82rem',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none'
+                  cursor: 'pointer'
                 }}
               >
-                Baixar Imagem
-              </a>
+                Baixar 4K
+              </button>
             </div>
           </div>
         </div>

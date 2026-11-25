@@ -14,7 +14,7 @@ export async function onRequest(context) {
   }
 
   const headers = new Headers(assetResponse.headers);
-  headers.set('Content-Type', 'image/jpeg');
+  headers.set('Content-Type', 'application/octet-stream');
   headers.set('Content-Disposition', `attachment; filename="${name}"`);
   headers.set('Cache-Control', 'public, max-age=86400');
 
