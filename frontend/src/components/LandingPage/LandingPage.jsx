@@ -674,6 +674,61 @@ export default function LandingPage({ onEnterApp }) {
         </div>
       </section>
 
+      {/* ── SEÇÃO: BÔNUS INCLUSOS — 5 E-BOOKS PREMIUM COM CAPAS OFICIAIS ── */}
+      <section id="bonus-ebooks" className="sp-section sp-section-elevated">
+        <div className="sp-container">
+          <div className="sp-section-heading">
+            <span className="sp-kicker">BÔNUS INCLUSOS NOS PLANOS</span>
+            <h2 className="sp-title">Biblioteca Digital com 5 E-books Completos</h2>
+            <p className="sp-desc">
+              Além de todo o aplicativo, você recebe acesso imediato e download em PDF dos 5 livros digitais oficiais do ecossistema 1Convite.
+            </p>
+          </div>
+
+          <div className="sp-ebooks-showcase">
+            {[
+              {
+                title: 'As Parábolas de Jesus',
+                tag: 'Estudo Teológico',
+                cover: '/ebooks/covers/as-parabolas-de-jesus.jpg',
+              },
+              {
+                title: 'Cristo como Centro das Escrituras',
+                tag: 'Teologia Bíblica',
+                cover: '/ebooks/covers/cristo-centro-escrituras.jpg',
+              },
+              {
+                title: 'O Poder da Oração do Salmo 91',
+                tag: 'Proteção & Fé',
+                cover: '/ebooks/covers/poder-oracao-salmo-91.jpg',
+              },
+              {
+                title: 'Tesouros do Conhecimento Bíblico',
+                tag: 'História & Contexto',
+                cover: '/ebooks/covers/tesouros-conhecimento-biblico.jpg',
+              },
+              {
+                title: 'Devocional Café com Deus',
+                tag: 'Devocional Diário',
+                cover: '/ebooks/covers/devocional-cafe-com-deus.jpg',
+              },
+            ].map((eb, idx) => (
+              <a href="#planos" key={idx} className="sp-ebook-bonus-card">
+                <div className="sp-ebook-bonus-cover-wrap">
+                  <img src={eb.cover} alt={eb.title} className="sp-ebook-bonus-cover" loading="lazy" />
+                  <span className="sp-ebook-bonus-pill">Bônus Incluso</span>
+                </div>
+                <div className="sp-ebook-bonus-info">
+                  <span className="sp-ebook-bonus-tag">{eb.tag}</span>
+                  <h4>{eb.title}</h4>
+                  <span className="sp-ebook-bonus-meta">PDF Completo + Leitura no App</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── SEÇÃO: OS 3 PLANOS & CONVITES GRATUITOS ── */}
       <section id="planos" className="sp-section sp-section-elevated">
         <div className="sp-container">

@@ -2922,7 +2922,7 @@ Em nome de Jesus, Amém.`;
         </aside>
       )}
       <header className="app-header" style={{
-        display: (activeTab === 'cafe-com-deus' || activeTab === 'treino-templo') ? 'none' : 'flex',
+        display: (activeTab === 'cafe-com-deus' || activeTab === 'treino-templo' || activeTab === 'ebooks-premium') ? 'none' : 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '6px 16px',

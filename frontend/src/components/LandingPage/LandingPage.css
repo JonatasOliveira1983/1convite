@@ -1568,3 +1568,94 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
 }
+
+/* ── VITRINE DOS 5 E-BOOKS BÔNUS ── */
+.sp-ebooks-showcase {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
+}
+
+.sp-ebook-bonus-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  background: rgba(18, 20, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.sp-ebook-bonus-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+.sp-ebook-bonus-cover-wrap {
+  position: relative;
+  height: 240px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, rgba(249, 115, 22, 0.14), #09090b 80%);
+}
+
+.sp-ebook-bonus-cover {
+  max-width: 100%;
+  max-height: 212px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.sp-ebook-bonus-card:hover .sp-ebook-bonus-cover {
+  transform: scale(1.04);
+}
+
+.sp-ebook-bonus-pill {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(30, 215, 96, 0.16);
+  border: 1px solid rgba(30, 215, 96, 0.45);
+  color: #4ade80;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.sp-ebook-bonus-info {
+  padding: 14px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sp-ebook-bonus-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #fb923c;
+}
+
+.sp-ebook-bonus-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.sp-ebook-bonus-meta {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
