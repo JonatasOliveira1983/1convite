@@ -3,7 +3,7 @@ node_modules/
 
 # Build
 .svelte-kit/
-build/
+# build/ (commitado para deploy leve no Render sem OOM de vite build)
 dist/
 _app/
 /favicon.svg*

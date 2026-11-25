@@ -1,0 +1,1 @@
+{"version":3,"file":"tenant-TKHyoVq1.js","sources":["../../../.svelte-kit/adapter-node/chunks/tenant.js"],"sourcesContent":["function getTenantId() {\n  return void 0;\n}\nexport {\n  getTenantId as g\n};\n"],"names":[],"mappings":"AAAA,SAAS,WAAW,GAAG;AACvB,EAAE,OAAO,MAAM;AACf;;;;"}

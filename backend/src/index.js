@@ -74,6 +74,8 @@ const __dirname = dirname(__filename);
 
 // Montar o Blog SvelteKit (/blog) ANTES de express.json() para preservar req stream nos POSTs
 const __blogHandlerPath = join(__dirname, '..', '..', 'blog', 'build', 'handler.js');
+let blogMounted = false;
+let blogError = null;
 if (existsSync(__blogHandlerPath)) {
   try {
     const { handler: blogHandler } = await import(`file://${__blogHandlerPath.replace(/\\/g, '/')}`);
@@ -83,10 +85,14 @@ if (existsSync(__blogHandlerPath)) {
       }
       return next();
     });
+    blogMounted = true;
     console.log('[Blog] Handler SvelteKit montado em /blog');
   } catch (err) {
+    blogError = err.message;
     console.error('[Blog] Falha ao carregar handler do blog:', err.message);
   }
+} else {
+  blogError = `Not found: ${__blogHandlerPath}`;
 }
 
 app.use(express.json({ limit: '50mb' }));
@@ -2551,9 +2557,9 @@ app.get('/api/v1/rag/search', async (req, res) => {
 app.get('/api/v1/health', async (req, res) => {
   try {
     const r = await pool.query('SELECT NOW()');
-    res.json({ status: 'ok', db: 'connected', time: r.rows[0].now });
+    res.json({ status: 'ok', db: 'connected', blogMounted, blogError, time: r.rows[0].now });
   } catch (err) {
-    res.json({ status: 'ok', db: 'disconnected', warning: err.message });
+    res.json({ status: 'ok', db: 'disconnected', blogMounted, blogError, warning: err.message });
   }
 });
 
