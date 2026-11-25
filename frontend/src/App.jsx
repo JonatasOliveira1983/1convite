@@ -21,6 +21,7 @@ import banner2 from './assets/banners/2.png';
 import banner3 from './assets/banners/3.png';
 import heroMountainsImg from './assets/feed/hero_mountains.jpg';
 import treinoTemploImg from './assets/feed/treino_templo.jpg';
+import bibliaSunsetBg from './assets/biblia/biblia_sunset_bg.jpg';
 import TreinoTemploView from './components/TreinoTemplo/TreinoTemploView';
 import LoginPage from './components/Auth/LoginPage';
 import AdminPanel from './components/Admin/AdminPanel';
@@ -2755,7 +2756,7 @@ Em nome de Jesus, Amém.`;
   return (
     <div className="app-container">
       <header className="app-header" style={{
-        display: activeTab === 'cafe-com-deus' ? 'none' : 'flex',
+        display: (activeTab === 'cafe-com-deus' || activeTab === 'treino-templo') ? 'none' : 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '6px 16px',
@@ -3229,31 +3230,28 @@ Em nome de Jesus, Amém.`;
                   padding: '20px',
                   boxSizing: 'border-box'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
                     <span style={{
-                      fontSize: '0.66rem',
+                      fontSize: '0.68rem',
                       fontWeight: '800',
-                      letterSpacing: '0.08em',
+                      letterSpacing: '0.07em',
                       textTransform: 'uppercase',
-                      color: '#F97316',
-                      background: 'rgba(249, 115, 22, 0.2)',
-                      border: '1px solid rgba(249, 115, 22, 0.4)',
-                      padding: '3px 10px',
-                      borderRadius: '14px'
+                      color: '#FDBA74',
+                      background: 'rgba(249, 115, 22, 0.25)',
+                      border: '1px solid rgba(249, 115, 22, 0.45)',
+                      padding: '4px 10px',
+                      borderRadius: '999px'
                     }}>
                       ✦ O CONVITE DE HOJE • {getTodayDateFormatted()}
                     </span>
-                    <span style={{ fontSize: '0.62rem', background: '#22C55E', color: '#FFF', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>
-                      AO VIVO
-                    </span>
                   </div>
 
-                  <h3 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: '900', color: '#FFF', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                  <h3 style={{ margin: '0 0 6px', fontSize: '1.35rem', fontWeight: '900', color: '#FFF', textShadow: '0 2px 8px rgba(0,0,0,0.85)' }}>
                     {todayMeditation.title}
                   </h3>
 
-                  <p style={{ margin: '0 0 14px', fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.8)', lineHeight: '1.4', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    "{todayMeditation.verse}"
+                  <p style={{ margin: '0 0 14px', fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.45', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    “{String(todayMeditation.verse || '').replace(/^["“]+|["”]+$/g, '')}”
                   </p>
 
                   <div style={{ display: 'flex', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
@@ -3262,11 +3260,13 @@ Em nome de Jesus, Amém.`;
                       style={{
                         display: 'flex',
                         alignItems: 'center',
+                        justifyContent: 'center',
                         gap: '8px',
+                        minHeight: '44px',
                         background: '#F97316',
                         color: '#FFF',
                         fontWeight: '800',
-                        fontSize: '0.82rem',
+                        fontSize: '0.84rem',
                         border: 'none',
                         padding: '10px 16px',
                         borderRadius: '12px',
@@ -3289,13 +3289,15 @@ Em nome de Jesus, Amém.`;
                       style={{
                         display: 'flex',
                         alignItems: 'center',
+                        justifyContent: 'center',
                         gap: '8px',
-                        background: 'rgba(255, 255, 255, 0.12)',
+                        minHeight: '44px',
+                        background: 'rgba(255, 255, 255, 0.14)',
                         backdropFilter: 'blur(10px)',
                         color: '#FFF',
                         fontWeight: '700',
-                        fontSize: '0.82rem',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        fontSize: '0.84rem',
+                        border: '1px solid rgba(255, 255, 255, 0.22)',
                         padding: '10px 16px',
                         borderRadius: '12px',
                         cursor: 'pointer'
@@ -3362,11 +3364,8 @@ Em nome de Jesus, Amém.`;
                           style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }} 
                         />
                       </div>
-                      <span style={{ fontSize: '0.74rem', fontWeight: '700', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
-                        {(mentor.nome || '').split(' ')[0]}
-                      </span>
-                      <span style={{ fontSize: '0.64rem', color: 'rgba(255, 255, 255, 0.5)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
-                        {(mentor.titulo || '').split(' ')[0]}
+                      <span style={{ fontSize: '0.76rem', fontWeight: '700', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                        {mentor.id === 'salomao' ? 'Salomão' : mentor.id === 'davi' ? 'Davi' : mentor.id === 'paulo' ? 'Paulo' : mentor.id === 'moises' ? 'Moisés' : mentor.id === 'ester' ? 'Ester' : mentor.id === 'maria' ? 'Maria' : 'Jesus'}
                       </span>
                     </div>
                   ))}
@@ -5130,59 +5129,86 @@ Em nome de Jesus, Amém.`;
         {/* ════════════ ABA BÍBLIA ════════════ */}
         {activeTab === 'biblia' && bibleViewMode === 'reading' && (
           <div className="bible-reader page-enter">
-            {/* Hero da Bíblia */}
-            <div className="page-hero hero-biblia" style={{ paddingBottom: '44px' }}>
-              <div className="hero-orb" style={{ width: 220, height: 220, top: -50, right: -60, background: 'rgba(249,115,22,0.20)' }} />
-              <div className="hero-content">
+            {/* Hero da Bíblia com Paisagem de Pôr do Sol e Player Integrado */}
+            <div
+              className="page-hero hero-biblia"
+              style={{
+                position: 'relative',
+                overflow: 'hidden',
+                backgroundImage: `linear-gradient(180deg, rgba(10, 12, 18, 0.25) 0%, rgba(10, 12, 18, 0.82) 72%, rgba(10, 12, 18, 0.96) 100%), url(${bibliaSunsetBg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                paddingBottom: (bibleShowAudioPlayer && bibleAudioUrl) ? '20px' : '28px',
+                borderBottom: '1px solid rgba(255,255,255,0.08)'
+              }}
+            >
+              <div className="hero-content" style={{ position: 'relative', zIndex: 2 }}>
                 <div className="hero-label">Bíblia Sagrada</div>
                 <div className="hero-title">{bibleSelectedBook.livro_nome}</div>
                 <div className="hero-sub">Capítulo {bibleSelectedChapter}</div>
-              </div>
-            </div>
 
-            {/* Player de Áudio da Bíblia */}
-            {bibleShowAudioPlayer && bibleAudioUrl && (
-              <div style={{ padding: '0 20px 10px 20px', marginTop: '-18px', position: 'relative', zIndex: 5 }}>
-                <div className="player-container" style={{ padding: '12px 16px', flexDirection: 'row', gap: '12px', background: darkMode ? 'rgba(24, 24, 27, 0.85)' : 'rgba(255, 255, 255, 0.7)', border: darkMode ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-                  <audio
-                    ref={bibleAudioRef}
-                    src={bibleAudioUrl}
-                    preload="metadata"
-                    onTimeUpdate={onBibleAudioTimeUpdate}
-                    onLoadedMetadata={onBibleAudioLoadedMetadata}
-                    onError={() => {
-                      console.warn('[Audio] Falha ao carregar narração, aplicando música instrumental suave...');
-                      if (bibleAudioUrl !== '/piano.mp3') {
-                        setBibleAudioUrl('/piano.mp3');
-                        if (bibleAudioPlaying && bibleAudioRef.current) {
-                          setTimeout(() => bibleAudioRef.current?.play().catch(() => {}), 200);
+                {/* Player de Áudio Integrado na Paisagem */}
+                {bibleShowAudioPlayer && bibleAudioUrl && (
+                  <div
+                    className="player-container"
+                    style={{
+                      marginTop: '16px',
+                      padding: '10px 14px',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: '12px',
+                      background: 'rgba(12, 14, 20, 0.58)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255, 255, 255, 0.16)',
+                      borderRadius: '16px',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)'
+                    }}
+                  >
+                    <audio
+                      ref={bibleAudioRef}
+                      src={bibleAudioUrl}
+                      preload="metadata"
+                      onTimeUpdate={onBibleAudioTimeUpdate}
+                      onLoadedMetadata={onBibleAudioLoadedMetadata}
+                      onError={() => {
+                        console.warn('[Audio] Falha ao carregar narração, aplicando música instrumental suave...');
+                        if (bibleAudioUrl !== '/piano.mp3') {
+                          setBibleAudioUrl('/piano.mp3');
+                          if (bibleAudioPlaying && bibleAudioRef.current) {
+                            setTimeout(() => bibleAudioRef.current?.play().catch(() => {}), 200);
+                          }
                         }
+                      }}
+                      onEnded={() => {
+                        markChapterAsRead(bibleSelectedBook.livro_abrev, bibleSelectedChapter);
+                        setBibleAudioPlaying(false);
+                      }}
+                    />
+                    <button
+                      className="play-btn"
+                      style={{ width: '46px', height: '46px', flexShrink: 0, background: '#10B981', color: '#052E16' }}
+                      onClick={() => setBibleAudioPlaying(!bibleAudioPlaying)}
+                      aria-label={bibleAudioPlaying ? 'Pausar áudio' : 'Ouvir capítulo'}
+                    >
+                      {bibleAudioPlaying
+                        ? <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" /></svg>
+                        : <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '2px' }}><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" /></svg>
                       }
-                    }}
-                    onEnded={() => {
-                      // Auto-marcar capítulo como lido ao terminar o áudio
-                      markChapterAsRead(bibleSelectedBook.livro_abrev, bibleSelectedChapter);
-                      setBibleAudioPlaying(false);
-                    }}
-                  />
-                  <button className="play-btn" style={{ width: '40px', height: '40px', flexShrink: 0 }} onClick={() => setBibleAudioPlaying(!bibleAudioPlaying)}>
-                    {bibleAudioPlaying
-                      ? <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" /></svg>
-                      : <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ marginLeft: '2px' }}><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" /></svg>
-                    }
-                  </button>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div className="progress-bar-container" onClick={handleBibleAudioProgressBarClick} style={{ height: '4px' }}>
-                      <div className="progress-bar-fill" style={{ width: `${(bibleAudioCurrentTime / (bibleAudioDuration || 1)) * 100}%` }} />
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: darkMode ? '#a1a1aa' : '#78716C' }}>
-                      <span>{formatTime(bibleAudioCurrentTime)}</span>
-                      <span>{formatTime(bibleAudioDuration)}</span>
+                    </button>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                      <div className="progress-bar-container" onClick={handleBibleAudioProgressBarClick} style={{ height: '5px', background: 'rgba(255,255,255,0.22)' }}>
+                        <div className="progress-bar-fill" style={{ width: `${(bibleAudioCurrentTime / (bibleAudioDuration || 1)) * 100}%`, background: '#34D399' }} />
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', fontWeight: '600', color: 'rgba(255,255,255,0.85)' }}>
+                        <span>{formatTime(bibleAudioCurrentTime)}</span>
+                        <span>{formatTime(bibleAudioDuration)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
-            )}
+            </div>
 
             {bibleResults.length > 0 ? (
               <div style={{ padding: '16px 20px' }}>
@@ -6038,16 +6064,16 @@ Em nome de Jesus, Amém.`;
                 
                 {!activeCounselor ? (
                   <>
-                    <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-                      <h2 style={{ fontSize: '1.5rem', color: 'var(--orange)', margin: '0 0 6px 0', fontWeight: '800' }}>
-                        Mentores Bíblicos Canônicos
+                    <div style={{ marginBottom: '4px' }}>
+                      <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', margin: '0 0 4px 0', fontWeight: '800' }}>
+                        Escolha seu Mentor Bíblico
                       </h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', margin: 0 }}>
-                        Acesse a biografia, pilares de fé e converse diretamente com os grandes homens e mulheres das Escrituras Sagradas.
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', margin: 0 }}>
+                        Conselhos fundamentados nas Escrituras Sagradas.
                       </p>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
                       {LAYA_MENTORES.map(mentor => {
                         const isUnlocked = unlockedCounselors.includes(mentor.id);
                         return (
@@ -6056,16 +6082,17 @@ Em nome de Jesus, Amém.`;
                             className="dashboard-card"
                             style={{
                               position: 'relative',
-                              padding: '20px 14px 16px',
-                              borderRadius: '22px',
-                              border: isUnlocked ? '1.5px solid var(--slate-border)' : '1px dashed var(--slate-border)',
-                              opacity: isUnlocked ? 1 : 0.88,
+                              padding: '18px 12px 14px',
+                              borderRadius: '20px',
+                              border: isUnlocked ? '1px solid var(--slate-border)' : '1px dashed var(--slate-border)',
+                              opacity: isUnlocked ? 1 : 0.9,
                               cursor: 'pointer',
                               display: 'flex',
                               flexDirection: 'column',
                               alignItems: 'center',
+                              justifyContent: 'space-between',
                               textAlign: 'center',
-                              gap: '12px',
+                              gap: '10px',
                               background: 'var(--white)',
                               boxShadow: 'var(--shadow-sm)',
                               transition: 'all 0.2s ease'
@@ -6091,14 +6118,13 @@ Em nome de Jesus, Amém.`;
                               </div>
                             )}
 
-                            {/* Foto Oficial em Destaque */}
                             <div style={{
-                              width: '74px',
-                              height: '74px',
+                              width: '68px',
+                              height: '68px',
                               borderRadius: '50%',
                               overflow: 'hidden',
-                              border: '2.5px solid var(--orange)',
-                              boxShadow: '0 4px 12px rgba(249,115,22,0.25)',
+                              border: '2px solid var(--orange)',
+                              boxShadow: '0 4px 12px rgba(249,115,22,0.2)',
                               flexShrink: 0
                             }}>
                               <img
@@ -6108,52 +6134,31 @@ Em nome de Jesus, Amém.`;
                               />
                             </div>
 
-                            <div>
-                              <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', fontWeight: '800' }}>
+                            <div style={{ width: '100%' }}>
+                              <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: '800', lineHeight: 1.2 }}>
                                 {mentor.nome}
                               </strong>
-                              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: '600', display: 'block', marginTop: '2px' }}>
+                              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
                                 {mentor.titulo}
                               </span>
                             </div>
 
-                            {/* Tags de Especialidade */}
-                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                              {(mentor.especialidades || []).slice(0, 2).map(esp => (
-                                <span
-                                  key={esp}
-                                  style={{
-                                    fontSize: '0.66rem',
-                                    padding: '2px 7px',
-                                    background: 'rgba(249,115,22,0.08)',
-                                    border: '1px solid rgba(249,115,22,0.2)',
-                                    borderRadius: '8px',
-                                    color: 'var(--orange)',
-                                    fontWeight: '600'
-                                  }}
-                                >
-                                  {esp}
-                                </span>
-                              ))}
-                            </div>
-
-                            {/* Botão Chamativo de Ação */}
                             <button
                               style={{
                                 width: '100%',
+                                minHeight: '44px',
                                 padding: '8px 10px',
                                 borderRadius: '12px',
                                 border: 'none',
                                 background: isUnlocked ? 'var(--orange)' : 'var(--slate-light)',
                                 color: isUnlocked ? '#fff' : 'var(--text-secondary)',
-                                fontSize: '0.76rem',
+                                fontSize: '0.8rem',
                                 fontWeight: '700',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                gap: '6px',
-                                marginTop: '4px'
+                                gap: '6px'
                               }}
                             >
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

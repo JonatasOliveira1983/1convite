@@ -1,11 +1,13 @@
 /* ── ESTILOS DO MÓDULO DE TREINO DO TEMPLO (OPENGYM INTEGRADO) ── */
 
 .treino-templo-container {
-  padding: 16px 16px 90px;
+  padding: 16px 14px 110px;
   box-sizing: border-box;
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
   color: #FFFFFF;
+  overflow-x: hidden;
 }
 
 .treino-header {
@@ -56,16 +58,18 @@
 /* ── PAINEL 1: STATS BOARD DO OPENGYM (MÉTRICAS NO TOPO) ── */
 .treino-stats-board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .treino-stat-card {
   background: #15171E;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 12px 10px;
+  border-radius: 14px;
+  padding: 12px 8px;
+  min-width: 0;
   text-align: center;
   display: flex;
   flex-direction: column;

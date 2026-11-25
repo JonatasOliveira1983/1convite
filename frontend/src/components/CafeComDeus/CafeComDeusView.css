@@ -236,18 +236,54 @@ body.dark-mode .cafe-day-dot.completed {
   color: #4ADE80;
 }
 
-/* ── BARRA DE NAVEGAÇÃO ENTRE DIAS ── */
+/* ── BARRA DE NAVEGAÇÃO ENTRE DIAS (DATA CENTRALIZADA) ── */
 .cafe-nav-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 76px 1fr 76px;
   align-items: center;
-  justify-content: space-between;
   background: #FFFFFF;
   border: 1px solid #E5E7EB;
   border-radius: 14px;
-  padding: 8px 12px;
+  padding: 10px 10px;
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
+}
+
+.cafe-weekdays-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.cafe-weekday-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #9CA3AF;
+  padding: 4px 0;
+}
+
+.cafe-audio-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #CBD5E1;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 34px;
+}
+
+body:not(.dark-mode) .cafe-audio-toggle-btn {
+  background: #FFF7ED;
+  border-color: #FED7AA;
+  color: #9A3412;
 }
 
 body.dark-mode .cafe-nav-bar {
@@ -294,6 +330,8 @@ body.dark-mode .cafe-nav-arrow:hover:not(:disabled) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 2px;
 }
 

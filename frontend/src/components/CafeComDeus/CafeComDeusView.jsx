@@ -55,6 +55,8 @@ export default function CafeComDeusView({
   });
 
   const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(() => new Date(2026, 0, todayDayNumber).getMonth());
+  const [showAudioOptions, setShowAudioOptions] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Estados do Player de Áudio Neural
@@ -471,37 +473,90 @@ export default function CafeComDeusView({
         </div>
       </header>
 
-      {/* Calendário 365 Dias */}
-      {showCalendar && (
-        <div className="cafe-calendar-panel animate-scale-up">
-          <div className="cafe-calendar-header">
-            <h3>Calendário Diário das 365 Meditações</h3>
-            <span className="cafe-cal-sub">{completedDays.length} de 365 dias concluídos</span>
-          </div>
+      {/* Calendário Real 2026 */}
+      {showCalendar && (() => {
+        const YEAR = 2026;
+        const monthNames = [
+          'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        const firstDayWeekday = new Date(YEAR, calendarMonth, 1).getDay();
+        const daysInMonth = new Date(YEAR, calendarMonth + 1, 0).getDate();
+        const getDayNumFromDate = (m, d) => {
+          const dt = new Date(YEAR, m, d);
+          const start = new Date(YEAR, 0, 0);
+          return Math.max(1, Math.min(365, Math.floor((dt - start) / (1000 * 60 * 60 * 24))));
+        };
 
-          <div className="cafe-quick-actions">
-            <button 
-              onClick={() => { setSelectedDay(todayDayNumber); setCurrentStep(1); setShowCalendar(false); }}
-              className="cafe-btn-today"
-            >
-              Ir para Hoje ({getDateInfo(todayDayNumber).short} • Dia {todayDayNumber})
-            </button>
-          </div>
-
-          <div className="cafe-days-grid">
-            {Array.from({ length: 365 }, (_, i) => i + 1).map(day => (
+        return (
+          <div className="cafe-calendar-panel animate-scale-up">
+            <div className="cafe-calendar-header" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <button
-                key={day}
-                onClick={() => { setSelectedDay(day); setCurrentStep(1); setShowCalendar(false); }}
-                className={`cafe-day-dot ${selectedDay === day ? 'selected' : ''} ${completedDays.includes(day) ? 'completed' : ''} ${day === todayDayNumber ? 'is-today' : ''}`}
-                title={`Dia ${day}: ${getDateInfo(day).short}`}
+                type="button"
+                className="cafe-nav-arrow"
+                onClick={() => setCalendarMonth(m => Math.max(0, m - 1))}
+                disabled={calendarMonth === 0}
+                aria-label="Mês anterior"
               >
-                {day}
+                ‹
               </button>
-            ))}
+              <div style={{ textAlign: 'center' }}>
+                <h3 style={{ margin: 0 }}>{monthNames[calendarMonth]} {YEAR}</h3>
+                <span className="cafe-cal-sub">{completedDays.length} de 365 dias concluídos</span>
+              </div>
+              <button
+                type="button"
+                className="cafe-nav-arrow"
+                onClick={() => setCalendarMonth(m => Math.min(11, m + 1))}
+                disabled={calendarMonth === 11}
+                aria-label="Próximo mês"
+              >
+                ›
+              </button>
+            </div>
+
+            <div className="cafe-quick-actions">
+              <button
+                onClick={() => {
+                  const todayDt = new Date(YEAR, 0, todayDayNumber);
+                  setCalendarMonth(todayDt.getMonth());
+                  setSelectedDay(todayDayNumber);
+                  setCurrentStep(1);
+                  setShowCalendar(false);
+                }}
+                className="cafe-btn-today"
+              >
+                Ir para Hoje ({getDateInfo(todayDayNumber, YEAR).short})
+              </button>
+            </div>
+
+            <div className="cafe-weekdays-row">
+              {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((w, idx) => (
+                <span key={idx} className="cafe-weekday-label">{w}</span>
+              ))}
+            </div>
+
+            <div className="cafe-days-grid">
+              {Array.from({ length: firstDayWeekday }).map((_, idx) => (
+                <span key={`empty-${idx}`} />
+              ))}
+              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(dayNumInMonth => {
+                const dayOfYear = getDayNumFromDate(calendarMonth, dayNumInMonth);
+                return (
+                  <button
+                    key={dayNumInMonth}
+                    onClick={() => { setSelectedDay(dayOfYear); setCurrentStep(1); setShowCalendar(false); }}
+                    className={`cafe-day-dot ${selectedDay === dayOfYear ? 'selected' : ''} ${completedDays.includes(dayOfYear) ? 'completed' : ''} ${dayOfYear === todayDayNumber ? 'is-today' : ''}`}
+                    title={`${dayNumInMonth} de ${monthNames[calendarMonth]} (Dia ${dayOfYear})`}
+                  >
+                    {dayNumInMonth}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Navegação Dia a Dia */}
       <div className="cafe-nav-bar">
@@ -585,30 +640,9 @@ export default function CafeComDeusView({
       {/* ════════════ PASSO 1: MEDITAÇÃO CAFÉ COM DEUS ════════════ */}
       {currentStep === 1 && (
         <div className="cafe-step-content animate-fade-in">
-          {/* Player Devocional com Voz Neural de Estúdio */}
+          {/* Player Devocional Limpo */}
           <section className="cafe-audio-card" aria-label="Player de Áudio Devocional">
-            <div className="cafe-audio-header">
-              <div className="cafe-audio-title-group">
-                <span className="cafe-audio-badge-ai">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                  </svg>
-                  VOZ NEURAL HD
-                </span>
-                <span className="cafe-audio-sub">Narração com Piano Instrumental</span>
-              </div>
-
-              {isAudioPlaying && !isAudioLoading && (
-                <div className="cafe-equalizer" title="Áudio em reprodução">
-                  <span className="cafe-eq-bar" />
-                  <span className="cafe-eq-bar" />
-                  <span className="cafe-eq-bar" />
-                  <span className="cafe-eq-bar" />
-                </div>
-              )}
-            </div>
-
-            <div className="cafe-audio-main-row">
+            <div className="cafe-audio-main-row" style={{ marginBottom: '8px' }}>
               <button
                 onClick={togglePlayAudio}
                 className={`cafe-audio-play-btn ${isAudioLoading ? 'is-loading' : ''}`}
@@ -631,11 +665,8 @@ export default function CafeComDeusView({
               </button>
 
               <div className="cafe-audio-info-col">
-                <div className="cafe-audio-track-name">
-                  Meditação: {currentMeditation.title}
-                  <span className="cafe-audio-voice-badge">
-                    • Voz de {selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}
-                  </span>
+                <div className="cafe-audio-track-name" style={{ whiteSpace: 'normal', lineHeight: 1.3 }}>
+                  {currentMeditation.title}
                 </div>
 
                 <div className="cafe-progress-track">
@@ -647,62 +678,94 @@ export default function CafeComDeusView({
 
                 <div className="cafe-audio-times">
                   <span>{formatAudioTime(audioCurrentTime)}</span>
-                  <span>{isAudioLoading ? 'Conectando áudio...' : (audioDuration > 0 ? formatAudioTime(audioDuration) : 'Voz Humana')}</span>
+                  <span>{isAudioLoading ? 'Carregando...' : (audioDuration > 0 ? formatAudioTime(audioDuration) : 'Ouvir meditação')}</span>
                 </div>
               </div>
             </div>
 
-            {/* Seletor Visível das Vozes: Francisca e Antônio Lado a Lado */}
-            <div className="cafe-voice-bar">
-              <span className="cafe-voice-bar-title">Escolha quem narra para você:</span>
-              <div className="cafe-voice-pills-wrap">
-                <button
-                  type="button"
-                  onClick={() => handleSelectVoice('pt-BR-FranciscaNeural')}
-                  className={`cafe-voice-pill ${selectedVoice === 'pt-BR-FranciscaNeural' ? 'is-active' : ''}`}
-                  title="Voz feminina serena, aveludada e reflexiva"
-                >
-                  <span className="cafe-voice-avatar-badge fem">F</span>
-                  <div className="cafe-voice-pill-text">
-                    <strong>Francisca</strong>
-                    <small>Serena & Acolhedora</small>
-                  </div>
-                  {selectedVoice === 'pt-BR-FranciscaNeural' && <span className="cafe-voice-pill-check">✓</span>}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleSelectVoice('pt-BR-AntonioNeural')}
-                  className={`cafe-voice-pill ${selectedVoice === 'pt-BR-AntonioNeural' ? 'is-active' : ''}`}
-                  title="Voz masculina grave, acolhedora e pastoral"
-                >
-                  <span className="cafe-voice-avatar-badge masc">A</span>
-                  <div className="cafe-voice-pill-text">
-                    <strong>Antônio</strong>
-                    <small>Pastoral & Firme</small>
-                  </div>
-                  {selectedVoice === 'pt-BR-AntonioNeural' && <span className="cafe-voice-pill-check">✓</span>}
-                </button>
-              </div>
-            </div>
-
-            {/* Alternador de Som Ambiente (Piano) */}
-            <div className="cafe-audio-options-bar">
+            {/* Botão compacto com flechinha para abrir opções de Voz e Piano */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button
-                onClick={() => {
-                  const nextAmbient = !ambientPiano;
-                  setAmbientPiano(nextAmbient);
-                  if (isAudioPlaying) {
-                    startAudioPlayback(selectedVoice, currentStep, nextAmbient);
-                  }
-                }}
-                className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
-                title="Ligar ou desligar música de piano de fundo"
+                type="button"
+                onClick={() => setShowAudioOptions(prev => !prev)}
+                className="cafe-audio-toggle-btn"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                <span>{ambientPiano ? 'Piano Suave: Ligado' : 'Piano: Desligado'}</span>
+                <span>
+                  Voz: <strong>{selectedVoice === 'pt-BR-FranciscaNeural' ? 'Francisca' : 'Antônio'}</strong> • {ambientPiano ? 'Piano ligado' : 'Sem piano'}
+                </span>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ transform: showAudioOptions ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </button>
+
+              {isAudioPlaying && !isAudioLoading && (
+                <div className="cafe-equalizer" title="Áudio em reprodução">
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                  <span className="cafe-eq-bar" />
+                </div>
+              )}
             </div>
+
+            {showAudioOptions && (
+              <div className="cafe-voice-bar animate-fade-in">
+                <div className="cafe-voice-pills-wrap">
+                  <button
+                    type="button"
+                    onClick={() => handleSelectVoice('pt-BR-FranciscaNeural')}
+                    className={`cafe-voice-pill ${selectedVoice === 'pt-BR-FranciscaNeural' ? 'is-active' : ''}`}
+                  >
+                    <span className="cafe-voice-avatar-badge fem">F</span>
+                    <div className="cafe-voice-pill-text">
+                      <strong>Francisca</strong>
+                      <small>Serena & Acolhedora</small>
+                    </div>
+                    {selectedVoice === 'pt-BR-FranciscaNeural' && <span className="cafe-voice-pill-check">✓</span>}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleSelectVoice('pt-BR-AntonioNeural')}
+                    className={`cafe-voice-pill ${selectedVoice === 'pt-BR-AntonioNeural' ? 'is-active' : ''}`}
+                  >
+                    <span className="cafe-voice-avatar-badge masc">A</span>
+                    <div className="cafe-voice-pill-text">
+                      <strong>Antônio</strong>
+                      <small>Pastoral & Firme</small>
+                    </div>
+                    {selectedVoice === 'pt-BR-AntonioNeural' && <span className="cafe-voice-pill-check">✓</span>}
+                  </button>
+                </div>
+
+                <div className="cafe-audio-options-bar" style={{ marginTop: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextAmbient = !ambientPiano;
+                      setAmbientPiano(nextAmbient);
+                      if (isAudioPlaying) {
+                        startAudioPlayback(selectedVoice, currentStep, nextAmbient);
+                      }
+                    }}
+                    className={`cafe-opt-chip ${ambientPiano ? 'active' : ''}`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    <span>{ambientPiano ? 'Piano Suave: Ligado' : 'Piano: Desligado'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Card da Meditação */}
