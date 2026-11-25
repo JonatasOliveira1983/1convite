@@ -338,7 +338,7 @@ export default function LandingPage({ onEnterApp }) {
             <a href="#recursos">Recursos</a>
             <a href="#planos">Planos & Convites</a>
             <a href="#mentores">Mentores</a>
-            <a href="/blog">Blog</a>
+            <a href="/blog/">Blog</a>
           </nav>
 
           <div className="sp-nav-actions">
@@ -1046,7 +1046,7 @@ export default function LandingPage({ onEnterApp }) {
               <a href="#mentores" className="sp-footer-link">Mentores Bíblicos</a>
               <a href="#recursos" className="sp-footer-link">Matriz de 365 Dias</a>
               <a href="#planos" className="sp-footer-link">Planos & Convites</a>
-              <a href="/blog" className="sp-footer-link">Blog 1Convite</a>
+              <a href="/blog/" className="sp-footer-link">Blog 1Convite</a>
             </div>
 
             <div className="sp-footer-col">
