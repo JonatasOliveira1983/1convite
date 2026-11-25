@@ -57,11 +57,40 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Configurar variáveis do Blog SvelteKit (reaproveita o mesmo Turso DB do backend)
+if (!process.env.DATABASE_URL && process.env.TURSO_DATABASE_URL) {
+  process.env.DATABASE_URL = process.env.TURSO_DATABASE_URL;
+}
+if (!process.env.DATABASE_AUTH_TOKEN && process.env.TURSO_AUTH_TOKEN) {
+  process.env.DATABASE_AUTH_TOKEN = process.env.TURSO_AUTH_TOKEN;
+}
+if (!process.env.PROTOCOL_HEADER) process.env.PROTOCOL_HEADER = 'x-forwarded-proto';
+if (!process.env.HOST_HEADER) process.env.HOST_HEADER = 'x-forwarded-host';
+if (!process.env.SITE_URL) process.env.SITE_URL = 'https://1convite.com.br/blog';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Montar o Blog SvelteKit (/blog) ANTES de express.json() para preservar req stream nos POSTs
+const __blogHandlerPath = join(__dirname, '..', '..', 'blog', 'build', 'handler.js');
+if (existsSync(__blogHandlerPath)) {
+  try {
+    const { handler: blogHandler } = await import(`file://${__blogHandlerPath.replace(/\\/g, '/')}`);
+    app.use((req, res, next) => {
+      if (req.path === '/blog' || req.path.startsWith('/blog/')) {
+        return blogHandler(req, res, next);
+      }
+      return next();
+    });
+    console.log('[Blog] Handler SvelteKit montado em /blog');
+  } catch (err) {
+    console.error('[Blog] Falha ao carregar handler do blog:', err.message);
+  }
+}
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Helper wrappers around pool.query (resilientes no dev local)
 const dbRun = async (query, params = []) => {
