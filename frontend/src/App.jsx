@@ -9087,16 +9087,15 @@ Em nome de Jesus, Amém.`;
                 Compartilhar / Salvar
               </button>
               <a
-                href={`https://1convite.com.br${previewWallpaper.url}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/download-wallpaper/${previewWallpaper.url.split('/').pop()}`}
+                download={previewWallpaper.filename}
                 style={{
                   minHeight: '46px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.06)', color: '#fff', fontWeight: '700', fontSize: '0.82rem',
+                  background: 'rgba(255,255,255,0.08)', color: '#fff', fontWeight: '700', fontSize: '0.82rem',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none'
                 }}
               >
-                Abrir no Navegador
+                Baixar Imagem
               </a>
             </div>
           </div>

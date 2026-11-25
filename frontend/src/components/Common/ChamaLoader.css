@@ -1,12 +1,12 @@
 .chama-loader-fullscreen {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 42%, rgba(249, 115, 22, 0.14) 0%, #070A10 68%);
+  background: radial-gradient(circle at 50% 42%, rgba(249, 115, 22, 0.12) 0%, #070A10 66%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 18px;
   z-index: 9998;
 }
 
@@ -15,8 +15,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 20px 12px;
+  gap: 12px;
+  padding: 24px 12px;
 }
 
 .chama-loader-stage {
@@ -24,59 +24,73 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 14px;
+  box-sizing: content-box;
+}
+
+.chama-loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg 220deg, rgba(249, 115, 22, 0.9) 320deg, #FDE68A 360deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  animation: chamaRingSpin 1.15s linear infinite;
+  pointer-events: none;
 }
 
 .chama-loader-halo {
   position: absolute;
-  inset: -14%;
+  inset: 8%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.42) 0%, rgba(245, 158, 11, 0.12) 48%, transparent 72%);
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.32) 0%, rgba(245, 158, 11, 0.08) 55%, transparent 74%);
   filter: blur(10px);
-  animation: chamaHaloPulse 1.6s ease-in-out infinite alternate;
+  animation: chamaHaloPulse 1.8s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
 .chama-loader-img {
-  width: 100%;
-  height: 100%;
+  width: 76%;
+  height: 76%;
   object-fit: contain;
-  mix-blend-mode: screen;
-  transform-origin: center bottom;
-  animation: chamaFlameDance 1.35s ease-in-out infinite alternate;
+  transform-origin: center center;
+  animation: chamaBreath 1.8s ease-in-out infinite alternate;
   position: relative;
   z-index: 2;
   user-select: none;
+  filter: drop-shadow(0 6px 16px rgba(249, 115, 22, 0.35));
 }
 
 .chama-loader-label {
-  font-size: 0.84rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.82);
-  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.04em;
 }
 
-@keyframes chamaFlameDance {
+@keyframes chamaRingSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes chamaBreath {
   0% {
-    transform: translateY(2px) scale(0.96, 0.98) rotate(-1.5deg);
-    filter: brightness(0.95);
-  }
-  50% {
-    transform: translateY(-2px) scale(1.03, 1.06) rotate(1.2deg);
-    filter: brightness(1.08);
+    transform: scale(0.96);
+    filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.28)) brightness(0.96);
   }
   100% {
-    transform: translateY(0px) scale(1, 1.02) rotate(-0.8deg);
-    filter: brightness(1.02);
+    transform: scale(1.04);
+    filter: drop-shadow(0 8px 22px rgba(249, 115, 22, 0.5)) brightness(1.08);
   }
 }
 
 @keyframes chamaHaloPulse {
   0% {
-    transform: scale(0.88);
-    opacity: 0.65;
+    transform: scale(0.9);
+    opacity: 0.6;
   }
   100% {
-    transform: scale(1.16);
+    transform: scale(1.12);
     opacity: 1;
   }
 }

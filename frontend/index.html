@@ -112,72 +112,63 @@
       }
       .boot-flame-wrap {
         position: relative;
-        width: 78px;
-        height: 78px;
+        width: 92px;
+        height: 92px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
+      .boot-flame-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent 0deg 220deg, rgba(249, 115, 22, 0.9) 320deg, #FDE68A 360deg);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+        animation: bootSpin 1.15s linear infinite;
+      }
       .boot-flame-wrap::before {
         content: '';
         position: absolute;
-        inset: -14%;
+        inset: 8%;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(249, 115, 22, 0.42) 0%, transparent 72%);
+        background: radial-gradient(circle, rgba(249, 115, 22, 0.32) 0%, transparent 72%);
         filter: blur(10px);
-        animation: bootHalo 1.5s ease-in-out infinite alternate;
+        animation: bootHalo 1.8s ease-in-out infinite alternate;
       }
       .boot-flame-img {
-        width: 100%;
-        height: 100%;
+        width: 62%;
+        height: 62%;
         object-fit: contain;
-        mix-blend-mode: screen;
-        transform-origin: center bottom;
-        animation: bootFlame 1.35s ease-in-out infinite alternate;
+        animation: bootFlame 1.8s ease-in-out infinite alternate;
         position: relative;
         z-index: 2;
+        filter: drop-shadow(0 6px 16px rgba(249, 115, 22, 0.35));
+      }
+      @keyframes bootSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
       @keyframes bootFlame {
-        0% { transform: translateY(2px) scale(0.96, 0.98) rotate(-1.5deg); }
-        100% { transform: translateY(-2px) scale(1.03, 1.06) rotate(1.2deg); }
+        0% { transform: scale(0.96); }
+        100% { transform: scale(1.04); }
       }
       @keyframes bootHalo {
-        0% { transform: scale(0.88); opacity: 0.65; }
-        100% { transform: scale(1.15); opacity: 1; }
-      }
-      .boot-dot {
-        width: 34px;
-        height: 4px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.14);
-        overflow: hidden;
-        position: relative;
-      }
-      .boot-dot::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        width: 50%;
-        background: #f97316;
-        border-radius: 999px;
-        animation: bootSlide 1s ease-in-out infinite alternate;
-      }
-      @keyframes bootSlide {
-        from { transform: translateX(-20%); }
-        to { transform: translateX(120%); }
+        0% { transform: scale(0.9); opacity: 0.6; }
+        100% { transform: scale(1.12); opacity: 1; }
       }
     </style>
   </head>
-  <body>
+  <body class="dark-mode">
     <div id="root">
       <div class="boot-splash" aria-label="Carregando 1Convite">
         <div class="boot-logo">
           <div class="boot-flame-wrap">
-            <img src="/chama-1convite.jpg" alt="1Convite" class="boot-flame-img" />
+            <div class="boot-flame-ring"></div>
+            <img src="/chama-1convite.png" alt="1Convite" class="boot-flame-img" />
           </div>
           <span>1Convite</span>
         </div>
-        <div class="boot-dot"></div>
       </div>
     </div>
     <script type="module" src="/src/main.jsx"></script>
