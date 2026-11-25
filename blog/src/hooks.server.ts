@@ -124,3 +124,14 @@ export const handle: Handle = sequence(
   analyticsHandle,
   cacheControlHandle
 );
+
+export const handleError = ({ error, event }: { error: unknown; event: any }) => {
+  const message = error instanceof Error ? `${error.message}\n${error.stack || ''}` : String(error);
+  console.error('[BLOG SSR ERROR]', event?.url?.pathname, message);
+  (globalThis as any).__lastBlogError = {
+    path: event?.url?.pathname || '',
+    message,
+    at: new Date().toISOString()
+  };
+  return { message: 'Internal Error' };
+};

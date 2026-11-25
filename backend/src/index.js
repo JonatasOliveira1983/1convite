@@ -2557,9 +2557,9 @@ app.get('/api/v1/rag/search', async (req, res) => {
 app.get('/api/v1/health', async (req, res) => {
   try {
     const r = await pool.query('SELECT NOW()');
-    res.json({ status: 'ok', db: 'connected', blogMounted, blogError, time: r.rows[0].now });
+    res.json({ status: 'ok', db: 'connected', blogMounted, blogError, lastBlogError: globalThis.__lastBlogError || null, time: r.rows[0].now });
   } catch (err) {
-    res.json({ status: 'ok', db: 'disconnected', blogMounted, blogError, warning: err.message });
+    res.json({ status: 'ok', db: 'disconnected', blogMounted, blogError, lastBlogError: globalThis.__lastBlogError || null, warning: err.message });
   }
 });
 
