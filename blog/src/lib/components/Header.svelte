@@ -4,19 +4,19 @@
   
   let { 
     logo = '',
-    siteName = 'Blog',
+    siteName = '1Convite Blog',
     showSearch = true,
     showThemeToggle = true,
     user = null,
     enableMemberLogin = false,
-    defaultTheme = 'light',
+    defaultTheme = 'dark',
     language = ''
   } = $props();
 
   let mobileMenuOpen = $state(false);
   let searchOpen = $state(false);
   let searchQuery = $state('');
-  let theme = $state<'light' | 'dark'>('light');
+  let theme = $state<'light' | 'dark'>('dark');
   let themeReady = $state(false);
 
   const lang = $derived(language || $page.data.language || 'pt');
@@ -24,8 +24,8 @@
   const links = $derived([
     { label: t(lang, 'nav.home'), href: '/' },
     { label: t(lang, 'nav.categories'), href: '/categories' },
-    { label: t(lang, 'nav.products'), href: '/products' },
-    { label: 'Comunidade VIP', href: '/members/area' },
+    { label: 'Planos & Convites', href: 'https://1convite.com.br/#planos' },
+    { label: 'Acessar App', href: 'https://1convite.com.br/' },
     ...(user ? [
       { label: t(lang, 'nav.my_account'), href: '/members/dashboard' }
     ] : (enableMemberLogin ? [

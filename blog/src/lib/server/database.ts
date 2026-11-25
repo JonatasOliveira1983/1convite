@@ -976,11 +976,12 @@ export async function initDatabase() {
     if (!siteTitleSetting) {
       console.log('Seeding default settings...');
       const defaultSettings = [
-        { key: 'site_title', value: 'Meu Blog Svelte' },
-        { key: 'site_description', value: 'Um blog moderno feito com SvelteKit e SQLite' },
+        { key: 'site_title', value: '1Convite Blog' },
+        { key: 'site_description', value: 'A Palavra Viva • Estudos, Meditações e Princípios do Reino' },
         { key: 'feed_loading_mode', value: 'pagination' },
-        { key: 'site_logo', value: '/favicon.svg' },
-        { key: 'site_favicon', value: '/favicon.svg' }
+        { key: 'site_logo', value: '/blog/chama-1convite.png' },
+        { key: 'site_favicon', value: '/blog/chama-1convite.png' },
+        { key: 'default_theme', value: 'dark' }
       ];
       for (const setting of defaultSettings) {
         await run('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)', [setting.key, setting.value]);

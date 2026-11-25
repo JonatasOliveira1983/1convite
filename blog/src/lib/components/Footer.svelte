@@ -4,7 +4,7 @@
 
   let {
     logo = '',
-    siteName = 'Blog',
+    siteName = '1Convite Blog',
     description = '',
     copyright = '',
     adminEmail = '',
@@ -18,8 +18,7 @@
   const lang = $derived(language || $page.data.language || 'pt');
   const currentYear = new Date().getFullYear();
   const email = $derived(
-    adminEmail ||
-      `contato@${siteName.split(/[|\-]/)[0].trim().toLowerCase().replace(/[^a-z0-9]/g, '')}.com`
+    adminEmail || 'contato@1convite.com.br'
   );
   const displayLocation = $derived(location || t(lang, 'footer.default_location'));
 
