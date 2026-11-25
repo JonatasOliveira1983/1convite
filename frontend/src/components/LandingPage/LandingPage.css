@@ -1514,8 +1514,12 @@
 .sp-mentor-card,
 .sp-download-box {
   position: relative;
-  overflow: hidden;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.sp-bento-card,
+.sp-download-box {
+  overflow: hidden;
 }
 
 .sp-plan-card::before,
@@ -1524,6 +1528,7 @@
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(249, 115, 22, 0.14), transparent 55%);
   opacity: 0;
   transition: opacity 0.3s ease;
