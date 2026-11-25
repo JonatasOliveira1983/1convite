@@ -1,14 +1,27 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import html2canvas from 'html2canvas';
-const LandingPage = lazy(() => import('./components/LandingPage/LandingPage'));
+const lazyWithRetry = (importer) =>
+  lazy(() =>
+    importer().catch((err) => {
+      const key = '1convite_chunk_reload';
+      if (typeof window !== 'undefined' && !sessionStorage.getItem(key)) {
+        sessionStorage.setItem(key, '1');
+        window.location.reload();
+        return new Promise(() => {});
+      }
+      throw err;
+    })
+  );
+
+const LandingPage = lazyWithRetry(() => import('./components/LandingPage/LandingPage'));
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid, generateMemoriaDeck } from './data/arcadeData';
-const TrailHome = lazy(() => import('./components/trail/TrailHome'));
+const TrailHome = lazyWithRetry(() => import('./components/trail/TrailHome'));
 import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal, gerarRespostaMentor } from './data/layaData';
-const CafeComDeusView = lazy(() => import('./components/CafeComDeus/CafeComDeusView'));
-const MulherVirtuosaView = lazy(() => import('./components/MulherVirtuosa/MulherVirtuosaView'));
-const BibliotecaPregadorView = lazy(() => import('./components/BibliotecaPregador/BibliotecaPregadorView'));
-const BibliotecaEbooksView = lazy(() => import('./components/BibliotecaEbooks/BibliotecaEbooksView'));
-const UpgradeVoucherModal = lazy(() => import('./components/Upgrade/UpgradeVoucherModal'));
+const CafeComDeusView = lazyWithRetry(() => import('./components/CafeComDeus/CafeComDeusView'));
+const MulherVirtuosaView = lazyWithRetry(() => import('./components/MulherVirtuosa/MulherVirtuosaView'));
+const BibliotecaPregadorView = lazyWithRetry(() => import('./components/BibliotecaPregador/BibliotecaPregadorView'));
+const BibliotecaEbooksView = lazyWithRetry(() => import('./components/BibliotecaEbooks/BibliotecaEbooksView'));
+const UpgradeVoucherModal = lazyWithRetry(() => import('./components/Upgrade/UpgradeVoucherModal'));
 import cafeData from './data/cafe_com_deus_365.json';
 import cafeSinteseData from './data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from './services/neuralAudioPlayer';
