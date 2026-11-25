@@ -480,6 +480,88 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
             </div>
           )}
         </section>
+
+        {/* ── HISTÓRICO DE PAGAMENTOS ASAAS & ENVIOS DE E-MAIL (RESEND) ── */}
+        <section className="admin-section" style={{ marginTop: '20px' }}>
+          <div className="admin-section-header" style={{ marginBottom: '12px' }}>
+            <div>
+              <h2>Vendas Asaas & Envios de E-mail (Resend)</h2>
+              <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#94A3B8' }}>
+                Acompanhe pagamentos (Sandbox/Produção), liberação VIP e status de envio das credenciais por e-mail.
+              </p>
+            </div>
+          </div>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Plano / Valor</th>
+                  <th>Pagamento</th>
+                  <th>E-mail / Acesso</th>
+                  <th>Convites</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(!stats.recentPayments || stats.recentPayments.length === 0) ? (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: 'center', color: '#64748B', padding: '18px' }}>
+                      Nenhuma venda registrada ainda.
+                    </td>
+                  </tr>
+                ) : (
+                  stats.recentPayments.map((p) => {
+                    const isPaid = ['CONFIRMED', 'RECEIVED', 'RECEIVED_IN_CASH'].includes(String(p.status || '').toUpperCase());
+                    return (
+                      <tr key={p.paymentId}>
+                        <td>
+                          <div style={{ fontWeight: '700', color: '#FFFFFF' }}>{p.customerName}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{p.customerEmail}</div>
+                        </td>
+                        <td>
+                          <span style={{ textTransform: 'capitalize', fontWeight: '700', color: '#FDBA74' }}>{p.planId}</span>
+                          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>R$ {Number(p.valueReais || 0).toFixed(2)} • {p.billingType}</div>
+                        </td>
+                        <td>
+                          <span style={{
+                            display: 'inline-block',
+                            padding: '3px 9px',
+                            borderRadius: '999px',
+                            fontSize: '0.72rem',
+                            fontWeight: '800',
+                            background: isPaid ? 'rgba(16,185,129,0.16)' : 'rgba(245,158,11,0.16)',
+                            color: isPaid ? '#34D399' : '#FBBF24'
+                          }}>
+                            {isPaid ? 'Pago & VIP Liberado' : p.status}
+                          </span>
+                        </td>
+                        <td>
+                          {p.emailSent ? (
+                            <span style={{ color: '#34D399', fontWeight: '700', fontSize: '0.78rem' }}>
+                              E-mail enviado
+                            </span>
+                          ) : (
+                            <div>
+                              <span style={{ color: '#F87171', fontWeight: '700', fontSize: '0.78rem' }}>
+                                Não enviado
+                              </span>
+                              {p.emailError && (
+                                <div style={{ fontSize: '0.7rem', color: '#FCA5A5', maxWidth: '180px' }}>{p.emailError}</div>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                        <td style={{ fontSize: '0.72rem', color: '#E2E8F0' }}>
+                          {Array.isArray(p.vouchers) && p.vouchers.length > 0 ? p.vouchers.join(', ') : '—'}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </div>
   );

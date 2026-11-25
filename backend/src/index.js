@@ -211,10 +211,16 @@ async function ensureTables() {
           invoice_url TEXT,
           vouchers_json TEXT,
           email_sent INTEGER DEFAULT 0,
+          email_error TEXT,
           paid_at TEXT,
           created_at TEXT NOT NULL
         )
       `);
+      try {
+        await client.query(`ALTER TABLE tb_pagamentos_asaas ADD COLUMN email_error TEXT`);
+      } catch {
+        // coluna já existe
+      }
 
       // Seed inicial de vouchers padrão caso a tabela esteja vazia
       const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
@@ -1965,8 +1971,8 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
       const newUserId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
       await dbRun(
         `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count)
-         VALUES ($1, $2, $3, $4, 'vip', $5, NULL, $6, $7, $7, 1)`,
-        [newUserId, order.customer_name, cleanEmail, tempPassword, plan.nome, expiryTimestamp, nowIso]
+         VALUES ($1, $2, $3, $4, 'vip', $5, NULL, $6, $7, $8, 1)`,
+        [newUserId, order.customer_name, cleanEmail, tempPassword, plan.nome, expiryTimestamp, nowIso, nowIso]
       );
     }
 
@@ -1977,19 +1983,25 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
       [paidStatus, JSON.stringify(vouchers), nowIso, paymentId]
     );
 
-    if (!Number(order.email_sent) && isResendConfigured()) {
-      const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
-      const mailRes = await sendWelcomeAndVouchersEmail({
-        to: order.customer_email,
-        name: order.customer_name,
-        planName: plan.nome,
-        vouchers,
-        expiryDateStr: expiryStr,
-        tempPassword,
-        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-      });
-      if (mailRes.ok) {
-        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+    if (!Number(order.email_sent)) {
+      if (isResendConfigured()) {
+        const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+        const mailRes = await sendWelcomeAndVouchersEmail({
+          to: order.customer_email,
+          name: order.customer_name,
+          planName: plan.nome,
+          vouchers,
+          expiryDateStr: expiryStr,
+          tempPassword,
+          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+        });
+        if (mailRes.ok) {
+          await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
+        } else {
+          await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+        }
+      } else {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
       }
     }
 
@@ -2472,6 +2484,7 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
   try {
     const vouchersRaw = await dbAll('SELECT * FROM tb_vouchers ORDER BY created_at DESC');
     const usersRaw = await dbAll('SELECT id, name, contact, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count FROM tb_acessos_usuarios ORDER BY last_login DESC');
+    const paymentsRaw = await dbAll('SELECT payment_id, order_id, plan_id, customer_name, customer_email, billing_type, value_cents, status, vouchers_json, email_sent, email_error, paid_at, created_at FROM tb_pagamentos_asaas ORDER BY created_at DESC LIMIT 30');
 
     const vouchers = vouchersRaw.map(v => ({
       code: v.code,
@@ -2504,6 +2517,29 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
     const activeVouchers = vouchers.filter(v => v.active).length;
     const totalVoucherUses = vouchers.reduce((acc, curr) => acc + (curr.usedCount || 0), 0);
 
+    const recentPayments = (paymentsRaw || []).map((p) => {
+      let parsedVouchers = [];
+      try {
+        parsedVouchers = p.vouchers_json ? JSON.parse(p.vouchers_json) : [];
+      } catch {
+        parsedVouchers = [];
+      }
+      return {
+        paymentId: p.payment_id,
+        planId: p.plan_id,
+        customerName: p.customer_name,
+        customerEmail: p.customer_email,
+        billingType: p.billing_type,
+        valueReais: Number(p.value_cents || 0) / 100,
+        status: p.status,
+        emailSent: Boolean(Number(p.email_sent)),
+        emailError: p.email_error || '',
+        vouchers: parsedVouchers,
+        paidAt: p.paid_at,
+        createdAt: p.created_at,
+      };
+    });
+
     res.json({
       success: true,
       totalUsers,
@@ -2514,7 +2550,8 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
       activeVouchers,
       totalVoucherUses,
       recentUsers: users,
-      vouchers
+      vouchers,
+      recentPayments
     });
   } catch (err) {
     console.error('Erro em /admin/dashboard:', err);
