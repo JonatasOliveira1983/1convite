@@ -3042,3 +3042,177 @@ body.dark-mode .memoria-card-back {
 .cb-v2102 {
   opacity: 0.9999;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   VERSÃO DESKTOP DEDICADA (>= 960px, fora do Capacitor Android)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.desktop-sidebar {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .app-container:not(.is-capacitor) {
+    max-width: none !important;
+    width: 100% !important;
+    padding-left: 268px !important;
+    padding-right: 28px !important;
+    padding-bottom: 48px !important;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .app-container:not(.is-capacitor) .desktop-sidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 244px;
+    background: #0b0d14;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 22px 14px 18px;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+
+  .desktop-sidebar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 10px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 14px;
+  }
+
+  .desktop-sidebar-logo {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .desktop-sidebar-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #fb923c;
+    background: rgba(249, 115, 22, 0.14);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .desktop-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .desktop-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #a1a1aa;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s ease;
+    box-sizing: border-box;
+  }
+
+  .desktop-nav-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+  }
+
+  .desktop-nav-item.active {
+    background: rgba(249, 115, 22, 0.16);
+    color: #fb923c;
+    font-weight: 700;
+  }
+
+  .desktop-nav-icon {
+    font-size: 1.05rem;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .desktop-sidebar-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 10px 6px;
+  }
+
+  .desktop-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.18s ease;
+  }
+
+  .desktop-sidebar-user:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .desktop-user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f97316;
+    flex-shrink: 0;
+  }
+
+  .desktop-user-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .desktop-user-meta strong {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .desktop-user-meta span {
+    font-size: 0.7rem;
+    color: #94a3b8;
+  }
+
+  .app-container:not(.is-capacitor) .floating-bottom-bar {
+    display: none !important;
+  }
+
+  .app-container:not(.is-capacitor) .app-header,
+  .app-container:not(.is-capacitor) main,
+  .app-container:not(.is-capacitor) .dashboard-view,
+  .app-container:not(.is-capacitor) .bible-reader {
+    max-width: 1120px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -373,3 +373,54 @@
   border: 1px solid rgba(34, 197, 94, 0.4);
   color: #86EFAC;
 }
+
+.c6-back-landing-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 30;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.c6-back-landing-btn:hover {
+  background: rgba(249, 115, 22, 0.22);
+  border-color: rgba(249, 115, 22, 0.55);
+}
+
+@media (min-width: 960px) {
+  .c6-login-viewport {
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+  }
+
+  .c6-top-header {
+    padding-top: 0;
+  }
+
+  .c6-top-logo {
+    height: 52px;
+    max-width: 240px;
+  }
+
+  .c6-center-stage {
+    display: none;
+  }
+
+  .c6-bottom-sheet {
+    margin: 0;
+    max-width: 450px;
+    border-radius: 28px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  }
+}

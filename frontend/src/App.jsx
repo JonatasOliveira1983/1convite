@@ -1048,11 +1048,46 @@ function App() {
       (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
     );
     if (isCap) return false;
+    const path = (window.location.pathname || '/').toLowerCase();
+    if (path === '/artigos' || path.startsWith('/artigos/')) {
+      window.location.replace('/blog/');
+      return true;
+    }
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('app') === 'true') return false;
     if (urlParams.get('landing') === 'true' || urlParams.get('vendas') === 'true') return true;
-    return !localStorage.getItem('1convite_visited_app');
+    if (path === '/app' || path.startsWith('/app/')) return false;
+    return true;
   });
+
+  const navigateAppRoute = (enterApp) => {
+    setShowLanding(!enterApp);
+    if (typeof window === 'undefined') return;
+    const isCap = Boolean(
+      window.Capacitor ||
+      window.location.protocol === 'capacitor:' ||
+      (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
+    );
+    if (!isCap && window.history && window.history.pushState) {
+      const targetPath = enterApp ? '/app' : '/';
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({ app: enterApp }, '', targetPath);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePopState = () => {
+      const path = (window.location.pathname || '/').toLowerCase();
+      const urlParams = new URLSearchParams(window.location.search);
+      const shouldOpenApp = urlParams.get('app') === 'true' || path === '/app' || path.startsWith('/app/');
+      setShowLanding(!shouldOpenApp);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Bíblia
   const [bibleViewMode, setBibleViewMode] = useState('reading');
@@ -2718,7 +2753,7 @@ Em nome de Jesus, Amém.`;
           onOpenApp={() => setShowAdminPanel(false)}
           onOpenLanding={() => {
             setShowAdminPanel(false);
-            setShowLanding(true);
+            navigateAppRoute(false);
           }}
           onLogout={() => {
             adminAuthService.setAdminSession(false);
@@ -2735,7 +2770,7 @@ Em nome de Jesus, Amém.`;
     return (
       <Suspense fallback={<AppBootFallback />}>
         <LandingPage onEnterApp={() => {
-          setShowLanding(false);
+          navigateAppRoute(true);
           setActiveTab('dashboard');
           try { localStorage.setItem('1convite_visited_app', 'true'); } catch (e) {}
         }} />
@@ -2746,6 +2781,7 @@ Em nome de Jesus, Amém.`;
   if (!isLoggedIn) {
     return (
       <LoginPage 
+        onBackToLanding={!isCapacitor ? () => navigateAppRoute(false) : undefined}
         onLoginSuccess={(userData) => {
           setIsLoggedIn(true);
           setProfileName(userData.name);
@@ -2775,7 +2811,71 @@ Em nome de Jesus, Amém.`;
   }
 
   return (
-    <div className="app-container">
+    <div className={isCapacitor ? 'app-container is-capacitor' : 'app-container'}>
+      {!isCapacitor && (
+        <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
+          <div className="desktop-sidebar-brand">
+            <img src={appLogomarcaDark} alt="1Convite" className="desktop-sidebar-logo" />
+            <span className="desktop-sidebar-badge">Desktop</span>
+          </div>
+
+          <nav className="desktop-sidebar-nav">
+            {[
+              { id: 'dashboard', label: 'Início', icon: '🏠' },
+              { id: 'biblia', label: 'Bíblia Sagrada', icon: '📖' },
+              { id: 'cafe-com-deus', label: 'Café com Deus', icon: '☕' },
+              { id: 'treino-templo', label: 'Corpo & Treino', icon: '💪' },
+              { id: 'chat', label: 'Mentores Bíblicos', icon: '✨' },
+              { id: 'ebooks', label: 'Ebooks & Estudos', icon: '📚' },
+              { id: 'conta', label: 'Minha Conta', icon: '👤' }
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`desktop-nav-item ${activeTab === item.id ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  if (item.id === 'biblia') {
+                    setBibleViewMode('reading');
+                    setBibleSelectedVerse(null);
+                  }
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <span className="desktop-nav-icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            ))}
+
+            <div className="desktop-sidebar-divider" />
+
+            <a href="/blog/" className="desktop-nav-item">
+              <span className="desktop-nav-icon">📰</span>
+              <span>Blog 1Convite</span>
+            </a>
+            <button
+              type="button"
+              className="desktop-nav-item"
+              onClick={() => navigateAppRoute(false)}
+            >
+              <span className="desktop-nav-icon">🌐</span>
+              <span>Página Oficial & Planos</span>
+            </button>
+          </nav>
+
+          <button
+            type="button"
+            className="desktop-sidebar-user"
+            onClick={() => setActiveTab('conta')}
+          >
+            <img src={profileAvatar} alt={profileName} className="desktop-user-avatar" />
+            <div className="desktop-user-meta">
+              <strong>{profileName || 'Membro 1Convite'}</strong>
+              <span>{isPremiumUser ? 'Acesso VIP Ativo' : 'Modo Convidado'}</span>
+            </div>
+          </button>
+        </aside>
+      )}
       <header className="app-header" style={{
         display: (activeTab === 'cafe-com-deus' || activeTab === 'treino-templo') ? 'none' : 'flex',
         alignItems: 'center',
@@ -6805,7 +6905,7 @@ Em nome de Jesus, Amém.`;
                 <button
                   type="button"
                   className="btn-secondary"
-                  onClick={() => setShowLanding(true)}
+                  onClick={() => navigateAppRoute(false)}
                   style={{ width: '100%', marginTop: '4px' }}
                 >
                   Ver Página Completa de Apresentação e Vendas
@@ -6939,7 +7039,7 @@ Em nome de Jesus, Amém.`;
 
                     <button
                       type="button"
-                      onClick={() => setShowLanding(true)}
+                      onClick={() => navigateAppRoute(false)}
                       style={{
                         background: 'rgba(15, 23, 42, 0.9)',
                         border: '1.5px solid rgba(255, 255, 255, 0.45)',

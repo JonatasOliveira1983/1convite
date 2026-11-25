@@ -4,7 +4,7 @@ import adminAuthService from '../../services/adminAuthService';
 import appLogoWhite from '../../assets/logomarca_dark.png';
 import loginSunsetBg from '../../assets/auth/login_sunset_bg.jpg';
 
-export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
+export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLanding }) {
   const pendingVip = (() => {
     try {
       const urlVip = new URLSearchParams(window.location.search).get('vip');
@@ -179,6 +179,15 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest }) {
 
       {/* ── TOPO: LOGOMARCA OFICIAL ── */}
       <header className="c6-top-header">
+        {onBackToLanding && (
+          <button
+            type="button"
+            className="c6-back-landing-btn"
+            onClick={onBackToLanding}
+          >
+            ← Página Oficial
+          </button>
+        )}
         <img 
           src={appLogoWhite} 
           alt="1Convite" 

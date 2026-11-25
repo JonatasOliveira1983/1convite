@@ -117,7 +117,26 @@ export default function LandingPage({ onEnterApp }) {
   const [downloadToast, setDownloadToast] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [legalTab, setLegalTab] = useState(null);
-  const [checkoutPlan, setCheckoutPlan] = useState(null);
+  const [checkoutPlan, setCheckoutPlan] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const path = (window.location.pathname || '/').toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+    const paramPlano = (params.get('plano') || params.get('checkout') || '').toLowerCase();
+    if (path === '/checkout' || path.startsWith('/checkout/') || paramPlano) {
+      if (['semente', 'edificacao', 'familia'].includes(paramPlano)) return paramPlano;
+      return 'edificacao';
+    }
+    return null;
+  });
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const path = (window.location.pathname || '/').toLowerCase();
+    if (path === '/checkout' || path.startsWith('/checkout/')) {
+      const el = document.getElementById('planos');
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 150);
+    }
+  }, []);
   const [openFaq, setOpenFaq] = useState(0);
   const particlesCanvasRef = React.useRef(null);
 
