@@ -5,7 +5,7 @@ node_modules/
 .svelte-kit/
 # build/ (commitado para deploy leve no Render sem OOM de vite build)
 dist/
-_app/
+/_app/
 /favicon.svg*
 /robots.txt*
 /sitemap.xml*

@@ -1,0 +1,1 @@
+function f(i,o,e="auto"){if(!i)return"";if(i.includes("res.cloudinary.com/")){const n=i.indexOf("/image/upload/");if(n!==-1){const a=i.substring(0,n+14),s=i.substring(n+14);if(s.match(/q_[a-z0-9]+/i))return i;const t=[`q_${e}`];return o&&(t.push(`w_${o}`),t.push("c_limit")),`${a}${t.join(",")}/${s}`}}return i}export{f as o};

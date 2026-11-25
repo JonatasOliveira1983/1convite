@@ -1,0 +1,1 @@
+import{e as c,u as o,r as i,ak as d,al as u}from"./B7xp-7Z6.js";function m(e,n,a){c(()=>{var r=o(()=>n(e,a==null?void 0:a())||{});if(a&&(r!=null&&r.update)){var s=!1,t={};i(()=>{var f=a();d(f),s&&u(t,f)&&(t=f,r.update(f))}),s=!0}if(r!=null&&r.destroy)return()=>r.destroy()})}export{m as a};
