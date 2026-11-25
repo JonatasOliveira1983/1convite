@@ -3143,9 +3143,11 @@ body.dark-mode .memoria-card-back {
   }
 
   .desktop-nav-icon {
-    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 22px;
-    text-align: center;
+    height: 22px;
     flex-shrink: 0;
   }
 
@@ -3215,4 +3217,19 @@ body.dark-mode .memoria-card-back {
     margin-left: auto;
     margin-right: auto;
   }
+
+  .app-container:not(.is-capacitor) .desktop-dashboard-shell {
+    max-width: 1120px !important;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 12px 48px !important;
+    box-sizing: border-box;
+  }
+}
+
+.desktop-dashboard-shell {
+  padding: 16px 16px 90px;
+  box-sizing: border-box;
+  max-width: 640px;
+  margin: 0 auto;
 }

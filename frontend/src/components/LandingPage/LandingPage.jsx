@@ -136,6 +136,35 @@ export default function LandingPage({ onEnterApp }) {
       const el = document.getElementById('planos');
       if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 150);
     }
+
+    const revealEls = document.querySelectorAll('.sp-section, .sp-plan-card, .sp-bento-card, .sp-mentor-card');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('sp-revealed');
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    revealEls.forEach((el) => {
+      el.classList.add('sp-reveal');
+      io.observe(el);
+    });
+
+    const glowTargets = document.querySelectorAll('.sp-plan-card, .sp-bento-card, .sp-download-box');
+    const onGlowMove = (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    };
+    glowTargets.forEach((el) => el.addEventListener('mousemove', onGlowMove));
+
+    return () => {
+      io.disconnect();
+      glowTargets.forEach((el) => el.removeEventListener('mousemove', onGlowMove));
+    };
   }, []);
   const [openFaq, setOpenFaq] = useState(0);
   const particlesCanvasRef = React.useRef(null);
@@ -714,11 +743,11 @@ export default function LandingPage({ onEnterApp }) {
               </div>
               <div className="sp-plan-invites-pill">
                 <IconCheck />
-                <span>Inclui 5 Vales-Presente (180 dias grátis)</span>
+                <span>Inclui 3 Vales-Presente (180 dias grátis)</span>
               </div>
-              <div className="sp-plan-vouchers-preview" aria-label="5 convites incluídos">
-                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-5">
-                  {Array.from({ length: 5 }).map((_, idx) => (
+              <div className="sp-plan-vouchers-preview" aria-label="3 convites incluídos">
+                <div className="sp-plan-vouchers-grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+                  {Array.from({ length: 3 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
                       <div className="sp-mini-gv-top">
                         <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
@@ -734,7 +763,7 @@ export default function LandingPage({ onEnterApp }) {
                 <li><IconCheck /><span>Tudo do Plano Básico por 1 ano</span></li>
                 <li><IconCheck /><span>Mulher Virtuosa, Biblioteca do Pregador & E-books</span></li>
                 <li><IconCheck /><span>Studio de Cards e Oração Guiada completa</span></li>
-                <li><IconCheck /><span>5 códigos exclusivos para seus convidados usarem 6 meses grátis</span></li>
+                <li><IconCheck /><span>3 códigos exclusivos para seus convidados usarem 6 meses grátis</span></li>
               </ul>
               <button
                 type="button"
@@ -759,11 +788,11 @@ export default function LandingPage({ onEnterApp }) {
               </div>
               <div className="sp-plan-invites-pill">
                 <IconCheck />
-                <span>Inclui 10 Vales-Presente (180 dias grátis)</span>
+                <span>Inclui 5 Vales-Presente (180 dias grátis)</span>
               </div>
-              <div className="sp-plan-vouchers-preview" aria-label="10 convites incluídos">
-                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-10">
-                  {Array.from({ length: 10 }).map((_, idx) => (
+              <div className="sp-plan-vouchers-preview" aria-label="5 convites incluídos">
+                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-5">
+                  {Array.from({ length: 5 }).map((_, idx) => (
                     <div key={idx} className="sp-plan-voucher-thumb">
                       <div className="sp-mini-gv-top">
                         <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" style={{ height: '7px' }} />
@@ -778,7 +807,7 @@ export default function LandingPage({ onEnterApp }) {
               <ul className="sp-plan-features">
                 <li><IconCheck /><span>Acesso anual total a todos os recursos</span></li>
                 <li><IconCheck /><span>Todos os E-books, Trilhas e Mentores Bíblicos</span></li>
-                <li><IconCheck /><span>10 códigos exclusivos para distribuir na sua célula ou igreja</span></li>
+                <li><IconCheck /><span>5 códigos exclusivos para distribuir na sua célula ou igreja</span></li>
                 <li><IconCheck /><span>Cada convidado ganha 6 meses gratuitos no app</span></li>
               </ul>
               <button
@@ -1011,15 +1040,15 @@ export default function LandingPage({ onEnterApp }) {
             {[
               {
                 q: 'Como funcionam os convites gratuitos de 180 dias?',
-                a: 'Ao assinar qualquer plano, você recebe códigos exclusivos (1, 5 ou 10 dependendo do plano). Basta enviar o código para um amigo ou familiar usar no cadastro e ele ganha 6 meses gratuitos no app.'
+                a: 'Ao assinar qualquer plano, você recebe códigos exclusivos: 1 convite no Plano Básico (Semente), 3 convites no Plano Popular (Edificação) ou 5 convites no Plano Avançado (Reino). Basta enviar o código para um amigo ou familiar usar no cadastro e ele ganha 6 meses gratuitos no app.'
               },
               {
                 q: 'Como recebo meu acesso após pagar?',
                 a: 'Assim que o PIX ou cartão é confirmado pelo Asaas, seu acesso VIP é liberado automaticamente e você recebe seu e-mail de confirmação com todos os códigos de convite na hora.'
               },
               {
-                q: 'Funciona no celular Android, iPhone e Computador?',
-                a: 'Sim! Você pode usar direto pelo navegador em qualquer aparelho ou baixar o aplicativo oficial para Android e instalar como app no iPhone.'
+                q: 'Funciona no computador (Desktop), Android e iPhone?',
+                a: 'Sim! No computador você acessa a versão Desktop completa em 1convite.com.br/app com navegação lateral dedicada, e no celular pode baixar o aplicativo oficial para Android ou usar no iPhone.'
               },
               {
                 q: 'Tem garantia caso eu não me adapte?',

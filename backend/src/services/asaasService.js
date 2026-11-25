@@ -36,7 +36,7 @@ export const PLANOS_1CONVITE = {
     valorCentavos: 9700,
     valorReais: 97,
     diasValidade: 365,
-    convites: 5,
+    convites: 3,
     conviteDias: 180,
   },
   avancado: {
@@ -46,7 +46,7 @@ export const PLANOS_1CONVITE = {
     valorCentavos: 14700,
     valorReais: 147,
     diasValidade: 365,
-    convites: 10,
+    convites: 5,
     conviteDias: 180,
   },
 };

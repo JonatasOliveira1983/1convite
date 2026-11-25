@@ -12,13 +12,13 @@ const PLANOS_MAP = {
     id: 'popular',
     titulo: 'Plano Mais Popular — Edificação',
     valor: 'R$ 97/ano',
-    convites: 5,
+    convites: 3,
   },
   avancado: {
     id: 'avancado',
     titulo: 'Plano Avançado — Reino',
     valor: 'R$ 147/ano',
-    convites: 10,
+    convites: 5,
   },
 };
 
