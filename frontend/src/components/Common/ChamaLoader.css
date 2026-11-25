@@ -1,0 +1,82 @@
+.chama-loader-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 42%, rgba(249, 115, 22, 0.14) 0%, #070A10 68%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 9998;
+}
+
+.chama-loader-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 12px;
+}
+
+.chama-loader-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chama-loader-halo {
+  position: absolute;
+  inset: -14%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.42) 0%, rgba(245, 158, 11, 0.12) 48%, transparent 72%);
+  filter: blur(10px);
+  animation: chamaHaloPulse 1.6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.chama-loader-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  transform-origin: center bottom;
+  animation: chamaFlameDance 1.35s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 2;
+  user-select: none;
+}
+
+.chama-loader-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.02em;
+}
+
+@keyframes chamaFlameDance {
+  0% {
+    transform: translateY(2px) scale(0.96, 0.98) rotate(-1.5deg);
+    filter: brightness(0.95);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.03, 1.06) rotate(1.2deg);
+    filter: brightness(1.08);
+  }
+  100% {
+    transform: translateY(0px) scale(1, 1.02) rotate(-0.8deg);
+    filter: brightness(1.02);
+  }
+}
+
+@keyframes chamaHaloPulse {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 1;
+  }
+}

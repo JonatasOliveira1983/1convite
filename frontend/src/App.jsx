@@ -30,17 +30,10 @@ import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
 const LegalModalPage = lazy(() => import('./components/Legal/LegalModalPage'));
 import LgpdBanner from './components/Legal/LgpdBanner';
+import ChamaLoader from './components/Common/ChamaLoader';
 
 function AppBootFallback() {
-  return (
-    <div style={{
-      position: 'fixed', inset: 0, backgroundColor: '#070A10',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      color: '#F97316', fontWeight: 700, fontSize: '0.9rem', zIndex: 9998
-    }}>
-      Carregando 1Convite...
-    </div>
-  );
+  return <ChamaLoader size={74} label="Carregando 1Convite..." fullScreen />;
 }
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
@@ -5258,12 +5251,8 @@ Em nome de Jesus, Amém.`;
             ) : (
               <>
                 {bibleLoading ? (
-                  <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '20px', background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', border: darkMode ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)', marginBottom: '14px' }}>
-                      <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--orange)', animation: 'pulse 1.2s ease-in-out infinite' }} />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 500, color: darkMode ? '#e4e4e7' : '#44403c' }}>Acessando as Sagradas Escrituras</span>
-                    </div>
-                    <p style={{ color: darkMode ? '#71717a' : '#a8a29e', fontSize: '0.82rem' }}>Carregando {bibleSelectedBook?.livro_nome || 'Bíblia'} {bibleSelectedChapter}...</p>
+                  <div style={{ padding: '44px 20px' }}>
+                    <ChamaLoader size={56} label={`Carregando ${bibleSelectedBook?.livro_nome || 'Bíblia'} ${bibleSelectedChapter}...`} />
                   </div>
                 ) : (
                   <div style={{ padding: '16px 20px 0' }}>
