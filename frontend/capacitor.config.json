@@ -2,6 +2,14 @@
   "appId": "com.spcompensa.umconvite",
   "appName": "1Convite",
   "webDir": "dist",
+  "backgroundColor": "#070A10",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#070A10",
+      "showSpinner": false
+    }
+  },
   "server": {
     "url": "https://1convite.com.br",
     "cleartext": true,

@@ -80,11 +80,70 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- GSAP & ScrollTrigger para controle do video.mp4 via scroll -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #070A10;
+        color: #ffffff;
+      }
+      .boot-splash {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 50% 35%, rgba(249, 115, 22, 0.14) 0%, #070A10 65%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      }
+      .boot-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #ffffff;
+      }
+      .boot-dot {
+        width: 28px;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        overflow: hidden;
+        position: relative;
+      }
+      .boot-dot::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        width: 50%;
+        background: #f97316;
+        border-radius: 999px;
+        animation: bootSlide 1s ease-in-out infinite alternate;
+      }
+      @keyframes bootSlide {
+        from { transform: translateX(-20%); }
+        to { transform: translateX(120%); }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot-splash" aria-label="Carregando 1Convite">
+        <div class="boot-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#F97316" aria-hidden="true">
+            <path d="M12 2C8 7 5 11 5 15a7 7 0 0 0 14 0c0-4-3-8-7-13zm0 18a4 4 0 0 1-4-4c0-2.5 2.5-6 4-7.5 1.5 1.5 4 5 4 7.5a4 4 0 0 1-4 4z"/>
+          </svg>
+          <span>1Convite</span>
+        </div>
+        <div class="boot-dot"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
       // Garante que nenhum Service Worker antigo permaneça ativo na aba

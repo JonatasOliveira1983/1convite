@@ -208,6 +208,21 @@ export async function playNeuralSpeech(text, options = {}) {
 
     await audio.play();
 
+    if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: 'Café com Deus • Meditação Diária',
+          artist: '1Convite',
+          album: 'A Palavra Viva',
+          artwork: [{ src: '/og-1convite.jpg', sizes: '1200x630', type: 'image/jpeg' }],
+        });
+        navigator.mediaSession.playbackState = 'playing';
+        navigator.mediaSession.setActionHandler('play', () => resumeNeuralSpeech());
+        navigator.mediaSession.setActionHandler('pause', () => pauseNeuralSpeech());
+        navigator.mediaSession.setActionHandler('stop', () => stopNeuralSpeech());
+      } catch (_) {}
+    }
+
   } catch (error) {
     console.warn('[NeuralTTS] Backend indisponível ou offline. Ativando voz nativa de fallback:', error);
     speakWithBestNativeVoice(text, sessionId, onEnd, onError);
@@ -219,6 +234,9 @@ export async function playNeuralSpeech(text, options = {}) {
  */
 export function pauseNeuralSpeech() {
   isPausedInternal = true;
+  if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+    try { navigator.mediaSession.playbackState = 'paused'; } catch (_) {}
+  }
   if (currentAudio) {
     try { currentAudio.pause(); } catch (_) {}
   }
@@ -235,6 +253,9 @@ export function pauseNeuralSpeech() {
  */
 export function resumeNeuralSpeech() {
   isPausedInternal = false;
+  if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+    try { navigator.mediaSession.playbackState = 'playing'; } catch (_) {}
+  }
   if (currentAudio) {
     try { currentAudio.play(); } catch (_) {}
   }
@@ -253,6 +274,9 @@ export function stopNeuralSpeech() {
   currentSessionId++;
   isPlayingInternal = false;
   isPausedInternal = false;
+  if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+    try { navigator.mediaSession.playbackState = 'none'; } catch (_) {}
+  }
 
   if (currentAudio) {
     try {

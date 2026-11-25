@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import html2canvas from 'html2canvas';
-import LandingPage from './components/LandingPage/LandingPage';
+const LandingPage = lazy(() => import('./components/LandingPage/LandingPage'));
 import { ARCADE_QUIZ_QUESTIONS, ARCADE_CHARADAS_QUESTIONS, ARCADE_FORCA_WORDS, ARCADE_CACA_PALAVRAS_LIST, generateCacaPalavrasGrid, generateMemoriaDeck } from './data/arcadeData';
-import TrailHome from './components/trail/TrailHome';
+const TrailHome = lazy(() => import('./components/trail/TrailHome'));
 import { LAYA_MENTORES, LAYA_CONSELHOS, LAYA_TEMAS_ORACULO, consultarOraculoLocal, gerarRespostaMentor } from './data/layaData';
-import CafeComDeusView from './components/CafeComDeus/CafeComDeusView';
-import MulherVirtuosaView from './components/MulherVirtuosa/MulherVirtuosaView';
-import BibliotecaPregadorView from './components/BibliotecaPregador/BibliotecaPregadorView';
-import BibliotecaEbooksView from './components/BibliotecaEbooks/BibliotecaEbooksView';
-import UpgradeVoucherModal from './components/Upgrade/UpgradeVoucherModal';
+const CafeComDeusView = lazy(() => import('./components/CafeComDeus/CafeComDeusView'));
+const MulherVirtuosaView = lazy(() => import('./components/MulherVirtuosa/MulherVirtuosaView'));
+const BibliotecaPregadorView = lazy(() => import('./components/BibliotecaPregador/BibliotecaPregadorView'));
+const BibliotecaEbooksView = lazy(() => import('./components/BibliotecaEbooks/BibliotecaEbooksView'));
+const UpgradeVoucherModal = lazy(() => import('./components/Upgrade/UpgradeVoucherModal'));
 import cafeData from './data/cafe_com_deus_365.json';
 import cafeSinteseData from './data/cafeComDeusSintese365.json';
 import { playNeuralSpeech, stopNeuralSpeech, isNeuralSpeaking } from './services/neuralAudioPlayer';
@@ -22,14 +22,26 @@ import banner3 from './assets/banners/3.png';
 import heroMountainsImg from './assets/feed/hero_mountains.jpg';
 import treinoTemploImg from './assets/feed/treino_templo.jpg';
 import bibliaSunsetBg from './assets/biblia/biblia_sunset_bg.jpg';
-import TreinoTemploView from './components/TreinoTemplo/TreinoTemploView';
+const TreinoTemploView = lazy(() => import('./components/TreinoTemplo/TreinoTemploView'));
 import LoginPage from './components/Auth/LoginPage';
-import AdminPanel from './components/Admin/AdminPanel';
+const AdminPanel = lazy(() => import('./components/Admin/AdminPanel'));
 import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
-import LegalModalPage from './components/Legal/LegalModalPage';
+const LegalModalPage = lazy(() => import('./components/Legal/LegalModalPage'));
 import LgpdBanner from './components/Legal/LgpdBanner';
+
+function AppBootFallback() {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, backgroundColor: '#070A10',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      color: '#F97316', fontWeight: 700, fontSize: '0.9rem', zIndex: 9998
+    }}>
+      Carregando 1Convite...
+    </div>
+  );
+}
 
 // ═══ IDENTIFICADOR DE USUÁRIO E PERSISTÊNCIA ═══
 function getUserUuid() {
@@ -2696,29 +2708,33 @@ Em nome de Jesus, Amém.`;
   // ── Renderização do Painel de Controle Administrativo (Master Admin) ──
   if (isAdminMode && showAdminPanel) {
     return (
-      <AdminPanel 
-        onOpenApp={() => setShowAdminPanel(false)}
-        onOpenLanding={() => {
-          setShowAdminPanel(false);
-          setShowLanding(true);
-        }}
-        onLogout={() => {
-          adminAuthService.setAdminSession(false);
-          setIsAdminMode(false);
-          setShowAdminPanel(false);
-          setIsLoggedIn(false);
-        }}
-      />
+      <Suspense fallback={<AppBootFallback />}>
+        <AdminPanel 
+          onOpenApp={() => setShowAdminPanel(false)}
+          onOpenLanding={() => {
+            setShowAdminPanel(false);
+            setShowLanding(true);
+          }}
+          onLogout={() => {
+            adminAuthService.setAdminSession(false);
+            setIsAdminMode(false);
+            setShowAdminPanel(false);
+            setIsLoggedIn(false);
+          }}
+        />
+      </Suspense>
     );
   }
 
   if (showLanding) {
     return (
-      <LandingPage onEnterApp={() => {
-        setShowLanding(false);
-        setActiveTab('dashboard');
-        try { localStorage.setItem('1convite_visited_app', 'true'); } catch (e) {}
-      }} />
+      <Suspense fallback={<AppBootFallback />}>
+        <LandingPage onEnterApp={() => {
+          setShowLanding(false);
+          setActiveTab('dashboard');
+          try { localStorage.setItem('1convite_visited_app', 'true'); } catch (e) {}
+        }} />
+      </Suspense>
     );
   }
 
@@ -3164,6 +3180,7 @@ Em nome de Jesus, Amém.`;
 
       {/* ── MAIN ──────────────────────────────── */}
       <main className="main-content" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 12px) + 92px)' }}>
+        <Suspense fallback={<AppBootFallback />}>
 
         {/* ════════════ TELA DASHBOARD PRINCIPAL (FEED IMERSIVO 1CONVITE 3.0) ════════════ */}
         {activeTab === 'dashboard' && (
@@ -7095,6 +7112,56 @@ Em nome de Jesus, Amém.`;
                 </form>
               </div>
 
+              {/* 4. Papéis de Parede Exclusivos 1Convite (Celular & Área de Trabalho) */}
+              <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1rem', margin: 0 }}>Papéis de Parede 1Convite</h3>
+                    <p style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
+                      Fundos exclusivos para celular e área de trabalho.
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <a
+                    href="/wallpapers/1convite-celular-alvorada.jpg"
+                    download="1Convite-Wallpaper-Celular.jpg"
+                    style={{
+                      display: 'flex', flexDirection: 'column', gap: '8px',
+                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
+                      borderRadius: '14px', padding: '10px', textDecoration: 'none', color: 'var(--text-primary)'
+                    }}
+                  >
+                    <img
+                      src="/wallpapers/1convite-celular-alvorada.jpg"
+                      alt="Wallpaper Celular 1Convite"
+                      style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '10px' }}
+                    />
+                    <span style={{ fontSize: '0.78rem', fontWeight: '700', textAlign: 'center', color: 'var(--orange)' }}>
+                      Baixar Celular (9:16)
+                    </span>
+                  </a>
+                  <a
+                    href="/wallpapers/1convite-desktop-obsidiana.jpg"
+                    download="1Convite-Wallpaper-Desktop.jpg"
+                    style={{
+                      display: 'flex', flexDirection: 'column', gap: '8px',
+                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
+                      borderRadius: '14px', padding: '10px', textDecoration: 'none', color: 'var(--text-primary)'
+                    }}
+                  >
+                    <img
+                      src="/wallpapers/1convite-desktop-obsidiana.jpg"
+                      alt="Wallpaper Desktop 1Convite"
+                      style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '10px' }}
+                    />
+                    <span style={{ fontSize: '0.78rem', fontWeight: '700', textAlign: 'center', color: 'var(--orange)' }}>
+                      Baixar PC (16:9)
+                    </span>
+                  </a>
+                </div>
+              </div>
+
               {/* 5. Versão do Sistema & Forçar Atualização */}
               <div className="glass-panel" style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
@@ -8805,6 +8872,7 @@ Em nome de Jesus, Amém.`;
           />
         )}
 
+        </Suspense>
       </main>
 
       {/* ════════════ BOTTOM NAVIGATION BAR FLUTUANTE (GLASSMORPHISM) ════════════ */}
@@ -8923,23 +8991,25 @@ Em nome de Jesus, Amém.`;
       </nav>
 
       {/* ════════════ MODAL DE UPGRADE & RESGATE DE VOUCHER ════════════ */}
-      <UpgradeVoucherModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        onActivatePremium={(code) => {
-          setIsPremiumUser(true);
-          try {
-            localStorage.setItem('1convite-premium', 'true');
-            localStorage.setItem('1convite-voucher-used', code);
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      />
-      {/* Modais Legais e Banner LGPD */}
-      {legalModalTab && (
-        <LegalModalPage initialTab={legalModalTab} onClose={() => setLegalModalTab(null)} />
-      )}
+      <Suspense fallback={null}>
+        <UpgradeVoucherModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          onActivatePremium={(code) => {
+            setIsPremiumUser(true);
+            try {
+              localStorage.setItem('1convite-premium', 'true');
+              localStorage.setItem('1convite-voucher-used', code);
+            } catch (e) {
+              console.error(e);
+            }
+          }}
+        />
+        {/* Modais Legais e Banner LGPD */}
+        {legalModalTab && (
+          <LegalModalPage initialTab={legalModalTab} onClose={() => setLegalModalTab(null)} />
+        )}
+      </Suspense>
       <LgpdBanner onOpenLegal={(tab) => setLegalModalTab(tab)} />
     </div>
   );
