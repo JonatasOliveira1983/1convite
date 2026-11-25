@@ -418,6 +418,13 @@ function App() {
     const p = new URLSearchParams(window.location.search).get('pagina');
     return ['termos', 'privacidade', 'lgpd'].includes(p) ? p : null;
   });
+  const [isBooting, setIsBooting] = useState(true);
+  const [previewWallpaper, setPreviewWallpaper] = useState(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsBooting(false), 1400);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const updateBadge = () => setDailyPendingBadge(syncAppBadge());
@@ -2696,6 +2703,10 @@ Em nome de Jesus, Amém.`;
         }}
       />
     );
+  }
+
+  if (isBooting) {
+    return <ChamaLoader size={84} label="1Convite" fullScreen />;
   }
 
   // ── Renderização do Painel de Controle Administrativo (Master Admin) ──
@@ -7131,30 +7142,7 @@ Em nome de Jesus, Amém.`;
                     <button
                       key={wp.id}
                       type="button"
-                      onClick={async () => {
-                        try {
-                          const res = await fetch(wp.url);
-                          const blob = await res.blob();
-                          const file = new File([blob], wp.filename, { type: 'image/jpeg' });
-                          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                            await navigator.share({
-                              files: [file],
-                              title: `Papel de Parede 1Convite — ${wp.title}`,
-                            });
-                            return;
-                          }
-                          const blobUrl = URL.createObjectURL(blob);
-                          const link = document.createElement('a');
-                          link.href = blobUrl;
-                          link.download = wp.filename;
-                          document.body.appendChild(link);
-                          link.click();
-                          document.body.removeChild(link);
-                          setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
-                        } catch {
-                          window.open(wp.url, '_blank');
-                        }
-                      }}
+                      onClick={() => setPreviewWallpaper(wp)}
                       style={{
                         display: 'flex', flexDirection: 'column', gap: '8px',
                         background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
@@ -9024,6 +9012,96 @@ Em nome de Jesus, Amém.`;
         )}
       </Suspense>
       <LgpdBanner onOpenLegal={(tab) => setLegalModalTab(tab)} />
+
+      {/* Modal Visualizador de Papel de Parede (Compatível com Android WebView / iOS / PC) */}
+      {previewWallpaper && (
+        <div
+          onClick={() => setPreviewWallpaper(null)}
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.88)',
+            backdropFilter: 'blur(10px)', zIndex: 10060,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: '100%', maxWidth: '400px', background: '#121215',
+              border: '1px solid rgba(255,255,255,0.14)', borderRadius: '20px',
+              padding: '20px', color: '#fff', display: 'flex', flexDirection: 'column', gap: '12px'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <strong style={{ fontSize: '1rem' }}>{previewWallpaper.title}</strong>
+              <button
+                type="button"
+                onClick={() => setPreviewWallpaper(null)}
+                style={{
+                  background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none',
+                  width: '32px', height: '32px', borderRadius: '50%', fontSize: '18px', cursor: 'pointer'
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <img
+              src={previewWallpaper.url}
+              alt={previewWallpaper.alt}
+              style={{
+                width: '100%', maxHeight: '52vh', objectFit: 'contain',
+                borderRadius: '12px', background: '#070A10'
+              }}
+            />
+            <p style={{ margin: 0, fontSize: '0.78rem', color: '#a1a1aa', textAlign: 'center', lineHeight: 1.4 }}>
+              No celular, <strong>toque e segure na imagem</strong> para salvar ou escolha uma opção abaixo:
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    const res = await fetch(previewWallpaper.url);
+                    const blob = await res.blob();
+                    const file = new File([blob], previewWallpaper.filename, { type: 'image/jpeg' });
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                      await navigator.share({ files: [file], title: previewWallpaper.title });
+                      return;
+                    }
+                    const blobUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = previewWallpaper.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+                  } catch {
+                    window.open(`https://1convite.com.br${previewWallpaper.url}`, '_blank');
+                  }
+                }}
+                style={{
+                  minHeight: '46px', borderRadius: '12px', border: 'none',
+                  background: '#F97316', color: '#fff', fontWeight: '800', fontSize: '0.82rem', cursor: 'pointer'
+                }}
+              >
+                Compartilhar / Salvar
+              </button>
+              <a
+                href={`https://1convite.com.br${previewWallpaper.url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  minHeight: '46px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'rgba(255,255,255,0.06)', color: '#fff', fontWeight: '700', fontSize: '0.82rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none'
+                }}
+              >
+                Abrir no Navegador
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
