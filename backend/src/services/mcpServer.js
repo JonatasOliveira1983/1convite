@@ -5,6 +5,8 @@
 
 import { ragService } from './ragService.js';
 import { LAYA_MENTORES, LayaEngine } from './layaEngine.js';
+import { PLANOS_1CONVITE, isAsaasConfigured } from './asaasService.js';
+import { isResendConfigured } from './resendService.js';
 import pool from '../database/pool.js';
 
 export const MCP_TOOLS_CATALOG = [
@@ -54,13 +56,13 @@ export const MCP_TOOLS_CATALOG = [
   },
   {
     name: 'consult_biblical_mentor',
-    description: 'Consulta o aconselhamento pastoral e a sabedoria de um dos 6 mentores da LAYA (Jesus, Salomão, Davi, Paulo, Moisés, Ester), fundamentado por RAG bíblico.',
+    description: 'Consulta o aconselhamento pastoral e a sabedoria de um dos 7 mentores da LAYA (Jesus, Salomão, Davi, Paulo, Moisés, Ester, Maria), fundamentado por RAG bíblico.',
     inputSchema: {
       type: 'object',
       properties: {
         mentor_id: {
           type: 'string',
-          enum: ['jesus', 'salomao', 'davi', 'paulo', 'moises', 'ester'],
+          enum: ['jesus', 'salomao', 'davi', 'paulo', 'moises', 'ester', 'maria'],
           description: 'Identificador do mentor bíblico'
         },
         situacao: {
@@ -87,7 +89,26 @@ export const MCP_TOOLS_CATALOG = [
   },
   {
     name: 'get_system_vitals',
-    description: 'Retorna a telemetria completa de saúde dos serviços 1Convite: banco Turso Cloud, status do RAG em memória, estatísticas de uso e latência.',
+    description: 'Retorna a telemetria completa de saúde dos serviços 1Convite: banco Turso Cloud, status do RAG em memória, Asaas/Resend e estatísticas de uso.',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    }
+  },
+  {
+    name: 'search_blog_articles',
+    description: 'Busca artigos publicados no Blog Oficial 1Convite (/blog) sobre o Reino de Deus e vida cristã.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'Termo de busca opcional no título ou resumo' },
+        limit: { type: 'integer', default: 5 }
+      }
+    }
+  },
+  {
+    name: 'get_payment_plans',
+    description: 'Retorna os planos anuais oficiais do 1Convite (1, 3 e 5 convites VIP de 180 dias) e o status de configuração Asaas/Resend.',
     inputSchema: {
       type: 'object',
       properties: {}
@@ -247,6 +268,7 @@ class McpServer {
 
           result = {
             status: 'online',
+            version: '3.0.0',
             service: '1Convite Core Engine & MCP Server',
             protocol_version: '2024-11-05',
             database: {
@@ -259,9 +281,43 @@ class McpServer {
               versiculos_memoria: ragService.verses.length,
               termos_invertidos: ragService.invertedIndex.size
             },
+            pagamentos: {
+              asaas_configurado: isAsaasConfigured(),
+              resend_configurado: isResendConfigured()
+            },
             mentores_disponiveis: LAYA_MENTORES.map(m => ({ id: m.id, nome: m.nome, especialidades: m.especialidades })),
             uptime_seconds: Math.floor(process.uptime()),
             node_version: process.version
+          };
+          break;
+        }
+
+        case 'search_blog_articles': {
+          const q = String(args.query || '').trim();
+          const lim = Math.min(Math.max(1, parseInt(args.limit) || 5), 20);
+          let rows = [];
+          try {
+            const sql = q
+              ? `SELECT id, title, slug, excerpt, created_at FROM posts WHERE published = 1 AND (title LIKE ? OR excerpt LIKE ?) ORDER BY id DESC LIMIT ?`
+              : `SELECT id, title, slug, excerpt, created_at FROM posts WHERE published = 1 ORDER BY id DESC LIMIT ?`;
+            const params = q ? [`%${q}%`, `%${q}%`, lim] : [lim];
+            const dbRes = await pool.query(sql, params);
+            rows = (dbRes.rows || []).map((p) => ({
+              ...p,
+              url: `https://1convite.com.br/blog/post/${p.slug}`
+            }));
+          } catch (e) {
+            console.warn('[MCP] Erro ao buscar artigos do blog:', e.message);
+          }
+          result = { total: rows.length, artigos: rows };
+          break;
+        }
+
+        case 'get_payment_plans': {
+          result = {
+            asaas_configurado: isAsaasConfigured(),
+            resend_configurado: isResendConfigured(),
+            planos: Object.values(PLANOS_1CONVITE)
           };
           break;
         }

@@ -1,7 +1,7 @@
-# ARQUITETURA CANÔNICA DO SISTEMA 1CONVITE
+# ARQUITETURA CANÔNICA DO SISTEMA 1CONVITE (`v3.0.0`)
 
 > Documento canônico de arquitetura de software, topologia de nuvem, protocolo de contexto e governança agêntica.
-> Diretriz de redação: Estritamente técnico, formal, em conformidade com as diretrizes da Base Tecnológica.
+> Atualizado em: 2026-11-25 (`v3.0.0`).
 
 ---
 
@@ -116,7 +116,9 @@ O backend expõe uma interface nativa compatível com o **Model Context Protocol
 | `get_daily_matrix` | Consulta desafio, oração, reflexão e versículo do dia (1-365). | `dia` (int 1 a 365) |
 | `consult_biblical_mentor` | Consulta os 6 mentores bíblicos da LAYA fundamentado por RAG. | `mentor_id` (jesus, salomao, etc.), `situacao` (string) |
 | `search_theological_dictionary` | Consulta definições doutrinárias e raízes hebraicas/gregas. | `termo` (string) |
-| `get_system_vitals` | Telemetria e saúde do Turso, Render, RAG e Cloudflare. | Nenhum |
+| `get_system_vitals` | Telemetria e saúde do Turso, Render, RAG, Asaas e Resend. | Nenhum |
+| `search_blog_articles` | Busca artigos publicados no Blog Oficial 1Convite (`/blog`). | `query` (string), `limit` (int) |
+| `get_payment_plans` | Retorna planos anuais (`1`, `3`, `5` convites) e status Asaas. | Nenhum |
 
 ### Integração STDIO (Claude Desktop & Antigravity)
 O script [`tools/mcp_stdio_bridge.js`](file:///tools/mcp_stdio_bridge.js) traduz requisições JSON-RPC 2.0 da entrada padrão (`stdin`) para a API do 1Convite, permitindo que agentes no host utilizem o 1Convite como ferramenta de contexto nativa.
@@ -141,12 +143,13 @@ O sistema adota o paradigma OpenViking da ByteDance Volcengine para organizar o 
 viking://1convite/
 ├── knowledge/
 │   ├── L1_biblia_acf.md          # Síntese canônica dos 66 livros e gêneros literários
-│   └── L1_matriz_diaria_365.md   # Arquitetura pedagógica dos 365 dias do Reino
+│   ├── L1_matriz_diaria_365.md   # Arquitetura pedagógica dos 365 dias do Reino
+│   └── L1_ecossistema_v3.md      # Rotas (/, /app, /checkout, /blog), Asaas, 5 E-books e Desktop
 ├── mentors/
-│   └── L1_mentores_overview.md   # Personas, regras e especialidades dos 6 mentores
+│   └── L1_mentores_overview.md   # Personas, regras e especialidades dos 7 mentores
 ├── skills/
 │   └── L1_skills_overview.md     # Índice de playbooks operacionais
-├── manifest.json                 # Manifesto raiz do context database
+├── manifest.json                 # Manifesto raiz do context database (v3.0.0)
 └── viking_cli.js                 # CLI agêntica de navegação (tree, ls, cat, grep)
 ```
 
