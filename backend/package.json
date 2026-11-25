@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "postinstall": "node -e \"const fs=require('fs'),cp=require('child_process');if(fs.existsSync('../blog/package.json')){cp.execSync('npm --prefix ../blog install --omit=dev --no-audit --no-fund',{stdio:'inherit'})}\"",
+    "postinstall": "node -e \"const fs=require('fs'),cp=require('child_process');if(fs.existsSync('../blog/package.json')){cp.execSync('npm --prefix ../blog install --omit=dev --omit=optional --no-audit --no-fund',{stdio:'inherit'})}\"",
     "dev": "node --watch src/index.js",
     "migrate": "node src/database/migrations.js",
     "seed": "node src/database/seed.js",
