@@ -681,6 +681,7 @@ export async function initDatabase() {
         external_link TEXT,
         image_url TEXT,
         youtube_video_url TEXT,
+        category_id INTEGER,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
