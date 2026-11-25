@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { optimizeImageUrl } from "$lib/image-optimizer";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
@@ -175,7 +176,7 @@
   {#if data.currentPage === 1 && !data.searchQuery && data.posts.length > 0}
     {@const heroPost = data.posts[0]}
     <section class="hero-section">
-      <a href="/post/{heroPost.slug}" class="hero-link">
+      <a href="{base}/post/{heroPost.slug}" class="hero-link">
         <div class="hero-image-wrapper">
           {#if hasNoImage(heroPost)}
             <div class="no-image-placeholder" style="background: {getPlaceholderBackground(heroPost)}">
@@ -260,14 +261,14 @@
             </div>
             <h3>{t(lang, 'home.empty_title')}</h3>
             <p>{data.searchQuery ? t(lang, 'home.empty_search') : t(lang, 'home.empty_default')}</p>
-            <a href="/" class="btn btn-outline">{t(lang, 'common.clear_search')}</a>
+            <a href="{base}/" class="btn btn-outline">{t(lang, 'common.clear_search')}</a>
           </div>
         </div>
       {:else}
         <div class="organic-feed">
           {#each displayedPosts as post, i}
             <article class="feed-item">
-              <a href="/post/{post.slug}" class="feed-card">
+              <a href="{base}/post/{post.slug}" class="feed-card">
                 <div class="feed-image-wrapper">
                   {#if hasNoImage(post)}
                     <div class="no-image-placeholder" style="background: {getPlaceholderBackground(post)}">
@@ -373,14 +374,14 @@
         <h2 class="widget-title">{t(lang, 'common.categories')}</h2>
         <ul class="categories-list">
           <li>
-            <a href="/" class="category-link active">
+            <a href="{base}/" class="category-link active">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
               {t(lang, 'common.all')}
             </a>
           </li>
           {#each data.categories as cat}
             <li>
-              <a href="/category/{cat.slug}" class="category-link">
+              <a href="{base}/category/{cat.slug}" class="category-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
                 {cat.name}
               </a>
@@ -430,18 +431,18 @@
                           {#if data.settings?.enable_member_login !== '1'}
                             <button class="product-sidebar-btn btn btn-small btn-secondary" disabled style="opacity: 0.6; cursor: not-allowed;">{t(lang, 'common.unavailable')}</button>
                           {:else if !data.user}
-                            <a href="/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="product-sidebar-btn btn btn-small btn-primary">{t(lang, 'common.buy')}</a>
+                            <a href="{base}/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="product-sidebar-btn btn btn-small btn-primary">{t(lang, 'common.buy')}</a>
                           {:else if $page.data.paymentGateway === 'stripe'}
-                            <a href="/purchase/{product.id}" class="product-sidebar-btn btn btn-small btn-primary" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.buy')}</a>
+                            <a href="{base}/purchase/{product.id}" class="product-sidebar-btn btn btn-small btn-primary" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.buy')}</a>
                           {:else}
                             <div class="product-sidebar-btn-group">
-                              <a href="/purchase/{product.id}?method=pix" class="product-sidebar-btn btn btn-small btn-primary btn-pix-small" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.pix')}</a>
-                              <a href="/purchase/{product.id}?method=credit_card" class="product-sidebar-btn btn btn-small btn-secondary btn-card-small" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.card')}</a>
+                              <a href="{base}/purchase/{product.id}?method=pix" class="product-sidebar-btn btn btn-small btn-primary btn-pix-small" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.pix')}</a>
+                              <a href="{base}/purchase/{product.id}?method=credit_card" class="product-sidebar-btn btn btn-small btn-secondary btn-card-small" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.card')}</a>
                             </div>
                           {/if}
                         {:else}
                           {#if product.file_url}
-                            <a href="/api/download/{product.id}" rel="external" class="product-sidebar-btn btn btn-small btn-primary">{t(lang, 'common.download')}</a>
+                            <a href="{base}/api/download/{product.id}" rel="external" class="product-sidebar-btn btn btn-small btn-primary">{t(lang, 'common.download')}</a>
                           {:else if product.external_link}
                             <a href={product.external_link} target="_blank" class="product-sidebar-btn btn btn-small btn-secondary">{t(lang, 'common.access')}</a>
                           {/if}
@@ -498,19 +499,19 @@
                         {#if data.settings?.enable_member_login !== '1'}
                           <span class="product-list-item-link" style="opacity: 0.5; cursor: not-allowed; text-decoration: none;">{t(lang, 'common.unavailable')}</span>
                         {:else if !data.user}
-                          <a href="/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="product-list-item-link">{t(lang, 'common.buy')}</a>
+                          <a href="{base}/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="product-list-item-link">{t(lang, 'common.buy')}</a>
                         {:else if $page.data.paymentGateway === 'stripe'}
-                          <a href="/purchase/{product.id}" class="product-list-item-link" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.buy')}</a>
+                          <a href="{base}/purchase/{product.id}" class="product-list-item-link" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.buy')}</a>
                         {:else}
                           <span class="product-list-item-btn-group">
-                            <a href="/purchase/{product.id}?method=pix" class="product-list-item-link text-pix" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.pix')}</a>
+                            <a href="{base}/purchase/{product.id}?method=pix" class="product-list-item-link text-pix" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.pix')}</a>
                             <span class="product-list-item-divider">/</span>
-                            <a href="/purchase/{product.id}?method=credit_card" class="product-list-item-link" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.card')}</a>
+                            <a href="{base}/purchase/{product.id}?method=credit_card" class="product-list-item-link" data-sveltekit-reload target="_blank" rel="noopener noreferrer">{t(lang, 'common.card')}</a>
                           </span>
                         {/if}
                       {:else}
                         {#if product.file_url}
-                          <a href="/api/download/{product.id}" rel="external" class="product-list-item-link">{t(lang, 'common.download')}</a>
+                          <a href="{base}/api/download/{product.id}" rel="external" class="product-list-item-link">{t(lang, 'common.download')}</a>
                         {:else if product.external_link}
                           <a href={product.external_link} target="_blank" class="product-list-item-link">{t(lang, 'common.access')}</a>
                         {/if}
@@ -526,6 +527,18 @@
 
       <div class="widget newsletter-widget">
         <NewsletterSignup />
+      </div>
+
+      <div class="widget" style="padding: 0; overflow: hidden; border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 16px; background: #121215;">
+        <a href="https://1convite.com.br/#planos" style="display: block; text-decoration: none; color: #ffffff;">
+          <img src="{base}/banner-1convite.jpg" alt="1Convite — O Reino no seu bolso" style="width: 100%; height: auto; display: block;" />
+          <div style="padding: 16px; text-align: center;">
+            <strong style="display: block; font-size: 0.96rem; margin-bottom: 6px; color: #ffffff;">Bíblia em Áudio + Meditações + Convites</strong>
+            <span style="display: inline-block; width: 100%; padding: 10px 14px; border-radius: 999px; background: #10b981; color: #052e16; font-weight: 800; font-size: 0.84rem; box-sizing: border-box;">
+              Conhecer Planos 1Convite →
+            </span>
+          </div>
+        </a>
       </div>
 
       {#if data.sidebarAds && data.sidebarAds.length > 0}

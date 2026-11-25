@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { t } from '$lib/i18n';
 
@@ -19,7 +20,7 @@
   <nav class="breadcrumb" aria-label={t(lang, 'breadcrumb.aria')}>
     <ol class="breadcrumb-list">
       <li class="breadcrumb-item">
-        <a href="/" class="breadcrumb-link">
+        <a href="{base}/" class="breadcrumb-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
             <polyline points="9,22 9,12 15,12 15,22"/>

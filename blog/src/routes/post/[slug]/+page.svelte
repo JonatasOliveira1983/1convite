@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { optimizeImageUrl } from "$lib/image-optimizer";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
@@ -607,13 +608,13 @@
                   {#if !data.user}
                     <p>Este artigo é exclusivo para membros do blog. Cadastre-se ou entre em sua conta para assinar um plano e continuar lendo.</p>
                     <div class="paywall-actions">
-                      <a href="/members/login" class="btn btn-primary">{t(lang, "common.login")}</a>
-                      <a href="/members/register" class="btn btn-secondary">{t(lang, "common.register")}</a>
+                      <a href="{base}/members/login" class="btn btn-primary">{t(lang, "common.login")}</a>
+                      <a href="{base}/members/register" class="btn btn-secondary">{t(lang, "common.register")}</a>
                     </div>
                   {:else}
                     <p>Este artigo é exclusivo para membros Premium. Adquira uma assinatura premium para ter acesso imediato a todos os posts exclusivos.</p>
                     <div class="paywall-actions">
-                      <a href="/premium" class="btn btn-primary">{t(lang, "post.view_plans")}</a>
+                      <a href="{base}/premium" class="btn btn-primary">{t(lang, "post.view_plans")}</a>
                     </div>
                   {/if}
                 </div>
@@ -631,7 +632,7 @@
                 <div class="product-attachment-item">
                   <div class="product-attachment-left">
                     {#if product.image_url}
-                      <a href="/product/{product.slug}">
+                      <a href="{base}/product/{product.slug}">
                         <img src={product.image_url} alt={product.name} class="product-attachment-thumb" />
                       </a>
                     {:else}
@@ -648,7 +649,7 @@
                       </div>
                     {/if}
                     <div class="product-attachment-info">
-                      <a href="/product/{product.slug}" class="product-attachment-name-link">
+                      <a href="{base}/product/{product.slug}" class="product-attachment-name-link">
                         <span class="product-attachment-name">{product.name}</span>
                       </a>
                       {#if product.description}
@@ -661,7 +662,7 @@
                           </div>
                           {#if product.description.length > 200}
                             <a 
-                              href="/product/{product.slug}" 
+                              href="{base}/product/{product.slug}" 
                               class="toggle-desc-btn"
                             >
                               Ver detalhes do produto
@@ -685,17 +686,17 @@
                           {t(lang, "post.not_available")}
                         </button>
                       {:else if !data.user}
-                        <a href="/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="btn btn-small btn-primary buy-btn">
+                        <a href="{base}/members/login?redirectTo={encodeURIComponent($page.url.pathname)}" class="btn btn-small btn-primary buy-btn">
                           {t(lang, "common.buy")}
                         </a>
                       {:else}
-                        <a href="/purchase/{product.id}" class="btn btn-small btn-primary buy-btn" data-sveltekit-reload target="_blank" rel="noopener noreferrer">
+                        <a href="{base}/purchase/{product.id}" class="btn btn-small btn-primary buy-btn" data-sveltekit-reload target="_blank" rel="noopener noreferrer">
                           {t(lang, "common.buy")}
                         </a>
                       {/if}
                     {:else}
                       {#if product.file_url}
-                        <a href="/api/download/{product.id}" rel="external" class="btn btn-small btn-primary">
+                        <a href="{base}/api/download/{product.id}" rel="external" class="btn btn-small btn-primary">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
                           </svg>
@@ -754,15 +755,20 @@
           </div>
         </footer>
 
-        <!-- CTA de Conversão 1Convite -->
-        <section style="margin: 28px 0; padding: 24px 20px; border-radius: 18px; background: linear-gradient(135deg, #121215 0%, #1c1917 100%); border: 1px solid rgba(249, 115, 22, 0.35); color: #ffffff; text-align: center;">
-          <span style="display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #fb923c; margin-bottom: 8px;">1CONVITE • O REINO NO SEU BOLSO</span>
-          <h3 style="margin: 0 0 8px; font-size: 1.25rem; font-weight: 800; color: #ffffff;">Viva a Palavra Todos os Dias</h3>
-          <p style="margin: 0 0 18px; font-size: 0.92rem; color: #d4d4d8; line-height: 1.5;">
-            Tenha acesso à Bíblia ACF narrada em áudio, meditações diárias, Treino Templo, Mentores Bíblicos e vales-presente para abençoar quem você ama.
-          </p>
-          <a href="https://1convite.com.br/#planos" style="display: inline-block; padding: 12px 24px; border-radius: 999px; background: #10b981; color: #052e16; font-weight: 800; font-size: 0.92rem; text-decoration: none;">
-            Conhecer Planos do 1Convite →
+        <!-- Banner Oficial 1Convite para Página de Vendas -->
+        <section style="margin: 28px 0; border-radius: 18px; overflow: hidden; background: #121215; border: 1px solid rgba(249, 115, 22, 0.35); color: #ffffff;">
+          <a href="https://1convite.com.br/#planos" style="display: block; text-decoration: none; color: inherit;">
+            <img src="{base}/banner-1convite.jpg" alt="1Convite — O Reino no seu bolso" style="width: 100%; height: auto; display: block; max-height: 220px; object-fit: cover;" />
+            <div style="padding: 20px; text-align: center;">
+              <span style="display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #fb923c; margin-bottom: 6px;">1CONVITE • O REINO NO SEU BOLSO</span>
+              <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 800; color: #ffffff;">Viva a Palavra Todos os Dias</h3>
+              <p style="margin: 0 0 16px; font-size: 0.9rem; color: #d4d4d8; line-height: 1.5;">
+                Bíblia ACF narrada em áudio, meditações diárias, Treino Templo, Mentores Bíblicos e vales-presente para abençoar quem você ama.
+              </p>
+              <span style="display: inline-block; padding: 12px 24px; border-radius: 999px; background: #10b981; color: #052e16; font-weight: 800; font-size: 0.92rem;">
+                Conhecer Planos do 1Convite →
+              </span>
+            </div>
           </a>
         </section>
 
@@ -772,7 +778,7 @@
             <h2 class="related-title">{hasCollaborative ? t(lang, "post.related_title") : t(lang, "post.continue_reading")}</h2>
             <div class="related-feed">
               {#each data.relatedPosts as relatedPost}
-                <a href="/post/{relatedPost.slug}" class="related-item">
+                <a href="{base}/post/{relatedPost.slug}" class="related-item">
                   <div class="related-image-wrapper">
                     {#if hasNoImage(relatedPost)}
                       <div class="no-image-placeholder" style="background: {getPlaceholderBackground(relatedPost)}">
@@ -854,7 +860,7 @@
         <ul class="categories-list">
           {#each data.categories as cat}
             <li>
-              <a href="/category/{cat.slug}" class="category-link">
+              <a href="{base}/category/{cat.slug}" class="category-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
                 </svg>

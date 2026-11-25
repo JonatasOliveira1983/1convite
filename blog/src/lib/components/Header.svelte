@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { t } from '$lib/i18n';
   
@@ -22,15 +23,15 @@
   const lang = $derived(language || $page.data.language || 'pt');
   
   const links = $derived([
-    { label: t(lang, 'nav.home'), href: '/' },
-    { label: t(lang, 'nav.categories'), href: '/categories' },
+    { label: t(lang, 'nav.home'), href: `${base}/` },
+    { label: t(lang, 'nav.categories'), href: `${base}/categories` },
     { label: 'Planos & Convites', href: 'https://1convite.com.br/#planos' },
     { label: 'Acessar App', href: 'https://1convite.com.br/' },
     ...(user ? [
-      { label: t(lang, 'nav.my_account'), href: '/members/dashboard' }
+      { label: t(lang, 'nav.my_account'), href: `${base}/members/dashboard` }
     ] : (enableMemberLogin ? [
-      { label: t(lang, 'nav.premium'), href: '/premium' },
-      { label: t(lang, 'nav.login'), href: '/members/login' }
+      { label: t(lang, 'nav.premium'), href: `${base}/premium` },
+      { label: t(lang, 'nav.login'), href: `${base}/members/login` }
     ] : []))
   ]);
   
@@ -73,7 +74,7 @@
 <header class="header">
   <div class="header-container">
     <!-- Logo -->
-    <a href="/" class="logo">
+    <a href="{base}/" class="logo">
       {#if logo}
         <img src={logo} alt={siteName} class="logo-img" />
       {:else}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { CategoryBadge, Skeleton, Breadcrumb } from '$lib/components';
   import { page } from '$app/stores';
   import { t, formatDate } from '$lib/i18n';
@@ -60,7 +61,7 @@
       <!-- Grid de Categorias -->
       <div class="categories-grid">
         {#each categories as category}
-          <a href="/category/{category.slug}" class="category-card">
+          <a href="{base}/category/{category.slug}" class="category-card">
             <div 
               class="category-icon"
               style="background: {getCategoryColor(category.name)}15; color: {getCategoryColor(category.name)}"

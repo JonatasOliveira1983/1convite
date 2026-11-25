@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { t, formatDate as fmtDate } from '$lib/i18n';
     import { optimizeImageUrl } from "$lib/image-optimizer";
@@ -94,13 +95,13 @@
                     </div>
                     <h3>{t(lang, "category.empty_title")}</h3>
                     <p>Ainda não publicamos artigos nesta seção. Volte em breve!</p>
-                    <a href="/" class="btn btn-primary">{t(lang, "category.view_all")}</a>
+                    <a href="{base}/" class="btn btn-primary">{t(lang, "category.view_all")}</a>
                 </div>
             {:else}
                 <div class="posts-masonry">
                     {#each data.posts as post}
                         <article class="post-card">
-                            <a href="/post/{post.slug}" class="post-image-link">
+                            <a href="{base}/post/{post.slug}" class="post-image-link">
                                 {#if hasNoImage(post)}
                                     <div class="no-image-placeholder" style="background: {getPlaceholderBackground(post)}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="placeholder-icon">
@@ -134,7 +135,7 @@
                                     {/if}
                                 </div>
                                 <h2 class="post-title">
-                                    <a href="/post/{post.slug}">{post.title}</a>
+                                    <a href="{base}/post/{post.slug}">{post.title}</a>
                                 </h2>
                             </div>
                         </article>
@@ -177,7 +178,7 @@
                 <h2 class="widget-title">{t(lang, "common.categories")}</h2>
                 <ul class="categories-list">
                     <li>
-                        <a href="/" class="category-link">
+                        <a href="{base}/" class="category-link">
                             <svg
                                 width="16"
                                 height="16"
@@ -197,7 +198,7 @@
                     {#each data.categories as cat}
                         <li>
                             <a
-                                href="/category/{cat.slug}"
+                                href="{base}/category/{cat.slug}"
                                 class="category-link"
                                 class:active={cat.slug === data.categorySlug}
                             >
@@ -224,7 +225,7 @@
                 <h2 class="widget-title">{t(lang, "common.popular_posts")}</h2>
                 <div class="popular-list">
                     {#each data.popularPosts.slice(0, 4) as pop, i}
-                        <a href="/post/{pop.slug}" class="popular-item">
+                        <a href="{base}/post/{pop.slug}" class="popular-item">
                             <span class="popular-number">{i + 1}</span>
                             <div class="popular-thumb-wrapper">
                                 {#if hasNoImage(pop)}

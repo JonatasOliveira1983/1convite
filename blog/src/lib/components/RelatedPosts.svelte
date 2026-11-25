@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { t, formatDate as fmtDate } from '$lib/i18n';
 
@@ -62,7 +63,7 @@
     
     <div class="related-grid" class:list-layout={layout === 'list'}>
       {#each displayPosts as post}
-        <a href="/post/{post.slug}" class="related-card">
+        <a href="{base}/post/{post.slug}" class="related-card">
           <div class="related-image">
             {#if hasNoImage(post)}
               <div class="no-image-placeholder" style="background: {getPlaceholderBackground(post)}">

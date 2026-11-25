@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import AdRenderer from '$lib/components/AdRenderer.svelte';
   import { optimizeImageUrl } from '$lib/image-optimizer';
@@ -75,7 +76,7 @@
       </p>
       
       <div class="error-actions">
-        <a href="/" class="btn btn-primary">
+        <a href="{base}/" class="btn btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
             <polyline points="9,22 9,12 15,12 15,22"/>
@@ -107,7 +108,7 @@
           <h3 class="suggested-title">{t(lang, 'error.recommended')}</h3>
           <div class="posts-grid">
             {#each data.popularPosts.slice(0, 3) as post}
-               <a href="/post/{post.slug}" class="post-card">
+               <a href="{base}/post/{post.slug}" class="post-card">
                 {#if !hasNoImage(post)}
                   <div class="post-card-image">
                     <img src={optimizeImageUrl(getPostImage(post), 400)} alt={post.title} loading="lazy" />

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { t } from '$lib/i18n';
 
@@ -24,18 +25,18 @@
 
   const links = $derived({
     explore: [
-      { label: t(lang, 'nav.home'), href: '/' },
-      { label: t(lang, 'nav.categories'), href: '/categories' },
-      { label: t(lang, 'nav.products'), href: '/products' },
-      { label: 'Comunidade VIP', href: '/members/area' },
-      { label: t(lang, 'nav.premium'), href: '/premium' },
-      { label: t(lang, 'footer.rss'), href: '/rss.xml' },
-      { label: t(lang, 'footer.sitemap'), href: '/sitemap.xml' }
+      { label: t(lang, 'nav.home'), href: `${base}/` },
+      { label: t(lang, 'nav.categories'), href: `${base}/categories` },
+      { label: t(lang, 'nav.products'), href: `${base}/products` },
+      { label: 'Comunidade VIP', href: `${base}/members/area` },
+      { label: t(lang, 'nav.premium'), href: `${base}/premium` },
+      { label: t(lang, 'footer.rss'), href: `${base}/rss.xml` },
+      { label: t(lang, 'footer.sitemap'), href: `${base}/sitemap.xml` }
     ],
     legal: [
-      { label: t(lang, 'footer.privacy'), href: '/privacy' },
-      { label: t(lang, 'footer.terms'), href: '/terms' },
-      { label: t(lang, 'footer.cookies'), href: '/cookies' }
+      { label: t(lang, 'footer.privacy'), href: `${base}/privacy` },
+      { label: t(lang, 'footer.terms'), href: `${base}/terms` },
+      { label: t(lang, 'footer.cookies'), href: `${base}/cookies` }
     ],
     social: [
       { name: 'Twitter', href: '', icon: 'twitter' },
@@ -61,7 +62,7 @@
   <div class="footer-container">
     <div class="footer-main">
       <div class="footer-brand">
-        <a href="/" class="footer-logo">
+        <a href="{base}/" class="footer-logo">
           {#if logo}
             <img src={logo} alt={siteName} class="logo-img" />
           {:else}
