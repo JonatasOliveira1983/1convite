@@ -118,6 +118,7 @@ export default function LandingPage({ onEnterApp }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [legalTab, setLegalTab] = useState(null);
   const [checkoutPlan, setCheckoutPlan] = useState(null);
+  const [openFaq, setOpenFaq] = useState(0);
   const particlesCanvasRef = React.useRef(null);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
@@ -336,12 +337,8 @@ export default function LandingPage({ onEnterApp }) {
           <nav className="sp-nav-links">
             <a href="#recursos">Recursos</a>
             <a href="#planos">Planos & Convites</a>
-            <a href="#mentores">Mentores Bíblicos</a>
+            <a href="#mentores">Mentores</a>
             <a href="/blog">Blog</a>
-            <a href="#baixar-app" className="sp-pill-link">
-              <IconDownload />
-              <span>Baixar o aplicativo</span>
-            </a>
           </nav>
 
           <div className="sp-nav-actions">
@@ -461,10 +458,10 @@ export default function LandingPage({ onEnterApp }) {
             </p>
 
             <div className="sp-hero-actions">
-              <button className="sp-btn-cta-green" onClick={onEnterApp}>
+              <a href="#planos" className="sp-btn-cta-green" style={{ textDecoration: 'none' }}>
                 <IconFlame />
-                <span>Iniciar Minha Jornada</span>
-              </button>
+                <span>Escolher Meu Plano</span>
+              </a>
 
               <button type="button" onClick={handleDownloadApp} className="sp-btn-cta-dark" style={{ cursor: 'pointer' }}>
                 <IconDownload />
@@ -776,6 +773,12 @@ export default function LandingPage({ onEnterApp }) {
               </button>
             </div>
           </div>
+
+          <div className="sp-trust-bar">
+            <span><IconCheck /> Pagamento seguro via PIX ou Cartão (Asaas)</span>
+            <span><IconCheck /> Acesso VIP e convites enviados na hora por e-mail</span>
+            <span><IconCheck /> 7 dias de garantia incondicional</span>
+          </div>
         </div>
       </section>
 
@@ -974,6 +977,48 @@ export default function LandingPage({ onEnterApp }) {
                 </button>
               </form>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEÇÃO: FAQ COMPACTO (LEI DE JAKOB & REDUÇÃO DE ATRITO) ── */}
+      <section className="sp-section">
+        <div className="sp-container" style={{ maxWidth: '780px' }}>
+          <div className="sp-section-heading" style={{ marginBottom: '28px' }}>
+            <span className="sp-kicker">DÚVIDAS FREQUENTES</span>
+            <h2 className="sp-title">Perguntas Comuns</h2>
+          </div>
+          <div className="sp-faq-list">
+            {[
+              {
+                q: 'Como funcionam os convites gratuitos de 180 dias?',
+                a: 'Ao assinar qualquer plano, você recebe códigos exclusivos (1, 5 ou 10 dependendo do plano). Basta enviar o código para um amigo ou familiar usar no cadastro e ele ganha 6 meses gratuitos no app.'
+              },
+              {
+                q: 'Como recebo meu acesso após pagar?',
+                a: 'Assim que o PIX ou cartão é confirmado pelo Asaas, seu acesso VIP é liberado automaticamente e você recebe seu e-mail de confirmação com todos os códigos de convite na hora.'
+              },
+              {
+                q: 'Funciona no celular Android, iPhone e Computador?',
+                a: 'Sim! Você pode usar direto pelo navegador em qualquer aparelho ou baixar o aplicativo oficial para Android e instalar como app no iPhone.'
+              },
+              {
+                q: 'Tem garantia caso eu não me adapte?',
+                a: 'Sim, você tem 7 dias de garantia incondicional a partir da compra.'
+              }
+            ].map((item, idx) => (
+              <div key={idx} className={`sp-faq-item ${openFaq === idx ? 'open' : ''}`}>
+                <button
+                  type="button"
+                  className="sp-faq-q"
+                  onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
+                >
+                  <span>{item.q}</span>
+                  <span>{openFaq === idx ? '−' : '+'}</span>
+                </button>
+                {openFaq === idx && <p className="sp-faq-a">{item.a}</p>}
+              </div>
+            ))}
           </div>
         </div>
       </section>

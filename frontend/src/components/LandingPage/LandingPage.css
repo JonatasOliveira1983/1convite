@@ -1051,6 +1051,86 @@
   gap: 8px;
 }
 
+/* ── LEIS DE DESIGN: CONFIANÇA, FAQ E MOBILE-FIRST PLANOS ── */
+.sp-btn-cta-green,
+.sp-btn-cta-dark {
+  min-height: 50px;
+}
+
+.sp-trust-bar {
+  margin-top: 28px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--sp-border);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 28px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--sp-subdued);
+}
+
+.sp-trust-bar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-trust-bar svg {
+  color: var(--sp-green);
+  flex-shrink: 0;
+}
+
+.sp-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sp-faq-item {
+  background: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.sp-faq-item.open {
+  border-color: rgba(30, 215, 96, 0.35);
+}
+
+.sp-faq-q {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  color: var(--sp-white);
+  font-size: 0.96rem;
+  font-weight: 700;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.sp-faq-a {
+  margin: 0;
+  padding: 0 18px 16px;
+  font-size: 0.88rem;
+  color: var(--sp-subdued);
+  line-height: 1.55;
+}
+
+@media (max-width: 768px) {
+  .sp-plan-card-featured {
+    order: -1;
+  }
+}
+
 .sp-micro-badge {
   background: var(--sp-surface);
   border: 1px solid var(--sp-border);
