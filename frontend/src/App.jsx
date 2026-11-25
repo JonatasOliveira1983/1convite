@@ -7112,42 +7112,66 @@ Em nome de Jesus, Amém.`;
                   </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <a
-                    href="/wallpapers/1convite-celular-alvorada.jpg"
-                    download="1Convite-Wallpaper-Celular.jpg"
-                    style={{
-                      display: 'flex', flexDirection: 'column', gap: '8px',
-                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
-                      borderRadius: '14px', padding: '10px', textDecoration: 'none', color: 'var(--text-primary)'
-                    }}
-                  >
-                    <img
-                      src="/wallpapers/1convite-celular-alvorada.jpg"
-                      alt="Wallpaper Celular 1Convite"
-                      style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '10px' }}
-                    />
-                    <span style={{ fontSize: '0.78rem', fontWeight: '700', textAlign: 'center', color: 'var(--orange)' }}>
-                      Baixar Celular (9:16)
-                    </span>
-                  </a>
-                  <a
-                    href="/wallpapers/1convite-desktop-obsidiana.jpg"
-                    download="1Convite-Wallpaper-Desktop.jpg"
-                    style={{
-                      display: 'flex', flexDirection: 'column', gap: '8px',
-                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
-                      borderRadius: '14px', padding: '10px', textDecoration: 'none', color: 'var(--text-primary)'
-                    }}
-                  >
-                    <img
-                      src="/wallpapers/1convite-desktop-obsidiana.jpg"
-                      alt="Wallpaper Desktop 1Convite"
-                      style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '10px' }}
-                    />
-                    <span style={{ fontSize: '0.78rem', fontWeight: '700', textAlign: 'center', color: 'var(--orange)' }}>
-                      Baixar PC (16:9)
-                    </span>
-                  </a>
+                  {[
+                    {
+                      id: 'celular',
+                      url: '/wallpapers/1convite-celular-alvorada.jpg',
+                      filename: '1Convite-Wallpaper-Celular.jpg',
+                      title: 'Celular (9:16)',
+                      alt: 'Wallpaper Celular 1Convite'
+                    },
+                    {
+                      id: 'desktop',
+                      url: '/wallpapers/1convite-desktop-obsidiana.jpg',
+                      filename: '1Convite-Wallpaper-Desktop.jpg',
+                      title: 'PC / Desktop (16:9)',
+                      alt: 'Wallpaper Desktop 1Convite'
+                    }
+                  ].map((wp) => (
+                    <button
+                      key={wp.id}
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(wp.url);
+                          const blob = await res.blob();
+                          const file = new File([blob], wp.filename, { type: 'image/jpeg' });
+                          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({
+                              files: [file],
+                              title: `Papel de Parede 1Convite — ${wp.title}`,
+                            });
+                            return;
+                          }
+                          const blobUrl = URL.createObjectURL(blob);
+                          const link = document.createElement('a');
+                          link.href = blobUrl;
+                          link.download = wp.filename;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+                        } catch {
+                          window.open(wp.url, '_blank');
+                        }
+                      }}
+                      style={{
+                        display: 'flex', flexDirection: 'column', gap: '8px',
+                        background: 'rgba(255,255,255,0.04)', border: '1px solid var(--slate-border)',
+                        borderRadius: '14px', padding: '10px', color: 'var(--text-primary)',
+                        cursor: 'pointer', textAlign: 'center', width: '100%'
+                      }}
+                    >
+                      <img
+                        src={wp.url}
+                        alt={wp.alt}
+                        style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '10px' }}
+                      />
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--orange)', padding: '4px 0' }}>
+                        Salvar {wp.title}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
