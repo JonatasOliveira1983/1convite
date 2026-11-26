@@ -275,6 +275,44 @@ async function ensureTables() {
         )
       `);
 
+      // Tabelas de Gamificação (Chaminhas & Lojinha do Reino), Mulher Virtuosa e Biblioteca do Pregador
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_gamificacao (
+          user_contact TEXT PRIMARY KEY,
+          chaminhas INTEGER DEFAULT 0,
+          itens_desbloqueados TEXT DEFAULT '[]',
+          updated_at TEXT NOT NULL
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_mulher_virtuosa (
+          id TEXT PRIMARY KEY,
+          user_contact TEXT NOT NULL,
+          tipo TEXT NOT NULL,
+          titulo TEXT NOT NULL,
+          conteudo TEXT,
+          horario TEXT,
+          concluido INTEGER DEFAULT 0,
+          created_at TEXT NOT NULL
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_pregador_esbocos (
+          id TEXT PRIMARY KEY,
+          user_contact TEXT NOT NULL,
+          titulo TEXT NOT NULL,
+          tema TEXT DEFAULT 'Geral',
+          versiculo TEXT,
+          introducao TEXT,
+          pontos_json TEXT,
+          ilustracao TEXT,
+          conclusao TEXT,
+          created_at TEXT NOT NULL
+        )
+      `);
+
       // Seed inicial de vouchers padrão caso a tabela esteja vazia
       const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
       const totalVouchers = Number(vCount.rows?.[0]?.total || 0);
@@ -3064,6 +3102,167 @@ app.delete('/api/v1/templofit/rotinas/:id', async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Erro ao remover rotina.' });
+  }
+});
+
+// ── GAMIFICAÇÃO (CHAMINHAS & LOJINHA DO REINO NO TURSO) ─────────────
+app.get('/api/v1/gamificacao/state', async (req, res) => {
+  try {
+    const contact = String(req.query.contact || 'convidado@1convite.com.br').trim().toLowerCase();
+    const row = await dbGet('SELECT * FROM tb_gamificacao WHERE LOWER(user_contact) = $1', [contact]);
+    if (!row) {
+      return res.json({ success: true, chaminhas: 0, itensDesbloqueados: [] });
+    }
+    let itens = [];
+    try { itens = row.itens_desbloqueados ? JSON.parse(row.itens_desbloqueados) : []; } catch { itens = []; }
+    res.json({ success: true, chaminhas: Number(row.chaminhas || 0), itensDesbloqueados: itens });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao buscar estado da Lojinha/Chaminhas.' });
+  }
+});
+
+app.post('/api/v1/gamificacao/sync', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', chaminhas, delta, itensDesbloqueados } = req.body || {};
+    const normContact = String(contact).trim().toLowerCase();
+    const existing = await dbGet('SELECT * FROM tb_gamificacao WHERE LOWER(user_contact) = $1', [normContact]);
+    const nowIso = new Date().toISOString();
+
+    let nextCoins = existing ? Number(existing.chaminhas || 0) : 0;
+    if (typeof delta === 'number' && Number.isFinite(delta)) {
+      nextCoins = Math.max(0, nextCoins + delta);
+    } else if (typeof chaminhas === 'number' && Number.isFinite(chaminhas)) {
+      nextCoins = Math.max(0, chaminhas);
+    }
+
+    let nextItems = [];
+    if (existing?.itens_desbloqueados) {
+      try { nextItems = JSON.parse(existing.itens_desbloqueados); } catch { nextItems = []; }
+    }
+    if (Array.isArray(itensDesbloqueados)) {
+      nextItems = Array.from(new Set([...nextItems, ...itensDesbloqueados]));
+    }
+
+    if (!existing) {
+      await dbRun(
+        'INSERT INTO tb_gamificacao (user_contact, chaminhas, itens_desbloqueados, updated_at) VALUES ($1, $2, $3, $4)',
+        [normContact, nextCoins, JSON.stringify(nextItems), nowIso]
+      );
+    } else {
+      await dbRun(
+        'UPDATE tb_gamificacao SET chaminhas = $1, itens_desbloqueados = $2, updated_at = $3 WHERE LOWER(user_contact) = $4',
+        [nextCoins, JSON.stringify(nextItems), nowIso, normContact]
+      );
+    }
+    res.json({ success: true, chaminhas: nextCoins, itensDesbloqueados: nextItems });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao sincronizar Chaminhas no Turso.' });
+  }
+});
+
+// ── PLANNER MULHER VIRTUOSA (TURSO) ──────────────────────────────────
+app.get('/api/v1/mulher-virtuosa/state', async (req, res) => {
+  try {
+    const contact = String(req.query.contact || 'convidado@1convite.com.br').trim().toLowerCase();
+    const rows = await dbAll(
+      'SELECT * FROM tb_mulher_virtuosa WHERE LOWER(user_contact) = $1 ORDER BY created_at DESC LIMIT 100',
+      [contact]
+    );
+    res.json({ success: true, items: rows || [] });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao carregar dados da Mulher Virtuosa.' });
+  }
+});
+
+app.post('/api/v1/mulher-virtuosa/item', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', tipo = 'tarefa', titulo, conteudo = '', horario = '' } = req.body || {};
+    if (!titulo) return res.status(400).json({ success: false, message: 'Título é obrigatório.' });
+    const id = `mv_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      'INSERT INTO tb_mulher_virtuosa (id, user_contact, tipo, titulo, conteudo, horario, concluido, created_at) VALUES ($1, $2, $3, $4, $5, $6, 0, $7)',
+      [id, String(contact).trim().toLowerCase(), tipo, titulo, conteudo, horario, nowIso]
+    );
+    res.json({ success: true, id, createdAt: nowIso });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao salvar item.' });
+  }
+});
+
+app.post('/api/v1/mulher-virtuosa/item/:id/toggle', async (req, res) => {
+  try {
+    const row = await dbGet('SELECT concluido FROM tb_mulher_virtuosa WHERE id = $1', [req.params.id]);
+    if (!row) return res.status(404).json({ success: false });
+    const next = row.concluido ? 0 : 1;
+    await dbRun('UPDATE tb_mulher_virtuosa SET concluido = $1 WHERE id = $2', [next, req.params.id]);
+    res.json({ success: true, concluido: next });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
+
+app.delete('/api/v1/mulher-virtuosa/item/:id', async (req, res) => {
+  try {
+    await dbRun('DELETE FROM tb_mulher_virtuosa WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
+
+// ── BIBLIOTECA DO PREGADOR (ESBOÇOS PERSONALIZADOS NO TURSO) ─────────
+app.get('/api/v1/pregador/esbocos', async (req, res) => {
+  try {
+    const contact = String(req.query.contact || 'convidado@1convite.com.br').trim().toLowerCase();
+    const rows = await dbAll(
+      'SELECT * FROM tb_pregador_esbocos WHERE LOWER(user_contact) = $1 ORDER BY created_at DESC LIMIT 50',
+      [contact]
+    );
+    const parsed = (rows || []).map((r) => {
+      let points = [];
+      try { points = r.pontos_json ? JSON.parse(r.pontos_json) : []; } catch { points = []; }
+      return {
+        id: r.id,
+        title: r.titulo,
+        theme: r.tema || 'Meus Esboços',
+        verse: r.versiculo || '',
+        intro: r.introducao || '',
+        points,
+        illustration: r.ilustracao || '',
+        conclusion: r.conclusao || '',
+        isCustom: true,
+      };
+    });
+    res.json({ success: true, esbocos: parsed });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao carregar esboços.' });
+  }
+});
+
+app.post('/api/v1/pregador/esbocos', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', title, theme = 'Meus Esboços', verse = '', intro = '', points = [], illustration = '', conclusion = '' } = req.body || {};
+    if (!title) return res.status(400).json({ success: false, message: 'Título do sermão é obrigatório.' });
+    const id = `preg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      `INSERT INTO tb_pregador_esbocos (id, user_contact, titulo, tema, versiculo, introducao, pontos_json, ilustracao, conclusao, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [id, String(contact).trim().toLowerCase(), title, theme, verse, intro, JSON.stringify(points || []), illustration, conclusion, nowIso]
+    );
+    res.json({ success: true, id });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao salvar esboço no Turso.' });
+  }
+});
+
+app.delete('/api/v1/pregador/esbocos/:id', async (req, res) => {
+  try {
+    await dbRun('DELETE FROM tb_pregador_esbocos WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
   }
 });
 

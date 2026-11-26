@@ -415,6 +415,61 @@ function App() {
   };
   const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('app-coins') || localStorage.getItem('arcade-coins')) || 0);
   const [unlockedItems, setUnlockedItems] = useState(() => JSON.parse(localStorage.getItem('unlocked-items') || '[]'));
+  const gamificacaoLoadedRef = useRef(false);
+
+  const handleEarnCoins = (amount) => {
+    const val = Number(amount || 0);
+    if (!val) return;
+    setUserCoins((prev) => {
+      const next = Math.max(0, prev + val);
+      localStorage.setItem('app-coins', next);
+      return next;
+    });
+  };
+
+  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud
+  useEffect(() => {
+    const contact = profileEmail || profilePhone || 'convidado@1convite.com.br';
+    fetch(`${API_BASE}/gamificacao/state?contact=${encodeURIComponent(contact)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.success) {
+          const localCoins = parseInt(localStorage.getItem('app-coins') || '0', 10) || 0;
+          const serverCoins = Number(data.chaminhas || 0);
+          const mergedCoins = Math.max(localCoins, serverCoins);
+          setUserCoins(mergedCoins);
+          localStorage.setItem('app-coins', mergedCoins);
+
+          const localItems = JSON.parse(localStorage.getItem('unlocked-items') || '[]');
+          const serverItems = Array.isArray(data.itensDesbloqueados) ? data.itensDesbloqueados : [];
+          const mergedItems = Array.from(new Set([...localItems, ...serverItems]));
+          setUnlockedItems(mergedItems);
+          localStorage.setItem('unlocked-items', JSON.stringify(mergedItems));
+        }
+        gamificacaoLoadedRef.current = true;
+      })
+      .catch(() => {
+        gamificacaoLoadedRef.current = true;
+      });
+  }, [profileEmail, profilePhone]);
+
+  // Sincroniza alterações de Chaminhas ou Compras na Lojinha com o Turso Cloud
+  useEffect(() => {
+    if (!gamificacaoLoadedRef.current) return;
+    const contact = profileEmail || profilePhone || 'convidado@1convite.com.br';
+    const timer = setTimeout(() => {
+      fetch(`${API_BASE}/gamificacao/sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contact,
+          chaminhas: userCoins,
+          itensDesbloqueados: unlockedItems,
+        }),
+      }).catch(() => {});
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [userCoins, unlockedItems, profileEmail, profilePhone]);
   
   // Controle de Acesso Premium & Vouchers VIP (180 dias)
   const [isPremiumUser, setIsPremiumUser] = useState(() => {
@@ -5498,6 +5553,68 @@ Em nome de Jesus, Amém.`;
                     </div>
                   </div>
                 )}
+
+                {/* Fundos Sonoros de Paz na Bíblia Sagrada (Chuva, Ondas, Piano) */}
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '8px 12px',
+                    background: 'rgba(12, 14, 20, 0.45)',
+                    backdropFilter: 'blur(12px)',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '8px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: '700', color: 'rgba(255,255,255,0.75)', marginRight: '2px' }}>
+                      Fundo:
+                    </span>
+                    {[
+                      { id: 'none', label: 'Silêncio' },
+                      { id: 'chuva', label: '🌧️ Chuva' },
+                      { id: 'mar', label: '🌊 Ondas' },
+                      { id: 'piano', label: '🎹 Piano' },
+                    ].map((tr) => (
+                      <button
+                        key={tr.id}
+                        type="button"
+                        onClick={() => setActiveAmbient(tr.id)}
+                        style={{
+                          padding: '4px 10px',
+                          borderRadius: '999px',
+                          border: '1px solid',
+                          fontSize: '0.7rem',
+                          fontWeight: '700',
+                          cursor: 'pointer',
+                          background: activeAmbient === tr.id ? '#10B981' : 'rgba(255,255,255,0.06)',
+                          borderColor: activeAmbient === tr.id ? '#10B981' : 'rgba(255,255,255,0.14)',
+                          color: activeAmbient === tr.id ? '#052E16' : '#E2E8F0',
+                        }}
+                      >
+                        {tr.label}
+                      </button>
+                    ))}
+                  </div>
+                  {activeAmbient !== 'none' && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Vol</span>
+                      <input
+                        type="range"
+                        min="0.02"
+                        max="0.5"
+                        step="0.02"
+                        value={ambientVolume}
+                        onChange={(e) => setAmbientVolume(parseFloat(e.target.value))}
+                        style={{ width: '68px', accentColor: '#10B981', cursor: 'pointer' }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -9118,14 +9235,16 @@ Em nome de Jesus, Amém.`;
         {/* ════════════ ABA ESPAÇO MULHER VIRTUOSA (PREMIUM) ════════════ */}
         {activeTab === 'mulher-virtuosa' && (
           <MulherVirtuosaView 
-            onBack={() => setActiveTab('dashboard')} 
+            onBack={() => setActiveTab('dashboard')}
+            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
           />
         )}
 
         {/* ════════════ ABA BIBLIOTECA DO PREGADOR (PREMIUM) ════════════ */}
         {activeTab === 'biblioteca-pregador' && (
           <BibliotecaPregadorView 
-            onBack={() => setActiveTab('dashboard')} 
+            onBack={() => setActiveTab('dashboard')}
+            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
           />
         )}
 
@@ -9141,6 +9260,7 @@ Em nome de Jesus, Amém.`;
           <TreinoTemploView 
             onBack={() => setActiveTab('dashboard')}
             userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
+            onEarnCoins={handleEarnCoins}
           />
         )}
 

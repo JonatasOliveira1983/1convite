@@ -98,7 +98,7 @@ const PROGRAMAS_TEMPLOFIT = [
   },
 ];
 
-export default function TreinoTemploView({ onBack, userContact = 'convidado@1convite.com.br' }) {
+export default function TreinoTemploView({ onBack, userContact = 'convidado@1convite.com.br', onEarnCoins }) {
   const [abaAtiva, setAbaAtiva] = useState('programas'); // 'programas' | 'explorar' | 'custom' | 'evolucao'
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
   const [rotinaSelecionada, setRotinaSelecionada] = useState(PROGRAMAS_TEMPLOFIT[0]);
@@ -274,6 +274,10 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
     try {
       localStorage.setItem('1convite_pr_exercicios', JSON.stringify(updatedPr));
     } catch {}
+
+    if (typeof onEarnCoins === 'function') {
+      onEarnCoins(20);
+    }
 
     const novoRegistro = {
       id: Date.now(),
