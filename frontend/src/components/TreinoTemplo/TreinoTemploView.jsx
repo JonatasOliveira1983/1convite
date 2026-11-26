@@ -142,7 +142,30 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
     }
   });
 
+  const [resettingData, setResettingData] = useState(false);
+
   const timerIntervalRef = useRef(null);
+
+  const handleResetTemplofit = async () => {
+    const ok = window.confirm('Tem certeza que deseja zerar todo o histórico de treinos, recordes e registros de peso do TemploFit? Esta ação não pode ser desfeita.');
+    if (!ok) return;
+    setResettingData(true);
+    try {
+      await templofitService.resetProgress(userContact, false);
+      setHistoricoTreinos([]);
+      setPesoHistorico([]);
+      setStreakReal(0);
+      setExercisePRs({});
+      localStorage.removeItem('1convite_treinos_historico');
+      localStorage.removeItem('1convite_templofit_prs');
+      localStorage.removeItem('1convite_peso_corporal');
+      setSyncStatus('Registros zerados');
+    } catch (err) {
+      alert(err?.message || 'Erro ao zerar os registros.');
+    } finally {
+      setResettingData(false);
+    }
+  };
 
   const carregarDadosTurso = async () => {
     try {
@@ -1236,7 +1259,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
           {/* GRÁFICO 3: DISTRIBUIÇÃO DE PLANOS CONCLUÍDOS */}
           <div className="treino-rotina-card">
-            <h4 style={{ margin: '0 0 12px', color: '#FFF' }}>Progresso nos Planos Oficiais</h4>
+            <h4 style={{ margin: '0 0 12px' }}>Progresso nos Planos Oficiais</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {OPENGYM_ROUTINES.slice(0, 6).map((prog) => {
                 const done = historicoTreinos.filter((h) => h.fase === prog.id || (h.rotinaId || '').startsWith(prog.id)).length;
@@ -1244,10 +1267,10 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                 return (
                   <div key={prog.id}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.76rem', marginBottom: '4px' }}>
-                      <span style={{ color: '#E2E8F0', fontWeight: '700' }}>{prog.titulo}</span>
-                      <span style={{ color: '#FBBF24', fontWeight: '800' }}>{done}/{prog.metaSessoes} ({pct}%)</span>
+                      <span style={{ color: 'var(--text-primary)', fontWeight: '700' }}>{prog.titulo}</span>
+                      <span style={{ color: '#D97706', fontWeight: '800' }}>{done}/{prog.metaSessoes} ({pct}%)</span>
                     </div>
-                    <div style={{ height: '7px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                    <div style={{ height: '7px', borderRadius: '999px', background: 'var(--surface-subtle, rgba(255,255,255,0.08))', overflow: 'hidden' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: 'linear-gradient(90deg, #F59E0B, #10B981)', borderRadius: '999px' }} />
                     </div>
                   </div>
@@ -1257,19 +1280,19 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           </div>
 
           <div className="treino-rotina-card">
-            <h4 style={{ margin: '0 0 12px', color: '#FFF' }}>Histórico Completo de Treinos ({historicoTreinos.length})</h4>
+            <h4 style={{ margin: '0 0 12px' }}>Histórico Completo de Treinos ({historicoTreinos.length})</h4>
             {historicoTreinos.length === 0 ? (
-              <p style={{ color: '#94A3B8', fontSize: '0.82rem', margin: 0 }}>Nenhum treino registrado ainda.</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', margin: 0 }}>Nenhum treino registrado ainda.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {historicoTreinos.slice(0, 15).map((h) => (
-                  <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', borderRadius: '10px', background: 'rgba(15,23,42,0.65)', border: '1px solid rgba(148,163,184,0.14)' }}>
+                  <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', borderRadius: '10px', background: 'var(--surface-subtle, rgba(15,23,42,0.65))', border: '1px solid var(--border-subtle, rgba(148,163,184,0.14))' }}>
                     <div>
-                      <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#FFF' }}>{h.titulo}</div>
-                      <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>{h.data} • {h.duracao || `${h.duracaoMinutos || 15} min`}</div>
+                      <div style={{ fontWeight: '700', fontSize: '0.84rem', color: 'var(--text-primary)' }}>{h.titulo}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{h.data} • {h.duracao || `${h.duracaoMinutos || 15} min`}</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#34D399', display: 'block' }}>
+                      <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#10B981', display: 'block' }}>
                         {h.volumeKg > 0 ? `${h.volumeKg} kg mov.` : 'Concluído'}
                       </span>
                     </div>
@@ -1277,6 +1300,32 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                 ))}
               </div>
             )}
+          </div>
+
+          <div className="treino-rotina-card" style={{ marginTop: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+            <div>
+              <h4 style={{ margin: '0 0 2px', fontSize: '0.9rem' }}>Zerar Histórico do TemploFit</h4>
+              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+                Apaga todas as sessões de treino, recordes e registros de peso desta conta.
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleResetTemplofit}
+              disabled={resettingData}
+              style={{
+                padding: '9px 16px',
+                borderRadius: '10px',
+                border: '1px solid rgba(239, 68, 68, 0.45)',
+                background: 'rgba(239, 68, 68, 0.1)',
+                color: '#EF4444',
+                fontWeight: '700',
+                fontSize: '0.78rem',
+                cursor: resettingData ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {resettingData ? 'Zerando...' : 'Resetar Registros'}
+            </button>
           </div>
         </div>
       )}

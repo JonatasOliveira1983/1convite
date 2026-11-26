@@ -64,4 +64,16 @@ export const templofitService = {
     if (!res.ok || !data?.success) throw new Error(data?.message || 'Erro ao remover rotina');
     return data;
   },
+
+  async resetProgress(contact, includeRoutines = false) {
+    const cleanContact = (contact || 'convidado@1convite.com.br').trim().toLowerCase();
+    const res = await fetch(`${API_BASE}/templofit/reset`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contact: cleanContact, includeRoutines }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data?.success) throw new Error(data?.message || 'Erro ao resetar registros');
+    return data;
+  },
 };

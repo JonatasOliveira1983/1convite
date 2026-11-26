@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import https from 'https';
 import dotenv from 'dotenv';
@@ -3103,6 +3103,64 @@ app.delete('/api/v1/templofit/rotinas/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: 'Erro ao remover rotina.' });
   }
+});
+
+app.delete('/api/v1/templofit/reset', async (req, res) => {
+  try {
+    const contact = (req.body?.contact || req.query?.contact || '').toString().trim().toLowerCase();
+    const includeRoutines = Boolean(req.body?.includeRoutines || req.query?.includeRoutines === 'true');
+    if (!contact) {
+      return res.status(400).json({ success: false, message: 'Contato do usuário é obrigatório.' });
+    }
+    await dbRun('DELETE FROM tb_templofit_sessoes WHERE LOWER(user_contact) = $1', [contact]);
+    await dbRun('DELETE FROM tb_templofit_metricas WHERE LOWER(user_contact) = $1', [contact]);
+    if (includeRoutines) {
+      await dbRun('DELETE FROM tb_templofit_rotinas_custom WHERE LOWER(user_contact) = $1', [contact]);
+    }
+    res.json({ success: true, message: 'Registros do TemploFit resetados com sucesso.' });
+  } catch (err) {
+    console.error('Erro em DELETE /templofit/reset:', err);
+    res.status(500).json({ success: false, message: 'Erro ao resetar registros do TemploFit.' });
+  }
+});
+
+// ── DOWNLOAD DIRETO DE WALLPAPERS 4K & E-BOOKS PDF (COMPATÍVEL COM ANDROID DOWNLOADMANAGER) ──
+const resolvePublicAsset = (subFolder, rawFileName) => {
+  const safeName = basename(String(rawFileName || '')).replace(/[^a-zA-Z0-9._-]/g, '');
+  if (!safeName) return null;
+  const candidates = [
+    join(__dirname, '../../frontend/public', subFolder, safeName),
+    join(__dirname, '../../frontend/dist', subFolder, safeName),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) {
+      return { filePath: candidate, safeName };
+    }
+  }
+  return null;
+};
+
+const handleDownloadWallpaper = (req, res) => {
+  const found = resolvePublicAsset('wallpapers', req.params.fileName);
+  if (!found) {
+    return res.status(404).json({ success: false, message: 'Wallpaper não encontrado.' });
+  }
+  res.setHeader('Content-Disposition', `attachment; filename="${found.safeName}"`);
+  res.setHeader('Content-Type', found.safeName.endsWith('.png') ? 'image/png' : 'image/jpeg');
+  return res.sendFile(found.filePath);
+};
+
+app.get('/api/v1/download-wallpaper/:fileName', handleDownloadWallpaper);
+app.get('/download-wallpaper/:fileName', handleDownloadWallpaper);
+
+app.get('/api/v1/download-ebook/:fileName', (req, res) => {
+  const found = resolvePublicAsset('ebooks/pdfs', req.params.fileName);
+  if (!found) {
+    return res.status(404).json({ success: false, message: 'E-book PDF não encontrado.' });
+  }
+  res.setHeader('Content-Disposition', `attachment; filename="${found.safeName}"`);
+  res.setHeader('Content-Type', 'application/pdf');
+  return res.sendFile(found.filePath);
 });
 
 // ── GAMIFICAÇÃO (CHAMINHAS & LOJINHA DO REINO NO TURSO) ─────────────

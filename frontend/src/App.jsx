@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import html2canvas from 'html2canvas';
+import { App as CapApp } from '@capacitor/app';
+import { copyTextSafe, saveOrShareImage } from './utils/mobileActions';
 const lazyWithRetry = (importer) =>
   lazy(() =>
     importer().catch((err) => {
@@ -843,6 +845,18 @@ function App() {
       });
 
       document.body.removeChild(offscreenDiv);
+
+      const dataUrl = canvas.toDataURL('image/png');
+      if (isCapacitor) {
+        await saveOrShareImage({
+          dataUrl,
+          fileName: `1convite-card-${Date.now()}.png`,
+          title: '1Convite Card',
+          isCapacitor: true,
+        });
+        setCardGenerating(false);
+        return;
+      }
 
       canvas.toBlob(async (blob) => {
         if (!blob) {
@@ -2017,7 +2031,46 @@ function App() {
     finally { setBibleLoading(false); }
   };
 
-  const copyToClipboard = (text) => { navigator.clipboard.writeText(text); alert('Versículo copiado!'); };
+  const copyToClipboard = async (text) => {
+    const ok = await copyTextSafe(text);
+    if (ok) alert('Versículo copiado!');
+  };
+
+  // Botão Voltar Físico do Android (Capacitor): navega internamente em vez de fechar o app
+  useEffect(() => {
+    if (!isCapacitor) return;
+    let listenerHandle = null;
+    CapApp.addListener('backButton', () => {
+      if (previewWallpaper) {
+        setPreviewWallpaper(null);
+        return;
+      }
+      if (showUpgradeModal) {
+        setShowUpgradeModal(false);
+        return;
+      }
+      if (commentModalOpen) {
+        setCommentModalOpen(false);
+        return;
+      }
+      if (activeTab !== 'dashboard') {
+        setActiveTab('dashboard');
+        setBibleAudioPlaying(false);
+        if (bibleAudioRef.current) bibleAudioRef.current.pause();
+        if (ambientAudioRef.current) ambientAudioRef.current.pause();
+        return;
+      }
+      CapApp.minimizeApp();
+    }).then((h) => {
+      listenerHandle = h;
+    }).catch(() => {});
+
+    return () => {
+      if (listenerHandle && typeof listenerHandle.remove === 'function') {
+        listenerHandle.remove();
+      }
+    };
+  }, [isCapacitor, previewWallpaper, showUpgradeModal, commentModalOpen, activeTab]);
 
   // ── Carrossel ───────────────────────────────────────────────
   useEffect(() => {
@@ -9596,22 +9649,18 @@ Em nome de Jesus, Amém.`;
                 onClick={async () => {
                   const fileName = previewWallpaper.url.split('/').pop();
                   setWallpaperStatus('Preparando imagem 4K...');
-                  try {
-                    if (navigator.share) {
-                      const res = await fetch(previewWallpaper.url);
-                      const blob = await res.blob();
-                      const file = new File([blob], previewWallpaper.filename, { type: 'image/jpeg' });
-                      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({ files: [file], title: previewWallpaper.title });
-                        setWallpaperStatus('Pronto! Escolha "Salvar imagem" ou seu app.');
-                        return;
-                      }
-                    }
-                  } catch {
-                    // fallback para download direto abaixo
+                  const res = await saveOrShareImage({
+                    url: previewWallpaper.url,
+                    fileName: previewWallpaper.filename || fileName,
+                    title: previewWallpaper.title,
+                    isCapacitor,
+                  });
+                  if (res.ok) {
+                    setWallpaperStatus('Pronto! Escolha "Salvar imagem" ou seu app.');
+                    return;
                   }
                   setWallpaperStatus('Iniciando download 4K...');
-                  window.location.assign(`/download-wallpaper/${fileName}`);
+                  window.location.assign(`${API_BASE}/download-wallpaper/${encodeURIComponent(fileName)}`);
                 }}
                 style={{
                   minHeight: '46px', borderRadius: '12px', border: 'none',
@@ -9624,8 +9673,8 @@ Em nome de Jesus, Amém.`;
                 type="button"
                 onClick={() => {
                   const fileName = previewWallpaper.url.split('/').pop();
-                  setWallpaperStatus('Iniciando download 4K...');
-                  window.location.assign(`/download-wallpaper/${fileName}`);
+                  setWallpaperStatus('Baixando imagem 4K...');
+                  window.location.assign(`${API_BASE}/download-wallpaper/${encodeURIComponent(fileName)}`);
                 }}
                 style={{
                   minHeight: '46px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)',

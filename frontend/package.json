@@ -13,6 +13,9 @@
     "lint": "oxlint"
   },
   "dependencies": {
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/share": "^8.0.3",
     "edge-tts-universal": "^1.4.0",
     "html2canvas": "^1.4.1",
     "react": "^19.2.7",
