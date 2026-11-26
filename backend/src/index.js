@@ -2565,7 +2565,7 @@ app.get('/api/v1/admin/email-pipeline', requireAdminHeader, async (req, res) => 
   try {
     const payments = await dbAll('SELECT status, email_sent FROM tb_pagamentos_asaas');
     const gratisRow = await dbGet(
-      "SELECT COUNT(*) as total FROM tb_acessos_usuarios WHERE UPPER(COALESCE(access_type, '')) IN ('GRATUITO', 'FREE', 'LEAD')"
+      "SELECT COUNT(*) as total FROM tb_acessos_usuarios WHERE UPPER(COALESCE(type, '')) IN ('GRATUITO', 'FREE', 'LEAD')"
     );
     const pendingCount = payments.filter((p) => String(p.status).toUpperCase() === 'PENDING').length;
     const paidSentCount = payments.filter(

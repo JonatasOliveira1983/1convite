@@ -363,6 +363,7 @@ export function buildSeasonalNewYearEmailHtml({ name, siteUrl = 'https://1convit
 }
 
 export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1convite.com.br' } = {}) {
+  const senderEmail = getResendConfig().fromEmail;
   const sampleInvites = ['REINO-7X9K2', 'REINO-4M8P1', 'REINO-9Q2W5'];
   const sampleVouchersHtml = sampleInvites
     .map(
@@ -402,7 +403,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'transacional',
       status: 'active',
       trigger: 'Automático ao gerar checkout no Asaas (/api/v1/pagamentos/checkout)',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Seu pedido 1Convite (Plano Popular — Edificação) está aguardando pagamento',
       stats: statsMap.cobranca_gerada || { sent: 0, failed: 0 },
       previewHtml: buildPixPendingEmailHtml({
@@ -420,7 +421,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'transacional',
       status: 'active',
       trigger: 'Automático na confirmação do pagamento (Webhook Asaas ou Simulação Sandbox)',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Acesso liberado! Seu Plano Popular + Vales-Presente VIP (1Convite)',
       stats: statsMap.boas_vindas_vip || { sent: 0, failed: 0 },
       previewHtml: welcomePreviewHtml,
@@ -432,7 +433,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'relacionamento',
       status: 'active',
       trigger: 'Automático quando um visitante se cadastra gratuitamente no app',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Sua jornada no 1Convite começou!',
       stats: statsMap.boas_vindas_lead || { sent: 0, failed: 0 },
       previewHtml: buildLeadWelcomeEmailHtml({ name: 'Maria Clara', siteUrl }),
@@ -444,7 +445,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'recuperacao',
       status: 'ready',
       trigger: 'Pronto para disparo manual ou automação após 24h sem pagamento',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Seu acesso VIP ao 1Convite ainda está reservado',
       stats: { sent: 0, failed: 0 },
       previewHtml: buildPixReminderEmailHtml({
@@ -462,7 +463,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'relacionamento',
       status: 'ready',
       trigger: 'Pronto para quando um amigo resgatar um Vale-Presente VIP',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Seu Vale-Presente VIP 1Convite foi ativado!',
       stats: { sent: 0, failed: 0 },
       previewHtml: buildInviteRedeemedEmailHtml({
@@ -479,7 +480,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'sazonal',
       status: 'seasonal',
       trigger: 'Campanha Sazonal (24–25 de Dezembro) — Compatível com Resend Gratuito',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Feliz Natal! Que a luz de Cristo ilumine sua casa — 1Convite',
       stats: { sent: 0, failed: 0 },
       previewHtml: buildSeasonalChristmasEmailHtml({ name: 'Irmão(ã)', siteUrl }),
@@ -491,7 +492,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       category: 'sazonal',
       status: 'seasonal',
       trigger: 'Campanha Sazonal (31 Dez – 01 Jan) — Compatível com Resend Gratuito',
-      sender: getFromEmail(),
+      sender: senderEmail,
       subject: 'Feliz Ano Novo abençoado na Palavra — 1Convite',
       stats: { sent: 0, failed: 0 },
       previewHtml: buildSeasonalNewYearEmailHtml({ name: 'Irmão(ã)', siteUrl }),
