@@ -112,6 +112,7 @@ const IconArrowRight = () => (
 
 export default function LandingPage({ onEnterApp }) {
   const [leadName, setLeadName] = useState('');
+  const [leadEmail, setLeadEmail] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
   const [leadObjective, setLeadObjective] = useState('crescimento');
   const [formStatus, setFormStatus] = useState('idle');
@@ -434,12 +435,13 @@ export default function LandingPage({ onEnterApp }) {
 
   const handleLeadSubmit = async (e) => {
     e.preventDefault();
-    if (!leadPhone.trim()) return;
+    if (!leadEmail.trim() && !leadPhone.trim()) return;
     setFormStatus('loading');
     try {
       await sendLeadWebhook({
         nome: leadName || 'Membro Convidado',
-        phone: leadPhone,
+        email: leadEmail.trim(),
+        phone: leadPhone.trim(),
         origem: 'landing-spotify-1convite',
         pagina: window.location.href,
         objetivo: leadObjective
@@ -1063,14 +1065,14 @@ export default function LandingPage({ onEnterApp }) {
         </div>
       </section>
 
-      {/* ── SEÇÃO: LEADS E COMUNHÃO NO WHATSAPP ── */}
+      {/* ── SEÇÃO: LEADS E COMUNHÃO POR E-MAIL & WHATSAPP ── */}
       <section className="sp-section sp-section-elevated">
         <div className="sp-container">
           <div className="sp-form-card">
             <div className="sp-section-heading" style={{ marginBottom: '24px' }}>
-              <span className="sp-kicker">COMUNHÃO & NOTIFICAÇÕES</span>
-              <h2 className="sp-title">Receba os Desafios Diários no WhatsApp</h2>
-              <p className="sp-desc">Cadastre seu contato para receber o versículo do dia e meditações práticas gratuitas.</p>
+              <span className="sp-kicker">Comunhão &amp; Devocionais</span>
+              <h2 className="sp-title">Receba os Desafios Diários no seu E-mail</h2>
+              <p className="sp-desc">Cadastre seu melhor e-mail para receber o versículo do dia, boas-vindas e meditações práticas gratuitas.</p>
             </div>
 
             {formStatus === 'success' ? (
@@ -1079,7 +1081,7 @@ export default function LandingPage({ onEnterApp }) {
                   <IconCheck />
                 </div>
                 <h3>Inscrição Confirmada com Sucesso</h3>
-                <p>Seus dados foram registrados com segurança no ecossistema 1Convite.</p>
+                <p>Enviamos um e-mail de boas-vindas para você agora mesmo e salvamos seu contato no ecossistema 1Convite.</p>
                 <button className="sp-btn-pill-primary" onClick={onEnterApp} style={{ marginTop: '16px' }}>
                   <span>Abrir o Super App Agora</span>
                   <IconArrowRight />
@@ -1100,13 +1102,23 @@ export default function LandingPage({ onEnterApp }) {
                     />
                   </div>
                   <div className="sp-input-group">
-                    <label>Número de WhatsApp</label>
+                    <label>Seu Melhor E-mail</label>
+                    <input
+                      type="email"
+                      placeholder="seuemail@exemplo.com"
+                      value={leadEmail}
+                      onChange={(e) => setLeadEmail(e.target.value)}
+                      required
+                      className="sp-input"
+                    />
+                  </div>
+                  <div className="sp-input-group">
+                    <label>WhatsApp (Opcional)</label>
                     <input
                       type="tel"
                       placeholder="DDD + Número (ex: 11999999999)"
                       value={leadPhone}
                       onChange={(e) => setLeadPhone(e.target.value)}
-                      required
                       className="sp-input"
                     />
                   </div>
@@ -1114,7 +1126,7 @@ export default function LandingPage({ onEnterApp }) {
 
                 <button type="submit" disabled={formStatus === 'loading'} className="sp-btn-cta-green sp-btn-block">
                   <IconCheck />
-                  <span>{formStatus === 'loading' ? 'Registrando...' : 'Quero Receber os Devocionais no WhatsApp'}</span>
+                  <span>{formStatus === 'loading' ? 'Registrando...' : 'Quero Receber os Devocionais Gratuitos'}</span>
                 </button>
               </form>
             )}
