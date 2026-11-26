@@ -22,39 +22,64 @@ function escapeHtml(value = '') {
     .replace(/'/g, '&#39;');
 }
 
+let emailSendChain = Promise.resolve();
+let lastEmailSentAt = 0;
+
 export async function sendEmail({ to, subject, html, text }) {
-  const { apiKey, fromEmail, replyTo } = getResendConfig();
-  if (!apiKey) {
-    console.warn('[RESEND] RESEND_API_KEY não configurado. E-mail não enviado para:', to);
-    return { ok: false, skipped: true, reason: 'RESEND_API_KEY missing' };
-  }
+  const runTask = async () => {
+    const { apiKey, fromEmail, replyTo } = getResendConfig();
+    if (!apiKey) {
+      console.warn('[RESEND] RESEND_API_KEY não configurado. E-mail não enviado para:', to);
+      return { ok: false, skipped: true, reason: 'RESEND_API_KEY missing' };
+    }
 
-  const payload = {
-    from: fromEmail,
-    to: Array.isArray(to) ? to : [to],
-    subject,
-    html,
+    const elapsed = Date.now() - lastEmailSentAt;
+    if (elapsed < 650) {
+      await new Promise((r) => setTimeout(r, 650 - elapsed));
+    }
+
+    const payload = {
+      from: fromEmail,
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html,
+    };
+    if (text) payload.text = text;
+    if (replyTo) payload.reply_to = replyTo;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      lastEmailSentAt = Date.now();
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { ok: true, id: result.id };
+      }
+
+      const errText = await response.text();
+      if (response.status === 429 && attempt < 3) {
+        console.warn(`[RESEND] Rate limit 429 (tentativa ${attempt}/3), aguardando retry para:`, to);
+        await new Promise((r) => setTimeout(r, 1200 * attempt));
+        continue;
+      }
+
+      console.error('[RESEND] Erro ao enviar e-mail:', response.status, errText);
+      return { ok: false, error: errText };
+    }
+
+    return { ok: false, error: 'Falha após 3 tentativas no Resend' };
   };
-  if (text) payload.text = text;
-  if (replyTo) payload.reply_to = replyTo;
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    console.error('[RESEND] Erro ao enviar e-mail:', response.status, errText);
-    return { ok: false, error: errText };
-  }
-
-  const result = await response.json();
-  return { ok: true, id: result.id };
+  const queued = emailSendChain.then(runTask, runTask);
+  emailSendChain = queued.catch(() => {});
+  return queued;
 }
 
 export async function sendWelcomeAndVouchersEmail({

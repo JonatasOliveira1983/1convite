@@ -2060,7 +2060,20 @@ function mergeEntitlements(existingRaw, incomingRaw) {
   return Array.from(set);
 }
 
+const fulfillingPaymentLocks = new Map();
+
 async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
+  if (fulfillingPaymentLocks.has(paymentId)) {
+    return fulfillingPaymentLocks.get(paymentId);
+  }
+  const promise = fulfillPaidOrderInternal(paymentId, paidStatus).finally(() => {
+    fulfillingPaymentLocks.delete(paymentId);
+  });
+  fulfillingPaymentLocks.set(paymentId, promise);
+  return promise;
+}
+
+async function fulfillPaidOrderInternal(paymentId, paidStatus = 'CONFIRMED') {
   const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
   if (!order) {
     return { found: false };
@@ -2078,6 +2091,10 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
 
   const nowIso = new Date().toISOString();
   const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && (isFunnelAddon || vouchers.length > 0);
+  const cleanEmail = order.customer_email.trim().toLowerCase();
+  let existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
+  let tempPassword = '';
+  let mergedEnts = mergeEntitlements(existingUser?.entitlements_json, orderEntitlements);
 
   if (!alreadyFulfilled) {
     if (plan && vouchers.length === 0) {
@@ -2095,11 +2112,6 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
     const daysValid = plan ? plan.diasValidade : 365;
     const expiryMs = Date.now() + daysValid * 24 * 60 * 60 * 1000;
     const expiryTimestamp = String(expiryMs);
-    const cleanEmail = order.customer_email.trim().toLowerCase();
-    const existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
-    let tempPassword = '';
-
-    const mergedEnts = mergeEntitlements(existingUser?.entitlements_json, orderEntitlements);
     const mergedEntsJson = JSON.stringify(mergedEnts);
 
     if (existingUser) {
@@ -2114,6 +2126,7 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
           [order.customer_name, tempPassword, nextPlanName, nextExpiry, mergedEntsJson, nowIso, existingUser.id]
         );
       } else {
+        tempPassword = existingUser.password;
         await dbRun(
           `UPDATE tb_acessos_usuarios
            SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, entitlements_json = $4, last_login = $5
@@ -2137,79 +2150,67 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
        WHERE payment_id = $4`,
       [paidStatus, JSON.stringify(vouchers), nowIso, paymentId]
     );
+  } else if (!tempPassword && existingUser?.password) {
+    tempPassword = existingUser.password;
+  }
 
-    if (!Number(order.email_sent) && plan) {
-      if (isResendConfigured()) {
-        const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
-        const mailRes = await sendWelcomeAndVouchersEmail({
+  if (!Number(order.email_sent) && plan) {
+    if (isResendConfigured()) {
+      const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+      const mailRes = await sendWelcomeAndVouchersEmail({
+        to: order.customer_email,
+        name: order.customer_name,
+        planName: plan.nome,
+        vouchers,
+        expiryDateStr: expiryStr,
+        tempPassword,
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      });
+      if (mailRes.ok) {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
+      } else {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+      }
+      // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
+      if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks')) {
+        const bumpMailRes = await sendFunnelAddonWelcomeEmail({
           to: order.customer_email,
           name: order.customer_name,
-          planName: plan.nome,
-          vouchers,
-          expiryDateStr: expiryStr,
-          tempPassword,
+          offerName: 'Coleção 5 E-books Premium em PDF',
           siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-        });
-        if (mailRes.ok) {
-          await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
-        } else {
-          await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+        }).catch((e) => ({ ok: false, error: e.message }));
+        if (!bumpMailRes?.ok) {
+          console.warn('[RESEND ORDER BUMP WARN]:', bumpMailRes?.error || bumpMailRes?.reason);
         }
-        // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
-        if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks')) {
-          await new Promise((r) => setTimeout(r, 650));
-          const bumpMailRes = await sendFunnelAddonWelcomeEmail({
-            to: order.customer_email,
-            name: order.customer_name,
-            offerName: 'Coleção 5 E-books Premium em PDF',
-            siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-          }).catch((e) => ({ ok: false, error: e.message }));
-          if (!bumpMailRes?.ok) {
-            console.warn('[RESEND ORDER BUMP WARN]:', bumpMailRes?.error || bumpMailRes?.reason);
-          }
-        }
-      } else {
-        await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
       }
-    } else if (!Number(order.email_sent) && isFunnelAddon) {
-      if (isResendConfigured()) {
-        const offerObj = getFunnelOfferById(order.plan_id);
-        const mailRes = await sendFunnelAddonWelcomeEmail({
-          to: order.customer_email,
-          name: order.customer_name,
-          offerName: offerObj?.nome || 'Módulo Extra VIP',
-          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-        });
-        if (mailRes.ok) {
-          await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
-        } else {
-          await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
-        }
-        // Se incluiu também e-books neste pedido adicional
-        if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks') && order.plan_id !== 'order_bump_ebooks') {
-          await new Promise((r) => setTimeout(r, 650));
-          await sendFunnelAddonWelcomeEmail({
-            to: order.customer_email,
-            name: order.customer_name,
-            offerName: 'Coleção 5 E-books Premium em PDF',
-            siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-          }).catch(() => {});
-        }
-      } else {
-        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
-      }
+    } else {
+      await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
     }
-
-    return {
-      found: true,
-      paid: true,
-      status: paidStatus,
-      plan,
-      vouchers,
-      entitlements: mergedEnts,
-      tempPassword: tempPassword || undefined,
-      customerEmail: order.customer_email,
-    };
+  } else if (!Number(order.email_sent) && isFunnelAddon) {
+    if (isResendConfigured()) {
+      const offerObj = getFunnelOfferById(order.plan_id);
+      const mailRes = await sendFunnelAddonWelcomeEmail({
+        to: order.customer_email,
+        name: order.customer_name,
+        offerName: offerObj?.nome || 'Módulo Extra VIP',
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      });
+      if (mailRes.ok) {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
+      } else {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+      }
+      if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks') && order.plan_id !== 'order_bump_ebooks') {
+        await sendFunnelAddonWelcomeEmail({
+          to: order.customer_email,
+          name: order.customer_name,
+          offerName: 'Coleção 5 E-books Premium em PDF',
+          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+        }).catch(() => {});
+      }
+    } else {
+      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+    }
   }
 
   return {
@@ -2218,7 +2219,8 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
     status: paidStatus,
     plan,
     vouchers,
-    entitlements: orderEntitlements,
+    entitlements: mergedEnts,
+    tempPassword: tempPassword || undefined,
     customerEmail: order.customer_email,
   };
 }
