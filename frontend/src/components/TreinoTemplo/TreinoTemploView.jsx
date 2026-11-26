@@ -295,7 +295,8 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
       ...prev,
       {
         nome: ex.nome,
-        animType: ex.animType,
+        animType: ex.animType || 'squat',
+        gifUrl: ex.gifUrl || '',
         series: 3,
         reps: '12',
         musculos: ex.musculos,
@@ -406,6 +407,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
               <div className="templofit-dual-visual">
                 <ExerciseAvatarPlayer
                   animType={rotinaSelecionada.exercicios[exercicioAtualIndex].animType}
+                  gifUrl={rotinaSelecionada.exercicios[exercicioAtualIndex].gifUrl}
                   exerciseName={rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
                 />
                 <div className="templofit-map-box">
@@ -719,33 +721,103 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         </div>
       ) : (
         <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* GRÁFICO 1: EVOLUÇÃO DE PESO CORPORAL (LINHA + ÁREA SVG) */}
           <div className="treino-rotina-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h4 style={{ margin: 0, color: '#FFF' }}>Evolução de Peso Corporal (kg)</h4>
+              <div>
+                <h4 style={{ margin: 0, color: '#FFF' }}>Evolução de Peso Corporal (kg)</h4>
+                <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                  Peso atual: <strong style={{ color: '#38BDF8' }}>{pesoCorporal} kg</strong> • {pesoHistorico.length} registro(s)
+                </span>
+              </div>
               <button type="button" onClick={() => { setInputPesoTemp(pesoCorporal); setShowModalPeso(true); }} className="treino-chip active">
                 + Registrar Hoje
               </button>
             </div>
             {pesoHistorico.length < 2 ? (
-              <p style={{ color: '#94A3B8', fontSize: '0.82rem', margin: 0 }}>
-                Registre seu peso pelo menos 2 vezes em dias diferentes para visualizar o gráfico de evolução.
-              </p>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '110px', paddingTop: '12px' }}>
-                {pesoHistorico.slice(-10).map((pt) => {
-                  const minW = Math.min(...pesoHistorico.map((p) => p.pesoKg)) - 2;
-                  const maxW = Math.max(...pesoHistorico.map((p) => p.pesoKg)) + 2;
-                  const hPct = Math.max(15, Math.round(((pt.pesoKg - minW) / Math.max(1, maxW - minW)) * 100));
-                  return (
-                    <div key={pt.id} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ fontSize: '0.66rem', color: '#38BDF8', fontWeight: '700' }}>{pt.pesoKg}</span>
-                      <div style={{ width: '100%', maxWidth: '28px', height: `${hPct}%`, background: 'linear-gradient(180deg, #38BDF8, #0284C7)', borderRadius: '6px 6px 2px 2px' }} />
-                      <span style={{ fontSize: '0.62rem', color: '#94A3B8' }}>{pt.label}</span>
-                    </div>
-                  );
-                })}
+              <div style={{ padding: '14px', borderRadius: '10px', background: 'rgba(56,189,248,0.08)', border: '1px dashed rgba(56,189,248,0.3)', fontSize: '0.8rem', color: '#CBD5E1' }}>
+                Registre seu peso pelo menos 2 vezes em dias diferentes para desenhar sua curva de evolução aqui.
               </div>
+            ) : (
+              (() => {
+                const pts = pesoHistorico.slice(-10);
+                const minW = Math.min(...pts.map((p) => p.pesoKg)) - 1.5;
+                const maxW = Math.max(...pts.map((p) => p.pesoKg)) + 1.5;
+                const W = 300;
+                const H = 95;
+                const coords = pts.map((p, idx) => {
+                  const x = pts.length === 1 ? W / 2 : 14 + (idx * (W - 28)) / (pts.length - 1);
+                  const y = H - 18 - ((p.pesoKg - minW) / Math.max(1, maxW - minW)) * (H - 34);
+                  return { ...p, x, y };
+                });
+                const polyline = coords.map((c) => `${c.x},${c.y}`).join(' ');
+                return (
+                  <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: '130px', overflow: 'visible' }}>
+                    <polyline fill="none" stroke="#38BDF8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points={polyline} />
+                    {coords.map((c) => (
+                      <g key={c.id}>
+                        <circle cx={c.x} cy={c.y} r="4" fill="#0EA5E9" stroke="#FFF" strokeWidth="1.5" />
+                        <text x={c.x} y={c.y - 9} textAnchor="middle" fill="#BAE6FD" fontSize="9" fontWeight="700">{c.pesoKg}</text>
+                        <text x={c.x} y={H - 2} textAnchor="middle" fill="#94A3B8" fontSize="8">{c.label}</text>
+                      </g>
+                    ))}
+                  </svg>
+                );
+              })()
             )}
+          </div>
+
+          {/* GRÁFICO 2: FREQUÊNCIA SEMANAL & VOLUME TOTAL (ESTILO OPENGYM) */}
+          <div className="treino-rotina-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <h4 style={{ margin: 0, color: '#FFF' }}>Frequência &amp; Volume Semanal</h4>
+              <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#34D399' }}>
+                {historicoTreinos.reduce((acc, h) => acc + Number(h.volumeKg || 0), 0).toLocaleString('pt-BR')} kg totais
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '92px', paddingTop: '8px' }}>
+              {diasSemana.map((dia, idx) => {
+                const count = historicoTreinos.filter((t) => t.diaSemana === idx).length;
+                const barH = count === 0 ? 12 : Math.min(100, 28 + count * 22);
+                return (
+                  <div key={dia} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', height: '100%', justifyContent: 'flex-end' }}>
+                    <span style={{ fontSize: '0.68rem', color: count > 0 ? '#34D399' : '#64748B', fontWeight: '700' }}>{count}</span>
+                    <div
+                      style={{
+                        width: '100%',
+                        maxWidth: '28px',
+                        height: `${barH}%`,
+                        borderRadius: '6px 6px 2px 2px',
+                        background: count > 0 ? 'linear-gradient(180deg, #10B981, #059669)' : 'rgba(148,163,184,0.16)',
+                      }}
+                    />
+                    <span style={{ fontSize: '0.66rem', color: idx === hojeDia ? '#FFF' : '#94A3B8', fontWeight: idx === hojeDia ? '800' : '600' }}>{dia}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* GRÁFICO 3: DISTRIBUIÇÃO DE FASES CONCLUÍDAS */}
+          <div className="treino-rotina-card">
+            <h4 style={{ margin: '0 0 12px', color: '#FFF' }}>Progresso por Fase &amp; Modalidade</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {PROGRAMAS_TEMPLOFIT.map((prog) => {
+                const done = historicoTreinos.filter((h) => h.fase === prog.fase || h.rotinaId === prog.id).length;
+                const pct = Math.min(100, Math.round((done / prog.metaSessoes) * 100));
+                return (
+                  <div key={prog.id}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.76rem', marginBottom: '4px' }}>
+                      <span style={{ color: '#E2E8F0', fontWeight: '700' }}>{prog.titulo}</span>
+                      <span style={{ color: '#FBBF24', fontWeight: '800' }}>{done}/{prog.metaSessoes} ({pct}%)</span>
+                    </div>
+                    <div style={{ height: '7px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: 'linear-gradient(90deg, #F59E0B, #10B981)', borderRadius: '999px' }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="treino-rotina-card">
@@ -779,7 +851,11 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           <div className="treino-modal-card" style={{ maxWidth: '420px' }} onClick={(e) => e.stopPropagation()}>
             <h4 style={{ marginBottom: '10px' }}>{exercicioDetalhe.nome}</h4>
             <div className="templofit-dual-visual" style={{ marginBottom: '12px' }}>
-              <ExerciseAvatarPlayer animType={exercicioDetalhe.animType} exerciseName={exercicioDetalhe.nome} />
+              <ExerciseAvatarPlayer
+                animType={exercicioDetalhe.animType}
+                gifUrl={exercicioDetalhe.gifUrl}
+                exerciseName={exercicioDetalhe.nome}
+              />
               <div className="templofit-map-box">
                 <MuscleMap highlightMuscles={exercicioDetalhe.musculos} view="ambos" size="sm" />
               </div>

@@ -39,8 +39,8 @@ const ANIM_LABELS = {
   stretch: 'Respiração profunda e alongamento axial',
 };
 
-export default function ExerciseAvatarPlayer({ animType = 'squat', exerciseName = '' }) {
-  const gifSrc = WGER_GIFS[animType] || WGER_GIFS.squat;
+export default function ExerciseAvatarPlayer({ animType = 'squat', gifUrl = '', exerciseName = '' }) {
+  const gifSrc = gifUrl || WGER_GIFS[animType] || WGER_GIFS.squat;
   const caption = ANIM_LABELS[animType] || 'Execução guiada em ritmo constante';
 
   return (
