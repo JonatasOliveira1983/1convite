@@ -5,6 +5,7 @@ import MuscleMap from './MuscleMap';
 import BodyWeightCard from './BodyWeightCard';
 import OpenGymVideoPlayer from './OpenGymVideoPlayer';
 import { openGymCatalogueService, OPENGYM_BODYPARTS, OPENGYM_EQUIPMENTS } from '../../services/openGymCatalogueService';
+import OPENGYM_ROUTINES from '../../data/openGymRoutines.json';
 import { templofitService } from '../../services/templofitService';
 
 const ogMedia = (id) => ({
@@ -28,7 +29,7 @@ const PROGRAMAS_TEMPLOFIT = [
     calorias: 120,
     musculos: ['chest', 'quads', 'abs', 'calves'],
     exercicios: [
-      { nome: 'Polichinelos (Aquecimento)', ...ogMedia('0264'), series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante e respire com calma.' },
+      { nome: 'Polichinelos (Aquecimento)', ...ogMedia('3094'), series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante abrindo braços e pernas lateralmente.' },
       { nome: 'Agachamento Livre', ...ogMedia('3948'), series: 3, reps: '12', musculos: ['quads', 'glutes'], descanso: 45, instrucao: 'Pés na largura dos ombros, desça como se fosse sentar.' },
       { nome: 'Flexão de Braços', ...ogMedia('3216'), series: 3, reps: '10', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Abdômen contraído e cotovelos a 45 graus.' },
       { nome: 'Prancha Isométrica', ...ogMedia('0463'), series: 3, reps: '25 seg', musculos: ['abs'], descanso: 45, instrucao: 'Corpo alinhado dos calcanhares até a cabeça.' },
@@ -333,7 +334,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
   const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   const hojeDia = new Date().getDay();
-  const rotinasFiltradas = PROGRAMAS_TEMPLOFIT.filter((r) => categoriaAtiva === 'todos' || r.categoria === categoriaAtiva);
+  const rotinasFiltradas = OPENGYM_ROUTINES.filter((r) => categoriaAtiva === 'todos' || r.categoria === categoriaAtiva);
 
   return (
     <div className="treino-templo-container animate-fade-in">
@@ -547,25 +548,37 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             <div className="treino-hero-overlay">
               <span className="treino-hero-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                 <img src="/templofit/templofit-icon.png" alt="" style={{ height: '14px', width: 'auto' }} />
-                PROGRAMA PROGRESSIVO • 3 FASES
+                {OPENGYM_ROUTINES.length} PROGRAMAS OFICIAIS • PADRÃO OPENGYM
               </span>
-              <h3 className="treino-hero-title">TemploFit: Evolução Fase a Fase</h3>
+              <h3 className="treino-hero-title">TemploFit: Evolução &amp; Força Real</h3>
               <p className="treino-hero-desc">
-                Avance da Fase 1 (Despertar) à Fase 3 (Força Máxima) registrando séries, cargas em kg e peso corporal direto na nuvem.
+                Escolha qualquer um dos {OPENGYM_ROUTINES.length} planos oficiais completos (em Casa, Academia, Halteres, Glúteos ou Mobilidade) com vídeos 3D e registro na nuvem.
               </p>
-              <button className="treino-hero-cta" onClick={() => iniciarTreino(PROGRAMAS_TEMPLOFIT[0])}>
+              <button
+                className="treino-hero-cta"
+                onClick={() => {
+                  const first = OPENGYM_ROUTINES[0];
+                  const firstSess = first.sessoes[0];
+                  iniciarTreino({
+                    ...first,
+                    id: `${first.id}-0`,
+                    titulo: `${first.titulo} (${firstSess.nome})`,
+                    exercicios: firstSess.exercicios,
+                  });
+                }}
+              >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-                <span>Começar Fase 1 (15 min)</span>
+                <span>Começar Treino Hoje ({OPENGYM_ROUTINES[0].duracao})</span>
               </button>
             </div>
           </div>
 
           <div className="treino-chips-bar">
             {[
-              { id: 'todos', label: 'Todas as Fases' },
-              { id: 'casa', label: 'Em Casa' },
-              { id: 'alongamento', label: 'Mobilidade' },
+              { id: 'todos', label: `Todos os Planos (${OPENGYM_ROUTINES.length})` },
+              { id: 'casa', label: 'Em Casa / Sem Aparelhos' },
               { id: 'academia', label: 'Academia & Força' },
+              { id: 'mobilidade', label: 'Mobilidade & Postura' },
             ].map((cat) => (
               <button key={cat.id} className={`treino-chip ${categoriaAtiva === cat.id ? 'active' : ''}`} onClick={() => setCategoriaAtiva(cat.id)}>
                 {cat.label}
@@ -575,34 +588,67 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
           <div className="treino-rotinas-grid">
             {rotinasFiltradas.map((rotina) => {
-              const concluidasNaFase = historicoTreinos.filter((h) => h.fase === rotina.fase || h.rotinaId === rotina.id).length;
+              const concluidasNaFase = historicoTreinos.filter((h) => (h.rotinaId || '').startsWith(rotina.id)).length;
               const pct = Math.min(100, Math.round((concluidasNaFase / rotina.metaSessoes) * 100));
               return (
-                <div key={rotina.id} className="treino-rotina-card">
+                <div key={rotina.id} className="treino-rotina-card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
                     <div className="treino-mini-anatomy">
                       <MuscleMap highlightMuscles={rotina.musculos || []} view="frente" size="sm" />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="treino-rotina-top-tags">
-                        <span className="treino-nivel-tag">{rotina.faseLabel}</span>
+                        <span className="treino-nivel-tag">{rotina.nivel} • {rotina.sessoes.length} {rotina.sessoes.length === 1 ? 'Dia' : 'Dias'}</span>
                         <span className="treino-duracao-tag">{rotina.duracao}</span>
                       </div>
                       <h4 className="treino-rotina-titulo">{rotina.titulo}</h4>
                       <p className="treino-rotina-foco">{rotina.foco}</p>
-                      <div style={{ margin: '8px 0 10px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: '#94A3B8', marginBottom: '4px' }}>
-                          <span>Progresso da Fase</span>
-                          <strong style={{ color: '#34D399' }}>{concluidasNaFase}/{rotina.metaSessoes} sessões ({pct}%)</strong>
-                        </div>
-                        <div style={{ height: '6px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                          <div style={{ width: `${pct}%`, height: '100%', background: '#10B981', borderRadius: '999px' }} />
-                        </div>
-                      </div>
-                      <button className="treino-start-btn" onClick={() => iniciarTreino(rotina)}>
-                        <span>Iniciar Sessão →</span>
-                      </button>
                     </div>
+                  </div>
+
+                  {/* PROGRESSO DO PLANO */}
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: '#94A3B8', marginBottom: '4px' }}>
+                      <span>Progresso no Plano</span>
+                      <strong style={{ color: '#34D399' }}>{concluidasNaFase}/{rotina.metaSessoes} sessões ({pct}%)</strong>
+                    </div>
+                    <div style={{ height: '6px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: '#10B981', borderRadius: '999px' }} />
+                    </div>
+                  </div>
+
+                  {/* BOTÕES DIRETOS DE CADA DIA DO PLANO (DIA A, DIA B, DIA C...) */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '2px' }}>
+                    {rotina.sessoes.map((sess, sIdx) => (
+                      <button
+                        key={sIdx}
+                        type="button"
+                        onClick={() =>
+                          iniciarTreino({
+                            ...rotina,
+                            id: `${rotina.id}-${sIdx}`,
+                            fase: rotina.id,
+                            titulo: `${rotina.titulo} • ${sess.nome}`,
+                            exercicios: sess.exercicios,
+                          })
+                        }
+                        style={{
+                          flex: '1 1 130px',
+                          padding: '8px 10px',
+                          borderRadius: '10px',
+                          border: '1px solid rgba(16, 185, 129, 0.35)',
+                          background: 'rgba(16, 185, 129, 0.12)',
+                          color: '#34D399',
+                          fontSize: '0.74rem',
+                          fontWeight: '800',
+                          cursor: 'pointer',
+                          textAlign: 'center',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        {sess.nome} ({sess.exercicios.length} ex) →
+                      </button>
+                    ))}
                   </div>
                 </div>
               );
@@ -958,12 +1004,12 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             </div>
           </div>
 
-          {/* GRÁFICO 3: DISTRIBUIÇÃO DE FASES CONCLUÍDAS */}
+          {/* GRÁFICO 3: DISTRIBUIÇÃO DE PLANOS CONCLUÍDOS */}
           <div className="treino-rotina-card">
-            <h4 style={{ margin: '0 0 12px', color: '#FFF' }}>Progresso por Fase &amp; Modalidade</h4>
+            <h4 style={{ margin: '0 0 12px', color: '#FFF' }}>Progresso nos Planos Oficiais</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {PROGRAMAS_TEMPLOFIT.map((prog) => {
-                const done = historicoTreinos.filter((h) => h.fase === prog.fase || h.rotinaId === prog.id).length;
+              {OPENGYM_ROUTINES.slice(0, 6).map((prog) => {
+                const done = historicoTreinos.filter((h) => h.fase === prog.id || (h.rotinaId || '').startsWith(prog.id)).length;
                 const pct = Math.min(100, Math.round((done / prog.metaSessoes) * 100));
                 return (
                   <div key={prog.id}>

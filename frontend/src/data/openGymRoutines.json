@@ -1,0 +1,4330 @@
+[
+  {
+    "id": "home-bw",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Iniciante",
+    "titulo": "Treino em Casa (Peso Corporal)",
+    "duracao": "25 min",
+    "duracaoMinutos": 25,
+    "metaSessoes": 8,
+    "foco": "Treino completo usando apenas o peso do próprio corpo, sem nenhum equipamento.",
+    "calorias": 150,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "core",
+      "quads"
+    ],
+    "sessoes": [
+      {
+        "nome": "Em Casa • Treino A (Superior & Core)",
+        "exercicios": [
+          {
+            "id": "0662",
+            "nome": "Flexão De Braços",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0662.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0662.webp",
+            "instrucao": "Comece em posição de prancha alta com as mãos um pouco mais afastadas que a largura dos ombros e os pés juntos."
+          },
+          {
+            "id": "1197",
+            "nome": "Agachamento",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1197.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1197.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "3381",
+            "nome": "Remada Invertida Sob A Mesa",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3381.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3381.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "2471",
+            "nome": "Ponte De Glúteo Com As Duas Pernas No Chão",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2471.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2471.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 3,
+            "reps": "40 seg",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      },
+      {
+        "nome": "Em Casa • Treino B (Inferior & Cardio)",
+        "exercicios": [
+          {
+            "id": "2921",
+            "nome": "Flexão Pike",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2921.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2921.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0781",
+            "nome": "Agachamento Dividido",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0781.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0781.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0815",
+            "nome": "Mergulho Para Tríceps No Chão",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "chest",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0815.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0815.webp",
+            "instrucao": "Sente-se na borda de uma cadeira ou banco, com as mãos ao lado do quadril e os dedos apontados para a frente."
+          },
+          {
+            "id": "0726",
+            "nome": "Ponte Unilateral",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0726.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0726.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0715",
+            "nome": "Prancha Lateral",
+            "series": 3,
+            "reps": "30 seg",
+            "descanso": 60,
+            "musculos": [
+              "obliques",
+              "abdominals",
+              "glutes",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0715.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0715.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "full-body",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Iniciante",
+    "titulo": "Corpo Inteiro • 3x na Semana",
+    "duracao": "45 min",
+    "duracaoMinutos": 45,
+    "metaSessoes": 12,
+    "foco": "Trabalha todos os grandes grupos musculares 3 vezes por semana com base sólida.",
+    "calorias": 270,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "core"
+    ],
+    "sessoes": [
+      {
+        "nome": "Corpo Inteiro A",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          }
+        ]
+      },
+      {
+        "nome": "Corpo Inteiro B",
+        "exercicios": [
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0585",
+            "nome": "Cadeira Extensora (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "hamstrings"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0585.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0585.webp",
+            "instrucao": "Ajuste a altura do assento e o encosto da máquina ao seu corpo."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          }
+        ]
+      },
+      {
+        "nome": "Corpo Inteiro C",
+        "exercicios": [
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ppl",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Intermediário",
+    "titulo": "Empurrar, Puxar e Pernas (PPL)",
+    "duracao": "55 min",
+    "duracaoMinutos": 55,
+    "metaSessoes": 12,
+    "foco": "A divisão clássica mundial para hipertrofia muscular e recuperação ideal.",
+    "calorias": 330,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "upper back",
+      "side delts"
+    ],
+    "sessoes": [
+      {
+        "nome": "Dia A • Empurrar (Peito, Ombros e Tríceps)",
+        "exercicios": [
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          },
+          {
+            "id": "0251",
+            "nome": "Mergulho Para Peitoral",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0251.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0251.webp",
+            "instrucao": "Posicione-se nas barras paralelas com os braços totalmente estendidos e o corpo reto."
+          }
+        ]
+      },
+      {
+        "nome": "Dia B • Puxar (Costas e Bíceps)",
+        "exercicios": [
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 4,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0313",
+            "nome": "Rosca Martelo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0313.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0313.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão e as palmas voltadas para o tronco."
+          }
+        ]
+      },
+      {
+        "nome": "Dia C • Pernas Completas",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0585",
+            "nome": "Cadeira Extensora (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "hamstrings"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0585.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0585.webp",
+            "instrucao": "Ajuste a altura do assento e o encosto da máquina ao seu corpo."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 4,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "upper-lower",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Intermediário",
+    "titulo": "Superiores & Inferiores (4 Dias)",
+    "duracao": "50 min",
+    "duracaoMinutos": 50,
+    "metaSessoes": 16,
+    "foco": "Divisão equilibrada de 4 sessões semanais alternando membros superiores e inferiores.",
+    "calorias": 300,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "lats",
+      "biceps"
+    ],
+    "sessoes": [
+      {
+        "nome": "Superiores A",
+        "exercicios": [
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          },
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          }
+        ]
+      },
+      {
+        "nome": "Inferiores A",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      },
+      {
+        "nome": "Superiores B",
+        "exercicios": [
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          },
+          {
+            "id": "0313",
+            "nome": "Rosca Martelo Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0313.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0313.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão e as palmas voltadas para o tronco."
+          }
+        ]
+      },
+      {
+        "nome": "Inferiores B",
+        "exercicios": [
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0585",
+            "nome": "Cadeira Extensora (Máquina)",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "hamstrings"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0585.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0585.webp",
+            "instrucao": "Ajuste a altura do assento e o encosto da máquina ao seu corpo."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5x5",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Intermediário",
+    "titulo": "Força Pura 5×5 (Progressão Linear)",
+    "duracao": "45 min",
+    "duracaoMinutos": 45,
+    "metaSessoes": 12,
+    "foco": "Foco total em ganho de força máxima nos grandes levantamentos compostos.",
+    "calorias": 270,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "core"
+    ],
+    "sessoes": [
+      {
+        "nome": "Treino 5×5 A",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          }
+        ]
+      },
+      {
+        "nome": "Treino 5×5 B",
+        "exercicios": [
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          }
+        ]
+      },
+      {
+        "nome": "Treino 5×5 C",
+        "exercicios": [
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 5,
+            "reps": "5",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dumbbells",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Iniciante",
+    "titulo": "Treino Completo só com Halteres",
+    "duracao": "35 min",
+    "duracaoMinutos": 35,
+    "metaSessoes": 8,
+    "foco": "Ideal para quem treina em casa ou condomínio tendo apenas um par de halteres.",
+    "calorias": 210,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "pectorals"
+    ],
+    "sessoes": [
+      {
+        "nome": "Halteres • Treino A",
+        "exercicios": [
+          {
+            "id": "1760",
+            "nome": "Agachamento Goblet Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1760.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1760.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter na vertical contra o peito com as duas mãos."
+          },
+          {
+            "id": "2982",
+            "nome": "Supino Alternado No Chão Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "upper chest",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2982.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2982.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0293",
+            "nome": "Remada Curvada Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0293.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0293.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos levemente flexionados, segurando um halter em cada mão com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0294",
+            "nome": "Rosca Bíceps Com Halteres",
+            "series": 2,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0294.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0294.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão, com as palmas voltadas para a frente e os braços totalmente estendidos."
+          }
+        ]
+      },
+      {
+        "nome": "Halteres • Treino B",
+        "exercicios": [
+          {
+            "id": "1459",
+            "nome": "Levantamento Terra Romeno Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1459.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1459.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão com uma pegada pronada."
+          },
+          {
+            "id": "2960",
+            "nome": "Agachamento Afundo Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "adductors",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2960.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2960.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "4742",
+            "nome": "Elevação De Quadril Com Halter",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "quadriceps",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/4742.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/4742.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 3,
+            "reps": "40 seg",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cardio-emagrecimento",
+    "origem": "Starter Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Todos os Níveis",
+    "titulo": "Aquecimento & Queima Calórica em Casa",
+    "duracao": "20 min",
+    "duracaoMinutos": 20,
+    "metaSessoes": 4,
+    "foco": "Circuito dinâmico com Polichinelo (3094), Agachamento e Prancha para ativar o metabolismo.",
+    "calorias": 120,
+    "musculos": [
+      "cardiovascular system",
+      "calves",
+      "front delts",
+      "glutes",
+      "hip flexors"
+    ],
+    "sessoes": [
+      {
+        "nome": "Circuito Ativação",
+        "exercicios": [
+          {
+            "id": "3094",
+            "nome": "Polichinelo",
+            "series": 3,
+            "reps": "30 seg",
+            "descanso": 60,
+            "musculos": [
+              "cardiovascular system",
+              "calves",
+              "front delts",
+              "glutes",
+              "hip flexors"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3094.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3094.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "3948",
+            "nome": "Agachamento Livre",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3948.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3948.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0662",
+            "nome": "Flexão De Braços",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0662.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0662.webp",
+            "instrucao": "Comece em posição de prancha alta com as mãos um pouco mais afastadas que a largura dos ombros e os pés juntos."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 3,
+            "reps": "30 seg",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "glutes-first",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Intermediário",
+    "titulo": "Foco em Glúteos & Inferiores (4 Dias)",
+    "duracao": "55 min",
+    "duracaoMinutos": 55,
+    "metaSessoes": 16,
+    "foco": "Divisão Superior/Inferior priorizando glúteos, posteriores e pernas nos dias de base.",
+    "calorias": 330,
+    "musculos": [
+      "glutes",
+      "hamstrings",
+      "quadriceps",
+      "core",
+      "lower back"
+    ],
+    "sessoes": [
+      {
+        "nome": "Inferiores A (Foco Posterior/Glúteos)",
+        "exercicios": [
+          {
+            "id": "1060",
+            "nome": "Elevação Pélvica Com Barra",
+            "series": 4,
+            "reps": "10",
+            "descanso": 120,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "quadriceps",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1060.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1060.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 120,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "2290",
+            "nome": "Agachamento Búlgaro Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "adductors",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2290.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2290.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "1409",
+            "nome": "Ponte De Glúteos Com Barra",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1409.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1409.webp",
+            "instrucao": "Comece deitado de costas no chão, com os joelhos flexionados e os pés apoiados no chão."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      },
+      {
+        "nome": "Superiores A (Foco Força)",
+        "exercicios": [
+          {
+            "id": "0289",
+            "nome": "Supino Reto Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0289.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0289.webp",
+            "instrucao": "Deite-se de costas em um banco, com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          }
+        ]
+      },
+      {
+        "nome": "Inferiores B (Foco Quadríceps)",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 150,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0431",
+            "nome": "Step Up Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "glutes",
+              "quadriceps",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0431.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0431.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "1061",
+            "nome": "Elevação Pélvica Unilateral Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core",
+              "quadriceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1061.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1061.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0703",
+            "nome": "Ponte Lateral Com Abdução De Quadril (Estrela)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "abductors",
+              "obliques",
+              "glutes",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0703.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0703.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      },
+      {
+        "nome": "Superiores B (Foco Hipertrofia)",
+        "exercicios": [
+          {
+            "id": "0314",
+            "nome": "Supino Inclinado Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0314.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0314.webp",
+            "instrucao": "Ajuste um banco inclinado em um ângulo de 45 graus."
+          },
+          {
+            "id": "0293",
+            "nome": "Remada Curvada Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0293.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0293.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos levemente flexionados, segurando um halter em cada mão com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "5609",
+            "nome": "Face Pull Em Pé No Cabo",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "rear delts",
+              "rotator cuff",
+              "upper back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/5609.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/5609.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0313",
+            "nome": "Rosca Martelo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0313.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0313.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão e as palmas voltadas para o tronco."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "circuit-25",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Iniciante",
+    "titulo": "Circuito Metabólico de 25 Minutos",
+    "duracao": "25 min",
+    "duracaoMinutos": 25,
+    "metaSessoes": 4,
+    "foco": "Circuito intenso sem parar para queima calórica e condicionamento físico em casa.",
+    "calorias": 150,
+    "musculos": [
+      "cardiovascular system",
+      "calves",
+      "front delts",
+      "glutes",
+      "hip flexors"
+    ],
+    "sessoes": [
+      {
+        "nome": "Circuit",
+        "exercicios": [
+          {
+            "id": "3094",
+            "nome": "Polichinelo",
+            "series": 4,
+            "reps": "40 seg",
+            "descanso": 20,
+            "musculos": [
+              "cardiovascular system",
+              "calves",
+              "front delts",
+              "glutes",
+              "hip flexors"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3094.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3094.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "1197",
+            "nome": "Agachamento",
+            "series": 4,
+            "reps": "20",
+            "descanso": 20,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1197.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1197.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0662",
+            "nome": "Flexão De Braços",
+            "series": 4,
+            "reps": "12",
+            "descanso": 20,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0662.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0662.webp",
+            "instrucao": "Comece em posição de prancha alta com as mãos um pouco mais afastadas que a largura dos ombros e os pés juntos."
+          },
+          {
+            "id": "0630",
+            "nome": "Escalador",
+            "series": 4,
+            "reps": "30 seg",
+            "descanso": 20,
+            "musculos": [
+              "cardiovascular system",
+              "core",
+              "rear delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0630.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0630.webp",
+            "instrucao": "Comece na posição de prancha alta, com as mãos diretamente abaixo dos ombros e o corpo em linha reta."
+          },
+          {
+            "id": "1160",
+            "nome": "Burpee",
+            "series": 4,
+            "reps": "10",
+            "descanso": 30,
+            "musculos": [
+              "cardiovascular system",
+              "quadriceps",
+              "hamstrings",
+              "calves",
+              "front delts",
+              "chest"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1160.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1160.webp",
+            "instrucao": "Comece em pé, com os pés afastados na largura dos ombros."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 4,
+            "reps": "30 seg",
+            "descanso": 30,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "desk-reset",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "mobilidade",
+    "nivel": "Iniciante",
+    "titulo": "Alívio Postural (20 Min para Costas e Pescoço)",
+    "duracao": "20 min",
+    "duracaoMinutos": 20,
+    "metaSessoes": 4,
+    "foco": "Rotina de descompressão e mobilidade para quem trabalha muito tempo sentado.",
+    "calorias": 120,
+    "musculos": [
+      "hip flexors",
+      "quadriceps",
+      "glutes",
+      "core",
+      "spine"
+    ],
+    "sessoes": [
+      {
+        "nome": "Reset",
+        "exercicios": [
+          {
+            "id": "1053",
+            "nome": "Alongamento De Flexor Do Quadril Ajoelhado",
+            "series": 2,
+            "reps": "45 seg",
+            "descanso": 15,
+            "musculos": [
+              "hip flexors",
+              "quadriceps",
+              "glutes",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1053.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1053.webp",
+            "instrucao": "Each side."
+          },
+          {
+            "id": "1241",
+            "nome": "Bird Dog",
+            "series": 3,
+            "reps": "10",
+            "descanso": 30,
+            "musculos": [
+              "spine",
+              "glutes",
+              "core",
+              "front delts",
+              "hamstrings"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1241.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0276",
+            "nome": "Inseto Morto",
+            "series": 3,
+            "reps": "10",
+            "descanso": 30,
+            "musculos": [
+              "abs",
+              "hip flexors",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0276.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0276.webp",
+            "instrucao": "Deite-se de costas com os braços estendidos em direção ao teto."
+          },
+          {
+            "id": "2471",
+            "nome": "Ponte De Glúteo Com As Duas Pernas No Chão",
+            "series": 3,
+            "reps": "15",
+            "descanso": 30,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2471.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2471.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0715",
+            "nome": "Prancha Lateral",
+            "series": 2,
+            "reps": "30 seg",
+            "descanso": 20,
+            "musculos": [
+              "obliques",
+              "abdominals",
+              "glutes",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0715.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0715.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "4553",
+            "nome": "Ponte Torácica",
+            "series": 2,
+            "reps": "8",
+            "descanso": 30,
+            "musculos": [
+              "glutes",
+              "lower back",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/4553.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/4553.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ppl-six-days",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Avançado",
+    "titulo": "Push, Pull, Legs • 6 Dias (Avançado)",
+    "duracao": "65 min",
+    "duracaoMinutos": 65,
+    "metaSessoes": 24,
+    "foco": "Divisão dupla semanal para máxima hipertrofia e alto volume de treino.",
+    "calorias": 390,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "upper chest",
+      "core"
+    ],
+    "sessoes": [
+      {
+        "nome": "Push, heavy",
+        "exercicios": [
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 4,
+            "reps": "6",
+            "descanso": 150,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "1162",
+            "nome": "Desenvolvimento Militar Em Pé Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1162.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1162.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0047",
+            "nome": "Supino Inclinado Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0047.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0047.webp",
+            "instrucao": "Ajuste um banco inclinado a um ângulo de 45 graus."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 4,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          }
+        ]
+      },
+      {
+        "nome": "Pull, heavy",
+        "exercicios": [
+          {
+            "id": "0032",
+            "nome": "Levantamento Terra Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0032.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0032.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e a barra no chão à sua frente."
+          },
+          {
+            "id": "0652",
+            "nome": "Barra Fixa",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0652.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0652.webp",
+            "instrucao": "Fique suspenso em uma barra fixa, com as palmas das mãos voltadas para a frente e os braços completamente estendidos."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "5609",
+            "nome": "Face Pull Em Pé No Cabo",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "rear delts",
+              "rotator cuff",
+              "upper back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/5609.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/5609.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          }
+        ]
+      },
+      {
+        "nome": "Legs, heavy",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 4,
+            "reps": "6",
+            "descanso": 180,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 120,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 3,
+            "reps": "12",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 4,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      },
+      {
+        "nome": "Push, volume",
+        "exercicios": [
+          {
+            "id": "0289",
+            "nome": "Supino Reto Com Halteres",
+            "series": 4,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0289.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0289.webp",
+            "instrucao": "Deite-se de costas em um banco, com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0251",
+            "nome": "Mergulho Para Peitoral",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0251.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0251.webp",
+            "instrucao": "Posicione-se nas barras paralelas com os braços totalmente estendidos e o corpo reto."
+          },
+          {
+            "id": "0178",
+            "nome": "Elevação Lateral No Cabo",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "side delts",
+              "traps",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0178.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0178.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure as alças dos cabos com uma pegada pronada."
+          },
+          {
+            "id": "0200",
+            "nome": "Tríceps Pulley No Cabo (Com Corda)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0200.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0200.webp",
+            "instrucao": "Prenda uma corda à polia alta de uma máquina de cabos."
+          }
+        ]
+      },
+      {
+        "nome": "Pull, volume",
+        "exercicios": [
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 4,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 4,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0293",
+            "nome": "Remada Curvada Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0293.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0293.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos levemente flexionados, segurando um halter em cada mão com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0348",
+            "nome": "Elevação Lateral Posterior Deitado Com Halteres",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "rear delts",
+              "traps",
+              "rhomboids"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0348.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0348.webp",
+            "instrucao": "Deite-se de bruços em um banco reto com um halter em cada mão, com as palmas voltadas uma para a outra."
+          },
+          {
+            "id": "0313",
+            "nome": "Rosca Martelo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0313.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0313.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão e as palmas voltadas para o tronco."
+          }
+        ]
+      },
+      {
+        "nome": "Legs, volume",
+        "exercicios": [
+          {
+            "id": "2290",
+            "nome": "Agachamento Búlgaro Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "adductors",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2290.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2290.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "1060",
+            "nome": "Elevação Pélvica Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "quadriceps",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1060.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1060.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0585",
+            "nome": "Cadeira Extensora (Máquina)",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "hamstrings"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0585.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0585.webp",
+            "instrucao": "Ajuste a altura do assento e o encosto da máquina ao seu corpo."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 4,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          },
+          {
+            "id": "0472",
+            "nome": "Elevação De Pernas Na Barra Fixa",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "hip flexors"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0472.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0472.webp",
+            "instrucao": "Fique pendurado em uma barra fixa com os braços totalmente estendidos e as palmas das mãos voltadas para longe do corpo."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "body-part-split",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Intermediário",
+    "titulo": "Divisão por Músculo (5 Dias • ABCDE)",
+    "duracao": "60 min",
+    "duracaoMinutos": 60,
+    "metaSessoes": 20,
+    "foco": "Um grupo muscular focado por dia: Peito, Costas, Ombros, Braços e Pernas.",
+    "calorias": 360,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "core",
+      "lats"
+    ],
+    "sessoes": [
+      {
+        "nome": "Chest",
+        "exercicios": [
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 150,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0314",
+            "nome": "Supino Inclinado Com Halteres",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "front delts",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0314.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0314.webp",
+            "instrucao": "Ajuste um banco inclinado em um ângulo de 45 graus."
+          },
+          {
+            "id": "0308",
+            "nome": "Crucifixo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0308.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0308.webp",
+            "instrucao": "Deite-se de costas em um banco com um halter em cada mão, palmas voltadas uma para a outra."
+          },
+          {
+            "id": "0251",
+            "nome": "Mergulho Para Peitoral",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0251.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0251.webp",
+            "instrucao": "Posicione-se nas barras paralelas com os braços totalmente estendidos e o corpo reto."
+          },
+          {
+            "id": "0662",
+            "nome": "Flexão De Braços",
+            "series": 2,
+            "reps": "20",
+            "descanso": 60,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0662.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0662.webp",
+            "instrucao": "Burnout: as many clean reps as you have."
+          }
+        ]
+      },
+      {
+        "nome": "Back",
+        "exercicios": [
+          {
+            "id": "0652",
+            "nome": "Barra Fixa",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0652.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0652.webp",
+            "instrucao": "Fique suspenso em uma barra fixa, com as palmas das mãos voltadas para a frente e os braços completamente estendidos."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 3,
+            "reps": "12",
+            "descanso": 90,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 3,
+            "reps": "12",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0406",
+            "nome": "Encolhimento De Ombros Com Halter",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "traps",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0406.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0406.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          }
+        ]
+      },
+      {
+        "nome": "Shoulders",
+        "exercicios": [
+          {
+            "id": "1162",
+            "nome": "Desenvolvimento Militar Em Pé Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1162.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1162.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 4,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0178",
+            "nome": "Elevação Lateral No Cabo",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "side delts",
+              "traps",
+              "triceps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0178.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0178.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure as alças dos cabos com uma pegada pronada."
+          },
+          {
+            "id": "5609",
+            "nome": "Face Pull Em Pé No Cabo",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "rear delts",
+              "rotator cuff",
+              "upper back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/5609.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/5609.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0348",
+            "nome": "Elevação Lateral Posterior Deitado Com Halteres",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "rear delts",
+              "traps",
+              "rhomboids"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0348.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0348.webp",
+            "instrucao": "Deite-se de bruços em um banco reto com um halter em cada mão, com as palmas voltadas uma para a outra."
+          }
+        ]
+      },
+      {
+        "nome": "Legs",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 4,
+            "reps": "8",
+            "descanso": 180,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0085",
+            "nome": "Levantamento Terra Romeno Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 120,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0085.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0085.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos apontados para a frente."
+          },
+          {
+            "id": "0739",
+            "nome": "Leg Press 45 Graus No Sled",
+            "series": 3,
+            "reps": "12",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0739.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0739.webp",
+            "instrucao": "Ajuste o assento e a plataforma da máquina de trenó em uma posição confortável."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 4,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      },
+      {
+        "nome": "Arms",
+        "exercicios": [
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          },
+          {
+            "id": "0313",
+            "nome": "Rosca Martelo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0313.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0313.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão e as palmas voltadas para o tronco."
+          },
+          {
+            "id": "0814",
+            "nome": "Mergulho Para Tríceps",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "chest",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0814.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0814.webp",
+            "instrucao": "Sente-se na borda de um banco ou cadeira e segure a borda com as mãos, mantendo os dedos apontados para a frente."
+          },
+          {
+            "id": "0294",
+            "nome": "Rosca Bíceps Com Halteres",
+            "series": 2,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0294.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0294.webp",
+            "instrucao": "Fique em pé com o corpo ereto, segurando um halter em cada mão, com as palmas voltadas para a frente e os braços totalmente estendidos."
+          },
+          {
+            "id": "0200",
+            "nome": "Tríceps Pulley No Cabo (Com Corda)",
+            "series": 2,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0200.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0200.webp",
+            "instrucao": "Prenda uma corda à polia alta de uma máquina de cabos."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dumbbell-sweat",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Iniciante",
+    "titulo": "Suor & Resistência com Halteres",
+    "duracao": "35 min",
+    "duracaoMinutos": 35,
+    "metaSessoes": 4,
+    "foco": "Treino contínuo de corpo inteiro usando apenas um par de halteres.",
+    "calorias": 210,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "upper back"
+    ],
+    "sessoes": [
+      {
+        "nome": "Dumbbell circuit",
+        "exercicios": [
+          {
+            "id": "1760",
+            "nome": "Agachamento Goblet Com Halter",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1760.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1760.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter na vertical contra o peito com as duas mãos."
+          },
+          {
+            "id": "0293",
+            "nome": "Remada Curvada Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0293.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0293.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos levemente flexionados, segurando um halter em cada mão com as palmas voltadas para o corpo."
+          },
+          {
+            "id": "0336",
+            "nome": "Afundo Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "glutes",
+              "quadriceps",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0336.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0336.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "1459",
+            "nome": "Levantamento Terra Romeno Com Halteres",
+            "series": 3,
+            "reps": "12",
+            "descanso": 45,
+            "musculos": [
+              "hamstrings",
+              "glutes",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1459.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1459.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão com uma pegada pronada."
+          },
+          {
+            "id": "10182",
+            "nome": "Burpee Sobre O Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "cardiovascular system",
+              "quadriceps",
+              "chest",
+              "front delts",
+              "core",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/10182.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/10182.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "one-kettlebell",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Intermediário",
+    "titulo": "Treino Completo com 1 Kettlebell",
+    "duracao": "35 min",
+    "duracaoMinutos": 35,
+    "metaSessoes": 8,
+    "foco": "Força, potência e resistência funcional utilizando apenas um kettlebell.",
+    "calorias": 210,
+    "musculos": [
+      "glutes",
+      "hamstrings",
+      "core",
+      "quads",
+      "calves"
+    ],
+    "sessoes": [
+      {
+        "nome": "Swing day",
+        "exercicios": [
+          {
+            "id": "0549",
+            "nome": "Swing Com Kettlebell",
+            "series": 5,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0549.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0549.webp",
+            "instrucao": "Fique em pé, com os pés afastados na largura dos ombros e as pontas ligeiramente voltadas para fora."
+          },
+          {
+            "id": "0534",
+            "nome": "Agachamento Goblet Com Kettlebell",
+            "series": 4,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0534.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0534.webp",
+            "instrucao": "Fique em pé, com os pés afastados na largura dos ombros, segurando um kettlebell próximo ao peito com as duas mãos."
+          },
+          {
+            "id": "0540",
+            "nome": "Push Press Unilateral Com Kettlebell",
+            "series": 3,
+            "reps": "8",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0540.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0540.webp",
+            "instrucao": "Each side."
+          },
+          {
+            "id": "0541",
+            "nome": "Remada Unilateral Com Kettlebell",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0541.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0541.webp",
+            "instrucao": "Each side."
+          }
+        ]
+      },
+      {
+        "nome": "Get-up day",
+        "exercicios": [
+          {
+            "id": "4057",
+            "nome": "Levantamento Turco Até A Mão Com Kettlebell",
+            "series": 3,
+            "reps": "3",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "core",
+              "glutes",
+              "quadriceps",
+              "obliques"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/4057.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/4057.webp",
+            "instrucao": "Each side, slowly. It is a lift, not a race."
+          },
+          {
+            "id": "3322",
+            "nome": "Levantamento Terra Com Kettlebell",
+            "series": 3,
+            "reps": "12",
+            "descanso": 90,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back",
+              "quadriceps",
+              "grip muscles"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3322.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3322.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "3732",
+            "nome": "Afundo Cruzado Goblet Com Kettlebell",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "quadriceps",
+              "adductors",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3732.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3732.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0554",
+            "nome": "Moinho De Vento Com Kettlebell",
+            "series": 2,
+            "reps": "6",
+            "descanso": 60,
+            "musculos": [
+              "obliques",
+              "abdominals",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0554.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0554.webp",
+            "instrucao": "Fique em pé com os pés na largura dos ombros, segurando um kettlebell na mão direita acima da cabeça."
+          },
+          {
+            "id": "1568",
+            "nome": "Swing Unilateral Com Kettlebell",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1568.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1568.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bar-and-floor",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Intermediário",
+    "titulo": "Barra Fixa & Chão (Calistenia)",
+    "duracao": "50 min",
+    "duracaoMinutos": 50,
+    "metaSessoes": 8,
+    "foco": "Construa força real usando apenas barra fixa e exercícios no chão.",
+    "calorias": 300,
+    "musculos": [
+      "lats",
+      "biceps",
+      "forearms",
+      "pectorals",
+      "triceps"
+    ],
+    "sessoes": [
+      {
+        "nome": "Strength A",
+        "exercicios": [
+          {
+            "id": "0652",
+            "nome": "Barra Fixa",
+            "series": 5,
+            "reps": "5",
+            "descanso": 150,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0652.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0652.webp",
+            "instrucao": "Add a backpack with books once 5 × 5 feels easy."
+          },
+          {
+            "id": "0251",
+            "nome": "Mergulho Para Peitoral",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0251.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0251.webp",
+            "instrucao": "Posicione-se nas barras paralelas com os braços totalmente estendidos e o corpo reto."
+          },
+          {
+            "id": "1762",
+            "nome": "Agachamento Unilateral Com Apoio (Pistol)",
+            "series": 3,
+            "reps": "6",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "core",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1762.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1762.webp",
+            "instrucao": "Each leg, holding a door frame."
+          },
+          {
+            "id": "3419",
+            "nome": "L-Sit No Chão",
+            "series": 4,
+            "reps": "20 seg",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "hip flexors"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3419.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3419.webp",
+            "instrucao": "Sente-se no chão com as pernas estendidas à frente."
+          },
+          {
+            "id": "0283",
+            "nome": "Flexão De Braços Diamante",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "chest",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0283.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0283.webp",
+            "instrucao": "Comece na posição de prancha alta, com as mãos próximas uma da outra, formando um losango com os polegares e indicadores."
+          }
+        ]
+      },
+      {
+        "nome": "Strength B",
+        "exercicios": [
+          {
+            "id": "1326",
+            "nome": "Barra Fixa Pegada Supinada",
+            "series": 4,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1326.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1326.webp",
+            "instrucao": "Fique suspenso em uma barra fixa, com as palmas voltadas para você e as mãos afastadas na largura dos ombros."
+          },
+          {
+            "id": "2921",
+            "nome": "Flexão Pike",
+            "series": 4,
+            "reps": "8",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2921.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2921.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "3743",
+            "nome": "Agachamento Búlgaro Com Cadeira",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "adductors",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/3743.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/3743.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "0472",
+            "nome": "Elevação De Pernas Na Barra Fixa",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "hip flexors"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0472.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0472.webp",
+            "instrucao": "Fique pendurado em uma barra fixa com os braços totalmente estendidos e as palmas das mãos voltadas para longe do corpo."
+          },
+          {
+            "id": "0499",
+            "nome": "Remada Invertida",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0499.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0499.webp",
+            "instrucao": "Posicione uma barra na altura da cintura ou use um equipamento de suspensão."
+          },
+          {
+            "id": "1246",
+            "nome": "Hollow Hold",
+            "series": 3,
+            "reps": "30 seg",
+            "descanso": 45,
+            "musculos": [
+              "abs",
+              "lower abs",
+              "hip flexors",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1246.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1246.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "linear-strength",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Iniciante",
+    "titulo": "Força Linear • 3 Levantamentos por Dia",
+    "duracao": "50 min",
+    "duracaoMinutos": 50,
+    "metaSessoes": 8,
+    "foco": "Progressão constante de carga nos exercícios compostos fundamentais.",
+    "calorias": 300,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "core"
+    ],
+    "sessoes": [
+      {
+        "nome": "Day A",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 150,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          }
+        ]
+      },
+      {
+        "nome": "Day B",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "1162",
+            "nome": "Desenvolvimento Militar Em Pé Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1162.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1162.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0032",
+            "nome": "Levantamento Terra Com Barra",
+            "series": 1,
+            "reps": "5",
+            "descanso": 240,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0032.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0032.webp",
+            "instrucao": "One heavy set after warm-ups. That is the whole point."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pullup-bar-basics",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "casa",
+    "nivel": "Iniciante",
+    "titulo": "Básico na Barra Fixa",
+    "duracao": "40 min",
+    "duracaoMinutos": 40,
+    "metaSessoes": 8,
+    "foco": "Three short sessions for a doorway bar and the floor. Pulling, pushing, legs and core, no gym membership needed.",
+    "calorias": 240,
+    "musculos": [
+      "lats",
+      "biceps",
+      "forearms",
+      "pectorals",
+      "triceps"
+    ],
+    "sessoes": [
+      {
+        "nome": "Bar A",
+        "exercicios": [
+          {
+            "id": "0652",
+            "nome": "Barra Fixa",
+            "series": 3,
+            "reps": "6",
+            "descanso": 120,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0652.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0652.webp",
+            "instrucao": "No pull-up yet? Jump up and lower yourself as slowly as you can."
+          },
+          {
+            "id": "0662",
+            "nome": "Flexão De Braços",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0662.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0662.webp",
+            "instrucao": "Comece em posição de prancha alta com as mãos um pouco mais afastadas que a largura dos ombros e os pés juntos."
+          },
+          {
+            "id": "1197",
+            "nome": "Agachamento",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1197.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1197.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "9819",
+            "nome": "Elevação De Joelhos Na Barra Fixa",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "abs",
+              "lower abs",
+              "hip flexors",
+              "grip muscles",
+              "lats"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/9819.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/9819.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 3,
+            "reps": "40 seg",
+            "descanso": 45,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      },
+      {
+        "nome": "Bar B",
+        "exercicios": [
+          {
+            "id": "1326",
+            "nome": "Barra Fixa Pegada Supinada",
+            "series": 3,
+            "reps": "6",
+            "descanso": 120,
+            "musculos": [
+              "lats",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1326.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1326.webp",
+            "instrucao": "Fique suspenso em uma barra fixa, com as palmas voltadas para você e as mãos afastadas na largura dos ombros."
+          },
+          {
+            "id": "2921",
+            "nome": "Flexão Pike",
+            "series": 3,
+            "reps": "8",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper chest",
+              "core",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2921.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2921.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0781",
+            "nome": "Agachamento Dividido",
+            "series": 3,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0781.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0781.webp",
+            "instrucao": "Each leg."
+          },
+          {
+            "id": "2471",
+            "nome": "Ponte De Glúteo Com As Duas Pernas No Chão",
+            "series": 3,
+            "reps": "15",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "core",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2471.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2471.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          },
+          {
+            "id": "0715",
+            "nome": "Prancha Lateral",
+            "series": 2,
+            "reps": "30 seg",
+            "descanso": 30,
+            "musculos": [
+              "obliques",
+              "abdominals",
+              "glutes",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0715.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0715.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ten-sets-of-ten",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Avançado",
+    "titulo": "Volume Alemão 10×10 (GVT)",
+    "duracao": "75 min",
+    "duracaoMinutos": 75,
+    "metaSessoes": 12,
+    "foco": "Método clássico de alto volume para quebra de platô e hipertrofia extrema.",
+    "calorias": 450,
+    "musculos": [
+      "pectorals",
+      "triceps",
+      "front delts",
+      "upper back",
+      "biceps"
+    ],
+    "sessoes": [
+      {
+        "nome": "Chest and back",
+        "exercicios": [
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 10,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "0027",
+            "nome": "Remada Curvada Com Barra",
+            "series": 10,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0027.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0027.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados."
+          },
+          {
+            "id": "0334",
+            "nome": "Elevação Lateral Com Halteres",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "side delts",
+              "traps"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0334.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0334.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e segure um halter em cada mão, com as palmas voltadas para o corpo."
+          }
+        ]
+      },
+      {
+        "nome": "Legs",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 10,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0586",
+            "nome": "Mesa Flexora Deitada (Máquina)",
+            "series": 10,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0586.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0586.webp",
+            "instrucao": "Ajuste a máquina ao seu corpo e selecione o peso desejado."
+          },
+          {
+            "id": "0605",
+            "nome": "Panturrilha Em Pé Na Máquina",
+            "series": 3,
+            "reps": "15",
+            "descanso": 45,
+            "musculos": [
+              "calves",
+              "soleus",
+              "ankle stabilizers"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0605.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0605.webp",
+            "instrucao": "Ajuste a máquina à sua altura e fique em pé com os pés afastados na largura dos ombros."
+          }
+        ]
+      },
+      {
+        "nome": "Shoulders and arms",
+        "exercicios": [
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 10,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0031",
+            "nome": "Rosca Direta Com Barra",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0031.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0031.webp",
+            "instrucao": "Fique em pé, com o corpo ereto e os pés afastados na largura dos ombros, e segure uma barra com uma pegada supinada, com as palmas voltadas para a frente."
+          },
+          {
+            "id": "0241",
+            "nome": "Tríceps Pulley No Cabo (Barra V)",
+            "series": 3,
+            "reps": "12",
+            "descanso": 60,
+            "musculos": [
+              "triceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0241.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0241.webp",
+            "instrucao": "Prenda uma barra V à máquina de cabos na regulagem mais alta."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "twice-a-week",
+    "origem": "Programa Oficial OpenGym",
+    "categoria": "academia",
+    "nivel": "Iniciante",
+    "titulo": "Essencial 2x na Semana (Manutenção)",
+    "duracao": "40 min",
+    "duracaoMinutos": 40,
+    "metaSessoes": 8,
+    "foco": "Dois treinos completos por semana para manter força e saúde com pouco tempo.",
+    "calorias": 240,
+    "musculos": [
+      "quads",
+      "glutes",
+      "hamstrings",
+      "calves",
+      "core"
+    ],
+    "sessoes": [
+      {
+        "nome": "Full body A",
+        "exercicios": [
+          {
+            "id": "0043",
+            "nome": "Agachamento Completo Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 150,
+            "musculos": [
+              "quads",
+              "glutes",
+              "hamstrings",
+              "calves",
+              "core"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0043.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0043.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e os dedos levemente voltados para fora."
+          },
+          {
+            "id": "0025",
+            "nome": "Supino Com Barra",
+            "series": 3,
+            "reps": "8",
+            "descanso": 120,
+            "musculos": [
+              "pectorals",
+              "triceps",
+              "front delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0025.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0025.webp",
+            "instrucao": "Deite-se em um banco com os pés apoiados no chão e as costas pressionadas contra o banco."
+          },
+          {
+            "id": "2330",
+            "nome": "Puxada Frontal Com Amplitude Total No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "lats",
+              "biceps",
+              "rhomboids",
+              "rear delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/2330.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/2330.webp",
+            "instrucao": "Sente-se na máquina de puxada alta com os joelhos posicionados sob os apoios."
+          },
+          {
+            "id": "0463",
+            "nome": "Prancha Frontal",
+            "series": 3,
+            "reps": "45 seg",
+            "descanso": 45,
+            "musculos": [
+              "abs",
+              "core",
+              "front delts",
+              "glutes"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0463.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0463.webp",
+            "instrucao": "Execute o movimento mantendo a postura firme, amplitude adequada e respiração controlada."
+          }
+        ]
+      },
+      {
+        "nome": "Full body B",
+        "exercicios": [
+          {
+            "id": "0032",
+            "nome": "Levantamento Terra Com Barra",
+            "series": 3,
+            "reps": "5",
+            "descanso": 180,
+            "musculos": [
+              "glutes",
+              "hamstrings",
+              "lower back"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0032.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0032.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros e a barra no chão à sua frente."
+          },
+          {
+            "id": "0426",
+            "nome": "Desenvolvimento Acima Da Cabeça Em Pé Com Halter",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "front delts",
+              "triceps",
+              "upper back",
+              "side delts"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0426.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0426.webp",
+            "instrucao": "Fique em pé com os pés afastados na largura dos ombros, segurando um halter em cada mão na altura dos ombros e com as palmas voltadas para a frente."
+          },
+          {
+            "id": "1323",
+            "nome": "Remada Sentada Com Corda No Cabo",
+            "series": 3,
+            "reps": "10",
+            "descanso": 90,
+            "musculos": [
+              "upper back",
+              "biceps",
+              "forearms"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/1323.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/1323.webp",
+            "instrucao": "Sente-se na máquina de remada com os pés totalmente apoiados nos suportes e os joelhos levemente flexionados."
+          },
+          {
+            "id": "0612",
+            "nome": "Avanço",
+            "series": 2,
+            "reps": "10",
+            "descanso": 60,
+            "musculos": [
+              "glutes",
+              "quadriceps",
+              "hamstrings",
+              "calves"
+            ],
+            "clipUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/clip/0612.mp4",
+            "stillUrl": "https://raw.githubusercontent.com/DuarteSantos8/openGym/main/catalogue/media/still/0612.webp",
+            "instrucao": "Each leg."
+          }
+        ]
+      }
+    ]
+  }
+]
