@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /**
- * ExerciseAvatarPlayer — Demonstração animada em loop com ilustrações anatômicas open-source (Wger).
- * Alterna entre a posição inicial e a posição de execução para simular o movimento real do exercício.
+ * ExerciseAvatarPlayer — Demonstração em GIF animado em loop contínuo (ilustrações open-source Wger).
  */
-const WGER_FRAMES = {
-  jumping_jacks: ['/templofit/wger/jumping_jacks-1.png', '/templofit/wger/jumping_jacks-2.png'],
-  high_knees: ['/templofit/wger/jumping_jacks-1.png', '/templofit/wger/jumping_jacks-2.png'],
-  squat: ['/templofit/wger/squat-1.jpeg', '/templofit/wger/squat-2.jpeg'],
-  pushup: ['/templofit/wger/pushup-1.png'],
-  plank: ['/templofit/wger/plank-1.png', '/templofit/wger/plank-2.png'],
-  lunge: ['/templofit/wger/lunge-1.png', '/templofit/wger/lunge-2.png'],
-  tricep_dip: ['/templofit/wger/tricep_dip-1.png', '/templofit/wger/tricep_dip-2.png'],
-  bench_press: ['/templofit/wger/bench_press-1.png', '/templofit/wger/bench_press-2.png'],
-  lat_pulldown: ['/templofit/wger/lat_pulldown-1.png', '/templofit/wger/lat_pulldown-2.webp'],
-  leg_press: ['/templofit/wger/leg_press-1.png', '/templofit/wger/leg_press-2.png'],
-  shoulder_press: ['/templofit/wger/shoulder_press-1.png', '/templofit/wger/shoulder_press-2.png'],
-  cat_cow: ['/templofit/wger/plank-1.png', '/templofit/wger/plank-2.png'],
-  child_pose: ['/templofit/wger/plank-2.png'],
-  torso_twist: ['/templofit/wger/plank-1.png', '/templofit/wger/plank-2.png'],
-  stretch: ['/templofit/wger/lunge-1.png', '/templofit/wger/lunge-2.png'],
+const WGER_GIFS = {
+  jumping_jacks: '/templofit/gifs/jumping_jacks.gif',
+  high_knees: '/templofit/gifs/jumping_jacks.gif',
+  squat: '/templofit/gifs/squat.gif',
+  pushup: '/templofit/gifs/pushup.gif',
+  plank: '/templofit/gifs/plank.gif',
+  lunge: '/templofit/gifs/lunge.gif',
+  tricep_dip: '/templofit/gifs/tricep_dip.gif',
+  bench_press: '/templofit/gifs/bench_press.gif',
+  lat_pulldown: '/templofit/gifs/lat_pulldown.gif',
+  leg_press: '/templofit/gifs/leg_press.gif',
+  shoulder_press: '/templofit/gifs/shoulder_press.gif',
+  cat_cow: '/templofit/gifs/plank.gif',
+  child_pose: '/templofit/gifs/plank.gif',
+  torso_twist: '/templofit/gifs/plank.gif',
+  stretch: '/templofit/gifs/lunge.gif',
 };
 
 const ANIM_LABELS = {
@@ -41,19 +40,7 @@ const ANIM_LABELS = {
 };
 
 export default function ExerciseAvatarPlayer({ animType = 'squat', exerciseName = '' }) {
-  const frames = WGER_FRAMES[animType] || WGER_FRAMES.squat;
-  const [frameIdx, setFrameIdx] = useState(0);
-
-  useEffect(() => {
-    setFrameIdx(0);
-    if (frames.length <= 1) return undefined;
-    const timer = setInterval(() => {
-      setFrameIdx((prev) => (prev + 1) % frames.length);
-    }, 1050);
-    return () => clearInterval(timer);
-  }, [animType, frames.length]);
-
-  const currentSrc = frames[frameIdx] || frames[0];
+  const gifSrc = WGER_GIFS[animType] || WGER_GIFS.squat;
   const caption = ANIM_LABELS[animType] || 'Execução guiada em ritmo constante';
 
   return (
@@ -65,9 +52,9 @@ export default function ExerciseAvatarPlayer({ animType = 'squat', exerciseName 
 
       <div className="templofit-wger-frame-wrap">
         <img
-          src={currentSrc}
+          src={gifSrc}
           alt={exerciseName || 'Demonstração do exercício'}
-          className={`templofit-wger-img ${frames.length === 1 ? 'templofit-single-pulse' : ''}`}
+          className="templofit-wger-img"
         />
       </div>
 
