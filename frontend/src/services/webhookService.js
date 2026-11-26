@@ -1,5 +1,5 @@
 const isCapacitor = Boolean(
-  window.Capacitor || 
+  (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) || 
   window.location.protocol === 'capacitor:' || 
   window.location.protocol === 'file:' ||
   (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))

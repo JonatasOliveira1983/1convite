@@ -1167,7 +1167,7 @@ function App() {
   const [showLanding, setShowLanding] = useState(() => {
     if (typeof window === 'undefined') return false;
     const isCap = Boolean(
-      window.Capacitor || 
+      (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) || 
       window.location.protocol === 'capacitor:' || 
       (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
     );
@@ -1188,7 +1188,7 @@ function App() {
     setShowLanding(!enterApp);
     if (typeof window === 'undefined') return;
     const isCap = Boolean(
-      window.Capacitor ||
+      (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
       window.location.protocol === 'capacitor:' ||
       (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
     );
@@ -1872,7 +1872,7 @@ function App() {
   }, [activeTab, profileEmail, loginMethod]);
 
   const isCapacitor = Boolean(
-    window.Capacitor || 
+    (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) || 
     window.location.protocol === 'capacitor:' || 
     window.location.protocol === 'file:' ||
     (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
