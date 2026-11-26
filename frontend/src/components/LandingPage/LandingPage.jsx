@@ -578,7 +578,7 @@ export default function LandingPage({ onEnterApp }) {
             </h1>
 
             <p className="sp-hero-sub">
-              Seu ecossistema diário completo: Bíblia Sagrada ACF com áudio, meditações que você pode ler ou ouvir narradas, Treino Templo para saúde física, Oração Guiada, Mentores Bíblicos, Espaço Kids e Convites para abençoar vidas.
+              Seu ecossistema diário completo: Bíblia Sagrada ACF narrada, Café com Deus 365, 7 Mentores Bíblicos com IA, <strong>TemploFit</strong> (treinos com mini-vídeos em loop), Trilha do Reino, Jogos &amp; Kids, Studio de Cards e Convites VIP para abençoar vidas.
             </p>
 
             <div className="sp-hero-actions">
@@ -665,12 +665,12 @@ export default function LandingPage({ onEnterApp }) {
 
             <div className="sp-showcase-card">
               <div className="sp-showcase-img-wrap">
-                <img src={imgTreinoTemplo} alt="Treino Templo - Exercícios Físicos" className="sp-showcase-img" />
-                <span className="sp-showcase-badge">Treino Templo</span>
+                <img src={imgTreinoTemplo} alt="TemploFit - Exercícios Físicos Guiados" className="sp-showcase-img" />
+                <span className="sp-showcase-badge">TemploFit</span>
               </div>
               <div className="sp-showcase-body">
-                <h3>Exercícios Físicos & Saúde</h3>
-                <p>Cuide do seu corpo como templo do Espírito Santo com treinos guiados, mapeamento muscular e rotina prática para manter disposição e disciplina.</p>
+                <h3>TemploFit • Saúde &amp; Vitalidade</h3>
+                <p>Cuide do seu corpo como templo do Espírito Santo com rotinas por nível, demonstrações animadas em loop, mapa muscular anatômico e timer de descanso.</p>
               </div>
             </div>
 
@@ -845,9 +845,9 @@ export default function LandingPage({ onEnterApp }) {
                 </div>
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Acesso anual completo à Bíblia ACF + Áudio</span></li>
-                <li><IconCheck /><span>Meditação Diária (Leitura + Narração)</span></li>
-                <li><IconCheck /><span>Treino Templo, Mentores e Espaço Kids</span></li>
+                <li><IconCheck /><span>Bíblia Sagrada ACF Narrada + Café com Deus 365</span></li>
+                <li><IconCheck /><span>7 Mentores Bíblicos (IA) + Trilha do Reino</span></li>
+                <li><IconCheck /><span>TemploFit (mini-vídeos), Jogos &amp; Kids + Studio de Cards</span></li>
                 <li><IconCheck /><span>1 código exclusivo para liberar 6 meses grátis a um convidado</span></li>
               </ul>
               <button
@@ -891,10 +891,10 @@ export default function LandingPage({ onEnterApp }) {
                 </div>
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Tudo do Plano Básico por 1 ano</span></li>
-                <li><IconCheck /><span>Mulher Virtuosa, Biblioteca do Pregador & E-books</span></li>
-                <li><IconCheck /><span>Studio de Cards e Oração Guiada completa</span></li>
-                <li><IconCheck /><span>3 códigos exclusivos para seus convidados usarem 6 meses grátis</span></li>
+                <li><IconCheck /><span>Tudo do Plano Semente liberado por 1 ano completo</span></li>
+                <li><IconCheck /><span>Studio de Cards, Modo Sábado &amp; Respiração Guiada</span></li>
+                <li><IconCheck /><span>3 códigos exclusivos para abençoar família e amigos (6 meses grátis cada)</span></li>
+                <li><IconCheck /><span>Suporte prioritário e atualizações contínuas do app</span></li>
               </ul>
               <button
                 type="button"

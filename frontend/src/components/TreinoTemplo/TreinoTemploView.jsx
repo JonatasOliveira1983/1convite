@@ -2,24 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import './TreinoTemplo.css';
 import treinoTemploBanner from '../../assets/feed/treino_templo.jpg';
 import MuscleMap from './MuscleMap';
+import ExerciseAvatarPlayer from './ExerciseAvatarPlayer';
 
-// ── BANCO DE ROTINAS COM GRUPOS MUSCULARES MAPEADOS (PADRÃO OPENGYM) ──
+// ── BANCO DE ROTINAS COM GRUPOS MUSCULARES E DEMONSTRAÇÃO EM LOOP (TEMPLOFIT) ──
 const ROTINAS_TEMPLO = [
   {
     id: 'casa-iniciante',
     categoria: 'casa',
-    titulo: 'Despertar do Templo • Iniciante',
+    titulo: 'Despertar TemploFit • Iniciante',
     duracao: '15 min',
     nivel: 'Iniciante',
     foco: 'Mobilidade, circulação e tônus corporal',
     calorias: '~120 kcal',
     musculos: ['chest', 'quads', 'abs', 'calves'],
     exercicios: [
-      { nome: 'Polichinelos (Aquecimento)', series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante e respire com calma.' },
-      { nome: 'Agachamento Livre', series: 3, reps: '12 repetições', musculos: ['quads', 'glutes'], descanso: 45, instrucao: 'Pés na largura dos ombros, desça como se fosse sentar.' },
-      { nome: 'Flexão de Braços na Parede ou Joelhos', series: 3, reps: '10 repetições', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Mantenha o abdômen contraído e cotovelos a 45 graus.' },
-      { nome: 'Prancha Isométrica', series: 3, reps: '20 seg', musculos: ['abs'], descanso: 45, instrucao: 'Corpo alinhado dos calcanhares até a cabeça.' },
-      { nome: 'Alongamento de Coluna & Glória a Deus', series: 1, reps: '2 min', musculos: ['back', 'hamstrings'], descanso: 0, instrucao: 'Respire fundo, agradeça a Deus pela saúde e fôlego de vida.' }
+      { nome: 'Polichinelos (Aquecimento)', animType: 'jumping_jacks', series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante e respire com calma.' },
+      { nome: 'Agachamento Livre', animType: 'squat', series: 3, reps: '12 repetições', musculos: ['quads', 'glutes'], descanso: 45, instrucao: 'Pés na largura dos ombros, desça como se fosse sentar.' },
+      { nome: 'Flexão de Braços na Parede ou Joelhos', animType: 'pushup', series: 3, reps: '10 repetições', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Mantenha o abdômen contraído e cotovelos a 45 graus.' },
+      { nome: 'Prancha Isométrica', animType: 'plank', series: 3, reps: '20 seg', musculos: ['abs'], descanso: 45, instrucao: 'Corpo alinhado dos calcanhares até a cabeça.' },
+      { nome: 'Alongamento de Coluna & Glória a Deus', animType: 'stretch', series: 1, reps: '2 min', musculos: ['back', 'hamstrings'], descanso: 0, instrucao: 'Respire fundo, agradeça a Deus pela saúde e fôlego de vida.' }
     ]
   },
   {
@@ -32,11 +33,11 @@ const ROTINAS_TEMPLO = [
     calorias: '~220 kcal',
     musculos: ['chest', 'triceps', 'quads', 'abs', 'shoulders'],
     exercicios: [
-      { nome: 'Corrida Estacionária com Elevação', series: 3, reps: '40 seg', musculos: ['calves', 'quads'], descanso: 30, instrucao: 'Eleve os joelhos mantendo postura ereta.' },
-      { nome: 'Afundo Alternado (Passada)', series: 3, reps: '10 por perna', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 45, instrucao: 'Joelho de trás quase encosta no chão, 90 graus.' },
-      { nome: 'Flexão de Braço Tradicional', series: 3, reps: '12 repetições', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Controle o movimento na descida.' },
-      { nome: 'Mergulho de Tríceps (em Cadeira)', series: 3, reps: '12 repetições', musculos: ['triceps', 'shoulders'], descanso: 45, instrucao: 'Mãos firmes na borda, desça flexionando os cotovelos.' },
-      { nome: 'Prancha com Toque nos Ombros', series: 3, reps: '16 toques', musculos: ['abs', 'shoulders'], descanso: 45, instrucao: 'Estabilize o quadril sem balançar.' }
+      { nome: 'Corrida Estacionária com Elevação', animType: 'high_knees', series: 3, reps: '40 seg', musculos: ['calves', 'quads'], descanso: 30, instrucao: 'Eleve os joelhos mantendo postura ereta.' },
+      { nome: 'Afundo Alternado (Passada)', animType: 'lunge', series: 3, reps: '10 por perna', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 45, instrucao: 'Joelho de trás quase encosta no chão, 90 graus.' },
+      { nome: 'Flexão de Braço Tradicional', animType: 'pushup', series: 3, reps: '12 repetições', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Controle o movimento na descida.' },
+      { nome: 'Mergulho de Tríceps (em Cadeira)', animType: 'tricep_dip', series: 3, reps: '12 repetições', musculos: ['triceps', 'shoulders'], descanso: 45, instrucao: 'Mãos firmes na borda, desça flexionando os cotovelos.' },
+      { nome: 'Prancha com Toque nos Ombros', animType: 'plank', series: 3, reps: '16 toques', musculos: ['abs', 'shoulders'], descanso: 45, instrucao: 'Estabilize o quadril sem balançar.' }
     ]
   },
   {
@@ -49,10 +50,10 @@ const ROTINAS_TEMPLO = [
     calorias: '~60 kcal',
     musculos: ['back', 'hamstrings', 'glutes'],
     exercicios: [
-      { nome: 'Gato e Vaca (Cat-Cow)', series: 3, reps: '10 ciclos', musculos: ['back', 'abs'], descanso: 20, instrucao: 'Arredonde e arqueie as costas suavemente com a respiração.' },
-      { nome: 'Postura da Criança (Descompressão)', series: 2, reps: '45 seg', musculos: ['back', 'shoulders'], descanso: 15, instrucao: 'Sente nos calcanhares e estenda os braços à frente.' },
-      { nome: 'Torção Suave de Tronco Deitado', series: 2, reps: '30 seg por lado', musculos: ['back', 'glutes'], descanso: 20, instrucao: 'Mantenha os ombros no chão e olhe para o lado oposto.' },
-      { nome: 'Alongamento de Isquiotibiais com Toalha', series: 2, reps: '30 seg por perna', musculos: ['hamstrings'], descanso: 15, instrucao: 'Puxe a perna reta suavemente em direção ao peito.' }
+      { nome: 'Gato e Vaca (Cat-Cow)', animType: 'cat_cow', series: 3, reps: '10 ciclos', musculos: ['back', 'abs'], descanso: 20, instrucao: 'Arredonde e arqueie as costas suavemente com a respiração.' },
+      { nome: 'Postura da Criança (Descompressão)', animType: 'child_pose', series: 2, reps: '45 seg', musculos: ['back', 'shoulders'], descanso: 15, instrucao: 'Sente nos calcanhares e estenda os braços à frente.' },
+      { nome: 'Torção Suave de Tronco Deitado', animType: 'torso_twist', series: 2, reps: '30 seg por lado', musculos: ['back', 'glutes'], descanso: 20, instrucao: 'Mantenha os ombros no chão e olhe para o lado oposto.' },
+      { nome: 'Alongamento de Isquiotibiais com Toalha', animType: 'stretch', series: 2, reps: '30 seg por perna', musculos: ['hamstrings'], descanso: 15, instrucao: 'Puxe a perna reta suavemente em direção ao peito.' }
     ]
   },
   {
@@ -65,10 +66,10 @@ const ROTINAS_TEMPLO = [
     calorias: '~350 kcal',
     musculos: ['chest', 'back', 'shoulders', 'triceps', 'quads'],
     exercicios: [
-      { nome: 'Supino Reto com Barra ou Halteres', series: 4, reps: '8 a 10 reps', musculos: ['chest', 'triceps', 'shoulders'], descanso: 60, instrucao: 'Escápulas travadas, movimento firme e seguro.' },
-      { nome: 'Puxada Frontal na Polia', series: 4, reps: '10 reps', musculos: ['back', 'biceps'], descanso: 60, instrucao: 'Puxe em direção ao peito alto focando nas costas.' },
-      { nome: 'Leg Press 45° ou Agachamento Guiado', series: 4, reps: '12 reps', musculos: ['quads', 'glutes'], descanso: 60, instrucao: 'Pés firmes na plataforma, amplitude segura.' },
-      { nome: 'Desenvolvimento Militar com Halteres', series: 3, reps: '10 reps', musculos: ['shoulders', 'triceps'], descanso: 60, instrucao: 'Elevação controlada sem arquear excessivamente a lombar.' }
+      { nome: 'Supino Reto com Barra ou Halteres', animType: 'bench_press', series: 4, reps: '8 a 10 reps', musculos: ['chest', 'triceps', 'shoulders'], descanso: 60, instrucao: 'Escápulas travadas, movimento firme e seguro.' },
+      { nome: 'Puxada Frontal na Polia', animType: 'lat_pulldown', series: 4, reps: '10 reps', musculos: ['back', 'biceps'], descanso: 60, instrucao: 'Puxe em direção ao peito alto focando nas costas.' },
+      { nome: 'Leg Press 45° ou Agachamento Guiado', animType: 'leg_press', series: 4, reps: '12 reps', musculos: ['quads', 'glutes'], descanso: 60, instrucao: 'Pés firmes na plataforma, amplitude segura.' },
+      { nome: 'Desenvolvimento Militar com Halteres', animType: 'shoulder_press', series: 3, reps: '10 reps', musculos: ['shoulders', 'triceps'], descanso: 60, instrucao: 'Elevação controlada sem arquear excessivamente a lombar.' }
     ]
   }
 ];
@@ -221,7 +222,7 @@ export default function TreinoTemploView({ onBack }) {
           </svg>
         </button>
         <div className="treino-header-titles">
-          <span className="treino-header-kicker">O TEMPLO DO ESPÍRITO</span>
+          <span className="treino-header-kicker">TEMPLOFIT • 1CONVITE</span>
           <h2 className="treino-header-main">Saúde, Treino & Vitalidade</h2>
         </div>
       </header>
@@ -291,13 +292,21 @@ export default function TreinoTemploView({ onBack }) {
         <div className="treino-active-session animate-fade-in">
           <div className="treino-active-card">
             
-            {/* MUSCLE MAP INTERATIVO DO EXERCÍCIO ATUAL */}
+            {/* DEMONSTRAÇÃO ANIMADA + MUSCLE MAP INTERATIVO DO EXERCÍCIO ATUAL */}
             <div className="treino-active-anatomy-wrap">
-              <MuscleMap 
-                highlightMuscles={rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []} 
-                view="ambos"
-                size="md"
-              />
+              <div className="templofit-dual-visual">
+                <ExerciseAvatarPlayer
+                  animType={rotinaSelecionada.exercicios[exercicioAtualIndex].animType}
+                  exerciseName={rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
+                />
+                <div className="templofit-map-box">
+                  <MuscleMap 
+                    highlightMuscles={rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []} 
+                    view="ambos"
+                    size="md"
+                  />
+                </div>
+              </div>
               <span className="treino-anatomy-caption">
                 Músculos Recrutados: {(rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []).join(', ')}
               </span>
@@ -402,10 +411,10 @@ export default function TreinoTemploView({ onBack }) {
           <div className="treino-hero-card">
             <img src={treinoTemploBanner} alt="Treino do Templo" className="treino-hero-img" />
             <div className="treino-hero-overlay">
-              <span className="treino-hero-pill">VITALIDADE & DISCIPLINA</span>
-              <h3 className="treino-hero-title">Fortaleça o Seu Templo</h3>
+              <span className="treino-hero-pill">TEMPLOFIT • VITALIDADE</span>
+              <h3 className="treino-hero-title">TemploFit: Fortaleça o Seu Templo</h3>
               <p className="treino-hero-desc">
-                Rotinas com mapa muscular anatômico, timer de descanso e acompanhamento de consistência. Cuidando da saúde que Deus te deu.
+                Rotinas guiadas por nível com demonstração animada em loop, mapa muscular anatômico e timer de descanso. Cuidando da saúde que Deus te deu.
               </p>
               <button 
                 className="treino-hero-cta" 

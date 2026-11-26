@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
 import adminAuthService from '../../services/adminAuthService';
 import EmailPipelineSection from './EmailPipelineSection';
+import SalesFunnelPipelineSection from './SalesFunnelPipelineSection';
 
 export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
   const [stats, setStats] = useState(() => adminAuthService.getDashboardStats());
@@ -569,6 +570,8 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
           onCopyLink={handleCopyLink}
           onSendWhatsApp={handleSendWhatsApp}
         />
+
+        <SalesFunnelPipelineSection />
       </div>
     </div>
   );

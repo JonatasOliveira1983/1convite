@@ -12,9 +12,11 @@ import { mcpServer } from './services/mcpServer.js';
 import { synthesizeNeuralTTS } from './services/ttsService.js';
 import {
   PLANOS_1CONVITE,
+  FUNNEL_OFFERS,
   PAID_EVENTS,
   PAID_STATUSES,
   getPlanById,
+  getFunnelOfferById,
   isAsaasConfigured,
   isSandboxKey,
   isValidCpfCnpj,
@@ -28,6 +30,7 @@ import {
   sendWelcomeAndVouchersEmail,
   sendPixPendingEmail,
   sendLeadWelcomeEmail,
+  sendInviteRedeemedEmail,
   getEmailPipelineStages,
   sendPipelineTestEmail,
 } from './services/resendService.js';
@@ -220,9 +223,19 @@ async function ensureTables() {
       `);
       try {
         await client.query(`ALTER TABLE tb_pagamentos_asaas ADD COLUMN email_error TEXT`);
-      } catch {
-        // coluna já existe
-      }
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_pagamentos_asaas ADD COLUMN entitlements_json TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_pagamentos_asaas ADD COLUMN funnel_stage TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN entitlements_json TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_vouchers ADD COLUMN gifted_by_name TEXT`);
+      } catch {}
 
       // Seed inicial de vouchers padrão caso a tabela esteja vazia
       const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
@@ -1913,13 +1926,31 @@ function generateInviteCode(planId) {
   return `${prefix}-${rand}`;
 }
 
+function parseEntitlements(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function mergeEntitlements(existingRaw, incomingRaw) {
+  const set = new Set([...parseEntitlements(existingRaw), ...parseEntitlements(incomingRaw)]);
+  return Array.from(set);
+}
+
 async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
   const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
   if (!order) {
     return { found: false };
   }
 
-  const plan = getPlanById(order.plan_id) || getPlanById('basico');
+  const orderEntitlements = parseEntitlements(order.entitlements_json);
+  const isFunnelAddon = ['upsell', 'downsell', 'order_bump'].includes(String(order.funnel_stage || ''));
+  const plan = isFunnelAddon ? null : (getPlanById(order.plan_id) || getPlanById('basico'));
   let vouchers = [];
   try {
     vouchers = order.vouchers_json ? JSON.parse(order.vouchers_json) : [];
@@ -1928,53 +1959,57 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
   }
 
   const nowIso = new Date().toISOString();
-  const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && vouchers.length > 0;
+  const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && (isFunnelAddon || vouchers.length > 0);
 
   if (!alreadyFulfilled) {
-    // 1. Gerar os vouchers exclusivos do comprador (1, 5 ou 10 convites)
-    if (vouchers.length === 0) {
+    if (plan && vouchers.length === 0) {
       for (let i = 0; i < plan.convites; i++) {
         const code = generateInviteCode(plan.id);
         await dbRun(
-          `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, created_at)
-           VALUES ($1, 1, 0, $2, 1, $3, $4)`,
-          [code, plan.conviteDias, `Convite do ${plan.nome} (${order.customer_email})`, nowIso]
+          `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, gifted_by_name, created_at)
+           VALUES ($1, 1, 0, $2, 1, $3, $4, $5)`,
+          [code, plan.conviteDias, `Convite do ${plan.nome} (${order.customer_email})`, order.customer_name, nowIso]
         );
         vouchers.push(code);
       }
     }
 
-    // 2. Liberar ou atualizar acesso VIP do comprador em tb_acessos_usuarios (1 ano)
-    const expiryMs = Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000;
+    const daysValid = plan ? plan.diasValidade : 365;
+    const expiryMs = Date.now() + daysValid * 24 * 60 * 60 * 1000;
     const expiryTimestamp = String(expiryMs);
     const cleanEmail = order.customer_email.trim().toLowerCase();
     const existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
     let tempPassword = '';
 
+    const mergedEnts = mergeEntitlements(existingUser?.entitlements_json, orderEntitlements);
+    const mergedEntsJson = JSON.stringify(mergedEnts);
+
     if (existingUser) {
+      const nextPlanName = plan ? plan.nome : (existingUser.plan || 'Plano VIP + Expansão');
+      const nextExpiry = plan ? expiryTimestamp : (existingUser.expiry_timestamp || expiryTimestamp);
       if (!existingUser.password) {
         tempPassword = '1C' + Math.random().toString(36).substring(2, 8).toUpperCase();
         await dbRun(
           `UPDATE tb_acessos_usuarios
-           SET name = $1, password = $2, type = 'vip', plan = $3, expiry_timestamp = $4, last_login = $5
-           WHERE id = $6`,
-          [order.customer_name, tempPassword, plan.nome, expiryTimestamp, nowIso, existingUser.id]
+           SET name = $1, password = $2, type = 'vip', plan = $3, expiry_timestamp = $4, entitlements_json = $5, last_login = $6
+           WHERE id = $7`,
+          [order.customer_name, tempPassword, nextPlanName, nextExpiry, mergedEntsJson, nowIso, existingUser.id]
         );
       } else {
         await dbRun(
           `UPDATE tb_acessos_usuarios
-           SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, last_login = $4
-           WHERE id = $5`,
-          [order.customer_name, plan.nome, expiryTimestamp, nowIso, existingUser.id]
+           SET name = $1, type = 'vip', plan = $2, expiry_timestamp = $3, entitlements_json = $4, last_login = $5
+           WHERE id = $6`,
+          [order.customer_name, nextPlanName, nextExpiry, mergedEntsJson, nowIso, existingUser.id]
         );
       }
     } else {
       tempPassword = '1C' + Math.random().toString(36).substring(2, 8).toUpperCase();
       const newUserId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
       await dbRun(
-        `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count)
-         VALUES ($1, $2, $3, $4, 'vip', $5, NULL, $6, $7, $8, 1)`,
-        [newUserId, order.customer_name, cleanEmail, tempPassword, plan.nome, expiryTimestamp, nowIso, nowIso]
+        `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, vip_code, expiry_timestamp, entitlements_json, created_at, last_login, access_count)
+         VALUES ($1, $2, $3, $4, 'vip', $5, NULL, $6, $7, $8, $9, 1)`,
+        [newUserId, order.customer_name, cleanEmail, tempPassword, plan ? plan.nome : 'Expansão VIP', expiryTimestamp, mergedEntsJson, nowIso, nowIso]
       );
     }
 
@@ -1985,7 +2020,7 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
       [paidStatus, JSON.stringify(vouchers), nowIso, paymentId]
     );
 
-    if (!Number(order.email_sent)) {
+    if (!Number(order.email_sent) && plan) {
       if (isResendConfigured()) {
         const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
         const mailRes = await sendWelcomeAndVouchersEmail({
@@ -2005,6 +2040,8 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
       } else {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
       }
+    } else if (!Number(order.email_sent) && isFunnelAddon) {
+      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
     }
 
     return {
@@ -2013,6 +2050,7 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
       status: paidStatus,
       plan,
       vouchers,
+      entitlements: mergedEnts,
       tempPassword: tempPassword || undefined,
       customerEmail: order.customer_email,
     };
@@ -2024,6 +2062,7 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
     status: paidStatus,
     plan,
     vouchers,
+    entitlements: orderEntitlements,
     customerEmail: order.customer_email,
   };
 }
@@ -2068,10 +2107,11 @@ app.get('/api/v1/pagamentos/recentes', async (req, res) => {
 
 app.post('/api/v1/pagamentos/checkout', async (req, res) => {
   try {
-    const { planId, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
-    const plan = getPlanById(planId);
-    if (!plan) {
-      return res.status(400).json({ success: false, message: 'Plano inválido.' });
+    const { planId, offerId, includeOrderBump = false, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
+    const offer = offerId ? getFunnelOfferById(offerId) : null;
+    const plan = offer ? null : getPlanById(planId);
+    if (!offer && !plan) {
+      return res.status(400).json({ success: false, message: 'Plano ou oferta inválida.' });
     }
     const cleanName = String(name || '').trim();
     const cleanEmail = String(email || '').trim().toLowerCase();
@@ -2088,6 +2128,20 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
       });
     }
 
+    const bumpOffer = FUNNEL_OFFERS.order_bump_ebooks;
+    const hasBump = !offer && Boolean(includeOrderBump);
+    const totalCents = offer
+      ? offer.valorCentavos
+      : plan.valorCentavos + (hasBump ? bumpOffer.valorCentavos : 0);
+    const totalReais = totalCents / 100;
+    const entitlements = offer
+      ? offer.entitlements
+      : (hasBump ? bumpOffer.entitlements : []);
+    const funnelStage = offer ? offer.stage : (hasBump ? 'principal+bump' : 'principal');
+    const description = offer
+      ? `1Convite - ${offer.nome}`
+      : `1Convite - ${plan.nome}${hasBump ? ' + 5 E-books Premium' : ''} (${plan.convites} convite${plan.convites > 1 ? 's' : ''})`;
+
     const orderId = `ord_1c_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const customer = await upsertCustomer({
       name: cleanName,
@@ -2099,8 +2153,8 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
 
     const charge = await createCharge({
       customerId: customer.id,
-      valueCents: plan.valorCentavos,
-      description: `1Convite - ${plan.nome} (${plan.convites} convite${plan.convites > 1 ? 's' : ''})`,
+      valueCents: totalCents,
+      description,
       externalReference: orderId,
       billingType,
     });
@@ -2108,32 +2162,34 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
     const nowIso = new Date().toISOString();
     await dbRun(
       `INSERT INTO tb_pagamentos_asaas
-       (payment_id, order_id, plan_id, customer_name, customer_email, customer_cpf, customer_phone, asaas_customer_id, billing_type, value_cents, status, invoice_url, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+       (payment_id, order_id, plan_id, customer_name, customer_email, customer_cpf, customer_phone, asaas_customer_id, billing_type, value_cents, status, invoice_url, entitlements_json, funnel_stage, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
       [
         charge.paymentId,
         orderId,
-        plan.id,
+        offer ? offer.id : plan.id,
         cleanName,
         cleanEmail,
         cpfCnpj || null,
         phone || null,
         customer.id,
         charge.billingType,
-        plan.valorCentavos,
+        totalCents,
         charge.status || 'PENDING',
         charge.invoiceUrl || '',
+        JSON.stringify(entitlements),
+        funnelStage,
         nowIso,
       ]
     );
 
-    if (isResendConfigured()) {
+    if (isResendConfigured() && plan) {
       sendPixPendingEmail({
         to: cleanEmail,
         name: cleanName,
-        planName: plan.nome,
+        planName: hasBump ? `${plan.nome} + 5 E-books` : plan.nome,
         invoiceUrl: charge.invoiceUrl || '',
-        valueReais: plan.valorReais,
+        valueReais: totalReais,
       }).catch((e) => console.warn('[RESEND PENDING WARN]:', e.message));
     }
 
@@ -2432,7 +2488,13 @@ app.post('/api/v1/auth/login', async (req, res) => {
         success: true,
         isAdmin: true,
         isVip: true,
-        user: { name: 'Jonatas', contact: ADMIN_EMAIL, type: 'admin', plan: 'Administrador Mestre' }
+        user: {
+          name: 'Jonatas',
+          contact: ADMIN_EMAIL,
+          type: 'admin',
+          plan: 'Administrador Mestre',
+          entitlements: ['ebooks', 'pregador', 'mulher_virtuosa'],
+        }
       });
     }
 
@@ -2471,6 +2533,7 @@ app.post('/api/v1/auth/login', async (req, res) => {
         plan: existing.plan,
         vipCode: existing.vip_code,
         expiryTimestamp: existing.expiry_timestamp ? Number(existing.expiry_timestamp) : null,
+        entitlements: parseEntitlements(existing.entitlements_json),
         createdAt: existing.created_at,
         lastLogin: nowIso,
         accessCount: nextCount
@@ -2678,9 +2741,72 @@ app.delete('/api/v1/admin/vouchers/:code', requireAdminHeader, async (req, res) 
   }
 });
 
+app.get('/api/v1/admin/sales-funnel', requireAdminHeader, async (req, res) => {
+  try {
+    const rows = await dbAll('SELECT plan_id, value_cents, status, funnel_stage FROM tb_pagamentos_asaas');
+    const paidRows = rows.filter((r) => PAID_STATUSES.has(String(r.status || '').toUpperCase()));
+    const principalRows = rows.filter((r) => ['principal', 'principal+bump', ''].includes(String(r.funnel_stage || '')));
+    const bumpPaid = paidRows.filter((r) => ['principal+bump', 'order_bump'].includes(String(r.funnel_stage || '')));
+    const upsellPaid = paidRows.filter((r) => String(r.funnel_stage || '') === 'upsell');
+    const downsellPaid = paidRows.filter((r) => String(r.funnel_stage || '') === 'downsell');
+
+    const stages = [
+      {
+        id: 'landing',
+        order: 1,
+        title: '1. Página de Vendas (Planos)',
+        badge: 'Vitrine Principal',
+        priceLabel: 'R$ 67 • R$ 97 • R$ 147',
+        trigger: 'Exibe apenas os 3 planos principais com acesso completo à Oferta Base + Convites VIP (1, 3 ou 5).',
+        offersSummary: 'Bíblia Narrada, Café com Deus 365, Mentores IA, TemploFit (mini-vídeos), Trilha do Reino, Jogos & Kids e Studio de Cards.',
+        stats: { initiated: principalRows.length, converted: paidRows.filter((r) => ['principal', 'principal+bump', ''].includes(String(r.funnel_stage || ''))).length },
+        revenueReais: paidRows.filter((r) => ['principal', 'principal+bump', ''].includes(String(r.funnel_stage || ''))).reduce((s, r) => s + Number(r.value_cents || 0) / 100, 0),
+      },
+      {
+        id: 'order_bump',
+        order: 2,
+        title: '2. Order Bump (No Checkout)',
+        badge: 'Pré-Pagamento',
+        priceLabel: '+ R$ 19,90',
+        trigger: 'Checkbox exclusivo dentro do Modal de Checkout antes de gerar o PIX/Cartão (não aparece na Página de Vendas).',
+        offersSummary: 'Desbloqueia a Coleção Completa dos 5 E-books Premium em PDF direto no aplicativo.',
+        stats: { initiated: rows.filter((r) => ['principal+bump', 'order_bump'].includes(String(r.funnel_stage || ''))).length, converted: bumpPaid.length },
+        revenueReais: bumpPaid.length * 19.9,
+      },
+      {
+        id: 'upsell',
+        order: 3,
+        title: '3. Upsell 1 (Pós-Compra)',
+        badge: '1 Clique Pós-PIX',
+        priceLabel: 'R$ 47,00',
+        trigger: 'Tela imediata após confirmação do pagamento principal (ou ao clicar no cadeado dos módulos ministeriais).',
+        offersSummary: 'Combo Ministério & Lar: Biblioteca do Pregador + Planner da Mulher Virtuosa com desconto especial.',
+        stats: { initiated: rows.filter((r) => String(r.funnel_stage || '') === 'upsell').length, converted: upsellPaid.length },
+        revenueReais: upsellPaid.reduce((s, r) => s + Number(r.value_cents || 0) / 100, 0),
+      },
+      {
+        id: 'downsell',
+        order: 4,
+        title: '4. Downsell (Recuperação)',
+        badge: 'Se Recusar Upsell',
+        priceLabel: 'R$ 24,90',
+        trigger: 'Exibido somente se o comprador recusar o Combo Upsell 1 ("Não, obrigado").',
+        offersSummary: 'Escolha individual com desconto: Planner da Mulher Virtuosa OU Biblioteca do Pregador.',
+        stats: { initiated: rows.filter((r) => String(r.funnel_stage || '') === 'downsell').length, converted: downsellPaid.length },
+        revenueReais: downsellPaid.reduce((s, r) => s + Number(r.value_cents || 0) / 100, 0),
+      },
+    ];
+
+    res.json({ success: true, stages });
+  } catch (err) {
+    console.error('Erro em /admin/sales-funnel:', err);
+    res.status(500).json({ success: false, message: 'Erro ao carregar funil de vendas.' });
+  }
+});
+
 app.post('/api/v1/vouchers/validate', async (req, res) => {
   try {
-    const { code } = req.body || {};
+    const { code, guestName = '', guestEmail = '' } = req.body || {};
     const cleanCode = (code || '').trim().toUpperCase();
     if (!cleanCode) {
       return res.json({ success: false, message: 'Digite o código do seu convite.' });
@@ -2696,10 +2822,26 @@ app.post('/api/v1/vouchers/validate', async (req, res) => {
       return res.json({ success: false, message: 'Este código atingiu o limite máximo de utilizações permitidas.' });
     }
     await dbRun('UPDATE tb_vouchers SET used_count = COALESCE(used_count, 0) + 1 WHERE code = $1', [cleanCode]);
+
+    const daysValid = Number(voucher.days_valid) || 180;
+    const giftedByName = voucher.gifted_by_name || '';
+
+    if (guestEmail && String(guestEmail).includes('@') && isResendConfigured()) {
+      sendInviteRedeemedEmail({
+        to: String(guestEmail).trim().toLowerCase(),
+        name: guestName || 'Convidado(a)',
+        giftedByName,
+        voucherCode: cleanCode,
+        daysValid,
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      }).catch((e) => console.warn('[RESEND CONVIDADO WARN]:', e.message));
+    }
+
     res.json({
       success: true,
-      daysValid: Number(voucher.days_valid) || 180,
-      code: cleanCode
+      daysValid,
+      code: cleanCode,
+      giftedByName,
     });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Erro ao validar código de convite.' });

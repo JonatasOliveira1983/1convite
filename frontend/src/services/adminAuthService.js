@@ -488,6 +488,17 @@ export const adminAuthService = {
     return data;
   },
 
+  async getSalesFunnelAsync() {
+    const resp = await fetch(`${API_BASE}/admin/sales-funnel`, {
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) {
+      throw new Error(data?.message || 'Erro ao carregar funil de vendas.');
+    }
+    return data;
+  },
+
   async createVoucherAsync({ code, maxUses = 1, daysValid = 180, notes = '' }) {
     try {
       const resp = await fetch(`${API_BASE}/admin/vouchers`, {

@@ -277,11 +277,13 @@ export function buildPixReminderEmailHtml({
 
 export function buildInviteRedeemedEmailHtml({
   name,
+  giftedByName = '',
   voucherCode = 'REINO-VIP',
   daysValid = 180,
   siteUrl = 'https://1convite.com.br',
 }) {
   const safeName = escapeHtml(name || 'Convidado(a)');
+  const safeGiver = escapeHtml(giftedByName || 'alguém muito especial');
   const safeCode = escapeHtml(voucherCode);
   const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
   const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
@@ -290,16 +292,39 @@ export function buildInviteRedeemedEmailHtml({
       <div style="text-align:center;margin-bottom:14px;">
         <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
       </div>
-      <span style="display:inline-block;background:rgba(34,197,94,0.16);color:#4ade80;border:1px solid rgba(34,197,94,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">CONVITE RESGATADO</span>
-      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Você recebeu um presente especial, ${safeName}!</h2>
-      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
-        Seu código de Vale-Presente <strong style="color:#fbbf24;">${safeCode}</strong> foi ativado com sucesso! Você ganhou <strong>${Number(daysValid)} dias de acesso VIP completo</strong> à Bíblia Sagrada ACF narrada, e-books bíblicos e devocionais diários.
+      <span style="display:inline-block;background:rgba(34,197,94,0.16);color:#4ade80;border:1px solid rgba(34,197,94,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">VOCÊ FOI LEMBRADO(A) COM CARINHO</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Parabéns, ${safeName}!</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.65;">
+        Você foi lembrado(a) por <strong style="color:#fbbf24;">${safeGiver}</strong>. Com certeza ele(a) pensou em você e deseja o melhor dessa vida para você, porque quer que você tenha uma conexão verdadeira com Deus todos os dias.
+      </p>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.65;">
+        Seu Vale-Presente <strong style="color:#fbbf24;">${safeCode}</strong> foi ativado e liberou <strong>${Number(daysValid)} dias de acesso VIP gratuito</strong> à Bíblia Sagrada ACF narrada, Café com Deus 365, Mentores Bíblicos, TemploFit e Trilha do Reino.
       </p>
       <div style="text-align:center;margin:22px 0;">
         <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Entrar no 1Convite VIP</a>
       </div>
     </div>
   `;
+}
+
+export async function sendInviteRedeemedEmail({
+  to,
+  name,
+  giftedByName = '',
+  voucherCode,
+  daysValid = 180,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  if (!to || !String(to).includes('@')) {
+    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
+  }
+  const html = buildInviteRedeemedEmailHtml({ name, giftedByName, voucherCode, daysValid, siteUrl });
+  const giverPrefix = giftedByName ? `${giftedByName} te presenteou!` : 'Seu Vale-Presente VIP foi ativado!';
+  return sendEmail({
+    to,
+    subject: `${giverPrefix} Bem-vindo(a) ao 1Convite`,
+    html,
+  });
 }
 
 export function buildSeasonalChristmasEmailHtml({ name, siteUrl = 'https://1convite.com.br' }) {
@@ -468,6 +493,7 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       stats: { sent: 0, failed: 0 },
       previewHtml: buildInviteRedeemedEmailHtml({
         name: 'Ana Paula',
+        giftedByName: 'Carlos Ferreira',
         voucherCode: 'REINO-7X9K2',
         daysValid: 180,
         siteUrl,

@@ -432,6 +432,121 @@
   align-items: center;
 }
 
+.templofit-dual-visual {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.templofit-video-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.templofit-video-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.templofit-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  animation: tfPulse 1.4s infinite ease-in-out;
+}
+
+.templofit-stage {
+  width: 100%;
+  height: 124px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.templofit-avatar-svg {
+  width: 145px;
+  height: 118px;
+  overflow: visible;
+}
+
+.templofit-video-caption {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.templofit-map-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Animações biomecânicas em loop (TemploFit) */
+@keyframes tfPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.75); } }
+@keyframes tfSquat { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(16px) scaleY(0.84); } }
+@keyframes tfBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes tfArmSwingL { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(55deg); } }
+@keyframes tfArmSwingR { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-55deg); } }
+@keyframes tfFloorPress { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(11px); } }
+@keyframes tfBenchBar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(16px); } }
+@keyframes tfBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04) translateY(-3px); } }
+
+.templofit-anim-squat .tf-body-standing,
+.templofit-anim-lunge .tf-body-standing,
+.templofit-anim-leg_press .tf-body-standing {
+  transform-origin: 80px 114px;
+  animation: tfSquat 1.9s infinite ease-in-out;
+}
+.templofit-anim-jumping_jacks .tf-body-standing,
+.templofit-anim-high_knees .tf-body-standing {
+  animation: tfBounce 0.85s infinite ease-in-out;
+}
+.templofit-anim-jumping_jacks .tf-arm-left,
+.templofit-anim-shoulder_press .tf-arm-left,
+.templofit-anim-lat_pulldown .tf-arm-left {
+  transform-origin: 76px 45px;
+  animation: tfArmSwingL 1.2s infinite ease-in-out;
+}
+.templofit-anim-jumping_jacks .tf-arm-right,
+.templofit-anim-shoulder_press .tf-arm-right,
+.templofit-anim-lat_pulldown .tf-arm-right {
+  transform-origin: 84px 45px;
+  animation: tfArmSwingR 1.2s infinite ease-in-out;
+}
+.templofit-anim-pushup .tf-body-floor,
+.templofit-anim-tricep_dip .tf-body-standing,
+.templofit-anim-cat_cow .tf-body-floor {
+  animation: tfFloorPress 1.6s infinite ease-in-out;
+}
+.templofit-anim-plank .tf-body-floor,
+.templofit-anim-child_pose .tf-body-floor,
+.templofit-anim-torso_twist .tf-body-floor,
+.templofit-anim-stretch .tf-body-standing {
+  transform-origin: 80px 90px;
+  animation: tfBreath 2.6s infinite ease-in-out;
+}
+.templofit-anim-bench_press .tf-bar-group {
+  animation: tfBenchBar 1.7s infinite ease-in-out;
+}
+
 .treino-anatomy-caption {
   font-size: 0.68rem;
   color: #10B981;

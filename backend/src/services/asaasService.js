@@ -51,8 +51,47 @@ export const PLANOS_1CONVITE = {
   },
 };
 
+export const FUNNEL_OFFERS = {
+  order_bump_ebooks: {
+    id: 'order_bump_ebooks',
+    stage: 'order_bump',
+    nome: 'Coleção 5 E-books Premium',
+    valorCentavos: 1990,
+    valorReais: 19.9,
+    entitlements: ['ebooks'],
+  },
+  upsell_combo: {
+    id: 'upsell_combo',
+    stage: 'upsell',
+    nome: 'Combo Ministério & Lar (Pregador + Mulher Virtuosa)',
+    valorCentavos: 4700,
+    valorReais: 47,
+    entitlements: ['pregador', 'mulher_virtuosa'],
+  },
+  downsell_mulher: {
+    id: 'downsell_mulher',
+    stage: 'downsell',
+    nome: 'Planner da Mulher Virtuosa (Oferta Especial)',
+    valorCentavos: 2490,
+    valorReais: 24.9,
+    entitlements: ['mulher_virtuosa'],
+  },
+  downsell_pregador: {
+    id: 'downsell_pregador',
+    stage: 'downsell',
+    nome: 'Biblioteca do Pregador (Oferta Especial)',
+    valorCentavos: 2490,
+    valorReais: 24.9,
+    entitlements: ['pregador'],
+  },
+};
+
 export function getPlanById(planId) {
   return PLANOS_1CONVITE[String(planId || '').toLowerCase()] || null;
+}
+
+export function getFunnelOfferById(offerId) {
+  return FUNNEL_OFFERS[String(offerId || '').toLowerCase()] || null;
 }
 
 export function getAsaasApiKey() {

@@ -42,6 +42,7 @@ import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
 const LegalModalPage = lazy(() => import('./components/Legal/LegalModalPage'));
+const AsaasCheckoutModal = lazy(() => import('./components/Checkout/AsaasCheckoutModal'));
 import LgpdBanner from './components/Legal/LgpdBanner';
 import ChamaLoader from './components/Common/ChamaLoader';
 
@@ -476,6 +477,22 @@ function App() {
     return localStorage.getItem('1convite_logged_in') === 'true' || localStorage.getItem('1convite_guest_mode') === 'true';
   });
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [unlockOfferId, setUnlockOfferId] = useState(null);
+  const [userEntitlements, setUserEntitlements] = useState(() => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem('1convite_entitlements') || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const hasModuleAccess = (entKey) => {
+    if (!entKey) return true;
+    try {
+      if (localStorage.getItem('1convite_is_admin') === 'true') return true;
+    } catch {}
+    return userEntitlements.includes(entKey);
+  };
 
   // Dia Atual para Café com Deus
   const getDayOfYear = () => {
@@ -3341,7 +3358,7 @@ Em nome de Jesus, Amém.`;
               {[
                 { id: 'todos', label: '✦ Todos' },
                 { id: 'palavra', label: 'Palavra & Oração' },
-                { id: 'treino', label: 'Treino do Templo' },
+                { id: 'treino', label: 'TemploFit' },
                 { id: 'mentores', label: 'Mentores Canônicos' },
                 { id: 'desafios', label: 'Desafios & Reino' }
               ].map(chip => (
@@ -3557,7 +3574,7 @@ Em nome de Jesus, Amém.`;
               >
                 <img 
                   src={treinoTemploImg} 
-                  alt="Treino do Templo" 
+                  alt="TemploFit" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
                 />
                 <div style={{
@@ -3681,6 +3698,8 @@ Em nome de Jesus, Amém.`;
                     label: 'Mulher Virtuosa', 
                     sub: 'Graça & Família',
                     isPremium: true,
+                    entitlementKey: 'mulher_virtuosa',
+                    offerId: 'downsell_mulher',
                     tag: 'PREMIUM',
                     accent: '#EC4899',
                     icon: (
@@ -3694,6 +3713,8 @@ Em nome de Jesus, Amém.`;
                     label: 'Biblioteca Pregador', 
                     sub: 'Esboços & Sermões',
                     isPremium: true,
+                    entitlementKey: 'pregador',
+                    offerId: 'downsell_pregador',
                     tag: 'PREMIUM',
                     accent: '#8B5CF6',
                     icon: (
@@ -3707,6 +3728,8 @@ Em nome de Jesus, Amém.`;
                     label: 'E-books & Livros', 
                     sub: 'Leituras Edificantes',
                     isPremium: true,
+                    entitlementKey: 'ebooks',
+                    offerId: 'order_bump_ebooks',
                     tag: 'PREMIUM',
                     accent: '#3B82F6',
                     icon: (
@@ -3765,6 +3788,10 @@ Em nome de Jesus, Amém.`;
                   <div
                     key={card.id}
                     onClick={() => {
+                      if (card.entitlementKey && !hasModuleAccess(card.entitlementKey)) {
+                        setUnlockOfferId(card.offerId);
+                        return;
+                      }
                       if (card.id === 'sabado') {
                         openCafeStep(2);
                         return;
@@ -3794,7 +3821,26 @@ Em nome de Jesus, Amém.`;
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    {card.tag === 'PREMIUM' && (
+                    {card.entitlementKey && !hasModuleAccess(card.entitlementKey) ? (
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        fontSize: '0.58rem',
+                        fontWeight: '800',
+                        color: '#FBBF24',
+                        background: 'rgba(245, 158, 11, 0.16)',
+                        border: '1px solid rgba(251, 191, 36, 0.35)',
+                        padding: '2px 7px',
+                        borderRadius: '999px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                        BLOQUEADO
+                      </span>
+                    ) : card.tag === 'PREMIUM' && (
                       <span style={{
                         position: 'absolute',
                         top: '12px',
@@ -9156,6 +9202,16 @@ Em nome de Jesus, Amém.`;
         {legalModalTab && (
           <LegalModalPage initialTab={legalModalTab} onClose={() => setLegalModalTab(null)} />
         )}
+        <AsaasCheckoutModal
+          isOpen={Boolean(unlockOfferId)}
+          offerId={unlockOfferId}
+          onClose={() => setUnlockOfferId(null)}
+          onSuccess={(data) => {
+            if (Array.isArray(data?.entitlements)) {
+              setUserEntitlements((prev) => Array.from(new Set([...prev, ...data.entitlements])));
+            }
+          }}
+        />
       </Suspense>
       <LgpdBanner onOpenLegal={(tab) => setLegalModalTab(tab)} />
 
