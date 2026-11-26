@@ -153,7 +153,7 @@ export default function MulherVirtuosaView({ onBack, userContact = 'convidado@1c
         <div className="mv-header-info">
           <div className="mv-pill">
             <span className="mv-pill-dot" />
-            <span>ESPAÇO MULHER VIRTUOSA • NUVEM</span>
+            <span>Espaço Mulher Virtuosa</span>
           </div>
           <h1 className="mv-title">Planner &amp; Edificação</h1>
         </div>
@@ -322,7 +322,7 @@ export default function MulherVirtuosaView({ onBack, userContact = 'convidado@1c
                   Cancelar
                 </button>
                 <button type="submit" className="mv-save-btn">
-                  Salvar na Nuvem
+                  Salvar pedido
                 </button>
               </div>
             </form>

@@ -2901,7 +2901,6 @@ Em nome de Jesus, Amém.`;
         <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
           <div className="desktop-sidebar-brand">
             <img src={appLogomarcaDark} alt="1Convite" className="desktop-sidebar-logo" />
-            <span className="desktop-sidebar-badge">Desktop</span>
           </div>
 
           <nav className="desktop-sidebar-nav">
@@ -3703,18 +3702,18 @@ Em nome de Jesus, Amém.`;
             <div style={{ marginBottom: '26px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <div>
-                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: 'rgba(255, 255, 255, 0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                    ECOSSISTEMA DO REINO
+                  <span style={{ fontSize: '0.72rem', fontWeight: '500', color: 'rgba(255, 255, 255, 0.5)' }}>
+                    Módulos principais
                   </span>
-                  <h4 style={{ margin: 0, fontSize: '1.08rem', fontWeight: '800', color: '#FFF' }}>
-                    Biblioteca &amp; Ferramentas
+                  <h4 style={{ margin: '2px 0 0', fontSize: '1.08rem', fontWeight: '600', color: '#FFF' }}>
+                    Biblioteca e Ferramentas
                   </h4>
                 </div>
               </div>
 
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(168px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(205px, 1fr))',
                 gap: '12px',
               }}>
                 {[
@@ -3890,11 +3889,11 @@ Em nome de Jesus, Amém.`;
             <div style={{ marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
                 <div>
-                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#FBBF24', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                    EXPANSÃO DO REINO • VITRINE
+                  <span style={{ fontSize: '0.72rem', fontWeight: '500', color: 'rgba(255, 255, 255, 0.5)' }}>
+                    Conteúdo adicional
                   </span>
-                  <h4 style={{ margin: 0, fontSize: '1.08rem', fontWeight: '800', color: '#FFF' }}>
-                    Ofertas &amp; Bibliotecas Exclusivas
+                  <h4 style={{ margin: '2px 0 0', fontSize: '1.08rem', fontWeight: '600', color: '#FFF' }}>
+                    Ofertas e Bibliotecas
                   </h4>
                 </div>
                 {(!hasModuleAccess('mulher_virtuosa') || !hasModuleAccess('pregador')) && (
@@ -3903,12 +3902,12 @@ Em nome de Jesus, Amém.`;
                     onClick={() => setUnlockOfferId('upsell_combo')}
                     style={{
                       padding: '6px 12px',
-                      borderRadius: '999px',
-                      border: '1px solid rgba(251, 191, 36, 0.45)',
-                      background: 'rgba(245, 158, 11, 0.16)',
-                      color: '#FDE68A',
-                      fontSize: '0.72rem',
-                      fontWeight: '800',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.14)',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      color: '#E2E8F0',
+                      fontSize: '0.74rem',
+                      fontWeight: '600',
                       cursor: 'pointer'
                     }}
                   >
@@ -3981,36 +3980,36 @@ Em nome de Jesus, Amém.`;
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                         <span style={{
-                          fontSize: '0.62rem',
-                          fontWeight: '800',
-                          color: unlocked ? '#34D399' : '#FBBF24',
-                          background: unlocked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
-                          border: unlocked ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(251, 191, 36, 0.4)',
-                          padding: '3px 9px',
-                          borderRadius: '999px',
+                          fontSize: '0.68rem',
+                          fontWeight: '600',
+                          color: unlocked ? '#34D399' : '#E2E8F0',
+                          background: 'rgba(15, 23, 42, 0.78)',
+                          border: '1px solid rgba(255, 255, 255, 0.14)',
+                          padding: '3px 8px',
+                          borderRadius: '6px',
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '5px',
                         }}>
                           {unlocked ? (
                             <>
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
-                              LIBERADO
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
+                              Liberado
                             </>
                           ) : (
                             <>
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                              BLOQUEADO • {offerCard.priceLabel}
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                              {offerCard.priceLabel}
                             </>
                           )}
                         </span>
                       </div>
 
                       <div style={{ marginTop: '36px' }}>
-                        <div style={{ fontWeight: '800', fontSize: '0.98rem', color: '#FFFFFF', marginBottom: '4px' }}>
+                        <div style={{ fontWeight: '600', fontSize: '0.98rem', color: '#FFFFFF', marginBottom: '4px' }}>
                           {offerCard.label}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.75)', marginBottom: '12px' }}>
+                        <div style={{ fontSize: '0.76rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
                           {offerCard.sub}
                         </div>
                         <div style={{
@@ -4018,13 +4017,14 @@ Em nome de Jesus, Amém.`;
                           alignItems: 'center',
                           gap: '6px',
                           padding: '6px 12px',
-                          borderRadius: '10px',
+                          borderRadius: '8px',
                           fontSize: '0.74rem',
-                          fontWeight: '800',
-                          background: unlocked ? '#10B981' : '#F59E0B',
-                          color: '#09090B',
+                          fontWeight: '600',
+                          background: unlocked ? 'rgba(16, 185, 129, 0.18)' : 'rgba(255, 255, 255, 0.1)',
+                          border: unlocked ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(255, 255, 255, 0.16)',
+                          color: unlocked ? '#34D399' : '#FFFFFF',
                         }}>
-                          {unlocked ? 'Acessar Agora →' : `Desbloquear por ${offerCard.priceLabel}`}
+                          {unlocked ? 'Abrir biblioteca →' : `Liberar acesso • ${offerCard.priceLabel}`}
                         </div>
                       </div>
                     </div>
@@ -5576,9 +5576,9 @@ Em nome de Jesus, Amém.`;
                     </span>
                     {[
                       { id: 'none', label: 'Silêncio' },
-                      { id: 'chuva', label: '🌧️ Chuva' },
-                      { id: 'mar', label: '🌊 Ondas' },
-                      { id: 'piano', label: '🎹 Piano' },
+                      { id: 'chuva', label: 'Chuva' },
+                      { id: 'mar', label: 'Ondas' },
+                      { id: 'piano', label: 'Piano' },
                     ].map((tr) => (
                       <button
                         key={tr.id}
@@ -5586,13 +5586,13 @@ Em nome de Jesus, Amém.`;
                         onClick={() => setActiveAmbient(tr.id)}
                         style={{
                           padding: '4px 10px',
-                          borderRadius: '999px',
+                          borderRadius: '8px',
                           border: '1px solid',
-                          fontSize: '0.7rem',
-                          fontWeight: '700',
+                          fontSize: '0.72rem',
+                          fontWeight: '600',
                           cursor: 'pointer',
                           background: activeAmbient === tr.id ? '#10B981' : 'rgba(255,255,255,0.06)',
-                          borderColor: activeAmbient === tr.id ? '#10B981' : 'rgba(255,255,255,0.14)',
+                          borderColor: activeAmbient === tr.id ? '#10B981' : 'rgba(255,255,255,0.12)',
                           color: activeAmbient === tr.id ? '#052E16' : '#E2E8F0',
                         }}
                       >

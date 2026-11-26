@@ -422,9 +422,8 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         <div className="treino-header-titles">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
             <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '22px', width: 'auto', display: 'block' }} />
-            <span className="treino-header-kicker" style={{ margin: 0 }}>• {syncStatus || '1CONVITE'}</span>
           </div>
-          <h2 className="treino-header-main">Saúde, Treino &amp; Evolução</h2>
+          <h2 className="treino-header-main" style={{ fontWeight: '600' }}>Saúde, Treino e Evolução</h2>
         </div>
       </header>
 
@@ -544,8 +543,8 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                   <span style={{ background: 'rgba(148,163,184,0.12)', color: '#CBD5E1', padding: '3px 9px', borderRadius: '6px' }}>
                     Última vez ({prData.lastDate}): <strong>{prData.lastKg > 0 ? `${prData.lastKg} kg × ` : ''}{prData.lastReps}</strong>
                   </span>
-                  <span style={{ background: 'rgba(16,185,129,0.15)', color: '#34D399', padding: '3px 9px', borderRadius: '6px', fontWeight: '800' }}>
-                    🏆 Recorde: {prData.bestKg > 0 ? `${prData.bestKg} kg` : `${prData.bestReps} reps`}
+                  <span style={{ background: 'rgba(16,185,129,0.14)', color: '#34D399', padding: '3px 9px', borderRadius: '6px', fontWeight: '600' }}>
+                    Recorde: {prData.bestKg > 0 ? `${prData.bestKg} kg` : `${prData.bestReps} reps`}
                   </span>
                 </div>
               );
@@ -669,24 +668,23 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             return (
               <div
                 style={{
-                  background: 'linear-gradient(145deg, #131B26 0%, #0F172A 100%)',
-                  border: '1px solid rgba(16, 185, 129, 0.35)',
-                  borderRadius: '18px',
+                  background: '#13161F',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '16px',
                   padding: '16px 18px',
                   marginBottom: '18px',
-                  boxShadow: '0 10px 28px rgba(0, 0, 0, 0.4)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
                   <div>
-                    <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#10B981', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                      • SEM EQUIPAMENTOS • EM CASA
+                    <span style={{ fontSize: '0.72rem', fontWeight: '500', color: '#94A3B8' }}>
+                      Treinos sem equipamentos em casa
                     </span>
-                    <h3 style={{ margin: '2px 0 0', fontSize: '1.08rem', color: '#FFFFFF', fontWeight: '900' }}>
-                      Jornada TemploFit em Casa (6 Meses)
+                    <h3 style={{ margin: '2px 0 0', fontSize: '1.08rem', color: '#FFFFFF', fontWeight: '600' }}>
+                      Jornada TemploFit • 6 Meses
                     </h3>
                   </div>
-                  <span style={{ background: 'rgba(16,185,129,0.16)', color: '#34D399', padding: '4px 10px', borderRadius: '999px', fontSize: '0.7rem', fontWeight: '800' }}>
+                  <span style={{ background: 'rgba(16,185,129,0.12)', color: '#34D399', padding: '4px 10px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600' }}>
                     {mesAtual.trimestre} • {mesAtual.semanas}
                   </span>
                 </div>

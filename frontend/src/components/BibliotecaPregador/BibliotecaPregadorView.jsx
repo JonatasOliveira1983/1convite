@@ -155,7 +155,7 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
         <div className="bp-header-info">
           <div className="bp-pill">
             <span className="bp-pill-dot" />
-            <span>HOMILÉTICA &amp; TEOLOGIA COMPLETA</span>
+            <span>Homilética e Teologia</span>
           </div>
           <h1 className="bp-title">Biblioteca do Pregador</h1>
         </div>
@@ -238,7 +238,7 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
             style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
           />
           <button type="submit" disabled={salvando} className="bp-share-btn" style={{ marginTop: '4px' }}>
-            {salvando ? 'Salvando na Nuvem...' : 'Salvar Esboço no Banco de Dados'}
+            {salvando ? 'Salvando...' : 'Salvar esboço'}
           </button>
         </form>
       ) : !itemAberto ? (
@@ -370,7 +370,7 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
               <div className="bp-points-list">
                 {itemAberto.data.localizacoes.map((loc, idx) => (
                   <div key={idx} className="bp-point-item">
-                    <div className="bp-point-num">📍</div>
+                    <div className="bp-point-num">{idx + 1}</div>
                     <div>
                       <h5 className="bp-point-title">{loc.nome}</h5>
                       <p className="bp-point-desc">{loc.importancia || loc.descricao}</p>
