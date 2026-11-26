@@ -921,18 +921,84 @@ function App() {
     return targetList[0] || ptVoices[0];
   };
 
+  const themeColors = {
+    'theme-orange': {
+      primary: '#F97316',
+      dark: '#EA580C',
+      light: '#FFF7ED',
+      mid: '#FFEDD5',
+      glow: 'rgba(249, 115, 22, 0.20)',
+      grad: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
+      shadow: '0 8px 24px rgba(249, 115, 22, 0.15)'
+    },
+    'theme-blue': {
+      primary: '#3B82F6',
+      dark: '#2563EB',
+      light: '#EFF6FF',
+      mid: '#DBEAFE',
+      glow: 'rgba(59, 130, 246, 0.20)',
+      grad: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+      shadow: '0 8px 24px rgba(59, 130, 246, 0.15)'
+    },
+    'theme-green': {
+      primary: '#10B981',
+      dark: '#059669',
+      light: '#ECFDF5',
+      mid: '#D1FAE5',
+      glow: 'rgba(16, 185, 129, 0.20)',
+      grad: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+      shadow: '0 8px 24px rgba(16, 185, 129, 0.15)'
+    },
+    'theme-purple': {
+      primary: '#8B5CF6',
+      dark: '#7C3AED',
+      light: '#F5F3FF',
+      mid: '#EDE9FE',
+      glow: 'rgba(139, 92, 246, 0.20)',
+      grad: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+      shadow: '0 8px 24px rgba(139, 92, 246, 0.15)'
+    },
+    'theme-sepia': {
+      primary: '#D97706',
+      dark: '#B45309',
+      light: '#FFFBEB',
+      mid: '#FEF3C7',
+      glow: 'rgba(217, 119, 6, 0.20)',
+      grad: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
+      shadow: '0 8px 24px rgba(217, 119, 6, 0.15)'
+    }
+  };
+
   useEffect(() => {
-    document.body.classList.remove('theme-orange', 'theme-blue', 'theme-green', 'theme-purple', 'theme-sepia');
+    const themeClasses = ['theme-orange', 'theme-blue', 'theme-green', 'theme-purple', 'theme-sepia'];
+    themeClasses.forEach(c => {
+      document.body.classList.remove(c);
+      document.documentElement.classList.remove(c);
+    });
     document.body.classList.add(theme);
+    document.documentElement.classList.add(theme);
     localStorage.setItem('app-theme', theme);
+
+    const cfg = themeColors[theme] || themeColors['theme-green'];
+    const r = document.documentElement;
+    r.style.setProperty('--orange', cfg.primary);
+    r.style.setProperty('--orange-dark', cfg.dark);
+    r.style.setProperty('--orange-light', cfg.light);
+    r.style.setProperty('--orange-mid', cfg.mid);
+    r.style.setProperty('--orange-glow', cfg.glow);
+    r.style.setProperty('--grad-orange', cfg.grad);
+    r.style.setProperty('--shadow-orange', cfg.shadow);
+    r.style.setProperty('--primary-color', cfg.primary);
   }, [theme]);
 
   useEffect(() => {
-    if (enableCustomFontSize) {
-      document.documentElement.style.fontSize = `${fontSizeScale}px`;
-    } else {
-      document.documentElement.style.fontSize = '16px';
-    }
+    const scale = enableCustomFontSize ? fontSizeScale : 16;
+    document.documentElement.style.fontSize = `${scale}px`;
+    document.documentElement.style.setProperty('--app-base-font', `${scale}px`);
+    document.documentElement.style.setProperty('--reading-font-size', `${scale * 1.05}px`);
+    document.documentElement.style.setProperty('--verse-font-size', `${scale * 1.05}px`);
+    localStorage.setItem('app-font-size', fontSizeScale);
+    localStorage.setItem('app-enable-font-size', enableCustomFontSize);
   }, [enableCustomFontSize, fontSizeScale]);
 
   // ── LAYA ENGINE — SABEDORIA BÍBLICA & ORÁCULO EM CPU ──
@@ -1252,13 +1318,6 @@ function App() {
     return true;
   });
 
-  useEffect(() => {
-    document.body.style.cssText = '';
-    document.body.classList.remove('dark-mode');
-    const rootEl = document.getElementById('root');
-    if (rootEl) rootEl.style.cssText = '';
-  }, []);
-
   const [profileName, setProfileName] = useState(() => localStorage.getItem('1convite_user_name') || 'Membro Convidado');
   const [profileEmail, setProfileEmail] = useState(() => localStorage.getItem('1convite_user_email') || 'membro@1convite.com');
 
@@ -1545,16 +1604,22 @@ function App() {
   useEffect(() => {
     document.body.style.removeProperty('background-color');
     document.body.style.removeProperty('backgroundColor');
-    const rootEl = document.getElementById('root');
-    if (rootEl) {
-      rootEl.style.removeProperty('background-color');
-      rootEl.style.removeProperty('backgroundColor');
-    }
+    const rootEl = document.documentElement;
     localStorage.setItem('1convite_dark_mode', darkMode);
     if (darkMode) {
       document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+      rootEl.classList.add('dark-mode');
+      rootEl.classList.remove('light-mode');
+      rootEl.setAttribute('data-theme', 'dark');
+      rootEl.style.colorScheme = 'dark';
     } else {
       document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+      rootEl.classList.remove('dark-mode');
+      rootEl.classList.add('light-mode');
+      rootEl.setAttribute('data-theme', 'light');
+      rootEl.style.colorScheme = 'light';
     }
   }, [darkMode]);
 
@@ -2928,12 +2993,15 @@ Em nome de Jesus, Amém.`;
   }
 
   return (
-    <div className={isCapacitor ? 'app-container is-capacitor' : 'app-container'}>
+    <div 
+      className={`${isCapacitor ? 'app-container is-capacitor' : 'app-container'} ${darkMode ? 'dark-mode' : 'light-mode'} ${theme}`}
+      data-theme={darkMode ? 'dark' : 'light'}
+    >
       <audio ref={ambientAudioRef} />
       {!isCapacitor && (
         <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
           <div className="desktop-sidebar-brand">
-            <img src={appLogomarcaDark} alt="1Convite" className="desktop-sidebar-logo" />
+            <img src={darkMode ? appLogomarcaDark : appLogomarcaOficial} alt="1Convite" className="desktop-sidebar-logo" />
           </div>
 
           <nav className="desktop-sidebar-nav">
@@ -9284,7 +9352,6 @@ Em nome de Jesus, Amém.`;
             isPremium={isPremiumUser}
             onOpenUpgrade={() => setShowUpgradeModal(true)}
             isDarkMode={darkMode}
-            onToggleDarkMode={() => setDarkMode(prev => !prev)}
             initialStep={cafeInitialStep || 1}
             onNavigateTemplo={() => setActiveTab('treino-templo')}
           />

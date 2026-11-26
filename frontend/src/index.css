@@ -3096,9 +3096,9 @@ body.dark-mode .memoria-card-back {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #fb923c;
-    background: rgba(249, 115, 22, 0.14);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+    color: var(--orange, #fb923c);
+    background: var(--orange-light, rgba(249, 115, 22, 0.14));
+    border: 1px solid var(--orange, rgba(249, 115, 22, 0.3));
     padding: 3px 8px;
     border-radius: 999px;
   }
@@ -3137,9 +3137,53 @@ body.dark-mode .memoria-card-back {
   }
 
   .desktop-nav-item.active {
-    background: rgba(249, 115, 22, 0.16);
-    color: #fb923c;
+    background: var(--orange-light, rgba(249, 115, 22, 0.16));
+    color: var(--orange, #fb923c);
     font-weight: 700;
+  }
+
+  body.light-mode .app-container:not(.is-capacitor) .desktop-sidebar,
+  :root:not(.dark-mode) .app-container:not(.is-capacitor) .desktop-sidebar {
+    background: #ffffff !important;
+    border-right: 1px solid #e5e7eb !important;
+  }
+
+  body.light-mode .desktop-sidebar-brand,
+  :root:not(.dark-mode) .desktop-sidebar-brand {
+    border-bottom: 1px solid #f3f4f6 !important;
+  }
+
+  body.light-mode .desktop-nav-item,
+  :root:not(.dark-mode) .desktop-nav-item {
+    color: #4b5563 !important;
+  }
+
+  body.light-mode .desktop-nav-item:hover,
+  :root:not(.dark-mode) .desktop-nav-item:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #111827 !important;
+  }
+
+  body.light-mode .desktop-sidebar-divider,
+  :root:not(.dark-mode) .desktop-sidebar-divider {
+    background: #e5e7eb !important;
+  }
+
+  body.light-mode .desktop-sidebar-user,
+  :root:not(.dark-mode) .desktop-sidebar-user {
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    color: #111827 !important;
+  }
+
+  body.light-mode .desktop-user-name,
+  :root:not(.dark-mode) .desktop-user-name {
+    color: #111827 !important;
+  }
+
+  body.light-mode .desktop-user-role,
+  :root:not(.dark-mode) .desktop-user-role {
+    color: #6b7280 !important;
   }
 
   .desktop-nav-icon {
@@ -3262,4 +3306,110 @@ body.dark-mode .memoria-card-back {
   box-sizing: border-box;
   max-width: 640px;
   margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════
+   UNIFICAÇÃO GLOBAL: MODO CLARO, APARÊNCIA & ESCALA DE FONTE
+═══════════════════════════════════════════════════ */
+body.light-mode,
+.app-container.light-mode,
+:root.light-mode,
+:root:not(.dark-mode) {
+  --bg-app:         #FAFAFA !important;
+  --white:          #FFFFFF !important;
+  --glass-bg:       rgba(255, 255, 255, 0.90) !important;
+  --glass-border:   rgba(0, 0, 0, 0.08) !important;
+  --glass-shadow:   0 8px 30px rgba(0, 0, 0, 0.05) !important;
+  --text-primary:   #09090B !important;
+  --text-secondary: #4B5563 !important;
+  --text-muted:     #9CA3AF !important;
+  --slate:          #1F2937 !important;
+  --slate-light:    #F3F4F6 !important;
+  --slate-border:   #E5E7EB !important;
+  background-color: #FAFAFA !important;
+  color:            #09090B !important;
+  color-scheme: light;
+}
+
+body.light-mode .app-container {
+  background-color: #FAFAFA !important;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-mode .app-header {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-bottom: 1px solid #E5E7EB !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-mode .nav-tabs {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-top-color: #E5E7EB !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .nav-tab {
+  color: #6B7280 !important;
+}
+
+body.light-mode .nav-tab.active {
+  color: var(--orange, #10B981) !important;
+}
+
+body.light-mode .glass-panel,
+body.light-mode .feature-card,
+body.light-mode .action-card,
+body.light-mode .stat-card,
+body.light-mode .home-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  color: #09090B !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light-mode .input-field {
+  background: #FFFFFF !important;
+  color: #09090B !important;
+  border-color: #E5E7EB !important;
+}
+
+body.light-mode .btn-secondary {
+  background: #F3F4F6 !important;
+  color: #111827 !important;
+  border-color: #E5E7EB !important;
+}
+
+body.light-mode .btn-secondary:hover {
+  background: #E5E7EB !important;
+}
+
+/* Bíblia Sagrada no Modo Claro */
+body.light-mode .bible-reader {
+  background: #FAFAFA !important;
+  color: #09090B !important;
+}
+
+body.light-mode .bible-verse-row {
+  border-bottom: 1px solid #F3F4F6;
+}
+
+body.light-mode .bible-verse-row:hover {
+  background: #F3F4F6;
+}
+
+body.light-mode .bible-verse-row.selected {
+  background: var(--orange-light, #ECFDF5) !important;
+}
+
+/* Escala Unificada de Leitura em Todo o App */
+.bible-verse-row span,
+.cafe-reading-text,
+.cafe-quote-text,
+.bp-esboco-content,
+.bp-verse-text,
+.mv-card-body,
+.eb-reader-text,
+.reading-scalable {
+  font-size: var(--reading-font-size, 1.05rem) !important;
+  line-height: 1.75 !important;
 }
