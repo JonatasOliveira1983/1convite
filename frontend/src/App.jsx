@@ -2106,11 +2106,11 @@ function App() {
           } catch (e) {}
         }
 
-        // Carrega o áudio garantindo HTTPS para não haver bloqueio de Mixed Content
+        // Carrega o áudio garantindo HTTPS apenas em domínios externos (preserva http://localhost)
         const dataAudio = await fetchJson(`${API_BASE}/biblia/audio/${bookAbrev}/${capNum}`);
         if (dataAudio) {
           let secureAudio = dataAudio.proxy || dataAudio.url || '/piano.mp3';
-          if (secureAudio.startsWith('http://')) {
+          if (secureAudio.startsWith('http://') && !secureAudio.includes('localhost') && !secureAudio.includes('127.0.0.1')) {
             secureAudio = secureAudio.replace('http://', 'https://');
           }
           setBibleAudioUrl(secureAudio);
@@ -2900,6 +2900,7 @@ Em nome de Jesus, Amém.`;
 
   return (
     <div className={isCapacitor ? 'app-container is-capacitor' : 'app-container'}>
+      <audio ref={ambientAudioRef} />
       {!isCapacitor && (
         <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
           <div className="desktop-sidebar-brand">
@@ -4426,7 +4427,6 @@ Em nome de Jesus, Amém.`;
             {/* 2. ORAÇÃO GUIADA */}
             {activeSabadoBlock === 'meditacao' && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <audio ref={ambientAudioRef} />
 
                 {/* Barra de Navegação Interna */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
