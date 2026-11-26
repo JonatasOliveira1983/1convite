@@ -1201,7 +1201,7 @@ function App() {
   
   // Som ambiente de fundo e velocidade para Meditação
   const [activeAmbient, setActiveAmbient] = useState('none');
-  const [ambientVolume, setAmbientVolume] = useState(0.15);
+  const [ambientVolume, setAmbientVolume] = useState(0.25);
   const [narrationRate, setNarrationRate] = useState(0.82);
   const [meditationVoice, setMeditationVoice] = useState('pt-BR-FranciscaNeural');
   const ambientAudioRef = useRef(null);
@@ -2429,6 +2429,27 @@ Importante: O JSON deve ser 100% válido.`;
     { id: 'piano', label: 'Piano', url: '/piano.mp3' }
   ];
 
+  const handleSelectAmbient = (id) => {
+    setActiveAmbient(id);
+    if (!ambientAudioRef.current) return;
+    if (id === 'none') {
+      ambientAudioRef.current.pause();
+      ambientAudioRef.current.currentTime = 0;
+      return;
+    }
+    const track = ambientTracks.find(t => t.id === id);
+    if (track && track.url) {
+      if (!ambientAudioRef.current.src.endsWith(track.url)) {
+        ambientAudioRef.current.src = track.url;
+      }
+      ambientAudioRef.current.loop = true;
+      ambientAudioRef.current.volume = ambientVolume;
+      ambientAudioRef.current.play().catch(e => {
+        console.warn('[Ambient Audio] Play direto prevenido:', e);
+      });
+    }
+  };
+
   useEffect(() => {
     if (ambientAudioRef.current) {
       ambientAudioRef.current.volume = ambientVolume;
@@ -2437,18 +2458,22 @@ Importante: O JSON deve ser 100% válido.`;
 
   useEffect(() => {
     if (!ambientAudioRef.current) return;
-    ambientAudioRef.current.pause();
-    
+    if (activeAmbient === 'none') {
+      ambientAudioRef.current.pause();
+      return;
+    }
     const track = ambientTracks.find(t => t.id === activeAmbient);
     if (track && track.url) {
-      ambientAudioRef.current.src = track.url;
+      if (!ambientAudioRef.current.src.endsWith(track.url)) {
+        ambientAudioRef.current.src = track.url;
+      }
       ambientAudioRef.current.loop = true;
-      if (meditationPlaying) {
-        ambientAudioRef.current.volume = ambientVolume;
+      ambientAudioRef.current.volume = ambientVolume;
+      if (activeTab === 'biblia' || meditationPlaying) {
         ambientAudioRef.current.play().catch(() => {});
       }
     }
-  }, [activeAmbient]);
+  }, [activeAmbient, activeTab, meditationPlaying]);
 
   const stopMeditation = () => {
     stopNeuralSpeech();
@@ -2564,10 +2589,14 @@ Em nome de Jesus, Amém.`;
     if (bibleAudioPlaying) {
       setAudioPlaying(false);
       bibleAudioRef.current.play().catch(() => setBibleAudioPlaying(false));
+      // Se houver som de fundo selecionado, garante que também continue tocando suavemente
+      if (activeAmbient !== 'none' && ambientAudioRef.current && ambientAudioRef.current.paused) {
+        ambientAudioRef.current.play().catch(() => {});
+      }
     } else {
       bibleAudioRef.current.pause();
     }
-  }, [bibleAudioPlaying]);
+  }, [bibleAudioPlaying, activeAmbient]);
 
   const onBibleAudioTimeUpdate = () => { if (bibleAudioRef.current) setBibleAudioCurrentTime(bibleAudioRef.current.currentTime); };
   const onBibleAudioLoadedMetadata = () => { if (bibleAudioRef.current) setBibleAudioDuration(bibleAudioRef.current.duration); };
@@ -3082,6 +3111,8 @@ Em nome de Jesus, Amém.`;
                   setActiveTab('dashboard');
                   setBibleAudioPlaying(false);
                   if (bibleAudioRef.current) bibleAudioRef.current.pause();
+                  if (ambientAudioRef.current) ambientAudioRef.current.pause();
+                  setActiveAmbient('none');
                 }
               }}
               style={{
@@ -4751,7 +4782,7 @@ Em nome de Jesus, Amém.`;
                       {ambientTracks.map(track => (
                         <button
                           key={track.id}
-                          onClick={() => setActiveAmbient(track.id)}
+                          onClick={() => handleSelectAmbient(track.id)}
                           style={{
                             background: activeAmbient === track.id ? '#8B5CF6' : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
                             border: '1px solid',
@@ -5606,7 +5637,7 @@ Em nome de Jesus, Amém.`;
                       <button
                         key={tr.id}
                         type="button"
-                        onClick={() => setActiveAmbient(tr.id)}
+                        onClick={() => handleSelectAmbient(tr.id)}
                         style={{
                           padding: '4px 10px',
                           borderRadius: '8px',
@@ -5628,11 +5659,15 @@ Em nome de Jesus, Amém.`;
                       <span style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Vol</span>
                       <input
                         type="range"
-                        min="0.02"
-                        max="0.5"
-                        step="0.02"
+                        min="0.05"
+                        max="0.6"
+                        step="0.05"
                         value={ambientVolume}
-                        onChange={(e) => setAmbientVolume(parseFloat(e.target.value))}
+                        onChange={(e) => {
+                          const val = parseFloat(e.target.value);
+                          setAmbientVolume(val);
+                          if (ambientAudioRef.current) ambientAudioRef.current.volume = val;
+                        }}
                         style={{ width: '68px', accentColor: '#10B981', cursor: 'pointer' }}
                       />
                     </div>
