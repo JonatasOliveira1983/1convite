@@ -605,7 +605,11 @@ export default function LandingPage({ onEnterApp }) {
                 </span>
               </div>
               <div className="sp-showcase-body">
-                <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '22px', width: 'auto', marginBottom: '8px', display: 'block' }} />
+                <img
+                  src="/templofit/templofit-logo-darkbg.png"
+                  alt="TemploFit"
+                  style={{ height: '26px', width: 'auto', maxWidth: '170px', objectFit: 'contain', marginBottom: '8px', display: 'block' }}
+                />
                 <h3>Saúde &amp; Vitalidade</h3>
                 <p>Cuide do seu corpo como templo do Espírito Santo com rotinas por nível, demonstrações animadas em loop, mapa muscular anatômico e timer de descanso.</p>
               </div>
@@ -713,9 +717,13 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-plan-card">
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Plano Básico • Anual</span>
-                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
-                  + APP TEMPLOFIT
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span>+</span>
+                  <img
+                    src="/templofit/templofit-logo-darkbg.png"
+                    alt="TemploFit"
+                    style={{ height: '14px', width: 'auto', maxWidth: '92px', objectFit: 'contain', display: 'block' }}
+                  />
                 </span>
               </div>
               <h3 className="sp-plan-title">Semente</h3>
@@ -764,9 +772,13 @@ export default function LandingPage({ onEnterApp }) {
               <div className="sp-plan-popular-pill">MAIS POPULAR • MELHOR CUSTO</div>
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Mais Popular • Anual</span>
-                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
-                  + APP TEMPLOFIT
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span>+</span>
+                  <img
+                    src="/templofit/templofit-logo-darkbg.png"
+                    alt="TemploFit"
+                    style={{ height: '14px', width: 'auto', maxWidth: '92px', objectFit: 'contain', display: 'block' }}
+                  />
                 </span>
               </div>
               <h3 className="sp-plan-title">Edificação</h3>
@@ -824,9 +836,13 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-plan-card">
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Plano Avançado • Anual</span>
-                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
-                  + APP TEMPLOFIT
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span>+</span>
+                  <img
+                    src="/templofit/templofit-logo-darkbg.png"
+                    alt="TemploFit"
+                    style={{ height: '14px', width: 'auto', maxWidth: '92px', objectFit: 'contain', display: 'block' }}
+                  />
                 </span>
               </div>
               <h3 className="sp-plan-title">Reino</h3>
