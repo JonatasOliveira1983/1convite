@@ -420,8 +420,9 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           </svg>
         </button>
         <div className="treino-header-titles">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-            <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '22px', width: 'auto', display: 'block' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" className="templofit-logo-img templofit-logo-for-dark" />
+            <img src="/templofit/templofit-logo.png" alt="TemploFit" className="templofit-logo-img templofit-logo-for-light" />
           </div>
           <h2 className="treino-header-main" style={{ fontWeight: '600' }}>Saúde, Treino e Evolução</h2>
         </div>

@@ -1108,3 +1108,26 @@ body.light-mode .treino-filter-btn.active,
   border-color: var(--orange, #10B981) !important;
   color: #FFFFFF !important;
 }
+
+/* Logomarca responsiva ao Modo Claro e Escuro */
+.templofit-logo-img {
+  height: 38px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.templofit-logo-for-light {
+  display: none;
+}
+
+body.light-mode .templofit-logo-for-dark,
+:root:not(.dark-mode) .templofit-logo-for-dark {
+  display: none !important;
+}
+
+body.light-mode .templofit-logo-for-light,
+:root:not(.dark-mode) .templofit-logo-for-light {
+  display: block !important;
+  filter: contrast(1.15);
+}
