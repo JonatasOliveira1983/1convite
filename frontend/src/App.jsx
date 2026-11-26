@@ -3593,12 +3593,16 @@ Em nome de Jesus, Amém.`;
                     color: '#10B981',
                     background: 'rgba(16, 185, 129, 0.2)',
                     border: '1px solid rgba(16, 185, 129, 0.4)',
-                    padding: '3px 8px',
+                    padding: '4px 10px',
                     borderRadius: '12px',
                     alignSelf: 'flex-start',
-                    marginBottom: '6px'
+                    marginBottom: '6px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
                   }}>
-                    TEMPLO DO ESPÍRITO • SAÚDE & FORÇA
+                    <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '16px', width: 'auto' }} />
+                    <span>• SAÚDE &amp; FORÇA</span>
                   </span>
 
                   <h3 style={{ margin: '0 0 4px', fontSize: '1.2rem', fontWeight: '800', color: '#FFF' }}>

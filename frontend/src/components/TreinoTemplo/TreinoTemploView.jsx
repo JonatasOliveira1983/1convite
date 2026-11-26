@@ -343,7 +343,10 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           </svg>
         </button>
         <div className="treino-header-titles">
-          <span className="treino-header-kicker">TEMPLOFIT • {syncStatus || '1CONVITE'}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+            <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '22px', width: 'auto', display: 'block' }} />
+            <span className="treino-header-kicker" style={{ margin: 0 }}>• {syncStatus || '1CONVITE'}</span>
+          </div>
           <h2 className="treino-header-main">Saúde, Treino &amp; Evolução</h2>
         </div>
       </header>
@@ -536,7 +539,10 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           <div className="treino-hero-card">
             <img src={treinoTemploBanner} alt="TemploFit" className="treino-hero-img" />
             <div className="treino-hero-overlay">
-              <span className="treino-hero-pill">PROGRAMA PROGRESSIVO • 3 FASES</span>
+              <span className="treino-hero-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <img src="/templofit/templofit-icon.png" alt="" style={{ height: '14px', width: 'auto' }} />
+                PROGRAMA PROGRESSIVO • 3 FASES
+              </span>
               <h3 className="treino-hero-title">TemploFit: Evolução Fase a Fase</h3>
               <p className="treino-hero-desc">
                 Avance da Fase 1 (Despertar) à Fase 3 (Força Máxima) registrando séries, cargas em kg e peso corporal direto na nuvem.

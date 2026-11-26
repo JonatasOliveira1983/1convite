@@ -599,10 +599,14 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-showcase-card">
               <div className="sp-showcase-img-wrap">
                 <img src={imgTreinoTemplo} alt="TemploFit - Exercícios Físicos Guiados" className="sp-showcase-img" />
-                <span className="sp-showcase-badge">TemploFit</span>
+                <span className="sp-showcase-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '14px', width: 'auto' }} />
+                  TemploFit
+                </span>
               </div>
               <div className="sp-showcase-body">
-                <h3>TemploFit • Saúde &amp; Vitalidade</h3>
+                <img src="/templofit/templofit-logo-darkbg.png" alt="TemploFit" style={{ height: '22px', width: 'auto', marginBottom: '8px', display: 'block' }} />
+                <h3>Saúde &amp; Vitalidade</h3>
                 <p>Cuide do seu corpo como templo do Espírito Santo com rotinas por nível, demonstrações animadas em loop, mapa muscular anatômico e timer de descanso.</p>
               </div>
             </div>
@@ -709,7 +713,10 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-plan-card">
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Plano Básico • Anual</span>
-                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
+                  + APP TEMPLOFIT
+                </span>
               </div>
               <h3 className="sp-plan-title">Semente</h3>
               <p className="sp-plan-subtitle">Para sua transformação espiritual e física diária + 1 pessoa especial.</p>
@@ -757,7 +764,10 @@ export default function LandingPage({ onEnterApp }) {
               <div className="sp-plan-popular-pill">MAIS POPULAR • MELHOR CUSTO</div>
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Mais Popular • Anual</span>
-                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
+                  + APP TEMPLOFIT
+                </span>
               </div>
               <h3 className="sp-plan-title">Edificação</h3>
               <p className="sp-plan-subtitle">Ideal para equipar toda a sua casa, família e amigos próximos.</p>
@@ -814,7 +824,10 @@ export default function LandingPage({ onEnterApp }) {
             <div className="sp-plan-card">
               <div className="sp-plan-top-row">
                 <span className="sp-plan-tier">Plano Avançado • Anual</span>
-                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+                <span className="sp-plan-templofit-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  <img src="/templofit/templofit-icon.png" alt="" style={{ height: '13px', width: 'auto' }} />
+                  + APP TEMPLOFIT
+                </span>
               </div>
               <h3 className="sp-plan-title">Reino</h3>
               <p className="sp-plan-subtitle">Para líderes, células, ministérios e famílias grandes multiplicarem a fé.</p>
