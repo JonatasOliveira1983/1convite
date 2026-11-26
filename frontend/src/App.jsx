@@ -3606,7 +3606,7 @@ Em nome de Jesus, Amém.`;
                   </h3>
 
                   <p style={{ margin: '0 0 12px', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.75)' }}>
-                    15 min • Sem Equipamentos • Rotinas Rápidas do OpenGym
+                    15 min • Sem Equipamentos • Rotinas Guiadas TemploFit
                   </p>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -3640,33 +3640,33 @@ Em nome de Jesus, Amém.`;
               </div>
             )}
 
-            {/* 5. SEÇÃO BIBLIOTECA & SABEDORIA (CARDS MODERNOS ESTILO DISCOVER) */}
-            <div style={{ marginBottom: '14px' }}>
+            {/* 5. SEÇÃO BIBLIOTECA & FERRAMENTAS (COM IMAGENS DE FUNDO — DESKTOP & APP) */}
+            <div style={{ marginBottom: '26px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <div>
                   <span style={{ fontSize: '0.68rem', fontWeight: '800', color: 'rgba(255, 255, 255, 0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                     ECOSSISTEMA DO REINO
                   </span>
-                  <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800', color: '#FFF' }}>
-                    Biblioteca & Ferramentas
+                  <h4 style={{ margin: 0, fontSize: '1.08rem', fontWeight: '800', color: '#FFF' }}>
+                    Biblioteca &amp; Ferramentas
                   </h4>
                 </div>
               </div>
 
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(168px, 1fr))',
                 gap: '12px',
-                paddingBottom: '16px'
               }}>
                 {[
                   { 
                     id: 'biblia', 
                     label: 'Bíblia Sagrada', 
                     sub: 'ACF com Áudio & Estudo',
+                    bgImage: '/landing-cards/biblia-audio.jpg',
                     accent: '#F97316',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     )
@@ -3675,9 +3675,10 @@ Em nome de Jesus, Amém.`;
                     id: 'sabado', 
                     label: 'Desafio do Dia', 
                     sub: 'Prática & Meditação',
+                    bgImage: '/landing-cards/oracao-365.jpg',
                     accent: '#EAB308',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
                       </svg>
                     )
@@ -3686,55 +3687,11 @@ Em nome de Jesus, Amém.`;
                     id: 'trail', 
                     label: 'Trilha do Reino', 
                     sub: '365 Dias Cronológicos',
+                    bgImage: '/landing-cards/trilha-reino.jpg',
                     accent: '#10B981',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    id: 'mulher-virtuosa', 
-                    label: 'Mulher Virtuosa', 
-                    sub: 'Graça & Família',
-                    isPremium: true,
-                    entitlementKey: 'mulher_virtuosa',
-                    offerId: 'downsell_mulher',
-                    tag: 'PREMIUM',
-                    accent: '#EC4899',
-                    icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    id: 'biblioteca-pregador', 
-                    label: 'Biblioteca Pregador', 
-                    sub: 'Esboços & Sermões',
-                    isPremium: true,
-                    entitlementKey: 'pregador',
-                    offerId: 'downsell_pregador',
-                    tag: 'PREMIUM',
-                    accent: '#8B5CF6',
-                    icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    id: 'ebooks-premium', 
-                    label: 'E-books & Livros', 
-                    sub: 'Leituras Edificantes',
-                    isPremium: true,
-                    entitlementKey: 'ebooks',
-                    offerId: 'order_bump_ebooks',
-                    tag: 'PREMIUM',
-                    accent: '#3B82F6',
-                    icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     )
                   },
@@ -3743,9 +3700,10 @@ Em nome de Jesus, Amém.`;
                     label: 'Jogos & Kids', 
                     sub: 'Quiz & Caça-Palavras',
                     tag: 'INFANTIL',
+                    bgImage: '/landing-cards/mentores-sabedoria.jpg',
                     accent: '#06B6D4',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -3755,9 +3713,10 @@ Em nome de Jesus, Amém.`;
                     id: 'contatos', 
                     label: 'Conexões do Reino', 
                     sub: 'Grupos & Irmãos',
+                    bgImage: heroMountainsImg,
                     accent: '#14B8A6',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     )
@@ -3766,9 +3725,10 @@ Em nome de Jesus, Amém.`;
                     id: 'criar-card', 
                     label: 'Criar Card', 
                     sub: 'Compartilhe Versículos',
+                    bgImage: '/landing-cards/studio-cards.jpg',
                     accent: '#A855F7',
                     icon: (
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <rect x="3" y="3" width="18" height="18" rx="3" ry="3" strokeLinecap="round" strokeLinejoin="round" />
                         <circle cx="8.5" cy="8.5" r="1.5" />
                         <polyline points="21 15 16 10 5 21" strokeLinecap="round" strokeLinejoin="round" />
@@ -3779,19 +3739,16 @@ Em nome de Jesus, Amém.`;
                     id: 'lojinha', 
                     label: 'Lojinha do Reino', 
                     sub: 'Itens & Recompensas',
+                    bgImage: '/landing-cards/trilha-reino.jpg',
                     accent: '#F59E0B',
                     icon: (
-                      <ChaminhaCoin size={26} />
+                      <ChaminhaCoin size={24} />
                     )
                   }
                 ].map(card => (
                   <div
                     key={card.id}
                     onClick={() => {
-                      if (card.entitlementKey && !hasModuleAccess(card.entitlementKey)) {
-                        setUnlockOfferId(card.offerId);
-                        return;
-                      }
                       if (card.id === 'sabado') {
                         openCafeStep(2);
                         return;
@@ -3808,97 +3765,46 @@ Em nome de Jesus, Amém.`;
                     }}
                     style={{
                       position: 'relative',
-                      background: '#15171E',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      overflow: 'hidden',
+                      backgroundImage: `linear-gradient(180deg, rgba(11, 12, 16, 0.42) 0%, rgba(11, 12, 16, 0.9) 72%, rgba(11, 12, 16, 0.98) 100%), url(${card.bgImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
                       borderRadius: '18px',
                       padding: '16px',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
-                      minHeight: '110px',
-                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
-                      transition: 'all 0.2s ease'
+                      minHeight: '126px',
+                      boxShadow: '0 8px 22px rgba(0, 0, 0, 0.45)',
+                      transition: 'transform 0.2s ease, border-color 0.2s ease'
                     }}
                   >
-                    {card.entitlementKey ? (
-                      hasModuleAccess(card.entitlementKey) ? (
-                        <span style={{
-                          position: 'absolute',
-                          top: '12px',
-                          right: '12px',
-                          fontSize: '0.58rem',
-                          fontWeight: '800',
-                          color: '#34D399',
-                          background: 'rgba(16, 185, 129, 0.16)',
-                          border: '1px solid rgba(16, 185, 129, 0.35)',
-                          padding: '2px 7px',
-                          borderRadius: '999px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                        }}>
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
-                          LIBERADO
-                        </span>
-                      ) : (
-                        <span style={{
-                          position: 'absolute',
-                          top: '12px',
-                          right: '12px',
-                          fontSize: '0.58rem',
-                          fontWeight: '800',
-                          color: '#FBBF24',
-                          background: 'rgba(245, 158, 11, 0.16)',
-                          border: '1px solid rgba(251, 191, 36, 0.35)',
-                          padding: '2px 7px',
-                          borderRadius: '999px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                        }}>
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                          BLOQUEADO
-                        </span>
-                      )
-                    ) : card.tag === 'PREMIUM' && (
-                      <span style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        fontSize: '0.6rem',
-                        fontWeight: '800',
-                        color: '#FACC15',
-                        background: 'rgba(234, 179, 8, 0.15)',
-                        border: '1px solid rgba(234, 179, 8, 0.3)',
-                        padding: '2px 6px',
-                        borderRadius: '8px'
-                      }}>
-                        PREMIUM
-                      </span>
-                    )}
                     {card.tag === 'INFANTIL' && (
                       <span style={{
                         position: 'absolute',
                         top: '12px',
                         right: '12px',
-                        fontSize: '0.6rem',
+                        fontSize: '0.58rem',
                         fontWeight: '800',
-                        color: '#06B6D4',
-                        background: 'rgba(6, 182, 212, 0.15)',
-                        border: '1px solid rgba(6, 182, 212, 0.3)',
-                        padding: '2px 6px',
-                        borderRadius: '8px'
+                        color: '#22D3EE',
+                        background: 'rgba(6, 182, 212, 0.18)',
+                        border: '1px solid rgba(6, 182, 212, 0.38)',
+                        padding: '2px 7px',
+                        borderRadius: '999px'
                       }}>
                         KIDS
                       </span>
                     )}
 
                     <div style={{
-                      width: '42px',
-                      height: '42px',
-                      borderRadius: '12px',
-                      background: `rgba(${card.accent === '#10B981' ? '16, 185, 129' : card.accent === '#F97316' ? '249, 115, 22' : '255, 255, 255'}, 0.08)`,
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '11px',
+                      background: `${card.accent}28`,
+                      backdropFilter: 'blur(6px)',
+                      border: `1px solid ${card.accent}44`,
                       color: card.accent,
                       display: 'flex',
                       alignItems: 'center',
@@ -3912,12 +3818,159 @@ Em nome de Jesus, Amém.`;
                       <h5 style={{ margin: '0 0 2px', fontSize: '0.92rem', fontWeight: '800', color: '#FFF' }}>
                         {card.label}
                       </h5>
-                      <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+                      <span style={{ fontSize: '0.73rem', color: 'rgba(255, 255, 255, 0.72)' }}>
                         {card.sub}
                       </span>
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* 6. VITRINE DE OFERTAS & EXPANSÕES EXCLUSIVAS (SEPARADA — DESKTOP & APP) */}
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+                <div>
+                  <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#FBBF24', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    EXPANSÃO DO REINO • VITRINE
+                  </span>
+                  <h4 style={{ margin: 0, fontSize: '1.08rem', fontWeight: '800', color: '#FFF' }}>
+                    Ofertas &amp; Bibliotecas Exclusivas
+                  </h4>
+                </div>
+                {(!hasModuleAccess('mulher_virtuosa') || !hasModuleAccess('pregador')) && (
+                  <button
+                    type="button"
+                    onClick={() => setUnlockOfferId('upsell_combo')}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '999px',
+                      border: '1px solid rgba(251, 191, 36, 0.45)',
+                      background: 'rgba(245, 158, 11, 0.16)',
+                      color: '#FDE68A',
+                      fontSize: '0.72rem',
+                      fontWeight: '800',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Combo Pregador + Mulher • R$ 47,00
+                  </button>
+                )}
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '14px',
+              }}>
+                {[
+                  {
+                    id: 'ebooks-premium',
+                    label: 'Coleção 5 E-books Premium',
+                    sub: 'Leitura e download em PDF direto no app',
+                    entitlementKey: 'ebooks',
+                    offerId: 'order_bump_ebooks',
+                    priceLabel: 'R$ 19,90',
+                    bgImage: '/offers/ebooks-pack.jpg',
+                  },
+                  {
+                    id: 'mulher-virtuosa',
+                    label: 'Planner da Mulher Virtuosa',
+                    sub: 'Graça, família e organização espiritual',
+                    entitlementKey: 'mulher_virtuosa',
+                    offerId: 'downsell_mulher',
+                    priceLabel: 'R$ 24,90',
+                    bgImage: '/offers/mulher-virtuosa.jpg',
+                  },
+                  {
+                    id: 'biblioteca-pregador',
+                    label: 'Biblioteca do Pregador',
+                    sub: 'Esboços, sermões e referências bíblicas',
+                    entitlementKey: 'pregador',
+                    offerId: 'downsell_pregador',
+                    priceLabel: 'R$ 24,90',
+                    bgImage: '/offers/biblioteca-pregador.jpg',
+                  },
+                ].map((offerCard) => {
+                  const unlocked = hasModuleAccess(offerCard.entitlementKey);
+                  return (
+                    <div
+                      key={offerCard.id}
+                      onClick={() => {
+                        if (unlocked) {
+                          setActiveTab(offerCard.id);
+                        } else {
+                          setUnlockOfferId(offerCard.offerId);
+                        }
+                      }}
+                      style={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        backgroundImage: `linear-gradient(180deg, rgba(9, 10, 15, 0.35) 0%, rgba(9, 10, 15, 0.9) 62%, rgba(9, 10, 15, 0.98) 100%), url(${offerCard.bgImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        border: unlocked ? '1px solid rgba(16, 185, 129, 0.42)' : '1px solid rgba(251, 191, 36, 0.35)',
+                        borderRadius: '18px',
+                        padding: '16px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        minHeight: '164px',
+                        boxShadow: '0 10px 26px rgba(0, 0, 0, 0.5)',
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                        <span style={{
+                          fontSize: '0.62rem',
+                          fontWeight: '800',
+                          color: unlocked ? '#34D399' : '#FBBF24',
+                          background: unlocked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                          border: unlocked ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(251, 191, 36, 0.4)',
+                          padding: '3px 9px',
+                          borderRadius: '999px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                        }}>
+                          {unlocked ? (
+                            <>
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
+                              LIBERADO
+                            </>
+                          ) : (
+                            <>
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                              BLOQUEADO • {offerCard.priceLabel}
+                            </>
+                          )}
+                        </span>
+                      </div>
+
+                      <div style={{ marginTop: '36px' }}>
+                        <div style={{ fontWeight: '800', fontSize: '0.98rem', color: '#FFFFFF', marginBottom: '4px' }}>
+                          {offerCard.label}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.75)', marginBottom: '12px' }}>
+                          {offerCard.sub}
+                        </div>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '6px 12px',
+                          borderRadius: '10px',
+                          fontSize: '0.74rem',
+                          fontWeight: '800',
+                          background: unlocked ? '#10B981' : '#F59E0B',
+                          color: '#09090B',
+                        }}>
+                          {unlocked ? 'Acessar Agora →' : `Desbloquear por ${offerCard.priceLabel}`}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
