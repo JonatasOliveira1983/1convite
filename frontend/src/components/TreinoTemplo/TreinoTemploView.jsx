@@ -4,8 +4,10 @@ import treinoTemploBanner from '../../assets/feed/treino_templo.jpg';
 import MuscleMap from './MuscleMap';
 import BodyWeightCard from './BodyWeightCard';
 import OpenGymVideoPlayer from './OpenGymVideoPlayer';
+import AnnualHeatmap from './AnnualHeatmap';
 import { openGymCatalogueService, OPENGYM_BODYPARTS, OPENGYM_EQUIPMENTS } from '../../services/openGymCatalogueService';
 import OPENGYM_ROUTINES from '../../data/openGymRoutines.json';
+import HOME_JOURNEY_6_MONTHS from '../../data/homeJourney6Months.json';
 import { templofitService } from '../../services/templofitService';
 
 const ogMedia = (id) => ({
@@ -129,6 +131,17 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
   const [customTitle, setCustomTitle] = useState('');
   const [customItems, setCustomItems] = useState([]);
 
+  // Jornada 6 Meses em Casa + Troca de Exercício + Recordes Pessoais (PR)
+  const [mesSelecionadoIdx, setMesSelecionadoIdx] = useState(0);
+  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [prMap, setPrMap] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('1convite_pr_exercicios') || '{}');
+    } catch {
+      return {};
+    }
+  });
+
   const timerIntervalRef = useRef(null);
 
   const carregarDadosTurso = async () => {
@@ -232,14 +245,35 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
     setTreinoConcluido(true);
 
     let totalVolumeKg = 0;
+    const updatedPr = { ...prMap };
     Object.keys(completedMap).forEach((key) => {
       if (completedMap[key]) {
+        const [exIdxStr] = key.split('-');
+        const exObj = rotinaSelecionada.exercicios[Number(exIdxStr)];
         const log = seriesLogs[key] || {};
         const kg = Number(String(log.kg || 0).replace(',', '.')) || 0;
-        const reps = parseInt(log.reps || '10', 10) || 10;
-        totalVolumeKg += kg * reps;
+        const repsStr = log.reps || exObj?.reps || '10';
+        const repsNum = parseInt(String(repsStr).replace(/\D/g, ''), 10) || 10;
+        totalVolumeKg += kg * repsNum;
+
+        if (exObj) {
+          const exKey = exObj.openGymId || exObj.nome;
+          const prev = updatedPr[exKey] || { bestKg: 0, bestReps: 0 };
+          updatedPr[exKey] = {
+            lastKg: kg,
+            lastReps: repsStr,
+            bestKg: Math.max(prev.bestKg || 0, kg),
+            bestReps: Math.max(prev.bestReps || 0, repsNum),
+            lastDate: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }),
+          };
+        }
       }
     });
+
+    setPrMap(updatedPr);
+    try {
+      localStorage.setItem('1convite_pr_exercicios', JSON.stringify(updatedPr));
+    } catch {}
 
     const novoRegistro = {
       id: Date.now(),
@@ -331,6 +365,42 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
   const catalogoFiltrado = openGymResult.items;
   const totalOpenGymEx = openGymCatalogueService.getTotalCount();
+
+  const swapAlternatives = useMemo(() => {
+    if (!showSwapModal || !treinoEmAndamento) return [];
+    const current = rotinaSelecionada.exercicios[exercicioAtualIndex];
+    if (!current) return [];
+    const all = openGymCatalogueService.getAll();
+    const targetMuscle = (current.musculos && current.musculos[0]) || 'full body';
+    const isHome = rotinaSelecionada.categoria === 'casa' || (rotinaSelecionada.id || '').startsWith('mes-');
+    const matches = all.filter((ex) => {
+      if (String(ex.id) === String(current.openGymId || current.id)) return false;
+      if (isHome && ex.equipment !== 'body weight') return false;
+      const exTarget = (ex.target || '').toLowerCase();
+      const exBody = (ex.bodyPart || '').toLowerCase();
+      return exTarget.includes(targetMuscle.toLowerCase()) || exBody.includes(targetMuscle.toLowerCase());
+    });
+    return (matches.length > 0 ? matches : all.filter((ex) => !isHome || ex.equipment === 'body weight')).slice(0, 12);
+  }, [showSwapModal, treinoEmAndamento, rotinaSelecionada, exercicioAtualIndex]);
+
+  const trocarExercicioAtual = (novoEx) => {
+    setRotinaSelecionada((prev) => {
+      const updatedEx = [...prev.exercicios];
+      const old = updatedEx[exercicioAtualIndex];
+      updatedEx[exercicioAtualIndex] = {
+        ...old,
+        id: novoEx.id,
+        openGymId: novoEx.id,
+        nome: novoEx.nome,
+        clipUrl: novoEx.clipUrl,
+        stillUrl: novoEx.stillUrl,
+        musculos: [novoEx.target || novoEx.bodyPart || 'geral'],
+        instrucao: novoEx.descricao || old.instrucao,
+      };
+      return { ...prev, exercicios: updatedEx };
+    });
+    setShowSwapModal(false);
+  };
 
   const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   const hojeDia = new Date().getDay();
@@ -426,14 +496,56 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
               <span className="treino-active-step">
                 Exercício {exercicioAtualIndex + 1} de {rotinaSelecionada.exercicios.length}
               </span>
-              <span className="treino-active-series">
-                {rotinaSelecionada.exercicios[exercicioAtualIndex].series} Séries
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowSwapModal(true)}
+                  style={{
+                    background: 'rgba(56, 189, 248, 0.14)',
+                    border: '1px solid rgba(56, 189, 248, 0.35)',
+                    color: '#38BDF8',
+                    borderRadius: '8px',
+                    padding: '4px 10px',
+                    fontSize: '0.72rem',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                  }}
+                >
+                  ↻ Trocar Exercício
+                </button>
+                <span className="treino-active-series">
+                  {rotinaSelecionada.exercicios[exercicioAtualIndex].series} Séries
+                </span>
+              </div>
             </div>
 
             <h3 className="treino-active-name">
               {rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
             </h3>
+
+            {/* HISTÓRICO DA ÚLTIMA MARCA & RECORDE PESSOAL (ESTILO OPENGYM) */}
+            {(() => {
+              const exCurr = rotinaSelecionada.exercicios[exercicioAtualIndex];
+              const prData = prMap[exCurr.openGymId || exCurr.nome];
+              if (!prData) return null;
+              return (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                  marginBottom: '10px',
+                  fontSize: '0.74rem',
+                }}>
+                  <span style={{ background: 'rgba(148,163,184,0.12)', color: '#CBD5E1', padding: '3px 9px', borderRadius: '6px' }}>
+                    Última vez ({prData.lastDate}): <strong>{prData.lastKg > 0 ? `${prData.lastKg} kg × ` : ''}{prData.lastReps}</strong>
+                  </span>
+                  <span style={{ background: 'rgba(16,185,129,0.15)', color: '#34D399', padding: '3px 9px', borderRadius: '6px', fontWeight: '800' }}>
+                    🏆 Recorde: {prData.bestKg > 0 ? `${prData.bestKg} kg` : `${prData.bestReps} reps`}
+                  </span>
+                </div>
+              );
+            })()}
 
             <div className="treino-active-reps-badge">
               <strong>Meta: {rotinaSelecionada.exercicios[exercicioAtualIndex].reps}</strong>
@@ -542,6 +654,117 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
               setShowModalPeso(true);
             }}
           />
+
+          {/* JORNADA OFICIAL TEMPLOFIT EM CASA • EVOLUÇÃO 6 MESES (SEMANA / MÊS / TRIMESTRE) */}
+          {(() => {
+            const mesAtual = HOME_JOURNEY_6_MONTHS[mesSelecionadoIdx] || HOME_JOURNEY_6_MONTHS[0];
+            const sessoesConcluidasMes = historicoTreinos.filter((h) => (h.rotinaId || '').startsWith(mesAtual.id)).length;
+            const metaMes = 20; // 5 treinos/sem x 4 semanas
+            const pctMes = Math.min(100, Math.round((sessoesConcluidasMes / metaMes) * 100));
+
+            return (
+              <div
+                style={{
+                  background: 'linear-gradient(145deg, #131B26 0%, #0F172A 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  borderRadius: '18px',
+                  padding: '16px 18px',
+                  marginBottom: '18px',
+                  boxShadow: '0 10px 28px rgba(0, 0, 0, 0.4)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
+                  <div>
+                    <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#10B981', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      • SEM EQUIPAMENTOS • EM CASA
+                    </span>
+                    <h3 style={{ margin: '2px 0 0', fontSize: '1.08rem', color: '#FFFFFF', fontWeight: '900' }}>
+                      Jornada TemploFit em Casa (6 Meses)
+                    </h3>
+                  </div>
+                  <span style={{ background: 'rgba(16,185,129,0.16)', color: '#34D399', padding: '4px 10px', borderRadius: '999px', fontSize: '0.7rem', fontWeight: '800' }}>
+                    {mesAtual.trimestre} • {mesAtual.semanas}
+                  </span>
+                </div>
+
+                {/* SELETOR DE MESES (MÊS 1 AO MÊS 6) */}
+                <div className="treino-chips-bar" style={{ marginBottom: '12px', overflowX: 'auto', paddingBottom: '4px' }}>
+                  {HOME_JOURNEY_6_MONTHS.map((m, idx) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      className={`treino-chip ${mesSelecionadoIdx === idx ? 'active' : ''}`}
+                      onClick={() => setMesSelecionadoIdx(idx)}
+                      style={{ whiteSpace: 'nowrap', fontSize: '0.74rem' }}
+                    >
+                      Mês {m.mesNumero} {m.mesNumero === 3 ? '(Tri 1)' : m.mesNumero === 6 ? '(6 Meses)' : ''}
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <strong style={{ color: '#FFF', fontSize: '0.9rem' }}>{mesAtual.titulo}</strong>
+                    <span style={{ fontSize: '0.7rem', color: '#FBBF24', fontWeight: '800' }}>{mesAtual.nivel}</span>
+                  </div>
+                  <p style={{ margin: '0 0 8px', fontSize: '0.76rem', color: '#94A3B8' }}>{mesAtual.foco}</p>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#94A3B8', marginBottom: '4px' }}>
+                    <span>Progresso no {mesAtual.id.replace('-', ' ').toUpperCase()} (Meta: 20 treinos)</span>
+                    <strong style={{ color: '#34D399' }}>{sessoesConcluidasMes}/20 ({pctMes}%)</strong>
+                  </div>
+                  <div style={{ height: '6px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                    <div style={{ width: `${pctMes}%`, height: '100%', background: 'linear-gradient(90deg, #10B981, #34D399)', borderRadius: '999px' }} />
+                  </div>
+                </div>
+
+                {/* 5 TREINOS DA SEMANA (SEGUNDA A SEXTA) */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))', gap: '8px' }}>
+                  {mesAtual.sessoes.map((sess, sIdx) => (
+                    <button
+                      key={sIdx}
+                      type="button"
+                      onClick={() =>
+                        iniciarTreino({
+                          id: `${mesAtual.id}-${sIdx}`,
+                          fase: mesAtual.id,
+                          categoria: 'casa',
+                          titulo: `${mesAtual.titulo} • ${sess.nome}`,
+                          duracao: mesAtual.duracao,
+                          duracaoMinutos: mesAtual.duracaoMinutos,
+                          calorias: mesAtual.duracaoMinutos * 7,
+                          exercicios: sess.exercicios,
+                        })
+                      }
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(16, 185, 129, 0.28)',
+                        background: 'rgba(15, 23, 42, 0.75)',
+                        color: '#E2E8F0',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span style={{ fontSize: '0.66rem', fontWeight: '800', color: '#10B981', textTransform: 'uppercase' }}>
+                        {sess.dia} • {mesAtual.duracao}
+                      </span>
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: '#FFF', lineHeight: '1.2' }}>
+                        {sess.nome.replace(`${sess.dia} • `, '')}
+                      </span>
+                      <span style={{ fontSize: '0.66rem', color: '#64748B' }}>
+                        {sess.exercicios.length} exercícios 3D →
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           <div className="treino-hero-card">
             <img src={treinoTemploBanner} alt="TemploFit" className="treino-hero-img" />
@@ -927,6 +1150,9 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         </div>
       ) : (
         <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* MAPA DE CALOR ANUAL / SEMESTRAL (HEATMAP ESTILO GITHUB / OPENGYM) */}
+          <AnnualHeatmap historico={historicoTreinos} />
+
           {/* GRÁFICO 1: EVOLUÇÃO DE PESO CORPORAL (LINHA + ÁREA SVG) */}
           <div className="treino-rotina-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
@@ -1110,6 +1336,63 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
               <button className="treino-modal-cancel" onClick={() => setExercicioDetalhe(null)}>Fechar</button>
               <button className="treino-modal-save" onClick={() => addExercicioAoConstrutor(exercicioDetalhe)}>+ Adicionar ao Meu Treino</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE TROCA RÁPIDA DE EXERCÍCIO DURANTE O TREINO */}
+      {showSwapModal && (
+        <div className="treino-modal-overlay" onClick={() => setShowSwapModal(false)}>
+          <div className="treino-modal-card" style={{ maxWidth: '460px', maxHeight: '85vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <div>
+                <h4 style={{ margin: 0, color: '#FFF' }}>Trocar Exercício</h4>
+                <span style={{ fontSize: '0.74rem', color: '#94A3B8' }}>
+                  Alternativas equivalentes para o mesmo músculo:
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSwapModal(false)}
+                style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '1.2rem', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+              {swapAlternatives.map((alt) => (
+                <div
+                  key={alt.id}
+                  onClick={() => trocarExercicioAtual(alt)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '8px 10px',
+                    borderRadius: '12px',
+                    background: 'rgba(15, 23, 42, 0.75)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <img
+                    src={alt.stillUrl}
+                    alt={alt.nome}
+                    style={{ width: '52px', height: '52px', borderRadius: '8px', background: '#FFF', objectFit: 'contain', flexShrink: 0 }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#FFF' }}>{alt.nome}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{alt.equipmentPt} • {alt.bodyPartPt}</div>
+                  </div>
+                  <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#34D399' }}>Usar →</span>
+                </div>
+              ))}
+            </div>
+
+            <button className="treino-modal-cancel" style={{ width: '100%' }} onClick={() => setShowSwapModal(false)}>
+              Cancelar
+            </button>
           </div>
         </div>
       )}
