@@ -547,3 +547,58 @@ body.dark-mode .mv-mark-title {
 body.dark-mode .mv-mark-desc {
   color: #D1D5DB;
 }
+
+/* ── UNSLOP & DESKTOP RESPONSIVO (MULHER VIRTUOSA) ── */
+.mv-pill {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-weight: 700 !important;
+}
+
+.mv-pill-dot {
+  display: none !important;
+}
+
+.mv-tabs-nav {
+  flex-wrap: wrap !important;
+}
+
+.mv-tab-btn {
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .app-container:not(.is-capacitor) .mv-container {
+    max-width: 980px !important;
+    width: 100% !important;
+    padding: 24px 28px 64px !important;
+  }
+
+  .app-container:not(.is-capacitor) .mv-header {
+    justify-content: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .app-container:not(.is-capacitor) .mv-header-info {
+    text-align: left;
+  }
+
+  .app-container:not(.is-capacitor) .mv-back-btn {
+    display: none;
+  }
+}
+
+body.light-mode .mv-new-prayer-box,
+body.light-mode .mv-habit-item,
+body.light-mode .mv-prayer-item,
+body.light-mode .mv-proverbs-card,
+body.light-mode .mv-wisdom-card,
+:root:not(.dark-mode) .mv-new-prayer-box,
+:root:not(.dark-mode) .mv-habit-item,
+:root:not(.dark-mode) .mv-prayer-item,
+:root:not(.dark-mode) .mv-proverbs-card,
+:root:not(.dark-mode) .mv-wisdom-card {
+  background: var(--surface-card, #FFFFFF) !important;
+  border-color: var(--border-subtle, #E5E7EB) !important;
+  box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.06)) !important;
+}

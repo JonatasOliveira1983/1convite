@@ -434,3 +434,55 @@ body.dark-mode .bp-share-btn {
   color: #FFF;
   border-color: #22C55E;
 }
+
+/* ── UNSLOP & DESKTOP RESPONSIVO (BIBLIOTECA DO PREGADOR) ── */
+.bp-pill {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-weight: 700 !important;
+}
+
+.bp-pill-dot {
+  display: none !important;
+}
+
+@media (min-width: 900px) {
+  .app-container:not(.is-capacitor) .bp-container {
+    max-width: 1040px !important;
+    width: 100% !important;
+    padding: 24px 28px 64px !important;
+  }
+
+  .app-container:not(.is-capacitor) .bp-header {
+    justify-content: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .app-container:not(.is-capacitor) .bp-header-info {
+    text-align: left;
+  }
+
+  .app-container:not(.is-capacitor) .bp-back-btn {
+    display: none;
+  }
+
+  .app-container:not(.is-capacitor) .bp-themes-row {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+
+  .app-container:not(.is-capacitor) .bp-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+body.light-mode .bp-sermon-card,
+body.light-mode .bp-detail-card,
+:root:not(.dark-mode) .bp-sermon-card,
+:root:not(.dark-mode) .bp-detail-card {
+  background: var(--surface-card, #FFFFFF) !important;
+  border-color: var(--border-subtle, #E5E7EB) !important;
+  box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.06)) !important;
+}
