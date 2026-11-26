@@ -536,27 +536,78 @@ export async function sendFunnelAddonWelcomeEmail({
     return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
   }
   const safeName = escapeHtml(name || 'Irmão(ã)');
-  const safeOffer = escapeHtml(offerName || 'Módulo Extra VIP');
+  const offerTitle = String(offerName || 'Módulo Extra VIP');
+  const safeOffer = escapeHtml(offerTitle);
   const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
   const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  const lower = offerTitle.toLowerCase();
+
+  let unlockedItems = [
+    'Acesso imediato ao módulo especial na sua conta 1Convite',
+    'Disponível no navegador (Desktop) e no aplicativo Android/iOS',
+  ];
+
+  if (lower.includes('combo') || (lower.includes('pregador') && lower.includes('mulher'))) {
+    unlockedItems = [
+      '<strong>Biblioteca do Pregador:</strong> 21 Esboços Estruturados, 20 Estudos Bíblicos, 16 Módulos de Teologia e 21 Mapas Mentais.',
+      '<strong>Espaço Mulher Virtuosa:</strong> Planner Espiritual Diário, 15 Devocionais Femininos e Caderno de Orações Respondidas.',
+      '<strong>Acesso Total:</strong> Todos os cadeados desbloqueados instantaneamente no Desktop e no Celular.',
+    ];
+  } else if (lower.includes('pregador')) {
+    unlockedItems = [
+      '<strong>21 Esboços de Pregação:</strong> Estruturas prontas com introdução, tópicos e aplicação.',
+      '<strong>20 Estudos & 16 Teologias:</strong> Materiais profundos para discipulado, células e altar.',
+      '<strong>21 Mapas Mentais Bíblicos:</strong> Resumos visuais de livros e temas centrais da Bíblia.',
+    ];
+  } else if (lower.includes('mulher')) {
+    unlockedItems = [
+      '<strong>Planner Espiritual Diário:</strong> Organize sua rotina devocional, metas de oração e leitura.',
+      '<strong>15 Devocionais Exclusivos:</strong> Reflexões profundas para a mulher cristã em todas as estações.',
+      '<strong>Caderno de Orações:</strong> Registre seus pedidos e celebre cada oração respondida.',
+    ];
+  } else if (lower.includes('book') || lower.includes('pdf')) {
+    unlockedItems = [
+      '<strong>Coleção 5 E-books Premium em PDF:</strong> Downloads ilimitados para ler no celular, tablet ou computador.',
+      '<strong>Conteúdo Prático de Edificação:</strong> Guia de Oração, Batalha Espiritual, Liderança Cristã, Finanças Bíblicas e Devocional em Família.',
+      '<strong>Liberação Imediata:</strong> Acesse a aba <em>E-books</em> no app para baixar todos os volumes agora mesmo.',
+    ];
+  }
+
+  const itemsHtml = unlockedItems
+    .map(
+      (item) =>
+        `<li style="margin:0 0 8px;color:#e4e4e7;font-size:13.5px;line-height:1.55;">${item}</li>`,
+    )
+    .join('');
+
   const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:540px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
       <div style="text-align:center;margin-bottom:14px;">
         <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
       </div>
       <span style="display:inline-block;background:rgba(16,185,129,0.16);color:#34d399;border:1px solid rgba(16,185,129,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">MÓDULO DESBLOQUEADO</span>
       <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Seu acesso especial foi liberado, ${safeName}!</h2>
       <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
-        Confirmamos a liberação de <strong style="color:#fbbf24;">${safeOffer}</strong> na sua conta do <strong>1Convite</strong>. O cadeado já foi aberto no seu aplicativo e você já pode aproveitar todo o conteúdo agora mesmo.
+        Confirmamos a liberação de <strong style="color:#fbbf24;">${safeOffer}</strong> na sua conta do <strong>1Convite</strong>. Os cadeados já foram abertos e você já pode aproveitar todo o conteúdo agora mesmo:
       </p>
-      <div style="text-align:center;margin:22px 0;">
-        <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Abrir Meu Aplicativo</a>
+      <div style="background:#111114;border:1px solid #27272a;border-radius:12px;padding:16px 18px;margin:16px 0;">
+        <div style="font-size:12px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">O que foi liberado para você:</div>
+        <ul style="margin:0;padding-left:18px;">
+          ${itemsHtml}
+        </ul>
+      </div>
+      <div style="background:#141418;border:1px dashed #3f3f46;border-radius:10px;padding:12px 14px;margin:16px 0;font-size:13px;color:#a1a1aa;line-height:1.5;">
+        <strong style="color:#ffffff;">Como acessar no Computador ou Celular:</strong><br/>
+        Acesse pelo navegador em <a href="${safeSite}/app" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/app</a> usando seu e-mail cadastrado, ou baixe o app para celular em <a href="${safeSite}/baixar" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/baixar</a>.
+      </div>
+      <div style="text-align:center;margin:22px 0 6px;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;">Acessar Meu Conteúdo Agora</a>
       </div>
     </div>
   `;
   return sendEmail({
     to,
-    subject: `Desbloqueado! ${offerName || 'Novo módulo VIP'} liberado no 1Convite`,
+    subject: `Desbloqueado! ${offerTitle} liberado no 1Convite`,
     html,
   });
 }

@@ -352,12 +352,35 @@ export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onC
         {paidResult && !activeOfferId && funnelStep === 'upsell' ? (
           <div className="ac-success-box" style={{ textAlign: 'left' }}>
             <div className="ac-badge-ok" style={{ marginBottom: '10px' }}>PAGAMENTO PRINCIPAL CONFIRMADO</div>
-            <h4 style={{ margin: '0 0 8px', color: '#FFFFFF', fontSize: '1.1rem' }}>
-              Espere! Desbloqueie o Combo Ministério & Lar com 50% OFF
+            <h4 style={{ margin: '0 0 6px', color: '#FFFFFF', fontSize: '1.12rem', lineHeight: 1.3 }}>
+              Espere! Complete seu ecossistema com o Combo Ministério &amp; Lar (50% OFF)
             </h4>
-            <p style={{ fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.5', margin: '0 0 14px' }}>
-              Apenas agora, adicione a <strong>Biblioteca do Pregador</strong> (esboços e estudos) + o <strong>Planner da Mulher Virtuosa</strong> diretamente no seu app por apenas <strong style={{ color: '#FBBF24' }}>R$ 47,00</strong> (pagamento único).
+            <p style={{ fontSize: '0.82rem', color: '#CBD5E1', lineHeight: '1.45', margin: '0 0 12px' }}>
+              Quem adquire o 1Convite costuma levar estes 2 aplicativos exclusivos para estudar sermões e organizar a vida espiritual da família:
             </p>
+
+            {/* VITRINE VISUAL DOS 2 APPS DO UPSELL */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', overflow: 'hidden' }}>
+                <img src="/offers/biblioteca-pregador.jpg" alt="Biblioteca do Pregador" style={{ width: '100%', height: '82px', objectFit: 'cover', display: 'block' }} />
+                <div style={{ padding: '7px 8px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.74rem', color: '#60A5FA' }}>Biblioteca do Pregador</strong>
+                  <span style={{ fontSize: '0.67rem', color: '#94A3B8', lineHeight: 1.3, display: 'block' }}>21 Esboços, 20 Estudos, 16 Teologias e 21 Mapas.</span>
+                </div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', overflow: 'hidden' }}>
+                <img src="/offers/mulher-virtuosa.jpg" alt="Planner da Mulher Virtuosa" style={{ width: '100%', height: '82px', objectFit: 'cover', display: 'block' }} />
+                <div style={{ padding: '7px 8px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.74rem', color: '#F472B6' }}>Mulher Virtuosa</strong>
+                  <span style={{ fontSize: '0.67rem', color: '#94A3B8', lineHeight: 1.3, display: 'block' }}>Planner Diário, 15 Devocionais e Caderno de Orações.</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: '10px', padding: '9px 12px', marginBottom: '12px', fontSize: '0.78rem', color: '#FDE68A' }}>
+              Oferta única agora: de <s style={{ opacity: 0.7 }}>R$ 94,00</s> por apenas <strong style={{ color: '#FBBF24', fontSize: '0.92rem' }}>R$ 47,00</strong> (acesso completo nos 2 apps por 1 ano).
+            </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button
                 type="button"
@@ -387,47 +410,61 @@ export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onC
         ) : paidResult && !activeOfferId && funnelStep === 'downsell' ? (
           <div className="ac-success-box" style={{ textAlign: 'left' }}>
             <div className="ac-badge-ok" style={{ background: 'rgba(245,158,11,0.18)', color: '#FBBF24', marginBottom: '10px' }}>
-              ÚLTIMA OPORTUNIDADE • R$ 24,90
+              ÚLTIMA OPORTUNIDADE • R$ 24,90 CADA
             </div>
-            <h4 style={{ margin: '0 0 8px', color: '#FFFFFF', fontSize: '1.05rem' }}>
-              Leve apenas 1 dos aplicativos extras com condição especial
+            <h4 style={{ margin: '0 0 6px', color: '#FFFFFF', fontSize: '1.05rem' }}>
+              Leve 1 dos aplicativos extras com condição especial
             </h4>
-            <p style={{ fontSize: '0.84rem', color: '#CBD5E1', lineHeight: '1.5', margin: '0 0 14px' }}>
-              Escolha qual deles faz mais sentido para você hoje por apenas <strong style={{ color: '#FBBF24' }}>R$ 24,90</strong>:
+            <p style={{ fontSize: '0.8rem', color: '#CBD5E1', lineHeight: '1.45', margin: '0 0 12px' }}>
+              Escolha apenas o módulo que mais abençoa sua casa ou ministério hoje por <strong style={{ color: '#FBBF24' }}>R$ 24,90</strong> (pagamento único):
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <button
-                type="button"
-                className="ac-btn-primary"
-                disabled={loading}
-                onClick={() => startOfferCharge('downsell_mulher')}
-              >
-                Liberar Planner da Mulher Virtuosa • R$ 24,90
-              </button>
-              <button
-                type="button"
-                className="ac-btn-primary"
-                disabled={loading}
-                onClick={() => startOfferCharge('downsell_pregador')}
-                style={{ background: '#38BDF8', color: '#09090B' }}
-              >
-                Liberar Biblioteca do Pregador • R$ 24,90
-              </button>
-              <button
-                type="button"
-                onClick={() => setFunnelStep('done')}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#94A3B8',
-                  padding: '8px',
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                }}
-              >
-                Não quero nenhum agora, ir para o meu acesso →
-              </button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(244,114,182,0.35)', borderRadius: '10px', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <img src="/offers/mulher-virtuosa.jpg" alt="Mulher Virtuosa" style={{ width: '100%', height: '76px', objectFit: 'cover', display: 'block' }} />
+                <div style={{ padding: '8px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.73rem', color: '#F472B6', marginBottom: '4px' }}>Planner Mulher Virtuosa</strong>
+                  <button
+                    type="button"
+                    className="ac-btn-primary"
+                    disabled={loading}
+                    onClick={() => startOfferCharge('downsell_mulher')}
+                    style={{ padding: '8px', fontSize: '0.74rem' }}
+                  >
+                    Liberar • R$ 24,90
+                  </button>
+                </div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(56,189,248,0.35)', borderRadius: '10px', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <img src="/offers/biblioteca-pregador.jpg" alt="Biblioteca do Pregador" style={{ width: '100%', height: '76px', objectFit: 'cover', display: 'block' }} />
+                <div style={{ padding: '8px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.73rem', color: '#38BDF8', marginBottom: '4px' }}>Biblioteca do Pregador</strong>
+                  <button
+                    type="button"
+                    className="ac-btn-primary"
+                    disabled={loading}
+                    onClick={() => startOfferCharge('downsell_pregador')}
+                    style={{ background: '#38BDF8', color: '#09090B', padding: '8px', fontSize: '0.74rem' }}
+                  >
+                    Liberar • R$ 24,90
+                  </button>
+                </div>
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={() => setFunnelStep('done')}
+              style={{
+                width: '100%',
+                background: 'transparent',
+                border: 'none',
+                color: '#94A3B8',
+                padding: '8px',
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+              }}
+            >
+              Não quero nenhum agora, ir para o meu acesso →
+            </button>
           </div>
         ) : paidResult ? (
           <div className="ac-success-box">
@@ -605,12 +642,23 @@ export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onC
                   onChange={(e) => setIncludeOrderBump(e.target.checked)}
                   style={{ marginTop: '3px', width: '16px', height: '16px', accentColor: '#F59E0B' }}
                 />
-                <div style={{ fontSize: '0.8rem', lineHeight: '1.35', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '0.8rem', lineHeight: '1.35', color: '#F8FAFC', flex: 1 }}>
                   <div style={{ fontWeight: '800', color: '#FBBF24' }}>
                     SIM! Adicionar Coleção 5 E-books Premium (+ R$ 19,90)
                   </div>
                   <div style={{ color: '#CBD5E1', marginTop: '2px', fontSize: '0.74rem' }}>
-                    De R$ 67,00 por apenas R$ 19,90 — leitura e download em PDF liberados direto no seu app.
+                    De R$ 67,00 por apenas R$ 19,90 (menos de R$ 4/livro) — leitura e download em PDF direto no app.
+                  </div>
+                  <div style={{ display: 'flex', gap: '5px', marginTop: '8px', overflowX: 'auto' }}>
+                    {[
+                      '/ebooks/covers/as-parabolas-de-jesus.jpg',
+                      '/ebooks/covers/cristo-centro-escrituras.jpg',
+                      '/ebooks/covers/poder-oracao-salmo-91.jpg',
+                      '/ebooks/covers/tesouros-conhecimento-biblico.jpg',
+                      '/ebooks/covers/devocional-cafe-com-deus.jpg',
+                    ].map((src, i) => (
+                      <img key={i} src={src} alt="E-book 1Convite" style={{ width: '36px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.18)', flexShrink: 0 }} />
+                    ))}
                   </div>
                 </div>
               </label>

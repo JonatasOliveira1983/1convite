@@ -2146,6 +2146,15 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
         } else {
           await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
         }
+        // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
+        if (orderEntitlements && orderEntitlements.ebooks) {
+          sendFunnelAddonWelcomeEmail({
+            to: order.customer_email,
+            name: order.customer_name,
+            offerName: 'Coleção 5 E-books Premium em PDF',
+            siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+          }).catch(() => {});
+        }
       } else {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
       }
@@ -2162,6 +2171,15 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
           await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
         } else {
           await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+        }
+        // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
+        if (orderEntitlements && orderEntitlements.ebooks) {
+          sendFunnelAddonWelcomeEmail({
+            to: order.customer_email,
+            name: order.customer_name,
+            offerName: 'Coleção 5 E-books Premium em PDF',
+            siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+          }).catch(() => {});
         }
       } else {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);

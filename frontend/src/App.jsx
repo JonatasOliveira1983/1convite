@@ -2824,7 +2824,7 @@ Em nome de Jesus, Amém.`;
   const reiniciarJornada = async () => { if (!confirm('Reiniciar ao Dia 1?')) return; try { await fetch(`${API_BASE}/reiniciar-jornada`, { method: 'POST' }); loadAppData(); } catch (e) { console.error(e); } };
   const alterarPlanoAdmin = async (p) => { try { await fetch(`${API_BASE}/admin/definir-plano`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plano: p }) }); loadAppData(); } catch (e) { console.error(e); } };
 
-  if (currentPath === '/baixar' || currentPath === '/app') {
+  if (currentPath === '/baixar') {
     return (
       <div style={{
         background: 'var(--bg-app, #090B10)',
@@ -2896,6 +2896,37 @@ Em nome de Jesus, Amém.`;
                 <span>Baixar Aplicativo Android (APK)</span>
               </button>
             </a>
+
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentPath('/app');
+                navigateAppRoute(true);
+              }}
+              style={{
+                width: '100%',
+                marginTop: '10px',
+                padding: '13px 20px',
+                fontSize: '0.92rem',
+                background: 'var(--surface-subtle, rgba(255, 255, 255, 0.06))',
+                color: 'var(--text-primary, #FFFFFF)',
+                fontWeight: '600',
+                border: '1px solid var(--border-subtle, rgba(255, 255, 255, 0.14))',
+                borderRadius: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <span>Acessar Agora pelo Desktop / Navegador</span>
+            </button>
 
             {/* Instruções Android */}
             <div style={{ marginTop: '24px', textAlign: 'left' }}>
