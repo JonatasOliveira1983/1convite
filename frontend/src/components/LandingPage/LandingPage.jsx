@@ -115,6 +115,15 @@ export default function LandingPage({ onEnterApp }) {
   const [leadEmail, setLeadEmail] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
   const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const [testimonialPaused, setTestimonialPaused] = useState(false);
+
+  React.useEffect(() => {
+    if (testimonialPaused) return;
+    const timer = setInterval(() => {
+      setTestimonialIdx((prev) => (prev + 1) % 7);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [testimonialPaused]);
   const [leadObjective, setLeadObjective] = useState('crescimento');
   const [formStatus, setFormStatus] = useState('idle');
   const [selectedMentor, setSelectedMentor] = useState('salomao');
@@ -1021,7 +1030,11 @@ export default function LandingPage({ onEnterApp }) {
                 </div>
               </div>
 
-              <div className="sp-testimonials-grid">
+              <div
+                className="sp-testimonials-grid"
+                onMouseEnter={() => setTestimonialPaused(true)}
+                onMouseLeave={() => setTestimonialPaused(false)}
+              >
                 {visibleCards.map((dep, i) => (
                   <article key={`${dep.nome}-${i}`} className="sp-testimonial-card">
                     <div className="sp-testimonial-top">
