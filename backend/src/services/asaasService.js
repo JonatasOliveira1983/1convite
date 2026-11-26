@@ -167,13 +167,16 @@ export async function upsertCustomer({ name, email, cpfCnpj, phone, externalRefe
   const cleanEmail = String(email || '').trim().toLowerCase();
   const existing = await findCustomerByEmail(cleanEmail);
   if (existing) {
-    // Atualiza CPF caso o cliente existente não tenha e tenha sido informado agora
+    // Garante notificationDisabled=true para o Asaas não enviar e-mails genéricos ao cliente
     const digitsCpf = onlyDigits(cpfCnpj);
-    if (digitsCpf && !existing.cpfCnpj) {
+    const updateBody = {};
+    if (digitsCpf && !existing.cpfCnpj) updateBody.cpfCnpj = digitsCpf;
+    if (!existing.notificationDisabled) updateBody.notificationDisabled = true;
+    if (Object.keys(updateBody).length > 0) {
       try {
         return await asaasRequest(`/customers/${existing.id}`, {
           method: 'PUT',
-          body: JSON.stringify({ cpfCnpj: digitsCpf }),
+          body: JSON.stringify(updateBody),
         });
       } catch {
         return existing;
@@ -185,6 +188,7 @@ export async function upsertCustomer({ name, email, cpfCnpj, phone, externalRefe
   const payload = {
     name: String(name || '').trim() || 'Membro 1Convite',
     email: cleanEmail,
+    notificationDisabled: true,
   };
   const digitsCpf = onlyDigits(cpfCnpj);
   const digitsPhone = onlyDigits(phone);
