@@ -21,10 +21,10 @@ const PROGRAMAS_TEMPLOFIT = [
     calorias: 120,
     musculos: ['chest', 'quads', 'abs', 'calves'],
     exercicios: [
-      { nome: 'Polichinelos (Aquecimento)', animType: 'jumping_jacks', series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante e respire com calma.' },
-      { nome: 'Agachamento Livre', animType: 'squat', series: 3, reps: '12', musculos: ['quads', 'glutes'], descanso: 45, instrucao: 'Pés na largura dos ombros, desça como se fosse sentar.' },
-      { nome: 'Flexão de Braços (Parede ou Joelhos)', animType: 'pushup', series: 3, reps: '10', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Abdômen contraído e cotovelos a 45 graus.' },
-      { nome: 'Prancha Isométrica', animType: 'plank', series: 3, reps: '25 seg', musculos: ['abs'], descanso: 45, instrucao: 'Corpo alinhado dos calcanhares até a cabeça.' },
+      { nome: 'Polichinelos (Aquecimento)', animType: 'jumping_jacks', gifUrl: '/templofit/gifs/jumping_jacks.gif', series: 3, reps: '30 seg', musculos: ['calves', 'shoulders'], descanso: 30, instrucao: 'Mantenha o ritmo constante e respire com calma.' },
+      { nome: 'Agachamento Livre', animType: 'squat', gifUrl: '/templofit/gifs/squat.gif', series: 3, reps: '12', musculos: ['quads', 'glutes'], descanso: 45, instrucao: 'Pés na largura dos ombros, desça como se fosse sentar.' },
+      { nome: 'Flexão de Braços (Parede ou Joelhos)', animType: 'pushup', gifUrl: '/templofit/gifs/pushup.gif', series: 3, reps: '10', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Abdômen contraído e cotovelos a 45 graus.' },
+      { nome: 'Prancha Isométrica', animType: 'plank', gifUrl: '/templofit/gifs/plank.gif', series: 3, reps: '25 seg', musculos: ['abs'], descanso: 45, instrucao: 'Corpo alinhado dos calcanhares até a cabeça.' },
     ],
   },
   {
@@ -41,11 +41,11 @@ const PROGRAMAS_TEMPLOFIT = [
     calorias: 220,
     musculos: ['chest', 'triceps', 'quads', 'abs', 'shoulders'],
     exercicios: [
-      { nome: 'Polichinelos Rápidos (Cardio)', animType: 'high_knees', series: 3, reps: '45 seg', musculos: ['calves', 'quads'], descanso: 30, instrucao: 'Eleve o ritmo mantendo postura ereta.' },
-      { nome: 'Afundo Alternado (Passada)', animType: 'lunge', series: 3, reps: '12 por perna', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 45, instrucao: 'Joelho de trás quase encosta no chão em 90°.' },
-      { nome: 'Flexão de Braço Tradicional', animType: 'pushup', series: 4, reps: '12', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Controle o movimento na descida.' },
-      { nome: 'Mergulho de Tríceps (em Cadeira)', animType: 'tricep_dip', series: 3, reps: '12', musculos: ['triceps', 'shoulders'], descanso: 45, instrucao: 'Mãos firmes na borda, desça flexionando os cotovelos.' },
-      { nome: 'Prancha Estabilizada', animType: 'plank', series: 3, reps: '35 seg', musculos: ['abs', 'shoulders'], descanso: 45, instrucao: 'Estabilize o quadril sem balançar.' },
+      { nome: 'Polichinelos Rápidos (Cardio)', animType: 'jumping_jacks', gifUrl: '/templofit/gifs/jumping_jacks.gif', series: 3, reps: '45 seg', musculos: ['calves', 'quads'], descanso: 30, instrucao: 'Eleve o ritmo mantendo postura ereta.' },
+      { nome: 'Afundo Alternado (Passada)', animType: 'lunge', gifUrl: '/templofit/gifs/lunge.gif', series: 3, reps: '12 por perna', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 45, instrucao: 'Joelho de trás quase encosta no chão em 90°.' },
+      { nome: 'Flexão de Braço Tradicional', animType: 'pushup', gifUrl: '/templofit/gifs/pushup.gif', series: 4, reps: '12', musculos: ['chest', 'triceps', 'shoulders'], descanso: 45, instrucao: 'Controle o movimento na descida.' },
+      { nome: 'Mergulho de Tríceps (em Cadeira)', animType: 'tricep_dip', gifUrl: '/templofit/gifs/tricep_dip.gif', series: 3, reps: '12', musculos: ['triceps', 'shoulders'], descanso: 45, instrucao: 'Mãos firmes na borda, desça flexionando os cotovelos.' },
+      { nome: 'Prancha Estabilizada', animType: 'plank', gifUrl: '/templofit/gifs/plank.gif', series: 3, reps: '35 seg', musculos: ['abs', 'shoulders'], descanso: 45, instrucao: 'Estabilize o quadril sem balançar.' },
     ],
   },
   {
@@ -62,10 +62,10 @@ const PROGRAMAS_TEMPLOFIT = [
     calorias: 350,
     musculos: ['chest', 'back', 'shoulders', 'triceps', 'quads'],
     exercicios: [
-      { nome: 'Supino Reto com Barra ou Halteres', animType: 'bench_press', series: 4, reps: '10', musculos: ['chest', 'triceps', 'shoulders'], descanso: 60, instrucao: 'Escápulas travadas, movimento firme e seguro.' },
-      { nome: 'Puxada Frontal na Polia', animType: 'lat_pulldown', series: 4, reps: '10', musculos: ['back', 'biceps'], descanso: 60, instrucao: 'Puxe em direção ao peito alto focando nas costas.' },
-      { nome: 'Leg Press 45° ou Agachamento', animType: 'leg_press', series: 4, reps: '12', musculos: ['quads', 'glutes'], descanso: 60, instrucao: 'Pés firmes na plataforma, amplitude segura.' },
-      { nome: 'Desenvolvimento Militar com Halteres', animType: 'shoulder_press', series: 3, reps: '10', musculos: ['shoulders', 'triceps'], descanso: 60, instrucao: 'Elevação controlada sem arquear a lombar.' },
+      { nome: 'Supino Reto com Barra ou Halteres', animType: 'bench_press', gifUrl: '/templofit/gifs/bench_press.gif', series: 4, reps: '10', musculos: ['chest', 'triceps', 'shoulders'], descanso: 60, instrucao: 'Escápulas travadas, movimento firme e seguro.' },
+      { nome: 'Puxada Frontal na Polia', animType: 'lat_pulldown', gifUrl: '/templofit/gifs/lat_pulldown.gif', series: 4, reps: '10', musculos: ['back', 'biceps'], descanso: 60, instrucao: 'Puxe em direção ao peito alto focando nas costas.' },
+      { nome: 'Leg Press 45° ou Agachamento', animType: 'leg_press', gifUrl: '/templofit/gifs/leg_press.gif', series: 4, reps: '12', musculos: ['quads', 'glutes'], descanso: 60, instrucao: 'Pés firmes na plataforma, amplitude segura.' },
+      { nome: 'Desenvolvimento Militar com Halteres', animType: 'shoulder_press', gifUrl: '/templofit/gifs/shoulder_press.gif', series: 3, reps: '10', musculos: ['shoulders', 'triceps'], descanso: 60, instrucao: 'Elevação controlada sem arquear a lombar.' },
     ],
   },
   {
@@ -82,8 +82,8 @@ const PROGRAMAS_TEMPLOFIT = [
     calorias: 60,
     musculos: ['back', 'hamstrings', 'glutes'],
     exercicios: [
-      { nome: 'Prancha & Descompressão do Core', animType: 'cat_cow', series: 3, reps: '30 seg', musculos: ['back', 'abs'], descanso: 20, instrucao: 'Respire fundo ativando o abdômen suavemente.' },
-      { nome: 'Alongamento de Quadril em Afundo', animType: 'stretch', series: 3, reps: '30 seg por lado', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 20, instrucao: 'Mantenha o tronco ereto sentindo alongar o quadril.' },
+      { nome: 'Prancha Isométrica & Descompressão do Core', animType: 'plank', gifUrl: '/templofit/gifs/plank.gif', series: 3, reps: '30 seg', musculos: ['back', 'abs'], descanso: 20, instrucao: 'Sustente a prancha ativando o core e aliviando a carga sobre a lombar.' },
+      { nome: 'Alongamento de Quadril em Afundo', animType: 'lunge', gifUrl: '/templofit/gifs/lunge.gif', series: 3, reps: '30 seg por lado', musculos: ['quads', 'glutes', 'hamstrings'], descanso: 20, instrucao: 'Mantenha o tronco ereto sentindo alongar os flexores do quadril.' },
     ],
   },
 ];
@@ -126,6 +126,10 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
   const [filtroMusculo, setFiltroMusculo] = useState('todos');
   const [filtroAmbiente, setFiltroAmbiente] = useState('todos');
   const [exercicioDetalhe, setExercicioDetalhe] = useState(null);
+
+  // Galeria de Todos os GIFs
+  const [buscaGifs, setBuscaGifs] = useState('');
+  const [filtroMusculoGifs, setFiltroMusculoGifs] = useState('todos');
 
   // Construtor de Rotina Personalizada
   const [customTitle, setCustomTitle] = useState('');
@@ -329,6 +333,15 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
     });
   }, [buscaEx, filtroMusculo, filtroAmbiente]);
 
+  const gifsFiltrados = useMemo(() => {
+    const q = buscaGifs.trim().toLowerCase();
+    return TEMPLOFIT_CATALOGUE.filter((ex) => {
+      const matchText = !q || ex.nome.toLowerCase().includes(q) || (ex.origem || '').toLowerCase().includes(q) || (ex.gifUrl || '').toLowerCase().includes(q);
+      const matchMusculo = filtroMusculoGifs === 'todos' || ex.musculos.includes(filtroMusculoGifs);
+      return matchText && matchMusculo;
+    });
+  }, [buscaGifs, filtroMusculoGifs]);
+
   const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   const hojeDia = new Date().getDay();
   const rotinasFiltradas = PROGRAMAS_TEMPLOFIT.filter((r) => categoriaAtiva === 'todos' || r.categoria === categoriaAtiva);
@@ -383,12 +396,13 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         </div>
       )}
 
-      {/* NAVEGAÇÃO PRINCIPAL DO TEMPLOFIT (4 ABAS) */}
+      {/* NAVEGAÇÃO PRINCIPAL DO TEMPLOFIT (5 ABAS) */}
       {!treinoEmAndamento && !treinoConcluido && (
         <div className="treino-chips-bar" style={{ marginBottom: '16px' }}>
           {[
             { id: 'programas', label: 'Programas & Fases' },
             { id: 'explorar', label: `Explorar (${TEMPLOFIT_CATALOGUE.length})` },
+            { id: 'gifs', label: `Todos os GIFs (${TEMPLOFIT_CATALOGUE.length})` },
             { id: 'custom', label: `Meus Treinos (${rotinasCustom.length})` },
             { id: 'evolucao', label: 'Minha Evolução' },
           ].map((tab) => (
@@ -723,6 +737,231 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                 </div>
               ))
             )}
+          </div>
+        </div>
+      ) : abaAtiva === 'gifs' ? (
+        <div className="animate-fade-in">
+          {/* HEADER INFORMATIVO */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,78,59,0.22))',
+            border: '1px solid rgba(16,185,129,0.3)',
+            borderRadius: '16px',
+            padding: '14px 16px',
+            marginBottom: '16px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '12px',
+            flexWrap: 'wrap'
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#10B981', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  • AUDITORIA &amp; CONFERÊNCIA
+                </span>
+                <span style={{ background: 'rgba(16,185,129,0.2)', color: '#34D399', fontSize: '0.68rem', padding: '2px 8px', borderRadius: '999px', fontWeight: '800' }}>
+                  {TEMPLOFIT_CATALOGUE.length} GIFs Ativos
+                </span>
+              </div>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', color: '#FFFFFF', fontWeight: '800' }}>
+                Todos os GIFs de Exercícios • TemploFit
+              </h3>
+              <p style={{ margin: '4px 0 0', fontSize: '0.78rem', color: '#94A3B8' }}>
+                Veja cada exercício em loop contínuo, confira se o movimento corresponde ao nome e audite o arquivo físico.
+              </p>
+            </div>
+          </div>
+
+          {/* BUSCA E FILTROS */}
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+            <input
+              type="text"
+              placeholder="Buscar por exercício, grupo muscular ou arquivo gif..."
+              value={buscaGifs}
+              onChange={(e) => setBuscaGifs(e.target.value)}
+              style={{
+                flex: 1,
+                minWidth: '200px',
+                padding: '10px 14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(148,163,184,0.28)',
+                background: '#0F172A',
+                color: '#FFF',
+                fontSize: '0.85rem'
+              }}
+            />
+          </div>
+
+          <div className="treino-chips-bar" style={{ marginBottom: '16px' }}>
+            {MUSCLE_FILTERS.map((m) => (
+              <button
+                key={m.id}
+                className={`treino-chip ${filtroMusculoGifs === m.id ? 'active' : ''}`}
+                onClick={() => setFiltroMusculoGifs(m.id)}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+
+          {/* GRID RESPONSIVO DE GIFS */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: '14px'
+          }}>
+            {gifsFiltrados.map((ex) => {
+              const fileName = ex.gifUrl.split('/').pop();
+              return (
+                <div
+                  key={ex.id}
+                  className="treino-rotina-card"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '12px',
+                    background: '#13161F',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.08)'
+                  }}
+                >
+                  {/* CONTAINER DO GIF EM LOOP */}
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '170px',
+                    background: '#FFFFFF',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '10px'
+                  }}>
+                    <img
+                      src={ex.gifUrl}
+                      alt={ex.nome}
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        objectFit: 'contain'
+                      }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      top: '6px',
+                      left: '6px',
+                      background: 'rgba(15, 23, 42, 0.88)',
+                      backdropFilter: 'blur(4px)',
+                      padding: '2px 8px',
+                      borderRadius: '999px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      fontSize: '0.62rem',
+                      fontWeight: '800',
+                      color: '#34D399',
+                      border: '1px solid rgba(52, 211, 153, 0.3)'
+                    }}>
+                      <span className="templofit-live-dot" />
+                      <span>GIF ATIVO</span>
+                    </div>
+
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '6px',
+                      right: '6px',
+                      background: 'rgba(15, 23, 42, 0.92)',
+                      color: '#38BDF8',
+                      fontFamily: 'monospace',
+                      fontSize: '0.65rem',
+                      fontWeight: '700',
+                      padding: '2px 7px',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(56, 189, 248, 0.3)'
+                    }}>
+                      {fileName}
+                    </div>
+                  </div>
+
+                  {/* INFORMAÇÕES */}
+                  <div style={{ marginBottom: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                      <span className="treino-nivel-tag" style={{ fontSize: '0.62rem' }}>
+                        {ex.origem || (ex.ambiente === 'casa' ? 'Em Casa' : 'Academia')}
+                      </span>
+                      <span style={{ fontSize: '0.65rem', color: '#64748B', fontWeight: '700' }}>
+                        ID: {ex.id}
+                      </span>
+                    </div>
+                    <h4 style={{ margin: '0 0 4px', fontSize: '0.92rem', color: '#FFFFFF', fontWeight: '700' }}>
+                      {ex.nome}
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.74rem', color: '#94A3B8', lineHeight: '1.3' }}>
+                      {ex.descricao || 'Execução controlada com postura firme.'}
+                    </p>
+                  </div>
+
+                  {/* MÚSCULOS */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
+                    {(ex.musculos || []).map((m) => (
+                      <span
+                        key={m}
+                        style={{
+                          background: 'rgba(255,255,255,0.06)',
+                          color: '#CBD5E1',
+                          fontSize: '0.62rem',
+                          fontWeight: '700',
+                          padding: '2px 6px',
+                          borderRadius: '4px'
+                        }}
+                      >
+                        {m}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* AÇÕES */}
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setExercicioDetalhe(ex)}
+                      style={{
+                        flex: 1,
+                        padding: '8px 10px',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(148,163,184,0.3)',
+                        background: 'rgba(255,255,255,0.04)',
+                        color: '#E2E8F0',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Ver Detalhes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => addExercicioAoConstrutor(ex)}
+                      style={{
+                        flex: 1,
+                        padding: '8px 10px',
+                        borderRadius: '8px',
+                        border: 'none',
+                        background: '#10B981',
+                        color: '#052E16',
+                        fontSize: '0.75rem',
+                        fontWeight: '800',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      + Meu Treino
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       ) : (
