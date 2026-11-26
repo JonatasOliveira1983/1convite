@@ -268,6 +268,12 @@ async function ensureTables() {
         await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN entitlements_json TEXT`);
       } catch {}
       try {
+        await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN avatar TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN genero TEXT DEFAULT 'homem'`);
+      } catch {}
+      try {
         await client.query(`ALTER TABLE tb_vouchers ADD COLUMN gifted_by_name TEXT`);
       } catch {}
 
@@ -1227,8 +1233,21 @@ app.post('/api/v1/usuario/perfil', async (req, res) => {
   try {
     const userUuid = req.headers['x-user-uuid'] || req.body.uuid;
     const { nome, email, avatar, genero } = req.body;
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    const isRealEmail = cleanEmail && cleanEmail !== 'convidado@1convite.com.br' && cleanEmail !== 'membro@1convite.com';
 
-    const user = await getOrCreateUser(userUuid, email, nome, avatar);
+    if (isRealEmail) {
+      await dbRun(
+        `UPDATE tb_acessos_usuarios
+         SET name = COALESCE($1, name),
+             avatar = COALESCE($2, avatar),
+             genero = COALESCE($3, genero)
+         WHERE LOWER(contact) = $4`,
+        [nome || null, avatar || null, genero || null, cleanEmail]
+      );
+    }
+
+    const user = await getOrCreateUser(userUuid, isRealEmail ? cleanEmail : null, nome, avatar);
 
     if (user && user.uuid) {
       await dbRun(
@@ -1238,20 +1257,10 @@ app.post('/api/v1/usuario/perfil', async (req, res) => {
              avatar = COALESCE($3, avatar), 
              genero = COALESCE($4, genero),
              updated_at = datetime('now')
-         WHERE uuid = $5 OR (email IS NOT NULL AND email = $6)`,
-        [nome, email, avatar, genero, user.uuid, email]
+         WHERE uuid = $5`,
+        [nome, isRealEmail ? cleanEmail : email, avatar, genero, user.uuid]
       );
     }
-
-    // Compatibilidade com tb_usuario_progresso legada
-    await dbRun(
-      'UPDATE tb_usuario_progresso SET nome = COALESCE($1, nome), email = COALESCE($2, email), avatar = COALESCE($3, avatar)',
-      [nome, email, avatar]
-    );
-
-    if (nome) localUser.nome = nome;
-    if (email) localUser.email = email;
-    if (avatar) localUser.avatar = avatar;
 
     const updated = await dbGet('SELECT * FROM tb_usuarios WHERE uuid = $1', [user?.uuid || userUuid]);
     res.json(updated || { ...localUser, ...req.body });
@@ -2147,13 +2156,17 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
           await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
         }
         // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
-        if (orderEntitlements && orderEntitlements.ebooks) {
-          sendFunnelAddonWelcomeEmail({
+        if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks')) {
+          await new Promise((r) => setTimeout(r, 650));
+          const bumpMailRes = await sendFunnelAddonWelcomeEmail({
             to: order.customer_email,
             name: order.customer_name,
             offerName: 'Coleção 5 E-books Premium em PDF',
             siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-          }).catch(() => {});
+          }).catch((e) => ({ ok: false, error: e.message }));
+          if (!bumpMailRes?.ok) {
+            console.warn('[RESEND ORDER BUMP WARN]:', bumpMailRes?.error || bumpMailRes?.reason);
+          }
         }
       } else {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
@@ -2172,9 +2185,10 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
         } else {
           await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
         }
-        // Se incluiu o Order Bump (Coleção 5 E-books PDF) no pedido principal, envia também o e-mail dedicado dos E-books!
-        if (orderEntitlements && orderEntitlements.ebooks) {
-          sendFunnelAddonWelcomeEmail({
+        // Se incluiu também e-books neste pedido adicional
+        if (Array.isArray(orderEntitlements) && orderEntitlements.includes('ebooks') && order.plan_id !== 'order_bump_ebooks') {
+          await new Promise((r) => setTimeout(r, 650));
+          await sendFunnelAddonWelcomeEmail({
             to: order.customer_email,
             name: order.customer_name,
             offerName: 'Coleção 5 E-books Premium em PDF',
@@ -2676,6 +2690,8 @@ app.post('/api/v1/auth/login', async (req, res) => {
         vipCode: existing.vip_code,
         expiryTimestamp: existing.expiry_timestamp ? Number(existing.expiry_timestamp) : null,
         entitlements: parseEntitlements(existing.entitlements_json),
+        avatar: existing.avatar || null,
+        genero: existing.genero || 'homem',
         createdAt: existing.created_at,
         lastLogin: nowIso,
         accessCount: nextCount
@@ -2684,6 +2700,54 @@ app.post('/api/v1/auth/login', async (req, res) => {
   } catch (err) {
     console.error('Erro em /auth/login:', err);
     res.status(500).json({ success: false, message: 'Erro interno ao entrar.' });
+  }
+});
+
+app.get('/api/v1/auth/me', async (req, res) => {
+  try {
+    const cleanContact = String(req.query.contact || req.headers['x-user-email'] || '').trim().toLowerCase();
+    if (!cleanContact || cleanContact === 'convidado@1convite.com.br' || cleanContact === 'membro@1convite.com') {
+      return res.json({ success: false, user: null });
+    }
+    if (cleanContact === ADMIN_EMAIL) {
+      return res.json({
+        success: true,
+        isAdmin: true,
+        isVip: true,
+        user: {
+          name: 'Jonatas',
+          contact: ADMIN_EMAIL,
+          type: 'admin',
+          plan: 'Administrador Mestre',
+          entitlements: ['ebooks', 'pregador', 'mulher_virtuosa'],
+          avatar: null,
+          genero: 'homem',
+        },
+      });
+    }
+    const existing = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanContact]);
+    if (!existing) {
+      return res.json({ success: false, user: null });
+    }
+    res.json({
+      success: true,
+      isAdmin: false,
+      isVip: existing.type === 'vip' || existing.type === 'admin',
+      user: {
+        id: existing.id,
+        name: existing.name,
+        contact: existing.contact,
+        type: existing.type,
+        plan: existing.plan,
+        expiryTimestamp: existing.expiry_timestamp ? Number(existing.expiry_timestamp) : null,
+        entitlements: parseEntitlements(existing.entitlements_json),
+        avatar: existing.avatar || null,
+        genero: existing.genero || 'homem',
+      },
+    });
+  } catch (err) {
+    console.error('Erro em /auth/me:', err);
+    res.status(500).json({ success: false, message: 'Erro ao sincronizar perfil.' });
   }
 });
 
@@ -2868,7 +2932,7 @@ app.post('/api/v1/admin/usuarios/plano', requireAdminHeader, async (req, res) =>
 
 app.post('/api/v1/admin/vendas/:paymentId/confirmar-manual', requireAdminHeader, async (req, res) => {
   try {
-    const result = await confirmAsaasOrderAndProvision(req.params.paymentId, 'CONFIRMED');
+    const result = await fulfillPaidOrder(req.params.paymentId, 'CONFIRMED');
     if (!result.found) {
       return res.status(404).json({ success: false, message: 'Pedido não encontrado.' });
     }

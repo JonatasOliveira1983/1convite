@@ -12,16 +12,18 @@
 
 .ac-modal {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
   max-width: 460px;
   background: #121215;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
-  padding: 28px 24px;
+  padding: 26px 22px;
   color: #ffffff;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
   max-height: 92vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ac-close {
@@ -74,6 +76,8 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .ac-field label {
@@ -83,10 +87,13 @@
 }
 
 .ac-field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: #1c1c21;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 11px 12px;
   color: #ffffff;
   font-size: 0.92rem;
   outline: none;
@@ -98,8 +105,9 @@
 
 .ac-row-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
+  width: 100%;
 }
 
 .ac-method-toggle {
@@ -437,4 +445,35 @@
   gap: 5px;
   font-size: 0.72rem;
   color: #a1a1aa;
+}
+
+@media (max-width: 480px) {
+  .ac-overlay {
+    padding: 10px;
+  }
+
+  .ac-modal {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .ac-row-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ac-scarcity-bar {
+    margin-right: 0;
+    padding: 8px 34px 8px 10px;
+    font-size: 0.7rem;
+  }
+
+  .ac-title {
+    font-size: 1.15rem;
+  }
+
+  .ac-btn-primary {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
 }

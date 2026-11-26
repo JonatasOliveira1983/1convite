@@ -85,6 +85,7 @@ export const adminAuthService = {
         localStorage.setItem('1convite_user_email', ADMIN_CREDENTIALS.email);
         localStorage.setItem('1convite-premium', 'true');
         localStorage.setItem('1convite_premium_plan', 'Administrador Mestre • Acesso Total Vitalício');
+        localStorage.setItem('1convite_entitlements', JSON.stringify(['ebooks', 'pregador', 'mulher_virtuosa']));
       } else {
         localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
       }
@@ -103,6 +104,12 @@ export const adminAuthService = {
       localStorage.removeItem('1convite-premium');
       localStorage.removeItem('1convite_premium_plan');
       localStorage.removeItem('1convite_premium_expiry');
+      localStorage.removeItem('1convite_entitlements');
+      localStorage.removeItem('1convite_custom_avatar');
+      localStorage.removeItem('1convite_custom_avatar_uploaded');
+      localStorage.removeItem('1convite_user_gender');
+      localStorage.removeItem('1convite_user_uuid');
+      localStorage.removeItem('1convite_is_admin');
     } catch (e) {
       console.warn(e);
     }
@@ -437,6 +444,15 @@ export const adminAuthService = {
             localStorage.setItem('1convite_user_name', data.user?.name || 'Membro');
             localStorage.setItem('1convite_user_email', data.user?.contact || contact.trim());
             localStorage.setItem('1convite-premium', data.isVip ? 'true' : 'false');
+            localStorage.setItem('1convite_entitlements', JSON.stringify(Array.isArray(data.user?.entitlements) ? data.user.entitlements : []));
+            localStorage.setItem('1convite_user_gender', data.user?.genero || 'homem');
+            if (data.user?.avatar) {
+              localStorage.setItem('1convite_custom_avatar', data.user.avatar);
+              localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+            } else {
+              localStorage.removeItem('1convite_custom_avatar');
+              localStorage.removeItem('1convite_custom_avatar_uploaded');
+            }
             if (data.user?.plan) localStorage.setItem('1convite_premium_plan', data.user.plan);
             if (data.user?.expiryTimestamp) localStorage.setItem('1convite_premium_expiry', String(data.user.expiryTimestamp));
           }

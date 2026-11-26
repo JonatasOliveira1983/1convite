@@ -89,7 +89,10 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
           isAdmin: res.isAdmin,
           isPremium: res.isVip || res.isAdmin,
           plan: res.user.plan || 'Membro Convidado',
-          expiry: res.user.expiryTimestamp || null
+          expiry: res.user.expiryTimestamp || null,
+          entitlements: Array.isArray(res.user.entitlements) ? res.user.entitlements : [],
+          avatar: res.user.avatar || null,
+          genero: res.user.genero || 'homem'
         });
       }
     }, 800);

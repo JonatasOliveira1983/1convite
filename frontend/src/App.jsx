@@ -1831,6 +1831,14 @@ function App() {
       localStorage.removeItem('1convite_user_auth');
       localStorage.removeItem('1convite_active_tab');
       localStorage.removeItem('1convite_admin_session');
+      localStorage.removeItem('1convite_custom_avatar');
+      localStorage.removeItem('1convite_custom_avatar_uploaded');
+      localStorage.removeItem('1convite_entitlements');
+      localStorage.removeItem('1convite_user_gender');
+      localStorage.removeItem('1convite_user_name');
+      localStorage.removeItem('1convite_user_email');
+      localStorage.removeItem('1convite_user_uuid');
+      localStorage.removeItem('1convite_is_admin');
       adminAuthService.logout();
     } catch (e) {
       console.warn(e);
@@ -1838,6 +1846,11 @@ function App() {
     setIsAdminMode(false);
     setShowAdminPanel(false);
     setIsLoggedIn(false);
+    setUserEntitlements([]);
+    setIsCustomAvatar(false);
+    setProfileAvatar(getDefaultAvatar('homem'));
+    setProfileName('Membro Convidado');
+    setProfileEmail('membro@1convite.com');
     setActiveTab('dashboard');
     if (window.history && window.history.replaceState) {
       window.history.replaceState(null, '', window.location.pathname);
@@ -2113,33 +2126,40 @@ function App() {
             setProfileEmail(d.user.email);
             localStorage.setItem('1convite_user_email', d.user.email);
           }
-
-          // Blindagem de foto do perfil:
-          // 1. Se o usuário enviou uma foto própria (local), preserva sem exceção
-          const localCustom = localStorage.getItem('1convite_custom_avatar');
-          const hasUploadedCustom = localStorage.getItem('1convite_custom_avatar_uploaded') === 'true';
-
-          if (hasUploadedCustom && localCustom) {
-            setProfileAvatar(localCustom);
-            setIsCustomAvatar(true);
-            // Sincroniza em background se o banco estiver sem ela
-            if (!d.user.avatar || d.user.avatar.includes('unsplash')) {
-              fetch(`${API_BASE}/usuario/perfil`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-user-uuid': userUuid },
-                body: JSON.stringify({ uuid: userUuid, avatar: localCustom, nome: profileName, email: profileEmail })
-              }).catch(() => {});
+        }
+        // Sincronizar entitlements, avatar e gênero diretamente da conta autenticada no banco (tb_acessos_usuarios)
+        const storedEmail = (localStorage.getItem('1convite_user_email') || d?.user?.email || '').trim().toLowerCase();
+        if (storedEmail && storedEmail !== 'membro@1convite.com' && storedEmail !== 'convidado@1convite.com.br') {
+          try {
+            const meData = await fetchJson(`${API_BASE}/auth/me?contact=${encodeURIComponent(storedEmail)}`);
+            if (meData && meData.success && meData.user) {
+              const ents = Array.isArray(meData.user.entitlements) ? meData.user.entitlements : [];
+              setUserEntitlements(ents);
+              localStorage.setItem('1convite_entitlements', JSON.stringify(ents));
+              if (meData.user.name) {
+                setProfileName(meData.user.name);
+                localStorage.setItem('1convite_user_name', meData.user.name);
+              }
+              const userGen = meData.user.genero || 'homem';
+              setUserGender(userGen);
+              localStorage.setItem('1convite_user_gender', userGen);
+              if (meData.user.avatar) {
+                setProfileAvatar(meData.user.avatar);
+                setIsCustomAvatar(true);
+                localStorage.setItem('1convite_custom_avatar', meData.user.avatar);
+                localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
+              } else {
+                localStorage.removeItem('1convite_custom_avatar');
+                localStorage.removeItem('1convite_custom_avatar_uploaded');
+                setProfileAvatar(getDefaultAvatar(userGen));
+                setIsCustomAvatar(false);
+              }
             }
-          } else if (d.user.avatar && !d.user.avatar.includes('unsplash')) {
-            setProfileAvatar(d.user.avatar);
-            setIsCustomAvatar(true);
-            localStorage.setItem('1convite_custom_avatar', d.user.avatar);
-            localStorage.setItem('1convite_custom_avatar_uploaded', 'true');
-          } else {
-            const gender = localStorage.getItem('1convite_user_gender') || userGender || 'homem';
-            setProfileAvatar(getDefaultAvatar(gender));
-            setIsCustomAvatar(false);
-          }
+          } catch {}
+        } else {
+          const gender = localStorage.getItem('1convite_user_gender') || userGender || 'homem';
+          setProfileAvatar(getDefaultAvatar(gender));
+          setIsCustomAvatar(false);
         }
       }
       const contatosData = await fetchJson(`${API_BASE}/contatos`);
@@ -3082,6 +3102,22 @@ Em nome de Jesus, Amém.`;
           setIsLoggedIn(true);
           setProfileName(userData.name);
           setProfileEmail(userData.contact);
+          const nextEnts = userData.isAdmin
+            ? ['ebooks', 'pregador', 'mulher_virtuosa']
+            : (Array.isArray(userData.entitlements) ? userData.entitlements : []);
+          setUserEntitlements(nextEnts);
+          try {
+            localStorage.setItem('1convite_entitlements', JSON.stringify(nextEnts));
+          } catch {}
+          const nextGender = userData.genero || 'homem';
+          setUserGender(nextGender);
+          if (userData.avatar) {
+            setProfileAvatar(userData.avatar);
+            setIsCustomAvatar(true);
+          } else {
+            setProfileAvatar(getDefaultAvatar(nextGender));
+            setIsCustomAvatar(false);
+          }
           if (userData.isAdmin) {
             setIsAdminMode(true);
             setShowAdminPanel(true);
