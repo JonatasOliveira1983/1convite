@@ -3,7 +3,10 @@ import './TreinoTemplo.css';
 import treinoTemploBanner from '../../assets/feed/treino_templo.jpg';
 import MuscleMap from './MuscleMap';
 import ExerciseAvatarPlayer from './ExerciseAvatarPlayer';
+import BodyWeightCard from './BodyWeightCard';
+import OpenGymVideoPlayer from './OpenGymVideoPlayer';
 import { TEMPLOFIT_CATALOGUE } from '../../data/templofitCatalogue';
+import { openGymCatalogueService, OPENGYM_BODYPARTS, OPENGYM_EQUIPMENTS } from '../../services/openGymCatalogueService';
 import { templofitService } from '../../services/templofitService';
 
 const PROGRAMAS_TEMPLOFIT = [
@@ -121,13 +124,14 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
   const [inputPesoTemp, setInputPesoTemp] = useState('');
   const [syncStatus, setSyncStatus] = useState('');
 
-  // Explorar Catálogo OpenGym
-  const [buscaEx, setBuscaEx] = useState('');
-  const [filtroMusculo, setFiltroMusculo] = useState('todos');
-  const [filtroAmbiente, setFiltroAmbiente] = useState('todos');
+  // Explorar Catálogo Completo OpenGym (5.600+ exercícios)
+  const [buscaOpenGym, setBuscaOpenGym] = useState('');
+  const [filtroBodyPart, setFiltroBodyPart] = useState('all');
+  const [filtroEquipment, setFiltroEquipment] = useState('all');
+  const [pageOpenGym, setPageOpenGym] = useState(1);
   const [exercicioDetalhe, setExercicioDetalhe] = useState(null);
 
-  // Galeria de Todos os GIFs
+  // Galeria de Todos os GIFs Clássicos Wger
   const [buscaGifs, setBuscaGifs] = useState('');
   const [filtroMusculoGifs, setFiltroMusculoGifs] = useState('todos');
 
@@ -301,11 +305,13 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         nome: ex.nome,
         animType: ex.animType || 'squat',
         gifUrl: ex.gifUrl || '',
+        clipUrl: ex.clipUrl || '',
+        stillUrl: ex.stillUrl || '',
         series: 3,
         reps: '12',
-        musculos: ex.musculos,
+        musculos: ex.musculos || (ex.secondaryMuscles && ex.secondaryMuscles.length > 0 ? ex.secondaryMuscles : [ex.target || ex.bodyPart || 'geral']),
         descanso: 45,
-        instrucao: ex.instrucoes?.[0] || ex.descricao || 'Execute com postura firme e respiração controlada.',
+        instrucao: ex.instructions?.[0] || ex.instrucoes?.[0] || ex.descricao || 'Execute com postura firme e respiração controlada.',
       },
     ]);
     setExercicioDetalhe(null);
@@ -323,15 +329,18 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
     } catch {}
   };
 
-  const catalogoFiltrado = useMemo(() => {
-    const q = buscaEx.trim().toLowerCase();
-    return TEMPLOFIT_CATALOGUE.filter((ex) => {
-      if (q && !ex.nome.toLowerCase().includes(q)) return false;
-      if (filtroMusculo !== 'todos' && !ex.musculos.includes(filtroMusculo)) return false;
-      if (filtroAmbiente !== 'todos' && ex.ambiente !== filtroAmbiente) return false;
-      return true;
+  const openGymResult = useMemo(() => {
+    return openGymCatalogueService.search({
+      query: buscaOpenGym,
+      bodyPart: filtroBodyPart,
+      equipment: filtroEquipment,
+      page: pageOpenGym,
+      limit: 28,
     });
-  }, [buscaEx, filtroMusculo, filtroAmbiente]);
+  }, [buscaOpenGym, filtroBodyPart, filtroEquipment, pageOpenGym]);
+
+  const catalogoFiltrado = openGymResult.items;
+  const totalOpenGymEx = openGymCatalogueService.getTotalCount();
 
   const gifsFiltrados = useMemo(() => {
     const q = buscaGifs.trim().toLowerCase();
@@ -401,7 +410,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         <div className="treino-chips-bar" style={{ marginBottom: '16px' }}>
           {[
             { id: 'programas', label: 'Programas & Fases' },
-            { id: 'explorar', label: `Explorar (${TEMPLOFIT_CATALOGUE.length})` },
+            { id: 'explorar', label: `Explorar (${totalOpenGymEx.toLocaleString('pt-BR')})` },
             { id: 'gifs', label: `Todos os GIFs (${TEMPLOFIT_CATALOGUE.length})` },
             { id: 'custom', label: `Meus Treinos (${rotinasCustom.length})` },
             { id: 'evolucao', label: 'Minha Evolução' },
@@ -421,20 +430,30 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         <div className="treino-active-session animate-fade-in">
           <div className="treino-active-card">
             <div className="treino-active-anatomy-wrap">
-              <div className="templofit-dual-visual">
-                <ExerciseAvatarPlayer
-                  animType={rotinaSelecionada.exercicios[exercicioAtualIndex].animType}
-                  gifUrl={rotinaSelecionada.exercicios[exercicioAtualIndex].gifUrl}
-                  exerciseName={rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
-                />
-                <div className="templofit-map-box">
-                  <MuscleMap
-                    highlightMuscles={rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []}
-                    view="ambos"
-                    size="md"
+              {rotinaSelecionada.exercicios[exercicioAtualIndex].clipUrl ? (
+                <div style={{ marginBottom: '12px' }}>
+                  <OpenGymVideoPlayer
+                    clipUrl={rotinaSelecionada.exercicios[exercicioAtualIndex].clipUrl}
+                    stillUrl={rotinaSelecionada.exercicios[exercicioAtualIndex].stillUrl}
+                    title={rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
                   />
                 </div>
-              </div>
+              ) : (
+                <div className="templofit-dual-visual">
+                  <ExerciseAvatarPlayer
+                    animType={rotinaSelecionada.exercicios[exercicioAtualIndex].animType}
+                    gifUrl={rotinaSelecionada.exercicios[exercicioAtualIndex].gifUrl}
+                    exerciseName={rotinaSelecionada.exercicios[exercicioAtualIndex].nome}
+                  />
+                  <div className="templofit-map-box">
+                    <MuscleMap
+                      highlightMuscles={rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []}
+                      view="ambos"
+                      size="md"
+                    />
+                  </div>
+                </div>
+              )}
               <span className="treino-anatomy-caption">
                 Músculos Recrutados: {(rotinaSelecionada.exercicios[exercicioAtualIndex].musculos || []).join(', ')}
               </span>
@@ -550,6 +569,17 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             </div>
           </div>
 
+          {/* PAINEL DE EVOLUÇÃO DE PESO CORPORAL (GRÁFICO VERDE NEON ESTILO OPENGYM) */}
+          <BodyWeightCard
+            pesoAtual={pesoCorporal}
+            metaPeso="75.0"
+            historico={pesoHistorico}
+            onOpenLogModal={() => {
+              setInputPesoTemp(pesoCorporal);
+              setShowModalPeso(true);
+            }}
+          />
+
           <div className="treino-hero-card">
             <img src={treinoTemploBanner} alt="TemploFit" className="treino-hero-img" />
             <div className="treino-hero-overlay">
@@ -619,63 +649,211 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
         </>
       ) : abaAtiva === 'explorar' ? (
         <div className="animate-fade-in">
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-            <input
-              type="text"
-              placeholder="Buscar exercício em português..."
-              value={buscaEx}
-              onChange={(e) => setBuscaEx(e.target.value)}
-              style={{ flex: 1, minWidth: '180px', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(148,163,184,0.28)', background: '#0F172A', color: '#FFF', fontSize: '0.85rem' }}
-            />
-            <select
-              value={filtroAmbiente}
-              onChange={(e) => setFiltroAmbiente(e.target.value)}
-              style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(148,163,184,0.28)', background: '#0F172A', color: '#FFF', fontSize: '0.82rem' }}
-            >
-              <option value="todos">Todos Ambientes</option>
-              <option value="casa">Em Casa (Peso do Corpo)</option>
-              <option value="academia">Academia &amp; Equipamentos</option>
-            </select>
+          {/* HEADER COM CONTAGEM OFICIAL OPENGYM */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#10B981', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                • {totalOpenGymEx.toLocaleString('pt-BR')} EXERCÍCIOS COM ANIMAÇÕES 3D
+              </span>
+            </div>
+            <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: '700' }}>
+              Biblioteca Oficial OpenGym
+            </span>
           </div>
 
-          <div className="treino-chips-bar" style={{ marginBottom: '14px' }}>
-            {MUSCLE_FILTERS.map((m) => (
-              <button key={m.id} className={`treino-chip ${filtroMusculo === m.id ? 'active' : ''}`} onClick={() => setFiltroMusculo(m.id)}>
-                {m.label}
+          {/* BARRA DE PESQUISA */}
+          <div style={{ marginBottom: '12px' }}>
+            <input
+              type="text"
+              placeholder="Buscar exercício por nome, aparelho ou músculo (ex: supino, bíceps, crossover)..."
+              value={buscaOpenGym}
+              onChange={(e) => {
+                setBuscaOpenGym(e.target.value);
+                setPageOpenGym(1);
+              }}
+              style={{
+                width: '100%',
+                boxSizing: 'border-box',
+                padding: '11px 14px',
+                borderRadius: '12px',
+                border: '1px solid rgba(148, 163, 184, 0.28)',
+                background: '#0F172A',
+                color: '#FFF',
+                fontSize: '0.86rem',
+                outline: 'none',
+              }}
+            />
+          </div>
+
+          {/* FILTRO 1: PARTES DO CORPO / MÚSCULOS (ROLAGEM HORIZONTAL) */}
+          <div className="treino-chips-bar" style={{ marginBottom: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+            {OPENGYM_BODYPARTS.map((bp) => (
+              <button
+                key={bp.id}
+                type="button"
+                className={`treino-chip ${filtroBodyPart === bp.id ? 'active' : ''}`}
+                onClick={() => {
+                  setFiltroBodyPart(bp.id);
+                  setPageOpenGym(1);
+                }}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {bp.label}
               </button>
             ))}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px' }}>
+          {/* FILTRO 2: EQUIPAMENTOS (ROLAGEM HORIZONTAL) */}
+          <div className="treino-chips-bar" style={{ marginBottom: '14px', overflowX: 'auto', paddingBottom: '4px' }}>
+            {OPENGYM_EQUIPMENTS.map((eq) => (
+              <button
+                key={eq.id}
+                type="button"
+                className={`treino-chip ${filtroEquipment === eq.id ? 'active' : ''}`}
+                onClick={() => {
+                  setFiltroEquipment(eq.id);
+                  setPageOpenGym(1);
+                }}
+                style={{
+                  whiteSpace: 'nowrap',
+                  fontSize: '0.72rem',
+                  padding: '5px 10px',
+                  background: filtroEquipment === eq.id ? '#10B981' : 'rgba(255,255,255,0.04)',
+                }}
+              >
+                {eq.label}
+              </button>
+            ))}
+          </div>
+
+          {/* GRADE DE EXERCÍCIOS ESTILO OPENGYM */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '12px', marginBottom: '16px' }}>
             {catalogoFiltrado.map((ex) => (
-              <div key={ex.id} className="treino-rotina-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '10px' }}>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  <MuscleMap highlightMuscles={ex.musculos} view="frente" size="sm" />
-                  <div style={{ flex: 1 }}>
-                    <span className="treino-nivel-tag" style={{ fontSize: '0.62rem' }}>{ex.ambiente === 'casa' ? 'Em Casa' : 'Academia'}</span>
-                    <h4 style={{ margin: '4px 0', fontSize: '0.88rem', color: '#FFF' }}>{ex.nome}</h4>
-                    <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{ex.musculos.join(', ')}</div>
+              <div
+                key={ex.id}
+                className="treino-rotina-card"
+                onClick={() => setExercicioDetalhe(ex)}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: '10px',
+                  padding: '12px',
+                  background: '#13161F',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      width: '68px',
+                      height: '68px',
+                      borderRadius: '12px',
+                      background: '#FFFFFF',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <img
+                      src={ex.stillUrl}
+                      alt={ex.nome}
+                      loading="lazy"
+                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', gap: '6px', marginBottom: '3px' }}>
+                      <span className="treino-nivel-tag" style={{ fontSize: '0.6rem', padding: '2px 6px' }}>
+                        {ex.equipmentPt || ex.equipment}
+                      </span>
+                    </div>
+                    <h4
+                      style={{
+                        margin: '0 0 2px',
+                        fontSize: '0.86rem',
+                        color: '#FFFFFF',
+                        fontWeight: '700',
+                        lineHeight: '1.25',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {ex.nome}
+                    </h4>
+                    <span style={{ fontSize: '0.68rem', color: '#94A3B8', display: 'block', textTransform: 'capitalize' }}>
+                      {ex.bodyPartPt} • {ex.target}
+                    </span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '6px' }}>
+
+                <div style={{ display: 'flex', gap: '6px' }} onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
                     onClick={() => setExercicioDetalhe(ex)}
-                    style={{ flex: 1, padding: '7px 10px', borderRadius: '8px', border: '1px solid rgba(148,163,184,0.3)', background: 'transparent', color: '#E2E8F0', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer' }}
+                    style={{
+                      flex: 1,
+                      padding: '7px 10px',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(148, 163, 184, 0.3)',
+                      background: 'rgba(255,255,255,0.04)',
+                      color: '#E2E8F0',
+                      fontSize: '0.74rem',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                    }}
                   >
-                    Ver Execução
+                    Ver 3D
                   </button>
                   <button
                     type="button"
                     onClick={() => addExercicioAoConstrutor(ex)}
-                    style={{ flex: 1, padding: '7px 10px', borderRadius: '8px', border: 'none', background: '#10B981', color: '#052E16', fontSize: '0.75rem', fontWeight: '800', cursor: 'pointer' }}
+                    style={{
+                      flex: 1,
+                      padding: '7px 10px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: '#10B981',
+                      color: '#052E16',
+                      fontSize: '0.74rem',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                    }}
                   >
-                    + Meu Treino
+                    + Treino
                   </button>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* BOTÃO CARREGAR MAIS */}
+          {openGymResult.hasMore && (
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <button
+                type="button"
+                onClick={() => setPageOpenGym((prev) => prev + 1)}
+                className="treino-chip active"
+                style={{
+                  padding: '10px 24px',
+                  fontSize: '0.84rem',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  borderRadius: '12px',
+                }}
+              >
+                Carregar Mais Exercícios ({openGymResult.total - catalogoFiltrado.length} restantes) ↓
+              </button>
+            </div>
+          )}
         </div>
       ) : abaAtiva === 'custom' ? (
         <div className="animate-fade-in">
@@ -1093,21 +1271,71 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
       {/* MODAL DE DETALHES DO EXERCÍCIO */}
       {exercicioDetalhe && (
         <div className="treino-modal-overlay" onClick={() => setExercicioDetalhe(null)}>
-          <div className="treino-modal-card" style={{ maxWidth: '420px' }} onClick={(e) => e.stopPropagation()}>
-            <h4 style={{ marginBottom: '10px' }}>{exercicioDetalhe.nome}</h4>
-            <div className="templofit-dual-visual" style={{ marginBottom: '12px' }}>
-              <ExerciseAvatarPlayer
-                animType={exercicioDetalhe.animType}
-                gifUrl={exercicioDetalhe.gifUrl}
-                exerciseName={exercicioDetalhe.nome}
-              />
-              <div className="templofit-map-box">
-                <MuscleMap highlightMuscles={exercicioDetalhe.musculos} view="ambos" size="sm" />
+          <div className="treino-modal-card" style={{ maxWidth: '440px', maxHeight: '88vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+              <div>
+                <h4 style={{ margin: '0 0 2px', fontSize: '1.05rem', color: '#FFF' }}>{exercicioDetalhe.nome}</h4>
+                {exercicioDetalhe.nomeEn && exercicioDetalhe.nomeEn !== exercicioDetalhe.nome && (
+                  <span style={{ fontSize: '0.74rem', color: '#94A3B8' }}>{exercicioDetalhe.nomeEn}</span>
+                )}
               </div>
+              <button
+                type="button"
+                onClick={() => setExercicioDetalhe(null)}
+                style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '1.2rem', cursor: 'pointer', lineHeight: '1' }}
+              >
+                ✕
+              </button>
             </div>
-            {exercicioDetalhe.descricao && (
-              <p style={{ fontSize: '0.8rem', color: '#CBD5E1', marginBottom: '8px' }}>{exercicioDetalhe.descricao}</p>
-            )}
+
+            {/* PLAYER DE VÍDEO OU GIF */}
+            <div style={{ marginBottom: '14px' }}>
+              {exercicioDetalhe.clipUrl ? (
+                <OpenGymVideoPlayer
+                  clipUrl={exercicioDetalhe.clipUrl}
+                  stillUrl={exercicioDetalhe.stillUrl}
+                  title={exercicioDetalhe.nome}
+                />
+              ) : (
+                <div className="templofit-dual-visual">
+                  <ExerciseAvatarPlayer
+                    animType={exercicioDetalhe.animType}
+                    gifUrl={exercicioDetalhe.gifUrl}
+                    exerciseName={exercicioDetalhe.nome}
+                  />
+                  <div className="templofit-map-box">
+                    <MuscleMap highlightMuscles={exercicioDetalhe.musculos || []} view="ambos" size="sm" />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* TAGS DE MÚSCULOS E EQUIPAMENTOS */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
+              <span className="treino-nivel-tag" style={{ background: 'rgba(16,185,129,0.15)', color: '#34D399' }}>
+                Equipamento: {exercicioDetalhe.equipmentPt || exercicioDetalhe.equipment || 'Livre'}
+              </span>
+              <span className="treino-nivel-tag" style={{ background: 'rgba(56,189,248,0.15)', color: '#38BDF8' }}>
+                Alvo: {exercicioDetalhe.bodyPartPt || exercicioDetalhe.bodyPart || exercicioDetalhe.target || 'Geral'}
+              </span>
+            </div>
+
+            {/* INSTRUÇÕES PASSO A PASSO */}
+            {exercicioDetalhe.instructions && exercicioDetalhe.instructions.length > 0 ? (
+              <div style={{ background: 'rgba(15, 23, 42, 0.65)', padding: '12px', borderRadius: '12px', marginBottom: '14px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
+                  Passo a Passo de Execução:
+                </span>
+                <ol style={{ margin: 0, paddingLeft: '18px', fontSize: '0.78rem', color: '#CBD5E1', lineHeight: '1.45' }}>
+                  {exercicioDetalhe.instructions.map((step, sIdx) => (
+                    <li key={sIdx} style={{ marginBottom: '4px' }}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+            ) : exercicioDetalhe.descricao ? (
+              <p style={{ fontSize: '0.8rem', color: '#CBD5E1', marginBottom: '12px' }}>{exercicioDetalhe.descricao}</p>
+            ) : null}
+
             <div className="treino-modal-actions">
               <button className="treino-modal-cancel" onClick={() => setExercicioDetalhe(null)}>Fechar</button>
               <button className="treino-modal-save" onClick={() => addExercicioAoConstrutor(exercicioDetalhe)}>+ Adicionar ao Meu Treino</button>
