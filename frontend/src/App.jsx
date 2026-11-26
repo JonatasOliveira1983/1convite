@@ -3001,7 +3001,7 @@ Em nome de Jesus, Amém.`;
       {!isCapacitor && (
         <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
           <div className="desktop-sidebar-brand">
-            <img src={darkMode ? appLogomarcaDark : appLogomarcaOficial} alt="1Convite" className="desktop-sidebar-logo" />
+            <img src={darkMode ? appLogomarcaDark : appLogomarcaLight} alt="1Convite" className="desktop-sidebar-logo" />
           </div>
 
           <nav className="desktop-sidebar-nav">
