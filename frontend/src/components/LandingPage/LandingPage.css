@@ -179,23 +179,31 @@
   z-index: 1;
 }
 
-/* Cenário Minimalista Vetorial: Árvore ao Vento & Sol no Horizonte */
-.sp-landscape-scene {
+.sp-video-bg-wrap {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
   pointer-events: none;
-  z-index: 2;
-  opacity: 0.95;
 }
 
-.sp-landscape-svg {
+.sp-hero-bg-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.72;
+}
+
+.sp-hero-video-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 10, 15, 0.55) 0%,
+    rgba(9, 10, 15, 0.35) 45%,
+    rgba(9, 10, 15, 0.92) 100%
+  );
 }
 
 /* Pulso Atmosférico do Sol no Horizonte */
@@ -622,11 +630,38 @@
 .sp-card {
   background: var(--sp-surface);
   border: 1px solid var(--sp-border);
-  border-radius: 12px;
-  padding: 28px;
+  border-radius: 16px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sp-card-media-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0b0c10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sp-card-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.sp-card:hover .sp-card-media-img {
+  transform: scale(1.04);
+}
+
+.sp-card-body-pad {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .sp-card:hover {
@@ -1310,58 +1345,86 @@
   margin-left: 2px;
 }
 
-.sp-plan-vouchers-preview {
-  background: rgba(12, 12, 16, 0.7);
-  border: 1px solid rgba(249, 115, 22, 0.22);
-  border-radius: 12px;
-  padding: 10px;
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.sp-plan-vouchers-grid {
-  display: grid;
-  gap: 6px;
-  width: 100%;
-}
-
-.sp-plan-vouchers-grid-1 {
-  grid-template-columns: minmax(0, 120px);
-  justify-content: center;
-}
-
-.sp-plan-vouchers-grid-5 {
+.sp-plan-top-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.sp-plan-vouchers-grid-5 .sp-plan-voucher-thumb {
-  width: calc(33.333% - 8px);
-  max-width: 78px;
+.sp-plan-templofit-pill {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.38);
+  padding: 3px 9px;
+  border-radius: 999px;
 }
 
-.sp-plan-vouchers-grid-10 {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 5px;
+.sp-voucher-fan-stage {
+  position: relative;
+  height: 126px;
+  margin: 8px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
-.sp-plan-voucher-thumb {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid rgba(229, 193, 88, 0.6);
-  background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, #111116 45%, #1d1608 100%);
-  padding: 6px 5px;
+.sp-fan-card {
+  position: absolute;
+  width: 78px;
+  height: 106px;
+  border-radius: 11px;
+  border: 1.5px solid rgba(245, 200, 90, 0.8);
+  background: linear-gradient(145deg, #27200c 0%, #111218 52%, #1d1709 100%);
+  padding: 8px 7px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateX(var(--fan-x, 0px)) rotate(var(--fan-rot, 0deg));
+  z-index: var(--fan-z, 1);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 240, 185, 0.38);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sp-voucher-fan-stage:hover .sp-fan-card {
+  transform: translateX(calc(var(--fan-x, 0px) * 1.15)) translateY(-4px) rotate(var(--fan-rot, 0deg));
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.85), 0 0 16px rgba(245, 200, 90, 0.25);
+}
+
+.sp-fan-card-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.sp-mini-gv-kicker {
+  font-size: 0.38rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(252, 211, 77, 0.85);
+}
+
+.sp-mini-gv-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: #FFFBEB;
+}
+
+.sp-mini-gv-bar {
+  width: 72%;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.2), #FBBF24, rgba(251, 191, 36, 0.2));
 }
 
 .sp-mini-gv-top {

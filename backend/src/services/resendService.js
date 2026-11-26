@@ -526,6 +526,41 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
   ];
 }
 
+export async function sendFunnelAddonWelcomeEmail({
+  to,
+  name,
+  offerName,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  if (!to || !String(to).includes('@')) {
+    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
+  }
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safeOffer = escapeHtml(offerName || 'Módulo Extra VIP');
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
+      </div>
+      <span style="display:inline-block;background:rgba(16,185,129,0.16);color:#34d399;border:1px solid rgba(16,185,129,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">MÓDULO DESBLOQUEADO</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Seu acesso especial foi liberado, ${safeName}!</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Confirmamos a liberação de <strong style="color:#fbbf24;">${safeOffer}</strong> na sua conta do <strong>1Convite</strong>. O cadeado já foi aberto no seu aplicativo e você já pode aproveitar todo o conteúdo agora mesmo.
+      </p>
+      <div style="text-align:center;margin:22px 0;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Abrir Meu Aplicativo</a>
+      </div>
+    </div>
+  `;
+  return sendEmail({
+    to,
+    subject: `Desbloqueado! ${offerName || 'Novo módulo VIP'} liberado no 1Convite`,
+    html,
+  });
+}
+
 export async function sendPipelineTestEmail({ templateId, to, siteUrl = 'https://1convite.com.br' }) {
   const stages = getEmailPipelineStages({ siteUrl });
   const stage = stages.find((s) => s.id === templateId);

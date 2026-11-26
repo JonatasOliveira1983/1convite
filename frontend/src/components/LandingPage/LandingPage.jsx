@@ -476,90 +476,23 @@ export default function LandingPage({ onEnterApp }) {
 
       {/* ── HERO BANNER: SPOTIFY THEATER CANVAS & LIVING BACKGROUND (ÁRVORE AO VENTO + SOL NO HORIZONTE) ── */}
       <section className="sp-hero">
-        {/* Fundo Vivo em Movimento Dinâmico (Árvore ao Vento, Sol no Horizonte & Folhas) */}
+        {/* Fundo Vivo em Movimento Dinâmico (Vídeo Cinematográfico + Orbs & Bolinhas Animadas) */}
         <div className="sp-living-bg" aria-hidden="true">
+          <div className="sp-video-bg-wrap">
+            <video
+              className="sp-hero-bg-video"
+              src="/videos/hero-bg.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+            <div className="sp-hero-video-scrim" />
+          </div>
+
           <div className="sp-aurora-orb sp-orb-orange" />
           <div className="sp-aurora-orb sp-orb-green" />
           <div className="sp-aurora-orb sp-orb-amber" />
-
-          {/* Cenário Vetorial Minimalista: Árvore ao Vento & Sol no Horizonte */}
-          <div className="sp-landscape-scene">
-            <svg
-              className="sp-landscape-svg"
-              viewBox="0 0 1440 900"
-              preserveAspectRatio="xMidYMax slice"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="rgba(251, 146, 60, 0.45)"/>
-                  <stop offset="35%" stopColor="rgba(249, 115, 22, 0.22)"/>
-                  <stop offset="70%" stopColor="rgba(234, 88, 12, 0.08)"/>
-                  <stop offset="100%" stopColor="transparent"/>
-                </radialGradient>
-                <radialGradient id="sunCore" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#FFFBEB"/>
-                  <stop offset="35%" stopColor="#FCD34D"/>
-                  <stop offset="75%" stopColor="#F97316"/>
-                  <stop offset="100%" stopColor="#EA580C"/>
-                </radialGradient>
-                <radialGradient id="horizonGlow" cx="65%" cy="85%" r="65%">
-                  <stop offset="0%" stopColor="rgba(249, 115, 22, 0.32)"/>
-                  <stop offset="50%" stopColor="rgba(180, 83, 9, 0.12)"/>
-                  <stop offset="90%" stopColor="transparent"/>
-                </radialGradient>
-              </defs>
-
-              {/* Brilho Atmosférico do Horizonte */}
-              <rect width="1440" height="900" fill="url(#horizonGlow)" />
-
-              {/* O Sol no Horizonte - Centro Atmosférico */}
-              <g className="sp-sun-pulse">
-                <circle cx="720" cy="730" r="300" fill="url(#sunGlow)" />
-                <circle cx="720" cy="730" r="95" fill="url(#sunCore)" />
-              </g>
-
-              {/* Colina de Fundo com Profundidade */}
-              <path d="M0 790 Q 380 730, 720 755 T 1440 735 L 1440 900 L 0 900 Z" fill="#141418" opacity="0.88"/>
-
-              {/* Colina com Linha de Luz Dourada Solar */}
-              <path d="M0 825 Q 520 775, 960 795 T 1440 790 L 1440 900 L 0 900 Z" fill="#0c0d10"/>
-              <path d="M0 825 Q 520 775, 960 795 T 1440 790" fill="none" stroke="rgba(249, 115, 22, 0.35)" strokeWidth="1.8"/>
-
-              {/* A Árvore Minimalista Balançando ao Vento (Salmo 1:3) */}
-              <g className="sp-tree-group" transform="translate(670, 450)">
-                {/* Tronco & Estrutura com Balanço Suave de Pêndulo */}
-                <g className="sp-tree-sway-main">
-                  <path d="M 60 340 Q 75 220, 70 145 Q 65 80, 45 10 Q 55 5, 80 50 Q 95 125, 88 210 Q 85 265, 115 340 Z" fill="#08080a"/>
-                  <path d="M 70 145 Q 40 90, 10 75 Q 25 65, 60 105" fill="#08080a"/>
-                  <path d="M 75 105 Q 115 70, 155 60 Q 135 75, 85 120" fill="#08080a"/>
-                  <path d="M 55 65 Q 30 25, 0 15 Q 20 10, 50 45" fill="#08080a"/>
-
-                  {/* Galhos e Folhagens Balançando no Vento */}
-                  <g className="sp-tree-branches-sway">
-                    {/* Copa Esquerda */}
-                    <path d="M -10 40 C -55 20, -75 -25, -40 -55 C -10 -85, 45 -75, 65 -45 C 85 -10, 55 45, -10 40 Z" fill="#0c1710" opacity="0.95"/>
-                    <path d="M -10 40 C -55 20, -75 -25, -40 -55 C -10 -85, 45 -75, 65 -45 C 85 -10, 55 45, -10 40 Z" fill="none" stroke="rgba(249, 115, 22, 0.25)" strokeWidth="1"/>
-
-                    {/* Copa Centro/Superior */}
-                    <path d="M 40 -20 C 15 -75, 50 -130, 95 -120 C 140 -110, 170 -65, 150 -10 C 125 35, 65 25, 40 -20 Z" fill="#0f1f14" opacity="0.96"/>
-                    <path d="M 40 -20 C 15 -75, 50 -130, 95 -120 C 140 -110, 170 -65, 150 -10 C 125 35, 65 25, 40 -20 Z" fill="none" stroke="rgba(249, 115, 22, 0.32)" strokeWidth="1"/>
-
-                    {/* Copa Direita (inclinando suavemente na direção do vento) */}
-                    <path d="M 95 20 C 95 -35, 140 -75, 185 -65 C 230 -55, 250 -10, 225 35 C 190 75, 115 65, 95 20 Z" fill="#0a140d" opacity="0.95"/>
-                    <path d="M 95 20 C 95 -35, 140 -75, 185 -65 C 230 -55, 250 -10, 225 35 C 190 75, 115 65, 95 20 Z" fill="none" stroke="rgba(249, 115, 22, 0.2)" strokeWidth="1"/>
-
-                    {/* Folhagens Orgânicas Adicionais */}
-                    <circle cx="10" cy="-20" r="35" fill="#0b140e" opacity="0.92"/>
-                    <circle cx="75" cy="-65" r="46" fill="#101e14" opacity="0.92"/>
-                    <circle cx="140" cy="-15" r="42" fill="#0d1710" opacity="0.92"/>
-                    <circle cx="195" cy="15" r="32" fill="#09120b" opacity="0.92"/>
-                  </g>
-                </g>
-              </g>
-            </svg>
-          </div>
 
           <canvas ref={particlesCanvasRef} className="sp-particles-canvas" />
           <div className="sp-grain-overlay" />
@@ -688,119 +621,74 @@ export default function LandingPage({ onEnterApp }) {
 
           <div className="sp-cards-grid">
             <div className="sp-card sp-card-featured">
-              <div className="sp-card-icon-circle">
-                <IconBible />
+              <div className="sp-card-media-wrap">
+                <img src="/landing-cards/biblia-audio.jpg" alt="Bíblia ACF Completa & Áudio" className="sp-card-media-img" loading="lazy" />
               </div>
-              <span className="sp-card-tag">CANÔNICO</span>
-              <h3>Bíblia ACF Completa & Áudio</h3>
-              <p>Texto fidedigno com 31.106 versículos, busca instantânea, anotações e narração em áudio para ouvir qualquer capítulo.</p>
-              <div className="sp-card-footer">
-                <span>66 Livros • VT & NT</span>
-              </div>
-            </div>
-
-            <div className="sp-card">
-              <div className="sp-card-icon-circle">
-                <IconShield />
-              </div>
-              <span className="sp-card-tag">365 DIAS</span>
-              <h3>Oração Guiada & Matriz Anual</h3>
-              <p>Códigos práticos de domínio próprio, oração guiada em fases, Espaço Mulher Virtuosa, Biblioteca do Pregador e Espaço Kids.</p>
-              <div className="sp-card-footer">
-                <span>Para Toda a Família</span>
-              </div>
-            </div>
-
-            <div className="sp-card">
-              <div className="sp-card-icon-circle">
-                <IconSparkles />
-              </div>
-              <span className="sp-card-tag">SABEDORIA</span>
-              <h3>Mentores Bíblicos</h3>
-              <p>Conselhos e discernimento fundamentados nas Escrituras com os 7 grandes mentores da história da fé.</p>
-              <div className="sp-card-footer">
-                <span>7 Mentores Canônicos</span>
-              </div>
-            </div>
-
-            <div className="sp-card">
-              <div className="sp-card-icon-circle">
-                <IconCrown />
-              </div>
-              <span className="sp-card-tag">CRONOLOGIA</span>
-              <h3>Trilha do Reino & E-books</h3>
-              <p>Plano cronológico de leitura com marcos de fé, acervo de e-books edificantes e acompanhamento diário.</p>
-              <div className="sp-card-footer">
-                <span>Crescimento Contínuo</span>
-              </div>
-            </div>
-
-            <div className="sp-card">
-              <div className="sp-card-icon-circle">
-                <IconPalette />
-              </div>
-              <span className="sp-card-tag">ESTÚDIO</span>
-              <h3>Studio de Cards & Convites</h3>
-              <p>Crie cartões bíblicos visuais em segundos e envie seu código de convite pelo WhatsApp para transformar vidas.</p>
-              <div className="sp-card-footer">
-                <span>Compartilhamento Ágil</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEÇÃO: BÔNUS INCLUSOS — 5 E-BOOKS PREMIUM COM CAPAS OFICIAIS ── */}
-      <section id="bonus-ebooks" className="sp-section sp-section-elevated">
-        <div className="sp-container">
-          <div className="sp-section-heading">
-            <span className="sp-kicker">BÔNUS INCLUSOS NOS PLANOS</span>
-            <h2 className="sp-title">Biblioteca Digital com 5 E-books Completos</h2>
-            <p className="sp-desc">
-              Além de todo o aplicativo, você recebe acesso imediato e download em PDF dos 5 livros digitais oficiais do ecossistema 1Convite.
-            </p>
-          </div>
-
-          <div className="sp-ebooks-showcase">
-            {[
-              {
-                title: 'As Parábolas de Jesus',
-                tag: 'Estudo Teológico',
-                cover: '/ebooks/covers/as-parabolas-de-jesus.jpg',
-              },
-              {
-                title: 'Cristo como Centro das Escrituras',
-                tag: 'Teologia Bíblica',
-                cover: '/ebooks/covers/cristo-centro-escrituras.jpg',
-              },
-              {
-                title: 'O Poder da Oração do Salmo 91',
-                tag: 'Proteção & Fé',
-                cover: '/ebooks/covers/poder-oracao-salmo-91.jpg',
-              },
-              {
-                title: 'Tesouros do Conhecimento Bíblico',
-                tag: 'História & Contexto',
-                cover: '/ebooks/covers/tesouros-conhecimento-biblico.jpg',
-              },
-              {
-                title: 'Devocional Café com Deus',
-                tag: 'Devocional Diário',
-                cover: '/ebooks/covers/devocional-cafe-com-deus.jpg',
-              },
-            ].map((eb, idx) => (
-              <a href="#planos" key={idx} className="sp-ebook-bonus-card">
-                <div className="sp-ebook-bonus-cover-wrap">
-                  <img src={eb.cover} alt={eb.title} className="sp-ebook-bonus-cover" loading="lazy" />
-                  <span className="sp-ebook-bonus-pill">Bônus Incluso</span>
+              <div className="sp-card-body-pad">
+                <span className="sp-card-tag">CANÔNICO</span>
+                <h3>Bíblia ACF Completa &amp; Áudio</h3>
+                <p>Texto fidedigno com 31.106 versículos, busca instantânea, anotações e narração em áudio para ouvir qualquer capítulo.</p>
+                <div className="sp-card-footer">
+                  <span>66 Livros • VT &amp; NT</span>
                 </div>
-                <div className="sp-ebook-bonus-info">
-                  <span className="sp-ebook-bonus-tag">{eb.tag}</span>
-                  <h4>{eb.title}</h4>
-                  <span className="sp-ebook-bonus-meta">PDF Completo + Leitura no App</span>
+              </div>
+            </div>
+
+            <div className="sp-card">
+              <div className="sp-card-media-wrap">
+                <img src="/landing-cards/oracao-365.jpg" alt="Oração Guiada & Matriz Anual" className="sp-card-media-img" loading="lazy" />
+              </div>
+              <div className="sp-card-body-pad">
+                <span className="sp-card-tag">365 DIAS</span>
+                <h3>Oração Guiada &amp; Matriz Anual</h3>
+                <p>Códigos práticos de domínio próprio, oração guiada em fases, Modo Sábado, Jogos Bíblicos e Espaço Kids.</p>
+                <div className="sp-card-footer">
+                  <span>Para Toda a Família</span>
                 </div>
-              </a>
-            ))}
+              </div>
+            </div>
+
+            <div className="sp-card">
+              <div className="sp-card-media-wrap">
+                <img src="/landing-cards/mentores-sabedoria.jpg" alt="Mentores Bíblicos" className="sp-card-media-img" loading="lazy" />
+              </div>
+              <div className="sp-card-body-pad">
+                <span className="sp-card-tag">SABEDORIA</span>
+                <h3>Mentores Bíblicos</h3>
+                <p>Conselhos e discernimento fundamentados nas Escrituras com os 7 grandes mentores da história da fé.</p>
+                <div className="sp-card-footer">
+                  <span>7 Mentores Canônicos</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="sp-card">
+              <div className="sp-card-media-wrap">
+                <img src="/landing-cards/trilha-reino.jpg" alt="Trilha do Reino" className="sp-card-media-img" loading="lazy" />
+              </div>
+              <div className="sp-card-body-pad">
+                <span className="sp-card-tag">CRONOLOGIA</span>
+                <h3>Trilha do Reino &amp; Desafios</h3>
+                <p>Plano cronológico de leitura com marcos de fé, missões gamificadas, conquistas e acompanhamento diário.</p>
+                <div className="sp-card-footer">
+                  <span>Crescimento Contínuo</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="sp-card">
+              <div className="sp-card-media-wrap">
+                <img src="/landing-cards/studio-cards.jpg" alt="Studio de Cards & Convites" className="sp-card-media-img" loading="lazy" />
+              </div>
+              <div className="sp-card-body-pad">
+                <span className="sp-card-tag">ESTÚDIO</span>
+                <h3>Studio de Cards &amp; Convites</h3>
+                <p>Crie cartões bíblicos visuais em segundos e envie seu código de convite pelo WhatsApp para transformar vidas.</p>
+                <div className="sp-card-footer">
+                  <span>Compartilhamento Ágil</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -811,15 +699,20 @@ export default function LandingPage({ onEnterApp }) {
           <div className="sp-section-heading">
             <span className="sp-kicker">PLANOS & CONVITES DO REINO</span>
             <h2 className="sp-title">Escolha seu Plano e Abençoe Outras Vidas</h2>
-            <p className="sp-desc">Ao adquirir qualquer plano, você recebe códigos de convite para liberar o acesso completo gratuitamente para quem você ama.</p>
+            <p className="sp-desc">
+              Todos os planos liberam o ecossistema completo por 1 ano — incluindo o aplicativo <strong>TemploFit</strong> — e geram Vales-Presente VIP de 180 dias para quem você ama.
+            </p>
           </div>
 
           <div className="sp-plans-grid">
             {/* Plano Básico */}
             <div className="sp-plan-card">
-              <span className="sp-plan-tier">Plano Básico • Anual</span>
+              <div className="sp-plan-top-row">
+                <span className="sp-plan-tier">Plano Básico • Anual</span>
+                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+              </div>
               <h3 className="sp-plan-title">Semente</h3>
-              <p className="sp-plan-subtitle">Ideal para sua jornada diária pessoal + 1 pessoa especial.</p>
+              <p className="sp-plan-subtitle">Para sua transformação espiritual e física diária + 1 pessoa especial.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">67</span>
@@ -829,26 +722,24 @@ export default function LandingPage({ onEnterApp }) {
                 <IconCheck />
                 <span>Inclui 1 Vale-Presente (180 dias grátis)</span>
               </div>
-              <div className="sp-plan-vouchers-preview" aria-label="1 convite incluído">
-                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-1">
-                  <div className="sp-plan-voucher-thumb">
-                    <div className="sp-mini-gv-top">
-                      <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
-                      <span className="sp-mini-gv-seal">180</span>
-                    </div>
-                    <div>
-                      <div className="sp-mini-gv-kicker">GIFT VOUCHER</div>
-                      <span className="sp-mini-gv-title">Você é Especial</span>
-                    </div>
-                    <span className="sp-mini-gv-bar" />
+              <div className="sp-voucher-fan-stage sp-fan-1" aria-label="1 convite incluído">
+                <div className="sp-fan-card" style={{ '--fan-rot': '-2deg', '--fan-x': '0px', '--fan-z': 2 }}>
+                  <div className="sp-mini-gv-top">
+                    <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
+                    <span className="sp-mini-gv-seal">180d</span>
                   </div>
+                  <div className="sp-fan-card-center">
+                    <span className="sp-mini-gv-kicker">VALE-PRESENTE VIP</span>
+                    <span className="sp-mini-gv-title">Você é Especial</span>
+                  </div>
+                  <span className="sp-mini-gv-bar" />
                 </div>
               </div>
               <ul className="sp-plan-features">
+                <li><IconCheck /><span><strong>App TemploFit completo:</strong> treinos por nível, mini-vídeos em loop e mapa muscular</span></li>
                 <li><IconCheck /><span>Bíblia Sagrada ACF Narrada + Café com Deus 365</span></li>
-                <li><IconCheck /><span>7 Mentores Bíblicos (IA) + Trilha do Reino</span></li>
-                <li><IconCheck /><span>TemploFit (mini-vídeos), Jogos &amp; Kids + Studio de Cards</span></li>
-                <li><IconCheck /><span>1 código exclusivo para liberar 6 meses grátis a um convidado</span></li>
+                <li><IconCheck /><span>7 Mentores Bíblicos (IA), Trilha do Reino, Jogos &amp; Kids + Studio de Cards</span></li>
+                <li><IconCheck /><span>1 Vale-Presente VIP para abençoar alguém com 6 meses grátis</span></li>
               </ul>
               <button
                 type="button"
@@ -856,17 +747,20 @@ export default function LandingPage({ onEnterApp }) {
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
                 onClick={() => setCheckoutPlan('basico')}
               >
-                <span>Garantir Plano Básico</span>
+                <span>Garantir Plano Semente</span>
                 <IconArrowRight />
               </button>
             </div>
 
             {/* Plano Mais Popular */}
             <div className="sp-plan-card sp-plan-card-featured">
-              <div className="sp-plan-popular-pill">MAIS POPULAR</div>
-              <span className="sp-plan-tier">Mais Popular • Anual</span>
+              <div className="sp-plan-popular-pill">MAIS POPULAR • MELHOR CUSTO</div>
+              <div className="sp-plan-top-row">
+                <span className="sp-plan-tier">Mais Popular • Anual</span>
+                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+              </div>
               <h3 className="sp-plan-title">Edificação</h3>
-              <p className="sp-plan-subtitle">Perfeito para sua casa, família e amigos próximos.</p>
+              <p className="sp-plan-subtitle">Ideal para equipar toda a sua casa, família e amigos próximos.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">97</span>
@@ -876,25 +770,34 @@ export default function LandingPage({ onEnterApp }) {
                 <IconCheck />
                 <span>Inclui 3 Vales-Presente (180 dias grátis)</span>
               </div>
-              <div className="sp-plan-vouchers-preview" aria-label="3 convites incluídos">
-                <div className="sp-plan-vouchers-grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
-                  {Array.from({ length: 3 }).map((_, idx) => (
-                    <div key={idx} className="sp-plan-voucher-thumb">
-                      <div className="sp-mini-gv-top">
-                        <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
-                        <span className="sp-mini-gv-seal">180</span>
-                      </div>
-                      <span className="sp-mini-gv-title">Especial</span>
-                      <span className="sp-mini-gv-bar" />
+              <div className="sp-voucher-fan-stage sp-fan-3" aria-label="3 convites incluídos">
+                {[-13, 0, 13].map((rot, idx) => (
+                  <div
+                    key={idx}
+                    className="sp-fan-card"
+                    style={{
+                      '--fan-rot': `${rot}deg`,
+                      '--fan-x': `${(idx - 1) * 34}px`,
+                      '--fan-z': idx === 1 ? 5 : 2,
+                    }}
+                  >
+                    <div className="sp-mini-gv-top">
+                      <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
+                      <span className="sp-mini-gv-seal">180d</span>
                     </div>
-                  ))}
-                </div>
+                    <div className="sp-fan-card-center">
+                      <span className="sp-mini-gv-kicker">VALE VIP #{idx + 1}</span>
+                      <span className="sp-mini-gv-title">Especial</span>
+                    </div>
+                    <span className="sp-mini-gv-bar" />
+                  </div>
+                ))}
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Tudo do Plano Semente liberado por 1 ano completo</span></li>
-                <li><IconCheck /><span>Studio de Cards, Modo Sábado &amp; Respiração Guiada</span></li>
-                <li><IconCheck /><span>3 códigos exclusivos para abençoar família e amigos (6 meses grátis cada)</span></li>
-                <li><IconCheck /><span>Suporte prioritário e atualizações contínuas do app</span></li>
+                <li><IconCheck /><span><strong>Tudo do Semente + App TemploFit</strong> de alta performance liberado</span></li>
+                <li><IconCheck /><span>Studio de Cards, Modo Sábado &amp; Respiração Guiada completos</span></li>
+                <li><IconCheck /><span>3 Vales-Presente VIP para abençoar família e amigos (6 meses cada)</span></li>
+                <li><IconCheck /><span>Acesso prioritário a todas as atualizações do ecossistema</span></li>
               </ul>
               <button
                 type="button"
@@ -902,16 +805,19 @@ export default function LandingPage({ onEnterApp }) {
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
                 onClick={() => setCheckoutPlan('popular')}
               >
-                <span>Garantir Plano Popular</span>
+                <span>Garantir Plano Edificação</span>
                 <IconArrowRight />
               </button>
             </div>
 
             {/* Plano Avançado */}
             <div className="sp-plan-card">
-              <span className="sp-plan-tier">Plano Avançado • Anual</span>
+              <div className="sp-plan-top-row">
+                <span className="sp-plan-tier">Plano Avançado • Anual</span>
+                <span className="sp-plan-templofit-pill">+ APP TEMPLOFIT</span>
+              </div>
               <h3 className="sp-plan-title">Reino</h3>
-              <p className="sp-plan-subtitle">Para líderes, células, ministérios e famílias grandes.</p>
+              <p className="sp-plan-subtitle">Para líderes, células, ministérios e famílias grandes multiplicarem a fé.</p>
               <div className="sp-plan-price-row">
                 <span className="sp-plan-currency">R$</span>
                 <span className="sp-plan-amount">147</span>
@@ -921,25 +827,34 @@ export default function LandingPage({ onEnterApp }) {
                 <IconCheck />
                 <span>Inclui 5 Vales-Presente (180 dias grátis)</span>
               </div>
-              <div className="sp-plan-vouchers-preview" aria-label="5 convites incluídos">
-                <div className="sp-plan-vouchers-grid sp-plan-vouchers-grid-5">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <div key={idx} className="sp-plan-voucher-thumb">
-                      <div className="sp-mini-gv-top">
-                        <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" style={{ height: '7px' }} />
-                        <span className="sp-mini-gv-seal" style={{ width: '13px', height: '13px', fontSize: '0.3rem' }}>180</span>
-                      </div>
-                      <span className="sp-mini-gv-title" style={{ fontSize: '0.44rem' }}>VIP</span>
-                      <span className="sp-mini-gv-bar" style={{ height: '5px' }} />
+              <div className="sp-voucher-fan-stage sp-fan-5" aria-label="5 convites incluídos">
+                {[-20, -10, 0, 10, 20].map((rot, idx) => (
+                  <div
+                    key={idx}
+                    className="sp-fan-card"
+                    style={{
+                      '--fan-rot': `${rot}deg`,
+                      '--fan-x': `${(idx - 2) * 24}px`,
+                      '--fan-z': idx === 2 ? 6 : 4 - Math.abs(idx - 2),
+                    }}
+                  >
+                    <div className="sp-mini-gv-top">
+                      <img src={appLogoWhite} alt="1Convite" className="sp-mini-gv-brand" />
+                      <span className="sp-mini-gv-seal">180d</span>
                     </div>
-                  ))}
-                </div>
+                    <div className="sp-fan-card-center">
+                      <span className="sp-mini-gv-kicker">CONVITE #{idx + 1}</span>
+                      <span className="sp-mini-gv-title">VIP Reino</span>
+                    </div>
+                    <span className="sp-mini-gv-bar" />
+                  </div>
+                ))}
               </div>
               <ul className="sp-plan-features">
-                <li><IconCheck /><span>Acesso anual total a todos os recursos</span></li>
-                <li><IconCheck /><span>Todos os E-books, Trilhas e Mentores Bíblicos</span></li>
-                <li><IconCheck /><span>5 códigos exclusivos para distribuir na sua célula ou igreja</span></li>
-                <li><IconCheck /><span>Cada convidado ganha 6 meses gratuitos no app</span></li>
+                <li><IconCheck /><span><strong>Ecossistema completo + App TemploFit</strong> de alta performance por 1 ano</span></li>
+                <li><IconCheck /><span>Bíblia Narrada, Café com Deus 365, Mentores IA, Trilha e Jogos &amp; Kids</span></li>
+                <li><IconCheck /><span>5 Vales-Presente VIP para distribuir na sua célula, igreja ou família</span></li>
+                <li><IconCheck /><span>Cada convidado ganha 6 meses gratuitos com boas-vindas personalizadas</span></li>
               </ul>
               <button
                 type="button"
@@ -947,7 +862,7 @@ export default function LandingPage({ onEnterApp }) {
                 style={{ width: '100%', justifyContent: 'center', cursor: 'pointer' }}
                 onClick={() => setCheckoutPlan('avancado')}
               >
-                <span>Garantir Plano Avançado</span>
+                <span>Garantir Plano Reino</span>
                 <IconArrowRight />
               </button>
             </div>

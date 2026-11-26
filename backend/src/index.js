@@ -31,6 +31,7 @@ import {
   sendPixPendingEmail,
   sendLeadWelcomeEmail,
   sendInviteRedeemedEmail,
+  sendFunnelAddonWelcomeEmail,
   getEmailPipelineStages,
   sendPipelineTestEmail,
 } from './services/resendService.js';
@@ -2041,7 +2042,22 @@ async function fulfillPaidOrder(paymentId, paidStatus = 'CONFIRMED') {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', ['RESEND_API_KEY não configurada', paymentId]);
       }
     } else if (!Number(order.email_sent) && isFunnelAddon) {
-      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+      if (isResendConfigured()) {
+        const offerObj = getFunnelOfferById(order.plan_id);
+        const mailRes = await sendFunnelAddonWelcomeEmail({
+          to: order.customer_email,
+          name: order.customer_name,
+          offerName: offerObj?.nome || 'Módulo Extra VIP',
+          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+        });
+        if (mailRes.ok) {
+          await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
+        } else {
+          await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || mailRes.reason || 'Falha no Resend').slice(0, 220), paymentId]);
+        }
+      } else {
+        await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1 WHERE payment_id = $1', [paymentId]);
+      }
     }
 
     return {

@@ -3821,25 +3821,46 @@ Em nome de Jesus, Amém.`;
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    {card.entitlementKey && !hasModuleAccess(card.entitlementKey) ? (
-                      <span style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        fontSize: '0.58rem',
-                        fontWeight: '800',
-                        color: '#FBBF24',
-                        background: 'rgba(245, 158, 11, 0.16)',
-                        border: '1px solid rgba(251, 191, 36, 0.35)',
-                        padding: '2px 7px',
-                        borderRadius: '999px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                      }}>
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                        BLOQUEADO
-                      </span>
+                    {card.entitlementKey ? (
+                      hasModuleAccess(card.entitlementKey) ? (
+                        <span style={{
+                          position: 'absolute',
+                          top: '12px',
+                          right: '12px',
+                          fontSize: '0.58rem',
+                          fontWeight: '800',
+                          color: '#34D399',
+                          background: 'rgba(16, 185, 129, 0.16)',
+                          border: '1px solid rgba(16, 185, 129, 0.35)',
+                          padding: '2px 7px',
+                          borderRadius: '999px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
+                          LIBERADO
+                        </span>
+                      ) : (
+                        <span style={{
+                          position: 'absolute',
+                          top: '12px',
+                          right: '12px',
+                          fontSize: '0.58rem',
+                          fontWeight: '800',
+                          color: '#FBBF24',
+                          background: 'rgba(245, 158, 11, 0.16)',
+                          border: '1px solid rgba(251, 191, 36, 0.35)',
+                          padding: '2px 7px',
+                          borderRadius: '999px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                          BLOQUEADO
+                        </span>
+                      )
                     ) : card.tag === 'PREMIUM' && (
                       <span style={{
                         position: 'absolute',
