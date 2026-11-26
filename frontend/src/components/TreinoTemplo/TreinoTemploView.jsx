@@ -578,14 +578,14 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                         placeholder="kg"
                         value={log.kg || ''}
                         onChange={(e) => updateSerieLog(exercicioAtualIndex, sNum, 'kg', e.target.value)}
-                        style={{ width: '58px', padding: '5px 6px', borderRadius: '8px', border: '1px solid rgba(148,163,184,0.3)', background: '#0B0C10', color: '#FFF', fontSize: '0.78rem', textAlign: 'center' }}
+                        style={{ width: '58px', padding: '5px 6px', borderRadius: '8px', border: '1px solid var(--border-subtle, rgba(148,163,184,0.3))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)', fontSize: '0.78rem', textAlign: 'center' }}
                       />
                       <input
                         type="text"
                         placeholder={String(rotinaSelecionada.exercicios[exercicioAtualIndex].reps)}
                         value={log.reps || ''}
                         onChange={(e) => updateSerieLog(exercicioAtualIndex, sNum, 'reps', e.target.value)}
-                        style={{ width: '64px', padding: '5px 6px', borderRadius: '8px', border: '1px solid rgba(148,163,184,0.3)', background: '#0B0C10', color: '#FFF', fontSize: '0.78rem', textAlign: 'center' }}
+                        style={{ width: '64px', padding: '5px 6px', borderRadius: '8px', border: '1px solid var(--border-subtle, rgba(148,163,184,0.3))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)', fontSize: '0.78rem', textAlign: 'center' }}
                       />
                     </div>
                     <button type="button" className={`treino-serie-check-btn ${isDone ? 'checked' : ''}`} onClick={() => toggleSerie(exercicioAtualIndex, sNum)}>
@@ -668,23 +668,24 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             return (
               <div
                 style={{
-                  background: '#13161F',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'var(--surface-card, #13161F)',
+                  border: '1px solid var(--border-subtle, rgba(255, 255, 255, 0.08))',
                   borderRadius: '16px',
                   padding: '16px 18px',
                   marginBottom: '18px',
+                  boxShadow: 'var(--shadow-card, none)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
                   <div>
-                    <span style={{ fontSize: '0.72rem', fontWeight: '500', color: '#94A3B8' }}>
+                    <span style={{ fontSize: '0.74rem', fontWeight: '500', color: 'var(--text-secondary, #94A3B8)' }}>
                       Treinos sem equipamentos em casa
                     </span>
-                    <h3 style={{ margin: '2px 0 0', fontSize: '1.08rem', color: '#FFFFFF', fontWeight: '600' }}>
+                    <h3 style={{ margin: '2px 0 0', fontSize: '1.08rem', color: 'var(--text-primary, #FFFFFF)', fontWeight: '700' }}>
                       Jornada TemploFit • 6 Meses
                     </h3>
                   </div>
-                  <span style={{ background: 'rgba(16,185,129,0.12)', color: '#34D399', padding: '4px 10px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600' }}>
+                  <span style={{ background: 'var(--orange-light, rgba(16,185,129,0.12))', color: 'var(--orange, #10B981)', padding: '4px 10px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600' }}>
                     {mesAtual.trimestre} • {mesAtual.semanas}
                   </span>
                 </div>
@@ -706,17 +707,17 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
                 <div style={{ marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                    <strong style={{ color: '#FFF', fontSize: '0.9rem' }}>{mesAtual.titulo}</strong>
-                    <span style={{ fontSize: '0.7rem', color: '#FBBF24', fontWeight: '800' }}>{mesAtual.nivel}</span>
+                    <strong style={{ color: 'var(--text-primary, #FFF)', fontSize: '0.9rem' }}>{mesAtual.titulo}</strong>
+                    <span style={{ fontSize: '0.72rem', color: '#D97706', fontWeight: '700' }}>{mesAtual.nivel}</span>
                   </div>
-                  <p style={{ margin: '0 0 8px', fontSize: '0.76rem', color: '#94A3B8' }}>{mesAtual.foco}</p>
+                  <p style={{ margin: '0 0 8px', fontSize: '0.78rem', color: 'var(--text-secondary, #94A3B8)' }}>{mesAtual.foco}</p>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#94A3B8', marginBottom: '4px' }}>
-                    <span>Progresso no {mesAtual.id.replace('-', ' ').toUpperCase()} (Meta: 20 treinos)</span>
-                    <strong style={{ color: '#34D399' }}>{sessoesConcluidasMes}/20 ({pctMes}%)</strong>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-secondary, #94A3B8)', marginBottom: '4px' }}>
+                    <span>Progresso no Mês {mesAtual.mesNumero} (Meta: 20 treinos)</span>
+                    <strong style={{ color: 'var(--orange, #10B981)' }}>{sessoesConcluidasMes}/20 ({pctMes}%)</strong>
                   </div>
-                  <div style={{ height: '6px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                    <div style={{ width: `${pctMes}%`, height: '100%', background: 'linear-gradient(90deg, #10B981, #34D399)', borderRadius: '999px' }} />
+                  <div style={{ height: '6px', borderRadius: '999px', background: 'var(--surface-subtle, rgba(255,255,255,0.08))', overflow: 'hidden' }}>
+                    <div style={{ width: `${pctMes}%`, height: '100%', background: 'var(--orange, #10B981)', borderRadius: '999px' }} />
                   </div>
                 </div>
 
@@ -741,9 +742,9 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                       style={{
                         padding: '10px 12px',
                         borderRadius: '12px',
-                        border: '1px solid rgba(16, 185, 129, 0.28)',
-                        background: 'rgba(15, 23, 42, 0.75)',
-                        color: '#E2E8F0',
+                        border: '1px solid var(--border-subtle, rgba(255,255,255,0.1))',
+                        background: 'var(--surface-subtle, rgba(15, 23, 42, 0.75))',
+                        color: 'var(--text-primary, #E2E8F0)',
                         textAlign: 'left',
                         cursor: 'pointer',
                         display: 'flex',
@@ -752,13 +753,13 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                         transition: 'all 0.2s ease',
                       }}
                     >
-                      <span style={{ fontSize: '0.66rem', fontWeight: '800', color: '#10B981', textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: '0.68rem', fontWeight: '700', color: 'var(--orange, #10B981)' }}>
                         {sess.dia} • {mesAtual.duracao}
                       </span>
-                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: '#FFF', lineHeight: '1.2' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-primary, #FFF)', lineHeight: '1.25' }}>
                         {sess.nome.replace(`${sess.dia} • `, '')}
                       </span>
-                      <span style={{ fontSize: '0.66rem', color: '#64748B' }}>
+                      <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary, #64748B)' }}>
                         {sess.exercicios.length} exercícios 3D →
                       </span>
                     </button>
@@ -1091,7 +1092,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
       ) : abaAtiva === 'custom' ? (
         <div className="animate-fade-in">
           <form onSubmit={salvarRotinaCustom} className="treino-rotina-card" style={{ marginBottom: '18px' }}>
-            <h4 style={{ margin: '0 0 10px', color: '#FFF' }}>Montar Nova Rotina Personalizada</h4>
+            <h4 style={{ margin: '0 0 10px', color: 'var(--text-primary, #FFF)' }}>Montar Nova Rotina Personalizada</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
               <input
                 type="text"
@@ -1099,7 +1100,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                 placeholder="Nome do seu treino (ex: Treino A - Peito e Core)"
                 value={customTitle}
                 onChange={(e) => setCustomTitle(e.target.value)}
-                style={{ flex: 1, minWidth: '200px', padding: '9px 12px', borderRadius: '8px', border: '1px solid rgba(148,163,184,0.3)', background: '#0B0C10', color: '#FFF' }}
+                style={{ flex: 1, minWidth: '200px', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--border-subtle, rgba(148,163,184,0.3))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
               />
               <button type="button" onClick={() => setAbaAtiva('explorar')} className="treino-chip active" style={{ cursor: 'pointer' }}>
                 + Escolher Exercícios ({customItems.length})
@@ -1108,7 +1109,7 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
             {customItems.length > 0 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' }}>
                 {customItems.map((it, idx) => (
-                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px', borderRadius: '8px', background: 'rgba(15,23,42,0.7)', fontSize: '0.8rem', color: '#E2E8F0' }}>
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px', borderRadius: '8px', background: 'var(--surface-subtle, rgba(15,23,42,0.7))', fontSize: '0.8rem', color: 'var(--text-primary, #E2E8F0)', border: '1px solid var(--border-subtle)' }}>
                     <span>{idx + 1}. {it.nome} ({it.series}x{it.reps})</span>
                     <button type="button" onClick={() => setCustomItems((prev) => prev.filter((_, i) => i !== idx))} style={{ background: 'transparent', border: 'none', color: '#F87171', cursor: 'pointer', fontWeight: '700' }}>
                       Remover
@@ -1320,18 +1321,18 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
 
             {/* INSTRUÇÕES PASSO A PASSO */}
             {exercicioDetalhe.instructions && exercicioDetalhe.instructions.length > 0 ? (
-              <div style={{ background: 'rgba(15, 23, 42, 0.65)', padding: '12px', borderRadius: '12px', marginBottom: '14px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
+              <div style={{ background: 'var(--surface-subtle, rgba(15, 23, 42, 0.65))', padding: '12px', borderRadius: '12px', marginBottom: '14px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.06))' }}>
+                <span style={{ fontSize: '0.74rem', fontWeight: '700', color: 'var(--text-secondary, #94A3B8)', display: 'block', marginBottom: '6px' }}>
                   Passo a Passo de Execução:
                 </span>
-                <ol style={{ margin: 0, paddingLeft: '18px', fontSize: '0.78rem', color: '#CBD5E1', lineHeight: '1.45' }}>
+                <ol style={{ margin: 0, paddingLeft: '18px', fontSize: '0.8rem', color: 'var(--text-primary, #CBD5E1)', lineHeight: '1.5' }}>
                   {exercicioDetalhe.instructions.map((step, sIdx) => (
                     <li key={sIdx} style={{ marginBottom: '4px' }}>{step}</li>
                   ))}
                 </ol>
               </div>
             ) : exercicioDetalhe.descricao ? (
-              <p style={{ fontSize: '0.8rem', color: '#CBD5E1', marginBottom: '12px' }}>{exercicioDetalhe.descricao}</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-primary, #CBD5E1)', marginBottom: '12px' }}>{exercicioDetalhe.descricao}</p>
             ) : null}
 
             <div className="treino-modal-actions">
@@ -1348,15 +1349,15 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
           <div className="treino-modal-card" style={{ maxWidth: '460px', maxHeight: '85vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <div>
-                <h4 style={{ margin: 0, color: '#FFF' }}>Trocar Exercício</h4>
-                <span style={{ fontSize: '0.74rem', color: '#94A3B8' }}>
+                <h4 style={{ margin: 0, color: 'var(--text-primary, #FFF)' }}>Trocar Exercício</h4>
+                <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary, #94A3B8)' }}>
                   Alternativas equivalentes para o mesmo músculo:
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setShowSwapModal(false)}
-                style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '1.2rem', cursor: 'pointer' }}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary, #94A3B8)', fontSize: '1.2rem', cursor: 'pointer' }}
               >
                 ✕
               </button>
@@ -1373,8 +1374,8 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                     gap: '10px',
                     padding: '8px 10px',
                     borderRadius: '12px',
-                    background: 'rgba(15, 23, 42, 0.75)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    background: 'var(--surface-subtle, rgba(15, 23, 42, 0.75))',
+                    border: '1px solid var(--border-subtle, rgba(255, 255, 255, 0.08))',
                     cursor: 'pointer',
                   }}
                 >
@@ -1384,8 +1385,8 @@ export default function TreinoTemploView({ onBack, userContact = 'convidado@1con
                     style={{ width: '52px', height: '52px', borderRadius: '8px', background: '#FFF', objectFit: 'contain', flexShrink: 0 }}
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#FFF' }}>{alt.nome}</div>
-                    <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{alt.equipmentPt} • {alt.bodyPartPt}</div>
+                    <div style={{ fontSize: '0.84rem', fontWeight: '700', color: 'var(--text-primary, #FFF)' }}>{alt.nome}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #94A3B8)' }}>{alt.equipmentPt} • {alt.bodyPartPt}</div>
                   </div>
                   <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#34D399' }}>Usar →</span>
                 </div>

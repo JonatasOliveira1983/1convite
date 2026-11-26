@@ -57,7 +57,7 @@ export default function AnnualHeatmap({ historico = [] }) {
 
   const getColor = (count, isFuture) => {
     if (isFuture) return 'transparent';
-    if (count === 0) return 'rgba(255, 255, 255, 0.06)';
+    if (count === 0) return 'var(--surface-subtle, rgba(255, 255, 255, 0.06))';
     if (count === 1) return '#059669';
     if (count === 2) return '#10B981';
     return '#34D399';
@@ -67,14 +67,14 @@ export default function AnnualHeatmap({ historico = [] }) {
     <div className="treino-rotina-card">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
         <div>
-          <h4 style={{ margin: 0, color: '#FFF', fontSize: '0.96rem' }}>Mapa de Calor • Consistência</h4>
-          <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+          <h4 style={{ margin: 0, color: 'var(--text-primary, #FFF)', fontSize: '0.96rem' }}>Mapa de Calor • Consistência</h4>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary, #94A3B8)' }}>
             {totalAtivos} dia(s) com treino concluído nos últimos 5 meses
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.66rem', color: '#64748B' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.66rem', color: 'var(--text-muted, #64748B)' }}>
           <span>Menos</span>
-          <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(255,255,255,0.06)' }} />
+          <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'var(--surface-subtle, rgba(255,255,255,0.06))', border: '1px solid var(--border-subtle)' }} />
           <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#059669' }} />
           <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#10B981' }} />
           <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#34D399' }} />

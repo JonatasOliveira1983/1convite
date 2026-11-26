@@ -198,7 +198,7 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
             placeholder="Título do Sermão (ex: O Poder da Fé Perseverante)"
             value={formTitle}
             onChange={(e) => setFormTitle(e.target.value)}
-            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
           />
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <input
@@ -206,14 +206,14 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
               placeholder="Texto Base (ex: Hebreus 11:1-6)"
               value={formVerse}
               onChange={(e) => setFormVerse(e.target.value)}
-              style={{ flex: 1, minWidth: '160px', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+              style={{ flex: 1, minWidth: '160px', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
             />
             <input
               type="text"
               placeholder="Categoria / Tema"
               value={formTheme}
               onChange={(e) => setFormTheme(e.target.value)}
-              style={{ flex: 1, minWidth: '140px', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+              style={{ flex: 1, minWidth: '140px', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
             />
           </div>
           <textarea
@@ -221,21 +221,21 @@ export default function BibliotecaPregadorView({ onBack, userContact = 'convidad
             placeholder="Introdução da mensagem..."
             value={formIntro}
             onChange={(e) => setFormIntro(e.target.value)}
-            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
           />
           <textarea
             rows={4}
             placeholder="Pontos do Desenvolvimento (um ponto por linha)..."
             value={formPointsText}
             onChange={(e) => setFormPointsText(e.target.value)}
-            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
           />
           <textarea
             rows={2}
             placeholder="Conclusão & Apelo..."
             value={formConclusion}
             onChange={(e) => setFormConclusion(e.target.value)}
-            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.16)', background: '#0B0C10', color: '#FFF' }}
+            style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border-subtle, rgba(255,255,255,0.16))', background: 'var(--surface-input, #0B0C10)', color: 'var(--text-primary, #FFF)' }}
           />
           <button type="submit" disabled={salvando} className="bp-share-btn" style={{ marginTop: '4px' }}>
             {salvando ? 'Salvando...' : 'Salvar esboço'}

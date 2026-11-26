@@ -1000,7 +1000,81 @@ body.light-mode .treino-day-pill,
 :root:not(.dark-mode) .treino-day-pill {
   background: #F3F4F6 !important;
   border-color: #E5E7EB !important;
+  color: #374151 !important;
+}
+
+body.light-mode .treino-day-name,
+:root:not(.dark-mode) .treino-day-name {
+  color: #374151 !important;
+}
+
+body.light-mode .treino-day-dot,
+:root:not(.dark-mode) .treino-day-dot {
+  background: #E5E7EB !important;
+  color: #374151 !important;
+}
+
+body.light-mode .treino-day-pill.done,
+:root:not(.dark-mode) .treino-day-pill.done {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: #10B981 !important;
+}
+
+body.light-mode .treino-day-pill.done .treino-day-dot,
+:root:not(.dark-mode) .treino-day-pill.done .treino-day-dot {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+body.light-mode .treino-rotina-card,
+body.light-mode .treino-exercicio-card,
+body.light-mode .treino-modal-card,
+body.light-mode .treino-ativo-card,
+:root:not(.dark-mode) .treino-rotina-card,
+:root:not(.dark-mode) .treino-exercicio-card,
+:root:not(.dark-mode) .treino-modal-card,
+:root:not(.dark-mode) .treino-ativo-card {
+  background: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+  color: #111827 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+body.light-mode .treino-rotina-card h4,
+body.light-mode .treino-exercicio-card h4,
+body.light-mode .treino-modal-card h4,
+:root:not(.dark-mode) .treino-rotina-card h4,
+:root:not(.dark-mode) .treino-exercicio-card h4,
+:root:not(.dark-mode) .treino-modal-card h4 {
+  color: #111827 !important;
+}
+
+body.light-mode .treino-rotina-card p,
+body.light-mode .treino-exercicio-card p,
+:root:not(.dark-mode) .treino-rotina-card p,
+:root:not(.dark-mode) .treino-exercicio-card p {
   color: #4B5563 !important;
+}
+
+body.light-mode .treino-chip,
+:root:not(.dark-mode) .treino-chip {
+  background: #F3F4F6 !important;
+  border-color: #E5E7EB !important;
+  color: #4B5563 !important;
+}
+
+body.light-mode .treino-chip.active,
+:root:not(.dark-mode) .treino-chip.active {
+  background: var(--orange, #10B981) !important;
+  border-color: var(--orange, #10B981) !important;
+  color: #FFFFFF !important;
+}
+
+body.light-mode .treino-serie-row,
+:root:not(.dark-mode) .treino-serie-row {
+  background: #F9FAFB !important;
+  border-color: #E5E7EB !important;
+  color: #111827 !important;
 }
 
 body.light-mode .treino-nav-tabs,

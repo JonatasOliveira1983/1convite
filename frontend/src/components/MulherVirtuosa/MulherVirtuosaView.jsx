@@ -192,7 +192,7 @@ export default function MulherVirtuosaView({ onBack, userContact = 'convidado@1c
           </div>
 
           <form onSubmit={handleAddTask} className="mv-new-prayer-box" style={{ marginBottom: '16px' }}>
-            <h4 style={{ margin: '0 0 8px', color: '#FFF', fontSize: '0.92rem' }}>Organizar Meu Dia</h4>
+            <h4 style={{ margin: '0 0 8px', color: 'var(--text-primary, #FFF)', fontSize: '0.92rem' }}>Organizar Meu Dia</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <input
                 type="time"
@@ -276,7 +276,7 @@ export default function MulherVirtuosaView({ onBack, userContact = 'convidado@1c
               <p className="mv-quote-verse">"{devAtual.verse}"</p>
               <span className="mv-quote-ref">{devAtual.reference}</span>
             </div>
-            <p style={{ fontSize: '0.88rem', lineHeight: '1.6', color: '#E2E8F0', marginBottom: '16px' }}>
+            <p className="reading-scalable" style={{ fontSize: '0.92rem', lineHeight: '1.7', color: 'var(--text-primary, #E2E8F0)', marginBottom: '16px' }}>
               {devAtual.message}
             </p>
             <div className="mv-wisdom-card">
