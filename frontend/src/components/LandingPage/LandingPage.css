@@ -1197,6 +1197,110 @@
   border-color: rgba(249, 115, 22, 0.45);
 }
 
+/* ── SELO GARANTIA 7 DIAS & BANDEIRAS CARTÕES/PIX ── */
+.sp-payment-badges-panel {
+  margin-top: 28px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.sp-guarantee-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.sp-guarantee-seal {
+  width: 78px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.sp-guarantee-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.sp-guarantee-copy strong {
+  font-size: 0.95rem;
+  color: #FBBF24;
+  font-weight: 800;
+}
+
+.sp-guarantee-copy span {
+  font-size: 0.8rem;
+  color: #94A3B8;
+  line-height: 1.45;
+}
+
+.sp-cards-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.sp-cards-label {
+  font-size: 0.74rem;
+  color: #94A3B8;
+  font-weight: 600;
+  text-align: right;
+}
+
+.sp-cards-pill {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 10px 16px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-cards-img {
+  height: 54px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .sp-payment-badges-panel {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 18px 16px;
+  }
+  .sp-guarantee-box {
+    flex-direction: column;
+    text-align: center;
+  }
+  .sp-guarantee-copy {
+    text-align: center;
+  }
+  .sp-cards-box {
+    align-items: center;
+  }
+  .sp-cards-label {
+    text-align: center;
+  }
+}
+
 .sp-showcase-img-wrap {
   position: relative;
   width: 100%;

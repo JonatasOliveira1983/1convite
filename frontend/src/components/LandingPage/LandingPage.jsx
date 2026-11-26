@@ -6,6 +6,8 @@ import imgTreinoTemplo from '../../assets/landing/treino_templo.jpg';
 import imgMeditacaoNarrada from '../../assets/landing/meditacao_narrada.jpg';
 import imgConviteVip from '../../assets/landing/convite_vip.jpg';
 import imgHeroMockup from '../../assets/landing/hero_mockup_1convite.jpg';
+import bandeirasPagamentoImg from '../../assets/landing/bandeiras-pagamento.png';
+import seloGarantiaImg from '../../assets/landing/selo-garantia-7dias.png';
 import LegalModalPage from '../Legal/LegalModalPage';
 import LgpdBanner from '../Legal/LgpdBanner';
 import AsaasCheckoutModal from '../Checkout/AsaasCheckoutModal';
@@ -901,6 +903,22 @@ export default function LandingPage({ onEnterApp }) {
             <span><IconCheck /> Pagamento seguro via PIX ou Cartão (Asaas)</span>
             <span><IconCheck /> Acesso VIP e convites enviados na hora por e-mail</span>
             <span><IconCheck /> 7 dias de garantia incondicional</span>
+          </div>
+
+          <div className="sp-payment-badges-panel">
+            <div className="sp-guarantee-box">
+              <img src={seloGarantiaImg} alt="Garantia Incondicional de 7 Dias - Risco Zero" className="sp-guarantee-seal" />
+              <div className="sp-guarantee-copy">
+                <strong>Satisfação Garantida • Risco Zero</strong>
+                <span>Teste todo o ecossistema por 7 dias. Se não fizer sentido para você, devolvemos 100% do valor.</span>
+              </div>
+            </div>
+            <div className="sp-cards-box">
+              <span className="sp-cards-label">Pagamento processado com segurança via Asaas (Pix ou Cartão em até 12x)</span>
+              <div className="sp-cards-pill">
+                <img src={bandeirasPagamentoImg} alt="Visa, Mastercard, Maestro, Elo, Amex, Hipercard e Pix" className="sp-cards-img" />
+              </div>
+            </div>
           </div>
         </div>
       </section>

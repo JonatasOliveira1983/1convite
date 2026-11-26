@@ -2827,124 +2827,154 @@ Em nome de Jesus, Amém.`;
   if (currentPath === '/baixar' || currentPath === '/app') {
     return (
       <div style={{
-        background: '#09090b',
-        color: '#fafafa',
+        background: 'var(--bg-app, #090B10)',
+        color: 'var(--text-primary, #F8FAFC)',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '24px 16px',
-        fontFamily: "'Inter', sans-serif"
+        justifyContent: 'center',
+        padding: '32px 16px',
+        fontFamily: "'Inter', sans-serif",
+        boxSizing: 'border-box'
       }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginTop: '40px', marginBottom: '32px' }}>
-          <h1 style={{ fontSize: '2.2rem', color: 'var(--orange)', marginBottom: '8px', fontWeight: '900' }}>1Convite</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>Instale o aplicativo oficial no seu celular</p>
-        </div>
-
-        {/* Mascote Chaminha conversando com o usuário */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px', maxWidth: '480px', width: '100%', padding: '0 8px' }}>
-          <ChaminhaVideo size={70} style={{ flexShrink: 0 }} />
-          <div className="glass-panel" style={{
-            padding: '12px 18px',
-            borderRadius: '16px',
-            fontSize: '0.9rem',
-            color: 'var(--text-secondary)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            position: 'relative',
-            background: 'rgba(255, 255, 255, 0.02)',
-            flex: 1,
-            textAlign: 'left'
-          }}>
-            <div style={{
-              position: 'absolute', top: '50%', left: '-6px', transform: 'translateY(-50%) rotate(45deg)',
-              width: '10px', height: '10px', background: '#09090b', borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 1
-            }} />
-            <strong>Chaminha:</strong> "Leve o seu círculo de influência e devocionais diários para qualquer lugar instalando o app direto no celular!"
-          </div>
-        </div>
-
-        {/* Card Principal de Download */}
-        <div className="glass-panel" style={{ maxWidth: '480px', width: '100%', padding: '28px 20px', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.02)', marginBottom: '24px', boxSizing: 'border-box' }}>
-          
-          {/* Botão de Download */}
-          <a href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk" download style={{ textDecoration: 'none' }}>
-            <button className="btn-primary" style={{ width: '100%', padding: '16px', fontSize: '1.05rem', background: 'var(--grad-orange)', color: '#fff', fontWeight: 'bold', border: 'none', borderRadius: '500px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', boxShadow: 'var(--shadow-orange)' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              Baixar o aplicativo
-            </button>
-          </a>
-
-          {/* Instruções de Instalação */}
-          <div style={{ marginTop: '28px', textAlign: 'left' }}>
-            <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
-                <path d="M12 18h.01"/>
-              </svg>
-              Como instalar na área de trabalho do celular:
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>1</span>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Clique no botão acima para iniciar o download do aplicativo.
-                </p>
-              </div>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>2</span>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Quando o download concluir, abra a notificação para fixar o aplicativo na sua tela inicial.
-                </p>
-              </div>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>3</span>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Habilite a permissão **"Permitir desta fonte"** (ou "Fontes Desconhecidas") para o seu navegador.
-                </p>
-              </div>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <span style={{ background: 'var(--orange)', color: '#fff', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>4</span>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
-                  Volte para a tela de instalação, clique em <strong>Instalar</strong> e depois em <strong>Abrir</strong>. Pronto!
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Instruções iOS */}
-          <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'left' }}>
-            <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.66-.82 1.11-1.96.99-3.1-.96.04-2.12.64-2.8 1.44-.59.69-1.12 1.83-.98 2.94 1.08.08 2.14-.56 2.79-1.28z"/>
-              </svg>
-              Usuários de iPhone (iOS):
-            </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.45', margin: '0 0 12px 0' }}>
-              O iOS não aceita instalações fora da loja oficial. Mas você pode instalar o app instantaneamente como um <strong>Atalho na Tela de Início</strong>:
+        <div style={{ maxWidth: '520px', width: '100%' }}>
+          {/* Cabeçalho com Logomarca Oficial */}
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <img
+              src={darkMode ? appLogomarcaDark : appLogomarcaLight}
+              alt="1Convite"
+              style={{ height: '44px', width: 'auto', margin: '0 auto 12px', display: 'block', objectFit: 'contain' }}
+            />
+            <h1 style={{ fontSize: '1.35rem', fontWeight: '700', margin: '0 0 6px', color: 'var(--text-primary, #FFFFFF)' }}>
+              Instale o 1Convite no seu celular
+            </h1>
+            <p style={{ color: 'var(--text-secondary, #94A3B8)', fontSize: '0.9rem', margin: 0, lineHeight: 1.5 }}>
+              Tenha a Bíblia Narrada, Café com Deus, TemploFit e seus devocionais sempre à mão.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                1. Abra <strong>1convite.com.br</strong> no navegador **Safari**.
+          </div>
+
+          {/* Card Principal Unslop */}
+          <div style={{
+            width: '100%',
+            padding: '24px 22px',
+            borderRadius: '18px',
+            border: '1px solid var(--border-subtle, rgba(255, 255, 255, 0.09))',
+            background: 'var(--surface-card, #141720)',
+            boxShadow: 'var(--shadow-card, 0 10px 30px rgba(0, 0, 0, 0.35))',
+            marginBottom: '20px',
+            boxSizing: 'border-box'
+          }}>
+            <a
+              href="https://github.com/JonatasOliveira1983/1convite/releases/latest/download/1convite.apk"
+              download
+              style={{ textDecoration: 'none', display: 'block' }}
+            >
+              <button
+                type="button"
+                style={{
+                  width: '100%',
+                  padding: '15px 20px',
+                  fontSize: '0.98rem',
+                  background: 'var(--orange, #10B981)',
+                  color: '#FFFFFF',
+                  fontWeight: '700',
+                  border: 'none',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                }}
+              >
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Baixar Aplicativo Android (APK)</span>
+              </button>
+            </a>
+
+            {/* Instruções Android */}
+            <div style={{ marginTop: '24px', textAlign: 'left' }}>
+              <h3 style={{ fontSize: '0.96rem', color: 'var(--text-primary, #FFFFFF)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--orange, #10B981)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+                  <path d="M12 18h.01" />
+                </svg>
+                <span>Passo a passo para Android</span>
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {[
+                  <>Toque no botão verde acima para iniciar o download oficial.</>,
+                  <>Ao concluir, abra a notificação do arquivo <strong>1convite.apk</strong>.</>,
+                  <>Se solicitado, ative <strong>Permitir desta fonte</strong> para o seu navegador.</>,
+                  <>Toque em <strong>Instalar</strong> e depois em <strong>Abrir</strong>.</>,
+                ].map((stepNode, idx) => (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '11px' }}>
+                    <span style={{
+                      background: 'var(--surface-subtle, rgba(255,255,255,0.08))',
+                      color: 'var(--orange, #10B981)',
+                      border: '1px solid var(--border-subtle, rgba(255,255,255,0.1))',
+                      width: '22px',
+                      height: '22px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '700',
+                      fontSize: '0.76rem',
+                      flexShrink: 0,
+                      marginTop: '1px'
+                    }}>
+                      {idx + 1}
+                    </span>
+                    <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-secondary, #94A3B8)', lineHeight: '1.5' }}>
+                      {stepNode}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                2. Toque no ícone de <strong>Compartilhar</strong> (quadrado com seta para cima).
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                3. Role e selecione a opção <strong>"Adicionar à Tela de Início"</strong>.
+            </div>
+
+            {/* Instruções iOS */}
+            <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '1px solid var(--border-subtle, rgba(255,255,255,0.08))', textAlign: 'left' }}>
+              <h3 style={{ fontSize: '0.96rem', color: 'var(--text-primary, #FFFFFF)', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.66-.82 1.11-1.96.99-3.1-.96.04-2.12.64-2.8 1.44-.59.69-1.12 1.83-.98 2.94 1.08.08 2.14-.56 2.79-1.28z" />
+                </svg>
+                <span>Para iPhone (iOS)</span>
+              </h3>
+              <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary, #94A3B8)', lineHeight: '1.5', margin: '0 0 10px 0' }}>
+                Adicione o 1Convite direto na tela inicial sem ocupar memória:
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.83rem', color: 'var(--text-secondary, #94A3B8)' }}>
+                <div>1. Abra <strong>1convite.com.br</strong> no navegador <strong>Safari</strong>.</div>
+                <div>2. Toque no ícone de <strong>Compartilhar</strong> (quadrado com seta para cima).</div>
+                <div>3. Selecione <strong>Adicionar à Tela de Início</strong>.</div>
               </div>
             </div>
           </div>
 
+          <div style={{ textAlign: 'center' }}>
+            <button
+              type="button"
+              onClick={() => { window.location.href = '/'; }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--orange, #10B981)',
+                cursor: 'pointer',
+                fontSize: '0.88rem',
+                fontWeight: '600',
+              }}
+            >
+              ← Voltar para a Página Inicial
+            </button>
+          </div>
         </div>
-
-        {/* Voltar para Web */}
-        <button onClick={() => {
-          window.location.href = '/';
-        }} style={{ background: 'transparent', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontSize: '0.88rem', fontWeight: '600', textDecoration: 'underline', marginBottom: '40px' }}>
-          Acessar a Versão Web
-        </button>
       </div>
     );
   }
