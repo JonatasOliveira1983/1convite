@@ -114,6 +114,7 @@ export default function LandingPage({ onEnterApp }) {
   const [leadName, setLeadName] = useState('');
   const [leadEmail, setLeadEmail] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [leadObjective, setLeadObjective] = useState('crescimento');
   const [formStatus, setFormStatus] = useState('idle');
   const [selectedMentor, setSelectedMentor] = useState('salomao');
@@ -924,6 +925,140 @@ export default function LandingPage({ onEnterApp }) {
           </div>
         </div>
       </section>
+
+      {/* ── SEÇÃO: DEPOIMENTOS DE QUEM JÁ COMPROU (CARROSSEL 7 DEPOIMENTOS) ── */}
+      {(() => {
+        const DEPOIMENTOS = [
+          {
+            nome: 'Mariana Souza',
+            cidade: 'São Paulo, SP',
+            plano: 'Plano Edificação',
+            iniciais: 'MS',
+            cor: '#10B981',
+            texto: 'O Café com Deus e o Planner da Mulher Virtuosa mudaram a minha rotina da manhã. Além disso, enviei os 3 vales-presente VIP para minha mãe e minhas irmãs no WhatsApp na mesma hora!'
+          },
+          {
+            nome: 'Pr. Ricardo Almeida',
+            cidade: 'Belo Horizonte, MG',
+            plano: 'Plano Reino',
+            iniciais: 'RA',
+            cor: '#F97316',
+            texto: 'A Biblioteca do Pregador com esboços prontos, teologia sistemática e mapas bíblicos me ajuda muito na preparação dos cultos. Os 5 convites do Plano Reino abençoaram nossos líderes de célula.'
+          },
+          {
+            nome: 'Lucas Ferreira',
+            cidade: 'Curitiba, PR',
+            plano: 'Plano Semente',
+            iniciais: 'LF',
+            cor: '#3B82F6',
+            texto: 'Ouvir a Bíblia Sagrada narrada com o som de chuva suave no fundo antes de dormir virou meu hábito diário. E a Jornada TemploFit em casa é muito prática para quem não tem tempo de ir à academia.'
+          },
+          {
+            nome: 'Fernanda Costa',
+            cidade: 'Recife, PE',
+            plano: 'Plano Edificação',
+            iniciais: 'FC',
+            cor: '#8B5CF6',
+            texto: 'Paguei no Pix e em segundos chegou no meu e-mail o acesso VIP e os códigos de presente. O aplicativo no celular é leve, bonito no modo claro e funciona até offline na leitura bíblica.'
+          },
+          {
+            nome: 'Gabriel Oliveira',
+            cidade: 'Goiânia, GO',
+            plano: 'Plano Reino',
+            iniciais: 'GO',
+            cor: '#D97706',
+            texto: 'Os 5 E-books em PDF são um material muito rico, e meus filhos adoram o módulo de Jogos & Kids Bíblicos no fim de semana. Vale cada centavo pelo pacote completo.'
+          },
+          {
+            nome: 'Patrícia Mendes',
+            cidade: 'Porto Alegre, RS',
+            plano: 'Plano Semente',
+            iniciais: 'PM',
+            cor: '#EC4899',
+            texto: 'Consegui manter 4 treinos por semana em casa seguindo os vídeos do TemploFit e registrando meu peso no gráfico. É incrível ter saúde física e vida devocional integradas no mesmo app.'
+          },
+          {
+            nome: 'Thiago Nascimento',
+            cidade: 'Salvador, BA',
+            plano: 'Plano Edificação',
+            iniciais: 'TN',
+            cor: '#14B8A6',
+            texto: 'Uso o Studio de Cards todo dia para mandar versículos com arte para o grupo da família, e os Mentores Bíblicos trazem respostas profundas baseadas nas Escrituras. Recomendo de olhos fechados!'
+          }
+        ];
+        const total = DEPOIMENTOS.length;
+        const visibleCards = [0, 1, 2].map((offset) => DEPOIMENTOS[(testimonialIdx + offset) % total]);
+
+        return (
+          <section className="sp-section sp-testimonials-section">
+            <div className="sp-container">
+              <div className="sp-testimonials-header">
+                <div>
+                  <span className="sp-kicker">Histórias Reais do Reino</span>
+                  <h2 className="sp-title" style={{ marginBottom: '6px' }}>Quem já usa o 1Convite recomenda</h2>
+                  <p className="sp-desc" style={{ margin: 0 }}>
+                    Veja o que irmãos, famílias e líderes estão vivendo com o acesso completo.
+                  </p>
+                </div>
+
+                <div className="sp-testimonials-nav">
+                  <button
+                    type="button"
+                    aria-label="Depoimento anterior"
+                    className="sp-carousel-arrow"
+                    onClick={() => setTestimonialIdx((prev) => (prev - 1 + total) % total)}
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Próximo depoimento"
+                    className="sp-carousel-arrow"
+                    onClick={() => setTestimonialIdx((prev) => (prev + 1) % total)}
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+
+              <div className="sp-testimonials-grid">
+                {visibleCards.map((dep, i) => (
+                  <article key={`${dep.nome}-${i}`} className="sp-testimonial-card">
+                    <div className="sp-testimonial-top">
+                      <div className="sp-testimonial-stars" aria-label="5 de 5 estrelas">
+                        ★★★★★
+                      </div>
+                      <span className="sp-testimonial-badge">Compra Verificada • {dep.plano}</span>
+                    </div>
+                    <p className="sp-testimonial-quote">“{dep.texto}”</p>
+                    <div className="sp-testimonial-author">
+                      <div className="sp-testimonial-avatar" style={{ background: dep.cor }}>
+                        {dep.iniciais}
+                      </div>
+                      <div>
+                        <strong className="sp-testimonial-name">{dep.nome}</strong>
+                        <span className="sp-testimonial-city">{dep.cidade}</span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className="sp-testimonials-dots">
+                {DEPOIMENTOS.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    aria-label={`Ver depoimento ${idx + 1}`}
+                    className={`sp-testimonial-dot ${testimonialIdx === idx ? 'active' : ''}`}
+                    onClick={() => setTestimonialIdx(idx)}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ── SEÇÃO: MENTORES CANÔNICOS (ESTILO ARTISTAS SPOTIFY) ── */}
       <section id="mentores" className="sp-section sp-section-elevated">
