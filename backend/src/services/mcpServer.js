@@ -113,6 +113,25 @@ export const MCP_TOOLS_CATALOG = [
       type: 'object',
       properties: {}
     }
+  },
+  {
+    name: 'search_preacher_library',
+    description: 'Pesquisa esboços de sermões salvos na Biblioteca do Pregador (Turso) por tema ou texto bíblico.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'Tema ou palavra-chave do sermão' },
+        limit: { type: 'integer', default: 5 }
+      }
+    }
+  },
+  {
+    name: 'get_templofit_overview',
+    description: 'Retorna estatísticas globais e resumo da Jornada TemploFit (6 Meses em Casa e programas OpenGym).',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    }
   }
 ];
 
@@ -268,7 +287,7 @@ class McpServer {
 
           result = {
             status: 'online',
-            version: '3.0.0',
+            version: '3.1.0',
             service: '1Convite Core Engine & MCP Server',
             protocol_version: '2024-11-05',
             database: {
@@ -318,6 +337,38 @@ class McpServer {
             asaas_configurado: isAsaasConfigured(),
             resend_configurado: isResendConfigured(),
             planos: Object.values(PLANOS_1CONVITE)
+          };
+          break;
+        }
+
+        case 'search_preacher_library': {
+          const q = String(args.query || '').trim();
+          const lim = Math.min(Math.max(1, parseInt(args.limit) || 5), 20);
+          let rows = [];
+          try {
+            const sql = q
+              ? `SELECT id, titulo, tema, texto_base, created_at FROM tb_pregador_esbocos WHERE titulo LIKE ? OR tema LIKE ? ORDER BY created_at DESC LIMIT ?`
+              : `SELECT id, titulo, tema, texto_base, created_at FROM tb_pregador_esbocos ORDER BY created_at DESC LIMIT ?`;
+            const params = q ? [`%${q}%`, `%${q}%`, lim] : [lim];
+            const dbRes = await pool.query(sql, params);
+            rows = dbRes.rows || [];
+          } catch (e) {
+            console.warn('[MCP] Erro ao buscar esboços do Pregador:', e.message);
+          }
+          result = { total: rows.length, esbocos_salvos: rows };
+          break;
+        }
+
+        case 'get_templofit_overview': {
+          let totalSessoes = 0;
+          try {
+            const resCount = await pool.query('SELECT COUNT(*) as total FROM tb_templofit_sessoes');
+            totalSessoes = Number(resCount.rows?.[0]?.total || 0);
+          } catch {}
+          result = {
+            jornada_casa: 'Jornada TemploFit 6 Meses (30 treinos diários sem equipamentos)',
+            programas_opengym: 19,
+            sessoes_registradas_turso: totalSessoes
           };
           break;
         }

@@ -23,6 +23,7 @@ class RagService {
     this.avgDocLength = 0;
     this.isIndexed = false;
     this.theologicalTerms = [];
+    this.knowledgeDocs = [];
     this.k1 = 1.5;
     this.b = 0.75;
   }
@@ -214,11 +215,42 @@ class RagService {
   }
 
   /**
+   * Indexa documentos adicionais do ecossistema (Esboços, Estudos, Devocionais, TemploFit)
+   */
+  indexKnowledge(docs = []) {
+    if (Array.isArray(docs)) {
+      this.knowledgeDocs = docs;
+    }
+  }
+
+  /**
+   * Busca nos documentos estendidos do ecossistema
+   */
+  searchKnowledge(query, topK = 2) {
+    if (!this.knowledgeDocs || this.knowledgeDocs.length === 0) return [];
+    const queryTokens = this.tokenize(query);
+    if (queryTokens.length === 0) return [];
+    return this.knowledgeDocs
+      .map((doc) => {
+        const tokens = this.tokenize(`${doc.title || ''} ${doc.category || ''} ${doc.content || ''}`);
+        let score = 0;
+        for (const qt of queryTokens) {
+          if (tokens.includes(qt)) score += 1;
+        }
+        return { ...doc, score };
+      })
+      .filter((d) => d.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topK);
+  }
+
+  /**
    * Busca Híbrida RAG para injetar contexto nos Mentores LAYA
    */
   getHybridContext(query, topK = 4) {
     const verses = this.searchBible(query, { topK });
     const theology = this.searchTheology(query, 2);
+    const knowledge = this.searchKnowledge(query, 2);
 
     let contextString = '';
     if (verses.length > 0) {
@@ -237,10 +269,19 @@ class RagService {
       contextString += '\n';
     }
 
+    if (knowledge.length > 0) {
+      contextString += '### ACERVO DO REINO (ESBOÇOS & DEVOCIONAIS):\n';
+      knowledge.forEach(k => {
+        contextString += `• **${k.title}** (${k.category}): ${String(k.content || '').slice(0, 220)}\n`;
+      });
+      contextString += '\n';
+    }
+
     return {
       contextString,
       verses,
       theology,
+      knowledge,
       indexedVersesCount: this.verses.length
     };
   }

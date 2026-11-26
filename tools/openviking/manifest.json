@@ -1,12 +1,12 @@
 {
   "uri": "viking://1convite",
   "name": "1Convite Hierarchical Context Database",
-  "version": "3.0.0",
-  "description": "Sistema de arquivos virtual de contexto do 1Convite compatível com OpenViking (ByteDance Volcengine). Organiza conhecimento, blog, pagamentos, e-books, mentores e skills em camadas L0, L1 e L2.",
+  "version": "3.1.0",
+  "description": "Sistema de arquivos virtual de contexto do 1Convite compatível com OpenViking. Organiza conhecimento bíblico, TemploFit 6 Meses, Mulher Virtuosa, Biblioteca do Pregador, 5 E-books PDF, Painel ADM Mestre, pagamentos Asaas e segurança Cloudflare.",
   "layers": {
-    "L0": "Metadados estruturados e índices de rotas (/, /app, /checkout, /blog, /api/v1)",
-    "L1": "Resumos executivos e sínteses contextuais",
-    "L2": "Dados profundos, 31.106 versículos, 20 artigos do Reino e 5 E-books PDF"
+    "L0": "Metadados estruturados, rotas (/, /app, /checkout, /blog, /api/v1) e políticas de segurança Cloudflare (_headers + rate limit)",
+    "L1": "Resumos executivos, funil de vendas Asaas/Resend e contexto unificado dos módulos",
+    "L2": "Dados profundos: 31.106 versículos ACF, 20 artigos do Reino, 5 E-books PDF, Jornada TemploFit 6 Meses, 21 Esboços + 20 Estudos + 16 Teologias + 21 Mapas e 15 Devocionais Femininos"
   },
   "root_directories": [
     "viking://1convite/knowledge",

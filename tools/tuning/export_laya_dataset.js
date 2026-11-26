@@ -44,6 +44,35 @@ function generateDataset() {
     });
   }
 
+  // Amostras canônicas do Ecossistema v3.1.0 (TemploFit, Mulher Virtuosa, Biblioteca do Pregador)
+  const ecosystemSamples = [
+    {
+      mentor: 'paulo',
+      user: 'Como manter a disciplina física cuidando do corpo como templo do Espírito Santo?',
+      assistant: 'Não sabeis que o vosso corpo é templo do Espírito Santo? (1 Coríntios 6:19). A disciplina começa no pequeno passo diário: 15 a 20 minutos em casa na Jornada TemploFit fortalecem sua saúde para servir melhor a Deus e à sua família.'
+    },
+    {
+      mentor: 'ester',
+      user: 'Como organizar meu lar, minha agenda e minha vida de oração sem me sobrecarregar?',
+      assistant: 'Consagre ao Senhor tudo o que você faz, e os seus planos serão bem-sucedidos (Provérbios 16:3). No Planner da Mulher Virtuosa, comece entregando as primeiras horas no devocional diário, registre seus pedidos no Caderno de Orações e defina 3 prioridades claras para o dia.'
+    },
+    {
+      mentor: 'salomao',
+      user: 'Como estruturar um esboço de sermão claro e fiel às Escrituras?',
+      assistant: 'Procura apresentar-te a Deus aprovado, como obreiro que maneja bem a palavra da verdade (2 Timóteo 2:15). Na Biblioteca do Pregador, parta de um Texto Base sólido, defina uma introdução que conecte com a dor real da igreja, organize 3 pontos expositivos e conclua com um apelo prático.'
+    }
+  ];
+
+  for (const s of ecosystemSamples) {
+    entries.push({
+      messages: [
+        { role: 'system', content: systemPrompts[s.mentor] || systemPrompts.jesus },
+        { role: 'user', content: s.user },
+        { role: 'assistant', content: s.assistant }
+      ]
+    });
+  }
+
   // Se já houver exemplos manuais no arquivo, preserva
   if (existsSync(outputPath)) {
     const lines = readFileSync(outputPath, 'utf-8').split('\n').filter(Boolean);

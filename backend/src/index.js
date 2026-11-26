@@ -39,8 +39,41 @@ import {
 dotenv.config();
 
 const app = express();
+app.disable('x-powered-by');
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
+
+// ── SECURITY HEADERS & RATE LIMITING (HARDENING CLOUDFLARE/EXPRESS) ──
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+
+const rateLimitStore = new Map();
+const createRateLimiter = (windowMs, maxHits) => (req, res, next) => {
+  const ip = req.ip || req.headers['cf-connecting-ip'] || 'unknown';
+  const key = `${req.baseUrl || ''}:${ip}`;
+  const now = Date.now();
+  const entry = rateLimitStore.get(key) || { count: 0, resetAt: now + windowMs };
+  if (now > entry.resetAt) {
+    entry.count = 0;
+    entry.resetAt = now + windowMs;
+  }
+  entry.count += 1;
+  rateLimitStore.set(key, entry);
+  if (rateLimitStore.size > 5000) rateLimitStore.clear();
+  if (entry.count > maxHits) {
+    return res.status(429).json({ success: false, message: 'Muitas tentativas. Aguarde um instante e tente novamente.' });
+  }
+  return next();
+};
+
+app.use('/api/v1/auth', createRateLimiter(60_000, 60));
+app.use('/api/v1/pagamentos/checkout', createRateLimiter(60_000, 30));
+app.use('/api/v1/admin', createRateLimiter(60_000, 120));
 
 const allowedOrigins = [
   'http://localhost:5173',
