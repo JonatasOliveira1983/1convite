@@ -1301,6 +1301,63 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════════
+   REFINAMENTO UNSLOP — LANDING PAGE EDITORIAL (CONTRASTE, QUIET CHROME, SEM SLOP)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.sp-ambient-orbs,
+.sp-orb-orange,
+.sp-orb-green,
+.sp-orb-amber {
+  opacity: 0.14 !important;
+}
+
+.sp-hero-bg-photo::after,
+.sp-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 12, 18, 0.78) 0%, rgba(10, 12, 18, 0.74) 55%, #121212 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sp-pill-badge {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-weight: 600 !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #E2E8F0 !important;
+}
+
+.sp-badge-dot {
+  display: none !important;
+}
+
+.sp-hero-sub {
+  color: #E2E8F0 !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+}
+
+.sp-stat-label {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  color: #CBD5E1 !important;
+  font-size: 0.78rem !important;
+}
+
+.sp-section-eyebrow,
+.sp-plan-eyebrow,
+.sp-scroll-hint {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+}
+
+.sp-btn-primary,
+.sp-plan-cta-featured {
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.22) !important;
+}
+
 .sp-showcase-img-wrap {
   position: relative;
   width: 100%;
