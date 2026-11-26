@@ -9132,10 +9132,11 @@ Em nome de Jesus, Amém.`;
           />
         )}
 
-        {/* ════════════ ABA TREINO DO TEMPLO (OPENGYM INTEGRADO) ════════════ */}
+        {/* ════════════ ABA TEMPLOFIT (OPENGYM INTEGRADO + TURSO) ════════════ */}
         {activeTab === 'treino-templo' && (
           <TreinoTemploView 
-            onBack={() => setActiveTab('dashboard')} 
+            onBack={() => setActiveTab('dashboard')}
+            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
           />
         )}
 

@@ -238,6 +238,43 @@ async function ensureTables() {
         await client.query(`ALTER TABLE tb_vouchers ADD COLUMN gifted_by_name TEXT`);
       } catch {}
 
+      // Tabelas do módulo TemploFit (evolução, histórico de sessões, cargas, peso e rotinas)
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_templofit_sessoes (
+          id TEXT PRIMARY KEY,
+          user_contact TEXT NOT NULL,
+          rotina_id TEXT NOT NULL,
+          rotina_titulo TEXT NOT NULL,
+          fase TEXT DEFAULT 'fase-1',
+          duracao_minutos INTEGER DEFAULT 15,
+          calorias INTEGER DEFAULT 120,
+          volume_kg REAL DEFAULT 0,
+          series_json TEXT,
+          created_at TEXT NOT NULL
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_templofit_metricas (
+          id TEXT PRIMARY KEY,
+          user_contact TEXT NOT NULL,
+          peso_kg REAL NOT NULL,
+          created_at TEXT NOT NULL
+        )
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_templofit_rotinas_custom (
+          id TEXT PRIMARY KEY,
+          user_contact TEXT NOT NULL,
+          titulo TEXT NOT NULL,
+          categoria TEXT DEFAULT 'custom',
+          nivel TEXT DEFAULT 'Personalizado',
+          exercicios_json TEXT NOT NULL,
+          created_at TEXT NOT NULL
+        )
+      `);
+
       // Seed inicial de vouchers padrão caso a tabela esteja vazia
       const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
       const totalVouchers = Number(vCount.rows?.[0]?.total || 0);
@@ -2861,6 +2898,172 @@ app.post('/api/v1/vouchers/validate', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Erro ao validar código de convite.' });
+  }
+});
+
+// ── ROTAS TEMPLOFIT (BANCO DE DADOS TURSO: SESSÕES, EVOLUÇÃO DE PESO E ROTINAS) ──
+function computeConsecutiveStreak(sessions = []) {
+  if (!sessions.length) return 0;
+  const daysSet = new Set(
+    sessions.map((s) => {
+      const d = new Date(s.created_at);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    })
+  );
+  let streak = 0;
+  const cursor = new Date();
+  for (let i = 0; i < 60; i++) {
+    const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`;
+    if (daysSet.has(key)) {
+      streak++;
+      cursor.setDate(cursor.getDate() - 1);
+    } else if (i === 0) {
+      cursor.setDate(cursor.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+app.get('/api/v1/templofit/state', async (req, res) => {
+  try {
+    const contact = String(req.query.contact || 'convidado@1convite.com.br').trim().toLowerCase();
+    const sessoesRaw = await dbAll(
+      'SELECT * FROM tb_templofit_sessoes WHERE LOWER(user_contact) = $1 ORDER BY created_at DESC LIMIT 60',
+      [contact]
+    );
+    const metricasRaw = await dbAll(
+      'SELECT * FROM tb_templofit_metricas WHERE LOWER(user_contact) = $1 ORDER BY created_at ASC LIMIT 60',
+      [contact]
+    );
+    const rotinasRaw = await dbAll(
+      'SELECT * FROM tb_templofit_rotinas_custom WHERE LOWER(user_contact) = $1 ORDER BY created_at DESC LIMIT 30',
+      [contact]
+    );
+
+    const sessoes = (sessoesRaw || []).map((s) => {
+      let series = {};
+      try { series = s.series_json ? JSON.parse(s.series_json) : {}; } catch { series = {}; }
+      return {
+        id: s.id,
+        rotinaId: s.rotina_id,
+        titulo: s.rotina_titulo,
+        fase: s.fase || 'fase-1',
+        duracaoMinutos: Number(s.duracao_minutos || 15),
+        calorias: Number(s.calorias || 120),
+        volumeKg: Number(s.volume_kg || 0),
+        series,
+        createdAt: s.created_at,
+        diaSemana: new Date(s.created_at).getDay(),
+        data: new Date(s.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }),
+      };
+    });
+
+    const pesoHistorico = (metricasRaw || []).map((m) => ({
+      id: m.id,
+      pesoKg: Number(m.peso_kg),
+      createdAt: m.created_at,
+      label: new Date(m.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+    }));
+
+    const rotinasCustom = (rotinasRaw || []).map((r) => {
+      let exercicios = [];
+      try { exercicios = r.exercicios_json ? JSON.parse(r.exercicios_json) : []; } catch { exercicios = []; }
+      return {
+        id: r.id,
+        categoria: r.categoria || 'custom',
+        titulo: r.titulo,
+        nivel: r.nivel || 'Personalizado',
+        duracao: `${Math.max(10, exercicios.length * 5)} min`,
+        calorias: `~${Math.max(80, exercicios.length * 45)} kcal`,
+        foco: 'Rotina personalizada criada por você',
+        musculos: Array.from(new Set(exercicios.flatMap((e) => e.musculos || []))),
+        exercicios,
+        isCustom: true,
+      };
+    });
+
+    res.json({
+      success: true,
+      streak: computeConsecutiveStreak(sessoesRaw || []),
+      sessoes,
+      pesoHistorico,
+      pesoAtual: pesoHistorico.length ? pesoHistorico[pesoHistorico.length - 1].pesoKg : null,
+      rotinasCustom,
+    });
+  } catch (err) {
+    console.error('Erro em GET /templofit/state:', err);
+    res.status(500).json({ success: false, message: 'Erro ao carregar dados do TemploFit.' });
+  }
+});
+
+app.post('/api/v1/templofit/sessoes', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', rotinaId, titulo, fase = 'fase-1', duracaoMinutos = 15, calorias = 120, volumeKg = 0, series = {} } = req.body || {};
+    if (!rotinaId || !titulo) {
+      return res.status(400).json({ success: false, message: 'rotinaId e titulo são obrigatórios.' });
+    }
+    const id = `tf_ses_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      `INSERT INTO tb_templofit_sessoes (id, user_contact, rotina_id, rotina_titulo, fase, duracao_minutos, calorias, volume_kg, series_json, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [id, String(contact).trim().toLowerCase(), rotinaId, titulo, fase, Number(duracaoMinutos) || 15, Number(calorias) || 120, Number(volumeKg) || 0, JSON.stringify(series || {}), nowIso]
+    );
+    res.json({ success: true, id, createdAt: nowIso });
+  } catch (err) {
+    console.error('Erro em POST /templofit/sessoes:', err);
+    res.status(500).json({ success: false, message: 'Erro ao salvar sessão no Turso.' });
+  }
+});
+
+app.post('/api/v1/templofit/peso', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', pesoKg } = req.body || {};
+    const numericWeight = Number(String(pesoKg || '').replace(',', '.'));
+    if (!Number.isFinite(numericWeight) || numericWeight <= 20 || numericWeight > 350) {
+      return res.status(400).json({ success: false, message: 'Informe um peso válido em kg.' });
+    }
+    const id = `tf_peso_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      'INSERT INTO tb_templofit_metricas (id, user_contact, peso_kg, created_at) VALUES ($1, $2, $3, $4)',
+      [id, String(contact).trim().toLowerCase(), numericWeight, nowIso]
+    );
+    res.json({ success: true, id, pesoKg: numericWeight, createdAt: nowIso });
+  } catch (err) {
+    console.error('Erro em POST /templofit/peso:', err);
+    res.status(500).json({ success: false, message: 'Erro ao salvar peso no Turso.' });
+  }
+});
+
+app.post('/api/v1/templofit/rotinas', async (req, res) => {
+  try {
+    const { contact = 'convidado@1convite.com.br', titulo, exercicios = [] } = req.body || {};
+    if (!titulo || !Array.isArray(exercicios) || exercicios.length === 0) {
+      return res.status(400).json({ success: false, message: 'Informe um título e pelo menos 1 exercício.' });
+    }
+    const id = `tf_rot_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const nowIso = new Date().toISOString();
+    await dbRun(
+      `INSERT INTO tb_templofit_rotinas_custom (id, user_contact, titulo, categoria, nivel, exercicios_json, created_at)
+       VALUES ($1, $2, $3, 'custom', 'Personalizado', $4, $5)`,
+      [id, String(contact).trim().toLowerCase(), String(titulo).trim(), JSON.stringify(exercicios), nowIso]
+    );
+    res.json({ success: true, id });
+  } catch (err) {
+    console.error('Erro em POST /templofit/rotinas:', err);
+    res.status(500).json({ success: false, message: 'Erro ao salvar rotina personalizada.' });
+  }
+});
+
+app.delete('/api/v1/templofit/rotinas/:id', async (req, res) => {
+  try {
+    await dbRun('DELETE FROM tb_templofit_rotinas_custom WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao remover rotina.' });
   }
 });
 
