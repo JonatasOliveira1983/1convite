@@ -2696,6 +2696,13 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
       };
     });
 
+    const totalRevenueReais = recentPayments
+      .filter((p) => ['PAID', 'CONFIRMED', 'RECEIVED', 'RECEIVED_IN_CASH'].includes(String(p.status || '').toUpperCase()))
+      .reduce((acc, p) => acc + Number(p.valueReais || 0), 0);
+    const pendingPaymentsCount = recentPayments
+      .filter((p) => String(p.status || '').toUpperCase() === 'PENDING')
+      .length;
+
     res.json({
       success: true,
       totalUsers,
@@ -2705,6 +2712,8 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
       totalVouchers,
       activeVouchers,
       totalVoucherUses,
+      totalRevenueReais,
+      pendingPaymentsCount,
       recentUsers: users,
       vouchers,
       recentPayments
@@ -2773,6 +2782,167 @@ app.post('/api/v1/admin/email-pipeline/test', requireAdminHeader, async (req, re
   } catch (err) {
     console.error('Erro em /admin/email-pipeline/test:', err);
     res.status(500).json({ success: false, message: 'Erro interno ao enviar e-mail de teste.' });
+  }
+});
+
+// ── CONTROLE GERAL DO ADMIN: USUÁRIOS, VENDAS ASAAS, CAMPANHAS & SAÚDE ──
+app.post('/api/v1/admin/usuarios/plano', requireAdminHeader, async (req, res) => {
+  try {
+    const { contact, action = 'vip', days = 180, planLabel = '' } = req.body || {};
+    const cleanContact = String(contact || '').trim().toLowerCase();
+    if (!cleanContact) {
+      return res.status(400).json({ success: false, message: 'Contato do usuário é obrigatório.' });
+    }
+    if (action === 'gratis') {
+      await dbRun(
+        `UPDATE tb_acessos_usuarios SET type = 'gratis', plan = 'Gratuito', expiry_timestamp = NULL, entitlements_json = '{}' WHERE LOWER(contact) = $1`,
+        [cleanContact]
+      );
+      return res.json({ success: true, type: 'gratis' });
+    }
+    const numDays = Math.max(1, parseInt(days, 10) || 180);
+    const expiryTimestamp = Date.now() + numDays * 24 * 60 * 60 * 1000;
+    const label = planLabel || `VIP Manual (${numDays} dias)`;
+    const allEnts = JSON.stringify({ ebooks: true, mulherVirtuosa: true, pregador: true });
+    await dbRun(
+      `UPDATE tb_acessos_usuarios SET type = 'vip', plan = $1, expiry_timestamp = $2, entitlements_json = $3 WHERE LOWER(contact) = $4`,
+      [label, expiryTimestamp, allEnts, cleanContact]
+    );
+    return res.json({ success: true, type: 'vip', plan: label, expiryTimestamp });
+  } catch (err) {
+    console.error('Erro em /admin/usuarios/plano:', err);
+    res.status(500).json({ success: false, message: 'Erro ao atualizar plano do usuário.' });
+  }
+});
+
+app.post('/api/v1/admin/vendas/:paymentId/confirmar-manual', requireAdminHeader, async (req, res) => {
+  try {
+    const result = await confirmAsaasOrderAndProvision(req.params.paymentId, 'CONFIRMED');
+    if (!result.found) {
+      return res.status(404).json({ success: false, message: 'Pedido não encontrado.' });
+    }
+    res.json({ success: true, ...result });
+  } catch (err) {
+    console.error('Erro em /admin/vendas/confirmar-manual:', err);
+    res.status(500).json({ success: false, message: 'Erro ao confirmar pagamento manualmente.' });
+  }
+});
+
+app.post('/api/v1/admin/vendas/:paymentId/reenviar-email', requireAdminHeader, async (req, res) => {
+  try {
+    const paymentId = req.params.paymentId;
+    const order = await dbGet('SELECT * FROM tb_pagamentos_asaas WHERE payment_id = $1', [paymentId]);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Pedido não encontrado.' });
+    }
+    if (!isResendConfigured()) {
+      return res.status(400).json({ success: false, message: 'RESEND_API_KEY não configurada no servidor.' });
+    }
+    const plan = getPlanById(order.plan_id);
+    const offerObj = getFunnelOfferById(order.plan_id);
+    let parsedVouchers = [];
+    try {
+      parsedVouchers = order.vouchers_json ? JSON.parse(order.vouchers_json) : [];
+    } catch {}
+    let mailRes = { ok: false, error: 'Plano não identificado' };
+    if (plan) {
+      const expiryStr = new Date(Date.now() + plan.diasValidade * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+      mailRes = await sendWelcomeAndVouchersEmail({
+        to: order.customer_email,
+        name: order.customer_name,
+        planName: plan.nome,
+        vouchers: parsedVouchers,
+        expiryDateStr: expiryStr,
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      });
+    } else if (offerObj) {
+      mailRes = await sendFunnelAddonWelcomeEmail({
+        to: order.customer_email,
+        name: order.customer_name,
+        offerName: offerObj.nome,
+        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+      });
+    }
+    if (mailRes.ok) {
+      await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
+      return res.json({ success: true, message: `E-mail reenviado para ${order.customer_email}.` });
+    }
+    await dbRun('UPDATE tb_pagamentos_asaas SET email_error = $1 WHERE payment_id = $2', [String(mailRes.error || 'Falha no envio').slice(0, 220), paymentId]);
+    return res.status(502).json({ success: false, message: mailRes.error || 'Falha ao reenviar e-mail.' });
+  } catch (err) {
+    console.error('Erro em /admin/vendas/reenviar-email:', err);
+    res.status(500).json({ success: false, message: 'Erro interno ao reenviar e-mail.' });
+  }
+});
+
+app.post('/api/v1/admin/email-pipeline/campanha', requireAdminHeader, async (req, res) => {
+  try {
+    const { templateId, segment = 'pendentes' } = req.body || {};
+    if (!templateId) {
+      return res.status(400).json({ success: false, message: 'Selecione um template para disparar.' });
+    }
+    if (!isResendConfigured()) {
+      return res.status(400).json({ success: false, message: 'RESEND_API_KEY não configurada no servidor.' });
+    }
+    let rows = [];
+    if (segment === 'pendentes') {
+      rows = await dbAll("SELECT DISTINCT customer_email as email FROM tb_pagamentos_asaas WHERE UPPER(status) = 'PENDING' AND customer_email LIKE '%@%' LIMIT 50");
+    } else if (segment === 'vips') {
+      rows = await dbAll("SELECT DISTINCT contact as email FROM tb_acessos_usuarios WHERE type = 'vip' AND contact LIKE '%@%' LIMIT 50");
+    } else {
+      rows = await dbAll("SELECT DISTINCT contact as email FROM tb_acessos_usuarios WHERE type = 'gratis' AND contact LIKE '%@%' LIMIT 50");
+    }
+    const emails = Array.from(new Set(rows.map((r) => String(r.email || '').trim().toLowerCase()).filter((e) => e.includes('@'))));
+    if (emails.length === 0) {
+      return res.json({ success: true, sent: 0, failed: 0, totalTargets: 0, message: 'Nenhum destinatário com e-mail válido encontrado neste segmento.' });
+    }
+    const siteUrl = process.env.PUBLIC_SITE_URL || 'https://1convite.com.br';
+    let sent = 0;
+    let failed = 0;
+    for (const to of emails) {
+      const r = await sendPipelineTestEmail({ templateId, to, siteUrl });
+      if (r.ok) sent++;
+      else failed++;
+    }
+    res.json({
+      success: true,
+      sent,
+      failed,
+      totalTargets: emails.length,
+      message: `Campanha processada: ${sent} enviado(s), ${failed} falha(s).`
+    });
+  } catch (err) {
+    console.error('Erro em /admin/email-pipeline/campanha:', err);
+    res.status(500).json({ success: false, message: 'Erro ao disparar campanha de e-mails.' });
+  }
+});
+
+app.get('/api/v1/admin/system-health', requireAdminHeader, async (req, res) => {
+  try {
+    let dbOk = false;
+    try {
+      await dbGet('SELECT 1 as ok');
+      dbOk = true;
+    } catch {}
+    res.json({
+      success: true,
+      database: { ok: dbOk, provider: process.env.TURSO_DATABASE_URL ? 'Turso Cloud' : 'Local SQLite' },
+      asaas: {
+        configured: isAsaasConfigured(),
+        sandbox: String(process.env.ASAAS_SANDBOX || 'true').toLowerCase() !== 'false',
+      },
+      resend: {
+        configured: isResendConfigured(),
+        from: process.env.RESEND_FROM || '1Convite <onboarding@resend.dev>',
+      },
+      openai: {
+        configured: Boolean(process.env.OPENAI_API_KEY),
+      },
+      publicSiteUrl: process.env.PUBLIC_SITE_URL || 'https://1convite.com.br',
+      serverTime: new Date().toISOString(),
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao verificar saúde do sistema.' });
   }
 });
 

@@ -558,6 +558,57 @@ export const adminAuthService = {
       console.warn('Fallback local em validateVoucherAsync:', e);
     }
     return this.useVoucher(cleanCode);
+  },
+
+  async setUserPlanAsync({ contact, action = 'vip', days = 180, planLabel = '' }) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/plano`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ contact, action, days, planLabel })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao atualizar plano');
+    return data;
+  },
+
+  async confirmPaymentManualAsync(paymentId) {
+    const resp = await fetch(`${API_BASE}/admin/vendas/${encodeURIComponent(paymentId)}/confirmar-manual`, {
+      method: 'POST',
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao confirmar pagamento');
+    return data;
+  },
+
+  async resendPaymentEmailAsync(paymentId) {
+    const resp = await fetch(`${API_BASE}/admin/vendas/${encodeURIComponent(paymentId)}/reenviar-email`, {
+      method: 'POST',
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao reenviar e-mail');
+    return data;
+  },
+
+  async sendEmailCampaignAsync({ templateId, segment = 'pendentes' }) {
+    const resp = await fetch(`${API_BASE}/admin/email-pipeline/campanha`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ templateId, segment })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao disparar campanha');
+    return data;
+  },
+
+  async getSystemHealthAsync() {
+    const resp = await fetch(`${API_BASE}/admin/system-health`, {
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao carregar saúde do sistema');
+    return data;
   }
 };
 
