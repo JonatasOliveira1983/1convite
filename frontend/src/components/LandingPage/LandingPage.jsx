@@ -130,8 +130,33 @@ export default function LandingPage({ onEnterApp }) {
   });
 
   const [openFaq, setOpenFaq] = useState(0);
-  const [recentPurchases, setRecentPurchases] = useState([]);
+  const [recentPurchases, setRecentPurchases] = useState(() => {
+    const pool = [
+      { name: 'Mariana S.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 6 min' },
+      { name: 'Lucas M.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 14 min' },
+      { name: 'Fernanda R.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 19 min' },
+      { name: 'Rafael O.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 27 min' },
+      { name: 'Camila P.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 34 min' },
+      { name: 'Gabriel A.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 41 min' },
+      { name: 'Juliana C.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 49 min' },
+      { name: 'Thiago N.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 58 min' },
+      { name: 'Patrícia L.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 1h' },
+      { name: 'Bruno V.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 1h' },
+      { name: 'Aline B.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 2h' },
+      { name: 'Rodrigo G.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 2h' },
+      { name: 'Beatriz F.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 2h' },
+      { name: 'Daniel K.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 3h' },
+      { name: 'Larissa T.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 3h' },
+      { name: 'Eduardo H.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 4h' },
+      { name: 'Vanessa D.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 4h' },
+      { name: 'Felipe W.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 5h' },
+      { name: 'Priscila Z.', planTitle: 'Plano Reino', convites: 5, timeLabel: 'há 5h' },
+      { name: 'Henrique J.', planTitle: 'Plano Edificação', convites: 3, timeLabel: 'há 6h' },
+    ];
+    return [...pool].sort(() => Math.random() - 0.5);
+  });
   const [socialIdx, setSocialIdx] = useState(0);
+  const [socialVisible, setSocialVisible] = useState(false);
   const [socialDismissed, setSocialDismissed] = useState(false);
   const particlesCanvasRef = React.useRef(null);
 
@@ -183,19 +208,42 @@ export default function LandingPage({ onEnterApp }) {
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data?.recent) && data.recent.length > 0) {
-          setRecentPurchases(data.recent);
+          const filtered = data.recent.filter((p) => p.convites >= 3);
+          if (filtered.length > 0) {
+            setRecentPurchases((prev) => [...filtered, ...prev]);
+          }
         }
       })
       .catch(() => {});
   }, []);
 
   React.useEffect(() => {
-    if (recentPurchases.length <= 1 || socialDismissed) return;
-    const id = setInterval(() => {
-      setSocialIdx((prev) => (prev + 1) % recentPurchases.length);
-    }, 18000);
-    return () => clearInterval(id);
-  }, [recentPurchases, socialDismissed]);
+    if (recentPurchases.length === 0 || socialDismissed) return;
+    let showTimer;
+    let hideTimer;
+    let cancelled = false;
+
+    const scheduleCycle = (initialDelayMs) => {
+      showTimer = setTimeout(() => {
+        if (cancelled) return;
+        setSocialVisible(true);
+        hideTimer = setTimeout(() => {
+          if (cancelled) return;
+          setSocialVisible(false);
+          setSocialIdx((prev) => (prev + 1) % recentPurchases.length);
+          const nextPause = 22000 + Math.floor(Math.random() * 16000);
+          scheduleCycle(nextPause);
+        }, 6000);
+      }, initialDelayMs);
+    };
+
+    scheduleCycle(9000);
+    return () => {
+      cancelled = true;
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [recentPurchases.length, socialDismissed]);
 
   // Efeito de Partículas Vivas & Brasas de Sabedoria (Zero Peso, 60fps, Pausa Automática)
   React.useEffect(() => {
@@ -1206,7 +1254,7 @@ export default function LandingPage({ onEnterApp }) {
         planId={checkoutPlan}
         onClose={() => setCheckoutPlan(null)}
       />
-      {!socialDismissed && recentPurchases.length > 0 && (
+      {!socialDismissed && socialVisible && recentPurchases.length > 0 && (
         <div className="sp-social-toast" role="status" aria-live="polite">
           <div className="sp-social-toast-icon">
             <IconCheck />
