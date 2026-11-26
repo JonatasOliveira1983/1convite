@@ -1308,17 +1308,7 @@
 .sp-orb-orange,
 .sp-orb-green,
 .sp-orb-amber {
-  opacity: 0.14 !important;
-}
-
-.sp-hero-bg-photo::after,
-.sp-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(10, 12, 18, 0.78) 0%, rgba(10, 12, 18, 0.74) 55%, #121212 100%);
-  z-index: 2;
-  pointer-events: none;
+  opacity: 0.28 !important;
 }
 
 .sp-pill-badge {
