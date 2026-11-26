@@ -426,50 +426,6 @@ function App() {
       return next;
     });
   };
-
-  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud
-  useEffect(() => {
-    const contact = profileEmail || profilePhone || 'convidado@1convite.com.br';
-    fetch(`${API_BASE}/gamificacao/state?contact=${encodeURIComponent(contact)}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.success) {
-          const localCoins = parseInt(localStorage.getItem('app-coins') || '0', 10) || 0;
-          const serverCoins = Number(data.chaminhas || 0);
-          const mergedCoins = Math.max(localCoins, serverCoins);
-          setUserCoins(mergedCoins);
-          localStorage.setItem('app-coins', mergedCoins);
-
-          const localItems = JSON.parse(localStorage.getItem('unlocked-items') || '[]');
-          const serverItems = Array.isArray(data.itensDesbloqueados) ? data.itensDesbloqueados : [];
-          const mergedItems = Array.from(new Set([...localItems, ...serverItems]));
-          setUnlockedItems(mergedItems);
-          localStorage.setItem('unlocked-items', JSON.stringify(mergedItems));
-        }
-        gamificacaoLoadedRef.current = true;
-      })
-      .catch(() => {
-        gamificacaoLoadedRef.current = true;
-      });
-  }, [profileEmail, profilePhone]);
-
-  // Sincroniza alterações de Chaminhas ou Compras na Lojinha com o Turso Cloud
-  useEffect(() => {
-    if (!gamificacaoLoadedRef.current) return;
-    const contact = profileEmail || profilePhone || 'convidado@1convite.com.br';
-    const timer = setTimeout(() => {
-      fetch(`${API_BASE}/gamificacao/sync`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contact,
-          chaminhas: userCoins,
-          itensDesbloqueados: unlockedItems,
-        }),
-      }).catch(() => {});
-    }, 600);
-    return () => clearTimeout(timer);
-  }, [userCoins, unlockedItems, profileEmail, profilePhone]);
   
   // Controle de Acesso Premium & Vouchers VIP (180 dias)
   const [isPremiumUser, setIsPremiumUser] = useState(() => {
@@ -1302,6 +1258,50 @@ function App() {
 
   const [profileName, setProfileName] = useState(() => localStorage.getItem('1convite_user_name') || 'Membro Convidado');
   const [profileEmail, setProfileEmail] = useState(() => localStorage.getItem('1convite_user_email') || 'membro@1convite.com');
+
+  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud
+  useEffect(() => {
+    const contact = profileEmail || 'convidado@1convite.com.br';
+    fetch(`${API_BASE}/gamificacao/state?contact=${encodeURIComponent(contact)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.success) {
+          const localCoins = parseInt(localStorage.getItem('app-coins') || '0', 10) || 0;
+          const serverCoins = Number(data.chaminhas || 0);
+          const mergedCoins = Math.max(localCoins, serverCoins);
+          setUserCoins(mergedCoins);
+          localStorage.setItem('app-coins', mergedCoins);
+
+          const localItems = JSON.parse(localStorage.getItem('unlocked-items') || '[]');
+          const serverItems = Array.isArray(data.itensDesbloqueados) ? data.itensDesbloqueados : [];
+          const mergedItems = Array.from(new Set([...localItems, ...serverItems]));
+          setUnlockedItems(mergedItems);
+          localStorage.setItem('unlocked-items', JSON.stringify(mergedItems));
+        }
+        gamificacaoLoadedRef.current = true;
+      })
+      .catch(() => {
+        gamificacaoLoadedRef.current = true;
+      });
+  }, [profileEmail]);
+
+  // Sincroniza alterações de Chaminhas ou Compras na Lojinha com o Turso Cloud
+  useEffect(() => {
+    if (!gamificacaoLoadedRef.current) return;
+    const contact = profileEmail || 'convidado@1convite.com.br';
+    const timer = setTimeout(() => {
+      fetch(`${API_BASE}/gamificacao/sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contact,
+          chaminhas: userCoins,
+          itensDesbloqueados: unlockedItems,
+        }),
+      }).catch(() => {});
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [userCoins, unlockedItems, profileEmail]);
   const [userGender, setUserGender] = useState(() => localStorage.getItem('1convite_user_gender') || 'homem');
   const [isCustomAvatar, setIsCustomAvatar] = useState(() => localStorage.getItem('1convite_custom_avatar_uploaded') === 'true');
   const [profileAvatar, setProfileAvatar] = useState(() => {
@@ -9236,7 +9236,7 @@ Em nome de Jesus, Amém.`;
         {activeTab === 'mulher-virtuosa' && (
           <MulherVirtuosaView 
             onBack={() => setActiveTab('dashboard')}
-            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
+            userContact={profileEmail || 'convidado@1convite.com.br'}
           />
         )}
 
@@ -9244,7 +9244,7 @@ Em nome de Jesus, Amém.`;
         {activeTab === 'biblioteca-pregador' && (
           <BibliotecaPregadorView 
             onBack={() => setActiveTab('dashboard')}
-            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
+            userContact={profileEmail || 'convidado@1convite.com.br'}
           />
         )}
 
@@ -9259,7 +9259,7 @@ Em nome de Jesus, Amém.`;
         {activeTab === 'treino-templo' && (
           <TreinoTemploView 
             onBack={() => setActiveTab('dashboard')}
-            userContact={profileEmail || profilePhone || 'convidado@1convite.com.br'}
+            userContact={profileEmail || 'convidado@1convite.com.br'}
             onEarnCoins={handleEarnCoins}
           />
         )}
