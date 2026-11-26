@@ -161,22 +161,18 @@ export async function sendWelcomeAndVouchersEmail({
   });
 }
 
-export async function sendPixPendingEmail({
-  to,
+export function buildPixPendingEmailHtml({
   name,
   planName,
   invoiceUrl = '',
   valueReais = 0,
   siteUrl = 'https://1convite.com.br',
 }) {
-  if (!to || !String(to).includes('@')) {
-    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
-  }
   const safeName = escapeHtml(name || 'Irmão(ã)');
   const safePlan = escapeHtml(planName || '1Convite');
   const safeUrl = escapeHtml(invoiceUrl || 'https://1convite.com.br/#planos');
   const logoUrl = `${escapeHtml(siteUrl.replace(/\/$/, ''))}/LOGOMARCA_DARK.png`;
-  const html = `
+  return `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
       <div style="text-align:center;margin-bottom:14px;">
         <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
@@ -191,6 +187,20 @@ export async function sendPixPendingEmail({
       </div>
     </div>
   `;
+}
+
+export async function sendPixPendingEmail({
+  to,
+  name,
+  planName,
+  invoiceUrl = '',
+  valueReais = 0,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  if (!to || !String(to).includes('@')) {
+    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
+  }
+  const html = buildPixPendingEmailHtml({ name, planName, invoiceUrl, valueReais, siteUrl });
   return sendEmail({
     to,
     subject: `Seu pedido 1Convite (${planName}) está aguardando pagamento`,
@@ -198,26 +208,306 @@ export async function sendPixPendingEmail({
   });
 }
 
+export function buildLeadWelcomeEmailHtml({ name, siteUrl = 'https://1convite.com.br' }) {
+  const safeName = escapeHtml(name || 'Visitante');
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
+      </div>
+      <span style="display:inline-block;background:rgba(56,189,248,0.14);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">BOAS-VINDAS</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Paz seja contigo, ${safeName}!</h2>
+      <p style="color:#d4d4d8;font-size:15px;line-height:1.6;">
+        Recebemos seu cadastro no <strong>1Convite</strong>. Você já pode experimentar a Bíblia Sagrada ACF narrada, meditações diárias e estudos profundos da Palavra.
+      </p>
+      <div style="text-align:center;margin:22px 0;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#f97316;color:#09090b;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Acessar o 1Convite</a>
+      </div>
+      <p style="text-align:center;color:#71717a;font-size:12px;margin:20px 0 0;">
+        1Convite — A Palavra Viva no seu bolso.
+      </p>
+    </div>
+  `;
+}
+
 export async function sendLeadWelcomeEmail({ to, name, siteUrl = 'https://1convite.com.br' }) {
   if (!to || !String(to).includes('@')) {
     return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
   }
-  const safeName = escapeHtml(name || 'Visitante');
-  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
-  const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
-      <h2 style="margin:0 0 10px;color:#ffffff;">Paz seja contigo, ${safeName}!</h2>
-      <p style="color:#d4d4d8;font-size:15px;line-height:1.6;">
-        Recebemos seu cadastro no <strong>1Convite</strong>. Você já pode experimentar a Bíblia Sagrada ACF narrada, meditações diárias e muito mais.
-      </p>
-      <div style="text-align:center;margin:22px 0;">
-        <a href="${safeSite}" style="display:inline-block;background:#f97316;color:#ffffff;font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none;">Conhecer o 1Convite</a>
-      </div>
-    </div>
-  `;
+  const html = buildLeadWelcomeEmailHtml({ name, siteUrl });
   return sendEmail({
     to,
     subject: 'Sua jornada no 1Convite começou!',
     html,
+  });
+}
+
+export function buildPixReminderEmailHtml({
+  name,
+  planName,
+  invoiceUrl = '',
+  valueReais = 97,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safePlan = escapeHtml(planName || 'Plano Popular — Edificação');
+  const safeUrl = escapeHtml(invoiceUrl || `${siteUrl.replace(/\/$/, '')}/checkout`);
+  const logoUrl = `${escapeHtml(siteUrl.replace(/\/$/, ''))}/LOGOMARCA_DARK.png`;
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
+      </div>
+      <span style="display:inline-block;background:rgba(250,204,21,0.14);color:#facc15;border:1px solid rgba(250,204,21,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">LEMBRETE AMIGÁVEL</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Seu acesso VIP ainda está reservado, ${safeName}</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Notamos que o PIX do seu <strong>${safePlan}</strong> (R$ ${Number(valueReais).toFixed(2).replace('.', ',')}) ainda está em aberto. Se aconteceu algum imprevisto, você pode concluir em segundos pelo link seguro abaixo e liberar seus Vales-Presente VIP na hora.
+      </p>
+      <div style="text-align:center;margin:22px 0;">
+        <a href="${safeUrl}" style="display:inline-block;background:#facc15;color:#09090b;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Concluir Pagamento PIX</a>
+      </div>
+      <p style="text-align:center;color:#71717a;font-size:12px;margin:20px 0 0;">
+        1Convite — Se precisar de ajuda, basta responder a este e-mail.
+      </p>
+    </div>
+  `;
+}
+
+export function buildInviteRedeemedEmailHtml({
+  name,
+  voucherCode = 'REINO-VIP',
+  daysValid = 180,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  const safeName = escapeHtml(name || 'Convidado(a)');
+  const safeCode = escapeHtml(voucherCode);
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:520px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
+      </div>
+      <span style="display:inline-block;background:rgba(34,197,94,0.16);color:#4ade80;border:1px solid rgba(34,197,94,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">CONVITE RESGATADO</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Você recebeu um presente especial, ${safeName}!</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Seu código de Vale-Presente <strong style="color:#fbbf24;">${safeCode}</strong> foi ativado com sucesso! Você ganhou <strong>${Number(daysValid)} dias de acesso VIP completo</strong> à Bíblia Sagrada ACF narrada, e-books bíblicos e devocionais diários.
+      </p>
+      <div style="text-align:center;margin:22px 0;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;">Entrar no 1Convite VIP</a>
+      </div>
+    </div>
+  `;
+}
+
+export function buildSeasonalChristmasEmailHtml({ name, siteUrl = 'https://1convite.com.br' }) {
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  const artUrl = `${safeSite}/emails/natal-1convite.jpg`;
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:26px 20px;border-radius:16px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <img src="${logoUrl}" alt="1Convite" height="34" style="display:inline-block;height:34px;width:auto;" />
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(217,119,6,0.35);margin-bottom:18px;">
+        <img src="${artUrl}" alt="Feliz Natal 1Convite" style="display:block;width:100%;height:auto;" />
+      </div>
+      <div style="text-align:center;">
+        <span style="display:inline-block;background:rgba(217,119,6,0.16);color:#fbbf24;border:1px solid rgba(217,119,6,0.35);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.6px;">ESPECIAL DE NATAL • 1CONVITE</span>
+        <h1 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#ffffff;">Feliz Natal, ${safeName}!</h1>
+        <p style="color:#d4d4d8;font-size:15px;line-height:1.65;margin:0 0 16px;">
+          "Porque um menino nos nasceu, um filho se nos deu..." (Isaías 9:6). Que a luz de Cristo ilumine sua casa, fortaleça sua família e renove a esperança no seu coração neste Natal.
+        </p>
+        <div style="text-align:center;margin:22px 0 8px;">
+          <a href="${safeSite}/app" style="display:inline-block;background:#f59e0b;color:#09090b;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;font-size:14px;">Ler Devocional de Natal no App</a>
+        </div>
+      </div>
+      <p style="text-align:center;color:#71717a;font-size:12px;margin:22px 0 0;">
+        Com carinho, Equipe 1Convite — A Palavra Viva no seu bolso.
+      </p>
+    </div>
+  `;
+}
+
+export function buildSeasonalNewYearEmailHtml({ name, siteUrl = 'https://1convite.com.br' }) {
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  const artUrl = `${safeSite}/emails/ano-novo-1convite.jpg`;
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:26px 20px;border-radius:16px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <img src="${logoUrl}" alt="1Convite" height="34" style="display:inline-block;height:34px;width:auto;" />
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(250,204,21,0.35);margin-bottom:18px;">
+        <img src="${artUrl}" alt="Feliz Ano Novo 1Convite" style="display:block;width:100%;height:auto;" />
+      </div>
+      <div style="text-align:center;">
+        <span style="display:inline-block;background:rgba(250,204,21,0.14);color:#fde047;border:1px solid rgba(250,204,21,0.35);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.6px;">ESPECIAL DE ANO NOVO • 1CONVITE</span>
+        <h1 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#ffffff;">Um Ano Novo abençoado, ${safeName}!</h1>
+        <p style="color:#d4d4d8;font-size:15px;line-height:1.65;margin:0 0 16px;">
+          "O Senhor te abençoe e te guarde; o Senhor faça resplandecer o seu rosto sobre ti" (Números 6:24-25). Comece este novo ciclo caminhando diariamente com a Palavra no 1Convite.
+        </p>
+        <div style="text-align:center;margin:22px 0 8px;">
+          <a href="${safeSite}/app" style="display:inline-block;background:#facc15;color:#09090b;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;font-size:14px;">Começar Plano de Leitura</a>
+        </div>
+      </div>
+      <p style="text-align:center;color:#71717a;font-size:12px;margin:22px 0 0;">
+        Com carinho, Equipe 1Convite — A Palavra Viva no seu bolso.
+      </p>
+    </div>
+  `;
+}
+
+export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1convite.com.br' } = {}) {
+  const sampleInvites = ['REINO-7X9K2', 'REINO-4M8P1', 'REINO-9Q2W5'];
+  const sampleVouchersHtml = sampleInvites
+    .map(
+      (code) => `
+      <div style="background:#0f172a;border:1px dashed #fbbf24;border-radius:10px;padding:12px 14px;margin:10px 0;text-align:center;">
+        <div style="font-size:10px;letter-spacing:1.2px;color:#fcd34d;text-transform:uppercase;margin-bottom:4px;">Vale-Presente VIP • 180 Dias Grátis</div>
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:800;letter-spacing:2px;color:#fbbf24;">${code}</div>
+      </div>`
+    )
+    .join('');
+
+  const welcomePreviewHtml = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <img src="${escapeHtml(siteUrl)}/LOGOMARCA_DARK.png" alt="1Convite" height="36" style="display:inline-block;height:36px;width:auto;" />
+      </div>
+      <div style="text-align:center;margin-bottom:18px;">
+        <span style="display:inline-block;background:rgba(34,197,94,0.16);color:#4ade80;border:1px solid rgba(34,197,94,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">ACESSO VIP LIBERADO</span>
+        <h1 style="margin:14px 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#ffffff;">Bem-vindo(a) ao 1Convite, Carlos Ferreira!</h1>
+        <p style="margin:0;color:#a1a1aa;font-size:14px;">Sua assinatura <strong>Plano Popular — Edificação</strong> foi confirmada com sucesso.</p>
+      </div>
+      <div style="background:#18181b;border:1px solid #27272a;border-radius:10px;padding:16px;margin-bottom:18px;text-align:center;">
+        <a href="${escapeHtml(siteUrl)}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:12px 24px;border-radius:999px;text-decoration:none;font-size:14px;">Acessar 1Convite Agora</a>
+      </div>
+      <div style="background:#18181b;border:1px solid #27272a;border-radius:10px;padding:16px;">
+        <h3 style="margin:0 0 6px;font-size:15px;color:#ffffff;">Seus Vales-Presente VIP (180 dias grátis cada)</h3>
+        ${sampleVouchersHtml}
+      </div>
+    </div>
+  `;
+
+  return [
+    {
+      id: 'cobranca_gerada',
+      order: 1,
+      title: '1. Cobrança Gerada (PIX/Boleto)',
+      category: 'transacional',
+      status: 'active',
+      trigger: 'Automático ao gerar checkout no Asaas (/api/v1/pagamentos/checkout)',
+      sender: getFromEmail(),
+      subject: 'Seu pedido 1Convite (Plano Popular — Edificação) está aguardando pagamento',
+      stats: statsMap.cobranca_gerada || { sent: 0, failed: 0 },
+      previewHtml: buildPixPendingEmailHtml({
+        name: 'Carlos Ferreira',
+        planName: 'Plano Popular — Edificação',
+        invoiceUrl: `${siteUrl}/checkout`,
+        valueReais: 97,
+        siteUrl,
+      }),
+    },
+    {
+      id: 'boas_vindas_vip',
+      order: 2,
+      title: '2. Boas-vindas VIP + Vouchers',
+      category: 'transacional',
+      status: 'active',
+      trigger: 'Automático na confirmação do pagamento (Webhook Asaas ou Simulação Sandbox)',
+      sender: getFromEmail(),
+      subject: 'Acesso liberado! Seu Plano Popular + Vales-Presente VIP (1Convite)',
+      stats: statsMap.boas_vindas_vip || { sent: 0, failed: 0 },
+      previewHtml: welcomePreviewHtml,
+    },
+    {
+      id: 'boas_vindas_lead',
+      order: 3,
+      title: '3. Boas-vindas de Lead',
+      category: 'relacionamento',
+      status: 'active',
+      trigger: 'Automático quando um visitante se cadastra gratuitamente no app',
+      sender: getFromEmail(),
+      subject: 'Sua jornada no 1Convite começou!',
+      stats: statsMap.boas_vindas_lead || { sent: 0, failed: 0 },
+      previewHtml: buildLeadWelcomeEmailHtml({ name: 'Maria Clara', siteUrl }),
+    },
+    {
+      id: 'lembrete_pix',
+      order: 4,
+      title: '4. Lembrete de PIX Pendente',
+      category: 'recuperacao',
+      status: 'ready',
+      trigger: 'Pronto para disparo manual ou automação após 24h sem pagamento',
+      sender: getFromEmail(),
+      subject: 'Seu acesso VIP ao 1Convite ainda está reservado',
+      stats: { sent: 0, failed: 0 },
+      previewHtml: buildPixReminderEmailHtml({
+        name: 'Carlos Ferreira',
+        planName: 'Plano Popular — Edificação',
+        invoiceUrl: `${siteUrl}/checkout`,
+        valueReais: 97,
+        siteUrl,
+      }),
+    },
+    {
+      id: 'convite_resgatado',
+      order: 5,
+      title: '5. Convite VIP Resgatado',
+      category: 'relacionamento',
+      status: 'ready',
+      trigger: 'Pronto para quando um amigo resgatar um Vale-Presente VIP',
+      sender: getFromEmail(),
+      subject: 'Seu Vale-Presente VIP 1Convite foi ativado!',
+      stats: { sent: 0, failed: 0 },
+      previewHtml: buildInviteRedeemedEmailHtml({
+        name: 'Ana Paula',
+        voucherCode: 'REINO-7X9K2',
+        daysValid: 180,
+        siteUrl,
+      }),
+    },
+    {
+      id: 'sazonal_natal',
+      order: 6,
+      title: '6. Especial de Natal (Com Arte + Logo)',
+      category: 'sazonal',
+      status: 'seasonal',
+      trigger: 'Campanha Sazonal (24–25 de Dezembro) — Compatível com Resend Gratuito',
+      sender: getFromEmail(),
+      subject: 'Feliz Natal! Que a luz de Cristo ilumine sua casa — 1Convite',
+      stats: { sent: 0, failed: 0 },
+      previewHtml: buildSeasonalChristmasEmailHtml({ name: 'Irmão(ã)', siteUrl }),
+    },
+    {
+      id: 'sazonal_anonovo',
+      order: 7,
+      title: '7. Especial de Ano Novo (Com Arte + Logo)',
+      category: 'sazonal',
+      status: 'seasonal',
+      trigger: 'Campanha Sazonal (31 Dez – 01 Jan) — Compatível com Resend Gratuito',
+      sender: getFromEmail(),
+      subject: 'Feliz Ano Novo abençoado na Palavra — 1Convite',
+      stats: { sent: 0, failed: 0 },
+      previewHtml: buildSeasonalNewYearEmailHtml({ name: 'Irmão(ã)', siteUrl }),
+    },
+  ];
+}
+
+export async function sendPipelineTestEmail({ templateId, to, siteUrl = 'https://1convite.com.br' }) {
+  const stages = getEmailPipelineStages({ siteUrl });
+  const stage = stages.find((s) => s.id === templateId);
+  if (!stage) {
+    return { ok: false, error: 'Etapa de pipeline não encontrada.' };
+  }
+  return sendEmail({
+    to,
+    subject: `[TESTE] ${stage.subject}`,
+    html: stage.previewHtml,
   });
 }

@@ -464,6 +464,30 @@ export const adminAuthService = {
     return this.getDashboardStats();
   },
 
+  async getEmailPipelineAsync() {
+    const resp = await fetch(`${API_BASE}/admin/email-pipeline`, {
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) {
+      throw new Error(data?.message || 'Erro ao carregar pipeline de e-mails.');
+    }
+    return data;
+  },
+
+  async sendPipelineTestEmailAsync({ templateId, to }) {
+    const resp = await fetch(`${API_BASE}/admin/email-pipeline/test`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ templateId, to })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) {
+      throw new Error(data?.message || 'Falha ao enviar e-mail de teste.');
+    }
+    return data;
+  },
+
   async createVoucherAsync({ code, maxUses = 1, daysValid = 180, notes = '' }) {
     try {
       const resp = await fetch(`${API_BASE}/admin/vouchers`, {

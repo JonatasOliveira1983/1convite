@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
 import adminAuthService from '../../services/adminAuthService';
+import EmailPipelineSection from './EmailPipelineSection';
 
 export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
   const [stats, setStats] = useState(() => adminAuthService.getDashboardStats());
@@ -562,6 +563,12 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
             </table>
           </div>
         </section>
+
+        <EmailPipelineSection
+          vouchers={stats.vouchers || []}
+          onCopyLink={handleCopyLink}
+          onSendWhatsApp={handleSendWhatsApp}
+        />
       </div>
     </div>
   );

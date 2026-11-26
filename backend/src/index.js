@@ -28,6 +28,8 @@ import {
   sendWelcomeAndVouchersEmail,
   sendPixPendingEmail,
   sendLeadWelcomeEmail,
+  getEmailPipelineStages,
+  sendPipelineTestEmail,
 } from './services/resendService.js';
 
 dotenv.config();
@@ -2556,6 +2558,67 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
   } catch (err) {
     console.error('Erro em /admin/dashboard:', err);
     res.status(500).json({ success: false, message: 'Erro ao carregar painel administrativo.' });
+  }
+});
+
+app.get('/api/v1/admin/email-pipeline', requireAdminHeader, async (req, res) => {
+  try {
+    const payments = await dbAll('SELECT status, email_sent FROM tb_pagamentos_asaas');
+    const gratisRow = await dbGet(
+      "SELECT COUNT(*) as total FROM tb_acessos_usuarios WHERE UPPER(COALESCE(access_type, '')) IN ('GRATUITO', 'FREE', 'LEAD')"
+    );
+    const pendingCount = payments.filter((p) => String(p.status).toUpperCase() === 'PENDING').length;
+    const paidSentCount = payments.filter(
+      (p) => ['PAID', 'CONFIRMED', 'RECEIVED'].includes(String(p.status).toUpperCase()) && Number(p.email_sent) === 1
+    ).length;
+    const paidFailedCount = payments.filter(
+      (p) => ['PAID', 'CONFIRMED', 'RECEIVED'].includes(String(p.status).toUpperCase()) && Number(p.email_sent) !== 1
+    ).length;
+
+    const statsMap = {
+      cobranca_gerada: { sent: payments.length, failed: 0, pending: pendingCount },
+      boas_vindas_vip: { sent: paidSentCount, failed: paidFailedCount },
+      boas_vindas_lead: { sent: Number(gratisRow?.total || 0), failed: 0 },
+    };
+
+    const siteUrl = process.env.PUBLIC_SITE_URL || 'https://1convite.com.br';
+    const stages = getEmailPipelineStages({ statsMap, siteUrl });
+
+    res.json({
+      success: true,
+      resendConfigured: isResendConfigured(),
+      resendFreeLimits: {
+        monthlyLimit: 3000,
+        dailyLimit: 100,
+        contactsLimit: 1000,
+      },
+      stages,
+    });
+  } catch (err) {
+    console.error('Erro em /admin/email-pipeline:', err);
+    res.status(500).json({ success: false, message: 'Erro ao carregar pipeline de e-mails.' });
+  }
+});
+
+app.post('/api/v1/admin/email-pipeline/test', requireAdminHeader, async (req, res) => {
+  try {
+    const { templateId, to } = req.body || {};
+    const targetEmail = String(to || '').trim();
+    if (!templateId || !targetEmail || !targetEmail.includes('@')) {
+      return res.status(400).json({ success: false, message: 'Informe um templateId e um e-mail de destino válido.' });
+    }
+    if (!isResendConfigured()) {
+      return res.status(400).json({ success: false, message: 'RESEND_API_KEY não configurada no servidor.' });
+    }
+    const siteUrl = process.env.PUBLIC_SITE_URL || 'https://1convite.com.br';
+    const result = await sendPipelineTestEmail({ templateId, to: targetEmail, siteUrl });
+    if (!result.ok) {
+      return res.status(502).json({ success: false, message: result.error || 'Falha ao enviar e-mail de teste.' });
+    }
+    res.json({ success: true, id: result.id || null, to: targetEmail });
+  } catch (err) {
+    console.error('Erro em /admin/email-pipeline/test:', err);
+    res.status(500).json({ success: false, message: 'Erro interno ao enviar e-mail de teste.' });
   }
 });
 
