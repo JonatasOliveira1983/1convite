@@ -4,7 +4,7 @@ import adminAuthService from '../../services/adminAuthService';
 import appLogoWhite from '../../assets/logomarca_dark.png';
 import loginSunsetBg from '../../assets/auth/login_sunset_bg.jpg';
 
-export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLanding }) {
+export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLanding, onGoToPlans }) {
   const pendingVip = (() => {
     try {
       const urlVip = new URLSearchParams(window.location.search).get('vip');
@@ -164,7 +164,9 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
   };
 
   const handleGoToPlans = () => {
-    if (onBackToLanding) {
+    if (onGoToPlans) {
+      onGoToPlans();
+    } else if (onBackToLanding) {
       onBackToLanding();
     } else {
       window.location.href = '/#planos';

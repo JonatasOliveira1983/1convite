@@ -3123,7 +3123,22 @@ Em nome de Jesus, Amém.`;
   if (!isLoggedIn) {
     return (
       <LoginPage 
-        onBackToLanding={!isCapacitor ? () => { navigateAppRoute(false); window.location.hash = '#planos'; } : undefined}
+        onBackToLanding={!isCapacitor ? () => navigateAppRoute(false) : undefined}
+        onGoToPlans={!isCapacitor ? () => {
+          navigateAppRoute(false);
+          window.location.hash = '#planos';
+          let tries = 0;
+          const scrollTimer = setInterval(() => {
+            tries += 1;
+            const el = document.getElementById('planos');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              clearInterval(scrollTimer);
+            } else if (tries >= 20) {
+              clearInterval(scrollTimer);
+            }
+          }, 120);
+        } : undefined}
         onLoginSuccess={(userData) => {
           setIsLoggedIn(true);
           setProfileName(userData.name);
