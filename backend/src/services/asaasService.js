@@ -138,9 +138,18 @@ function centsToAsaasValue(cents) {
   return Number((Number(cents) / 100).toFixed(2));
 }
 
+function getBrazilDateString(offsetDays = 0) {
+  const target = new Date(Date.now() + offsetDays * 24 * 60 * 60 * 1000);
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Sao_Paulo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(target);
+}
+
 function dueDateDaysFromNow(days = 1) {
-  const d = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
-  return d.toISOString().slice(0, 10);
+  return getBrazilDateString(days);
 }
 
 function onlyDigits(str = '') {
@@ -313,7 +322,7 @@ export async function confirmSandboxPayment(paymentId, valueReais) {
   if (!isSandboxKey()) {
     throw new Error('Simulação disponível apenas em ambiente Sandbox.');
   }
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getBrazilDateString(0);
   return asaasRequest(`/payments/${encodeURIComponent(paymentId)}/receiveInCash`, {
     method: 'POST',
     body: JSON.stringify({
