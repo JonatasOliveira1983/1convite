@@ -32,6 +32,7 @@ import {
   sendLeadWelcomeEmail,
   sendInviteRedeemedEmail,
   sendFunnelAddonWelcomeEmail,
+  sendConvitesPackPurchaseEmail,
   getEmailPipelineStages,
   sendPipelineTestEmail,
 } from './services/resendService.js';
@@ -366,6 +367,26 @@ async function ensureTables() {
           created_at TEXT NOT NULL
         )
       `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS tb_trilhas_usuarios (
+          user_contact TEXT PRIMARY KEY,
+          trilha_ativa TEXT NOT NULL,
+          dia_progresso INTEGER DEFAULT 1,
+          updated_at TEXT NOT NULL
+        )
+      `);
+
+      // Garante registro persistente para o Administrador Mestre na tabela tb_acessos_usuarios
+      const adminRow = await client.query('SELECT id FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [ADMIN_EMAIL]);
+      if (!adminRow.rows || adminRow.rows.length === 0) {
+        const nowIso = new Date().toISOString();
+        await client.query(
+          `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, entitlements_json, genero, created_at, last_login, access_count)
+           VALUES ($1, $2, $3, $4, 'admin', $5, $6, 'homem', $7, $8, 1)`,
+          ['usr_admin_master', 'Jonatas', ADMIN_EMAIL, ADMIN_PASS, 'Administrador Mestre', JSON.stringify(['ebooks', 'pregador', 'mulher_virtuosa']), nowIso, nowIso]
+        );
+      }
 
       // Seed inicial de vouchers padrão caso a tabela esteja vazia
       const vCount = await client.query('SELECT COUNT(*) as total FROM tb_vouchers');
@@ -1247,19 +1268,42 @@ app.get('/api/v1/usuario', async (req, res) => {
 app.post('/api/v1/usuario/perfil', async (req, res) => {
   try {
     const userUuid = req.headers['x-user-uuid'] || req.body.uuid;
-    const { nome, email, avatar, genero } = req.body;
+    const { nome, email, avatar, genero, clearAvatar = false } = req.body;
     const cleanEmail = String(email || '').trim().toLowerCase();
     const isRealEmail = cleanEmail && cleanEmail !== 'convidado@1convite.com.br' && cleanEmail !== 'membro@1convite.com';
 
     if (isRealEmail) {
-      await dbRun(
-        `UPDATE tb_acessos_usuarios
-         SET name = COALESCE($1, name),
-             avatar = COALESCE($2, avatar),
-             genero = COALESCE($3, genero)
-         WHERE LOWER(contact) = $4`,
-        [nome || null, avatar || null, genero || null, cleanEmail]
-      );
+      if (cleanEmail === ADMIN_EMAIL) {
+        const adminRow = await dbGet('SELECT id FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [ADMIN_EMAIL]);
+        if (!adminRow) {
+          const nowIso = new Date().toISOString();
+          await dbRun(
+            `INSERT INTO tb_acessos_usuarios (id, name, contact, password, type, plan, entitlements_json, avatar, genero, created_at, last_login, access_count)
+             VALUES ($1, $2, $3, $4, 'admin', $5, $6, $7, $8, $9, $10, 1)`,
+            ['usr_admin_master', nome || 'Jonatas', ADMIN_EMAIL, ADMIN_PASS, 'Administrador Mestre', JSON.stringify(['ebooks', 'pregador', 'mulher_virtuosa']), clearAvatar ? null : (avatar || null), genero || 'homem', nowIso, nowIso]
+          );
+        }
+      }
+
+      if (clearAvatar) {
+        await dbRun(
+          `UPDATE tb_acessos_usuarios
+           SET name = COALESCE($1, name),
+               avatar = NULL,
+               genero = COALESCE($2, genero)
+           WHERE LOWER(contact) = $3`,
+          [nome || null, genero || null, cleanEmail]
+        );
+      } else {
+        await dbRun(
+          `UPDATE tb_acessos_usuarios
+           SET name = COALESCE($1, name),
+               avatar = COALESCE($2, avatar),
+               genero = COALESCE($3, genero)
+           WHERE LOWER(contact) = $4`,
+          [nome || null, avatar || null, genero || null, cleanEmail]
+        );
+      }
     }
 
     const user = await getOrCreateUser(userUuid, isRealEmail ? cleanEmail : null, nome, avatar);
@@ -2215,12 +2259,24 @@ async function fulfillPaidOrderInternal(paymentId, paidStatus = 'CONFIRMED') {
   } else if (!Number(order.email_sent) && isFunnelAddon) {
     if (isResendConfigured()) {
       const offerObj = getFunnelOfferById(order.plan_id);
-      const mailRes = await sendFunnelAddonWelcomeEmail({
-        to: order.customer_email,
-        name: order.customer_name,
-        offerName: offerObj?.nome || 'Módulo Extra VIP',
-        siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
-      });
+      let mailRes;
+      if (offerObj?.stage === 'convite') {
+        mailRes = await sendConvitesPackPurchaseEmail({
+          to: order.customer_email,
+          name: order.customer_name,
+          packageName: offerObj.nome,
+          invitesCount: (offerObj.convites || 1) * orderQty,
+          valueReais: Number(order.value_cents || 0) / 100,
+          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+        });
+      } else {
+        mailRes = await sendFunnelAddonWelcomeEmail({
+          to: order.customer_email,
+          name: order.customer_name,
+          offerName: offerObj?.nome || 'Módulo Extra VIP',
+          siteUrl: process.env.FRONTEND_URL || 'https://1convite.com.br',
+        });
+      }
       if (mailRes.ok) {
         await dbRun('UPDATE tb_pagamentos_asaas SET email_sent = 1, email_error = NULL WHERE payment_id = $1', [paymentId]);
       } else {
@@ -2372,11 +2428,14 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
       ]
     );
 
-    if (isResendConfigured() && plan) {
+    if (isResendConfigured() && (plan || offer)) {
+      const pendingTitle = offer
+        ? (isConviteUnit && qty > 1 ? `${qty}x Convites VIP (180 Dias)` : offer.nome)
+        : (hasBump ? `${plan.nome} + 5 E-books` : plan.nome);
       sendPixPendingEmail({
         to: cleanEmail,
         name: cleanName,
-        planName: hasBump ? `${plan.nome} + 5 E-books` : plan.nome,
+        planName: pendingTitle,
         invoiceUrl: charge.invoiceUrl || '',
         valueReais: totalReais,
       }).catch((e) => console.warn('[RESEND PENDING WARN]:', e.message));
@@ -2681,16 +2740,19 @@ app.post('/api/v1/auth/login', async (req, res) => {
     const cleanPass = (password || '').trim();
 
     if (cleanContact === ADMIN_EMAIL && cleanPass === ADMIN_PASS) {
+      const adminRow = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [ADMIN_EMAIL]);
       return res.json({
         success: true,
         isAdmin: true,
         isVip: true,
         user: {
-          name: 'Jonatas',
+          name: adminRow?.name || 'Jonatas',
           contact: ADMIN_EMAIL,
           type: 'admin',
           plan: 'Administrador Mestre',
           entitlements: ['ebooks', 'pregador', 'mulher_virtuosa'],
+          avatar: adminRow?.avatar || null,
+          genero: adminRow?.genero || 'homem',
         }
       });
     }
@@ -2751,18 +2813,19 @@ app.get('/api/v1/auth/me', async (req, res) => {
       return res.json({ success: false, user: null });
     }
     if (cleanContact === ADMIN_EMAIL) {
+      const adminRow = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [ADMIN_EMAIL]);
       return res.json({
         success: true,
         isAdmin: true,
         isVip: true,
         user: {
-          name: 'Jonatas',
+          name: adminRow?.name || 'Jonatas',
           contact: ADMIN_EMAIL,
           type: 'admin',
           plan: 'Administrador Mestre',
           entitlements: ['ebooks', 'pregador', 'mulher_virtuosa'],
-          avatar: null,
-          genero: 'homem',
+          avatar: adminRow?.avatar || null,
+          genero: adminRow?.genero || 'homem',
         },
       });
     }

@@ -1337,24 +1337,28 @@ function App() {
   const [profileName, setProfileName] = useState(() => localStorage.getItem('1convite_user_name') || 'Membro Convidado');
   const [profileEmail, setProfileEmail] = useState(() => localStorage.getItem('1convite_user_email') || 'membro@1convite.com');
 
-  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud
+  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud (isolado por usuário)
   useEffect(() => {
-    const contact = profileEmail || 'convidado@1convite.com.br';
+    const contact = (profileEmail || 'convidado@1convite.com.br').trim().toLowerCase();
+    gamificacaoLoadedRef.current = false;
     fetch(`${API_BASE}/gamificacao/state?contact=${encodeURIComponent(contact)}`)
       .then((r) => r.json())
       .then((data) => {
         if (data?.success) {
-          const localCoins = parseInt(localStorage.getItem('app-coins') || '0', 10) || 0;
+          const cachedEmail = (localStorage.getItem('1convite_gamificacao_email') || '').trim().toLowerCase();
+          const sameAccountCache = cachedEmail === contact;
+          const localCoins = sameAccountCache ? (parseInt(localStorage.getItem('app-coins') || '0', 10) || 0) : 0;
           const serverCoins = Number(data.chaminhas || 0);
-          const mergedCoins = Math.max(localCoins, serverCoins);
-          setUserCoins(mergedCoins);
-          localStorage.setItem('app-coins', mergedCoins);
+          const finalCoins = sameAccountCache ? Math.max(localCoins, serverCoins) : serverCoins;
+          setUserCoins(finalCoins);
+          localStorage.setItem('app-coins', String(finalCoins));
 
-          const localItems = JSON.parse(localStorage.getItem('unlocked-items') || '[]');
+          const localItems = sameAccountCache ? JSON.parse(localStorage.getItem('unlocked-items') || '[]') : [];
           const serverItems = Array.isArray(data.itensDesbloqueados) ? data.itensDesbloqueados : [];
-          const mergedItems = Array.from(new Set([...localItems, ...serverItems]));
-          setUnlockedItems(mergedItems);
-          localStorage.setItem('unlocked-items', JSON.stringify(mergedItems));
+          const finalItems = sameAccountCache ? Array.from(new Set([...localItems, ...serverItems])) : serverItems;
+          setUnlockedItems(finalItems);
+          localStorage.setItem('unlocked-items', JSON.stringify(finalItems));
+          localStorage.setItem('1convite_gamificacao_email', contact);
         }
         gamificacaoLoadedRef.current = true;
       })
@@ -1693,6 +1697,12 @@ function App() {
       setProfileAvatar(av);
       localStorage.setItem('1convite_custom_avatar', av);
     }
+    const userUuid = getUserUuid();
+    fetch(`${API_BASE}/usuario/perfil`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-user-uuid': userUuid },
+      body: JSON.stringify({ uuid: userUuid, email: profileEmail, genero: gender })
+    }).catch(() => {});
     setProfileSavedMsg(`Avatar padrão (${gender === 'mulher' ? 'Mulher' : 'Homem'}) selecionado!`);
     setTimeout(() => setProfileSavedMsg(''), 3000);
   };
@@ -1710,7 +1720,7 @@ function App() {
     fetch(`${API_BASE}/usuario/perfil`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-user-uuid': userUuid },
-      body: JSON.stringify({ uuid: userUuid, avatar: av, genero: userGender })
+      body: JSON.stringify({ uuid: userUuid, email: profileEmail, clearAvatar: true, genero: userGender })
     }).catch(() => {});
   };
 
@@ -1841,10 +1851,18 @@ function App() {
       localStorage.removeItem('1convite_user_email');
       localStorage.removeItem('1convite_user_uuid');
       localStorage.removeItem('1convite_is_admin');
+      localStorage.removeItem('app-coins');
+      localStorage.removeItem('unlocked-items');
+      localStorage.removeItem('1convite_gamificacao_email');
+      localStorage.removeItem('1convite_trilha_ativa');
       adminAuthService.logout();
     } catch (e) {
       console.warn(e);
     }
+    gamificacaoLoadedRef.current = false;
+    setUserCoins(0);
+    setUnlockedItems([]);
+    setTrilhaAtiva(null);
     setIsAdminMode(false);
     setShowAdminPanel(false);
     setIsLoggedIn(false);

@@ -545,7 +545,91 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       stats: { sent: 0, failed: 0 },
       previewHtml: buildSeasonalNewYearEmailHtml({ name: 'Irmão(ã)', siteUrl }),
     },
+    {
+      id: 'convites_pack',
+      order: 8,
+      title: '8. Compra de Pacotes & Convites VIP',
+      category: 'transacional',
+      status: 'active',
+      trigger: 'Automático na confirmação de Pacotes Sementeira, Colheita, Embaixadores ou Avulso',
+      sender: senderEmail,
+      subject: 'Seus Convites VIP foram liberados no 1Convite!',
+      stats: statsMap.convites_pack || { sent: 0, failed: 0 },
+      previewHtml: buildConvitesPackEmailHtml({
+        name: 'Carlos Ferreira',
+        packageName: 'Pacote Colheita — 15 Convites VIP (10% OFF)',
+        invitesCount: 15,
+        valueReais: 337.35,
+        siteUrl,
+      }),
+    },
   ];
+}
+
+export function buildConvitesPackEmailHtml({
+  name,
+  packageName = 'Convite VIP 1Convite',
+  invitesCount = 1,
+  valueReais = 24.99,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  const safeName = escapeHtml(name || 'Irmão(ã)');
+  const safePack = escapeHtml(packageName);
+  const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
+  const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
+  const count = Math.max(1, Number(invitesCount || 1));
+  const valorFormatado = Number(valueReais || 0).toFixed(2).replace('.', ',');
+
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:16px;border:1px solid #27272a;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <img src="${logoUrl}" alt="1Convite" height="34" style="display:inline-block;height:34px;width:auto;" />
+      </div>
+      <span style="display:inline-block;background:rgba(245,158,11,0.16);color:#fbbf24;border:1px solid rgba(245,158,11,0.4);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">CONVITES VIP LIBERADOS</span>
+      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Compra confirmada, ${safeName}!</h2>
+      <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
+        Recebemos a confirmação da sua compra de <strong style="color:#fbbf24;">${safePack}</strong>. Seus novos Vales-Presente já estão disponíveis na aba <strong>Convites VIP</strong> do seu aplicativo!
+      </p>
+
+      <div style="background:linear-gradient(135deg,#18140d 0%,#0b0d14 60%,#1a1309 100%);border:1.5px solid #d97706;border-radius:14px;padding:18px;margin:18px 0;">
+        <div style="font-size:12px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Resumo da sua Compra</div>
+        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Pacote:</strong> ${safePack}</div>
+        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Quantidade Liberada:</strong> <span style="color:#34d399;font-weight:800;">${count} Convite${count > 1 ? 's' : ''} VIP (180 dias grátis cada)</span></div>
+        <div style="font-size:13.5px;color:#e4e4e7;"><strong>Valor Pago:</strong> R$ ${valorFormatado}</div>
+      </div>
+
+      <div style="background:#141418;border:1px dashed #3f3f46;border-radius:10px;padding:13px 15px;margin:16px 0;font-size:13px;color:#d4d4d8;line-height:1.55;">
+        <strong style="color:#ffffff;">Como enviar para quem você ama:</strong><br/>
+        1. Abra o app em <a href="${safeSite}/app" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/app</a> e toque em <strong>Convites VIP</strong>.<br/>
+        2. Personalize a dedicatória e o versículo do cartão.<br/>
+        3. Clique em <strong>Enviar no WhatsApp (com Imagem)</strong> ou <strong>Baixar em PDF</strong>.
+      </div>
+
+      <div style="text-align:center;margin:22px 0 4px;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#f59e0b;color:#1c1917;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;">Acessar Meus ${count} Convite${count > 1 ? 's' : ''} VIP →</a>
+      </div>
+    </div>
+  `;
+}
+
+export async function sendConvitesPackPurchaseEmail({
+  to,
+  name,
+  packageName,
+  invitesCount = 1,
+  valueReais = 24.99,
+  siteUrl = 'https://1convite.com.br',
+}) {
+  if (!to || !String(to).includes('@')) {
+    return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
+  }
+  const html = buildConvitesPackEmailHtml({ name, packageName, invitesCount, valueReais, siteUrl });
+  const count = Math.max(1, Number(invitesCount || 1));
+  return sendEmail({
+    to,
+    subject: `Confirmado! Seus ${count} Convite${count > 1 ? 's' : ''} VIP chegaram no 1Convite`,
+    html,
+  });
 }
 
 export async function sendFunnelAddonWelcomeEmail({
