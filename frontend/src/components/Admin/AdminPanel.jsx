@@ -127,6 +127,123 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
     }
   };
 
+  const handleToggleBlock = async (user) => {
+    setActionBusyId(user.contact);
+    try {
+      const nextBlocked = !user.blocked;
+      await adminAuthService.toggleUserBlockAsync({ contact: user.contact, blocked: nextBlocked });
+      await refreshStats();
+      showToast(nextBlocked ? `Usuário ${user.contact} bloqueado.` : `Usuário ${user.contact} desbloqueado.`);
+    } catch (err) {
+      showToast(err?.message || 'Erro ao bloquear usuário.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const handleChangePassword = async (user) => {
+    const nextPass = window.prompt(`Nova senha para ${user.name} (${user.contact}):`, user.password || '');
+    if (!nextPass || !nextPass.trim()) return;
+    setActionBusyId(user.contact);
+    try {
+      await adminAuthService.setUserPasswordAsync({ contact: user.contact, newPassword: nextPass.trim() });
+      await refreshStats();
+      showToast(`Senha de ${user.contact} atualizada!`);
+    } catch (err) {
+      showToast(err?.message || 'Erro ao alterar senha.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const handleToggleModule = async (user, modKey) => {
+    const current = Array.isArray(user.entitlements) ? user.entitlements : [];
+    const next = current.includes(modKey)
+      ? current.filter((k) => k !== modKey)
+      : [...current, modKey];
+    setActionBusyId(user.contact);
+    try {
+      await adminAuthService.setUserModulesAsync({ contact: user.contact, entitlements: next });
+      await refreshStats();
+      showToast(`Módulos de ${user.contact} atualizados.`);
+    } catch (err) {
+      showToast(err?.message || 'Erro ao atualizar módulos.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const handleGiftInvites = async (user) => {
+    const raw = window.prompt(`Quantos Convites VIP (180 dias) deseja enviar para ${user.name} (${user.contact})?`, '1');
+    const qty = parseInt(raw || '0', 10);
+    if (!qty || qty < 1) return;
+    setActionBusyId(user.contact);
+    try {
+      const res = await adminAuthService.giftUserInvitesAsync({ contact: user.contact, quantity: qty });
+      await refreshStats();
+      showToast(`${res.created?.length || qty} convite(s) adicionado(s) à conta de ${user.contact}!`);
+    } catch (err) {
+      showToast(err?.message || 'Erro ao gerar convites.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const handleDeleteUser = async (user) => {
+    if (!window.confirm(`Excluir permanentemente o usuário ${user.name} (${user.contact})?`)) return;
+    setActionBusyId(user.contact);
+    try {
+      await adminAuthService.deleteUserAsync(user.contact);
+      await refreshStats();
+      showToast(`Usuário ${user.contact} excluído.`);
+    } catch (err) {
+      showToast(err?.message || 'Erro ao excluir usuário.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const handleCopyCredentials = (user) => {
+    const info = `Acesso 1Convite\nLink: https://1convite.com.br/app\nLogin: ${user.contact}\nSenha: ${user.password || '(sem senha definida)'}`;
+    navigator.clipboard?.writeText(info).catch(() => {});
+    showToast(`Credenciais de ${user.contact} copiadas!`);
+  };
+
+  const handleResetTestData = async (scope) => {
+    const labels = {
+      vendas: 'TODAS as vendas/pagamentos registrados no painel',
+      usuarios: 'TODOS os usuários e vouchers de teste (mantendo apenas Admin e REINO6M/VIP2026/FAMILIA1C)',
+      tudo: 'TODAS as vendas, usuários e vouchers de teste (mantendo apenas Admin e códigos base)',
+    };
+    if (!window.confirm(`ATENÇÃO: Deseja realmente apagar ${labels[scope]}? Esta ação não pode ser desfeita.`)) return;
+    setActionBusyId(`reset_${scope}`);
+    try {
+      await adminAuthService.resetTestDataAsync(scope);
+      await refreshStats();
+      showToast('Dados de teste limpos com sucesso!');
+    } catch (err) {
+      showToast(err?.message || 'Erro ao limpar dados.');
+    } finally {
+      setActionBusyId('');
+    }
+  };
+
+  const downloadCsv = (filename, headers, rows) => {
+    const csvLines = [
+      headers.join(';'),
+      ...rows.map((r) => r.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(';')),
+    ];
+    const blob = new Blob(['\uFEFF' + csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleConfirmPaymentManual = async (paymentId) => {
     if (!window.confirm('Confirmar pagamento manualmente e liberar acesso VIP + e-mail ao cliente?')) return;
     setActionBusyId(paymentId);
@@ -385,6 +502,7 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                     { id: 'todos', label: 'Todos' },
                     { id: 'vip', label: 'VIPs' },
                     { id: 'gratis', label: 'Gratuitos' },
+                    { id: 'bloqueados', label: 'Bloqueados' },
                   ].map((f) => (
                     <button
                       key={f.id}
@@ -396,6 +514,28 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                     </button>
                   ))}
                 </div>
+                <button
+                  type="button"
+                  className="admin-mini-btn info"
+                  onClick={() =>
+                    downloadCsv(
+                      'clientes-1convite.csv',
+                      ['Nome', 'Contato', 'Senha', 'Tipo', 'Plano', 'Bloqueado', 'Modulos', 'Acessos'],
+                      (stats.recentUsers || []).map((u) => [
+                        u.name,
+                        u.contact,
+                        u.password || '',
+                        u.type,
+                        u.plan || '',
+                        u.blocked ? 'Sim' : 'Nao',
+                        (u.entitlements || []).join(', '),
+                        u.accessCount || 1,
+                      ])
+                    )
+                  }
+                >
+                  Exportar CSV
+                </button>
               </div>
             </div>
 
@@ -404,28 +544,84 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                 <thead>
                   <tr>
                     <th>Usuário</th>
-                    <th>Contato</th>
-                    <th>Plano Atual</th>
+                    <th>Contato &amp; Senha</th>
+                    <th>Plano &amp; Módulos</th>
                     <th>Acessos</th>
                     <th>Ações Diretas</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredUsers.map((u) => (
-                    <tr key={u.id || u.contact}>
-                      <td className="admin-cell-strong">{u.name}</td>
-                      <td>{u.contact}</td>
+                  {(stats.recentUsers || []).filter((u) => {
+                    const q = userSearch.trim().toLowerCase();
+                    const matchQ = !q || String(u.name || '').toLowerCase().includes(q) || String(u.contact || '').toLowerCase().includes(q);
+                    if (!matchQ) return false;
+                    if (userFilter === 'bloqueados') return Boolean(u.blocked);
+                    if (userFilter === 'vip') return u.type === 'vip' || u.type === 'admin';
+                    if (userFilter === 'gratis') return u.type === 'gratis';
+                    return true;
+                  }).map((u) => {
+                    const ents = Array.isArray(u.entitlements) ? u.entitlements : [];
+                    return (
+                    <tr key={u.id || u.contact} style={u.blocked ? { opacity: 0.6 } : undefined}>
+                      <td className="admin-cell-strong">
+                        {u.name}
+                        {u.blocked && (
+                          <div style={{ fontSize: '0.68rem', color: '#f87171', fontWeight: 700 }}>SUSPENSO</div>
+                        )}
+                      </td>
+                      <td>
+                        <div>{u.contact}</div>
+                        {u.type !== 'admin' && (
+                          <div style={{ fontSize: '0.74rem', color: '#fbbf24', marginTop: '3px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span>Senha: <code>{u.password || '—'}</code></span>
+                            <button type="button" className="admin-mini-btn info" style={{ padding: '2px 6px', fontSize: '0.66rem' }} onClick={() => handleCopyCredentials(u)}>
+                              Copiar
+                            </button>
+                          </div>
+                        )}
+                      </td>
                       <td>
                         <span className={`admin-type-badge admin-type-${u.type}`}>
                           {u.type === 'admin' ? 'Admin Mestre' : u.type === 'vip' ? (u.plan || 'VIP') : 'Gratuito'}
                         </span>
+                        {u.type !== 'admin' && (
+                          <div style={{ display: 'flex', gap: '4px', marginTop: '6px', flexWrap: 'wrap' }}>
+                            {[
+                              { key: 'ebooks', label: 'E-books' },
+                              { key: 'mulher_virtuosa', label: 'Mulher' },
+                              { key: 'pregador', label: 'Pregador' },
+                            ].map((m) => {
+                              const active = ents.includes(m.key);
+                              return (
+                                <button
+                                  key={m.key}
+                                  type="button"
+                                  disabled={actionBusyId === u.contact}
+                                  onClick={() => handleToggleModule(u, m.key)}
+                                  style={{
+                                    fontSize: '0.65rem',
+                                    padding: '2px 7px',
+                                    borderRadius: '999px',
+                                    cursor: 'pointer',
+                                    border: active ? '1px solid #10b981' : '1px solid rgba(255,255,255,0.16)',
+                                    background: active ? 'rgba(16,185,129,0.2)' : 'transparent',
+                                    color: active ? '#34d399' : '#9ca3af',
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {active ? '✓ ' : '+ '}{m.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                       </td>
                       <td>{u.accessCount || 1}x</td>
                       <td>
                         {u.type === 'admin' ? (
                           <span className="admin-muted-text">Protegido</span>
                         ) : (
-                          <div className="admin-actions-inline">
+                          <div className="admin-actions-inline" style={{ flexWrap: 'wrap' }}>
                             <button
                               type="button"
                               disabled={actionBusyId === u.contact}
@@ -442,6 +638,30 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                             >
                               Liberar 1 Ano
                             </button>
+                            <button
+                              type="button"
+                              disabled={actionBusyId === u.contact}
+                              className="admin-mini-btn info"
+                              onClick={() => handleChangePassword(u)}
+                            >
+                              Senha
+                            </button>
+                            <button
+                              type="button"
+                              disabled={actionBusyId === u.contact}
+                              className="admin-mini-btn success"
+                              onClick={() => handleGiftInvites(u)}
+                            >
+                              +Convites
+                            </button>
+                            <button
+                              type="button"
+                              disabled={actionBusyId === u.contact}
+                              className={`admin-mini-btn ${u.blocked ? 'success' : 'danger'}`}
+                              onClick={() => handleToggleBlock(u)}
+                            >
+                              {u.blocked ? 'Desbloquear' : 'Bloquear'}
+                            </button>
                             {u.type === 'vip' && (
                               <button
                                 type="button"
@@ -452,11 +672,20 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                                 Remover VIP
                               </button>
                             )}
+                            <button
+                              type="button"
+                              disabled={actionBusyId === u.contact}
+                              className="admin-mini-btn danger"
+                              onClick={() => handleDeleteUser(u)}
+                            >
+                              Excluir
+                            </button>
                           </div>
                         )}
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                   {filteredUsers.length === 0 && (
                     <tr><td colSpan="5" className="admin-empty-cell">Nenhum usuário encontrado para este filtro.</td></tr>
                   )}
@@ -499,6 +728,29 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
                     </button>
                   ))}
                 </div>
+                <button
+                  type="button"
+                  className="admin-mini-btn info"
+                  onClick={() =>
+                    downloadCsv(
+                      'vendas-asaas-1convite.csv',
+                      ['PedidoID', 'Cliente', 'Email', 'Plano/Oferta', 'Valor', 'Metodo', 'Status', 'EmailEnviado', 'Data'],
+                      (stats.recentPayments || []).map((p) => [
+                        p.paymentId,
+                        p.customerName,
+                        p.customerEmail,
+                        p.planId,
+                        Number(p.valueReais || 0).toFixed(2),
+                        p.billingType,
+                        p.status,
+                        p.emailSent ? 'Sim' : 'Nao',
+                        p.createdAt || '',
+                      ])
+                    )
+                  }
+                >
+                  Exportar CSV
+                </button>
               </div>
             </div>
 
@@ -792,6 +1044,43 @@ export default function AdminPanel({ onOpenApp, onOpenLanding, onLogout }) {
             </section>
 
             <SalesFunnelPipelineSection />
+
+            <section className="admin-section" style={{ marginTop: '20px', borderColor: 'rgba(239, 68, 68, 0.35)' }}>
+              <div className="admin-section-header">
+                <div>
+                  <h2 style={{ color: '#fca5a5' }}>Limpeza &amp; Reset de Dados de Teste (Pré-Lançamento)</h2>
+                  <p className="admin-section-sub">
+                    Zere vendas ou cadastros de teste antes de iniciar as vendas reais. Sua conta Administrador e os códigos base (REINO6M, VIP2026, FAMILIA1C) são sempre preservados.
+                  </p>
+                </div>
+              </div>
+              <div className="admin-actions-inline" style={{ flexWrap: 'wrap', gap: '10px' }}>
+                <button
+                  type="button"
+                  className="admin-mini-btn danger"
+                  disabled={actionBusyId === 'reset_vendas'}
+                  onClick={() => handleResetTestData('vendas')}
+                >
+                  {actionBusyId === 'reset_vendas' ? 'Limpando...' : 'Limpar Vendas de Teste'}
+                </button>
+                <button
+                  type="button"
+                  className="admin-mini-btn danger"
+                  disabled={actionBusyId === 'reset_usuarios'}
+                  onClick={() => handleResetTestData('usuarios')}
+                >
+                  {actionBusyId === 'reset_usuarios' ? 'Limpando...' : 'Limpar Usuários & Vouchers de Teste'}
+                </button>
+                <button
+                  type="button"
+                  className="admin-mini-btn danger"
+                  disabled={actionBusyId === 'reset_tudo'}
+                  onClick={() => handleResetTestData('tudo')}
+                >
+                  {actionBusyId === 'reset_tudo' ? 'Zerando...' : 'Zerar Tudo para Lançamento'}
+                </button>
+              </div>
+            </section>
           </div>
         )}
       </div>

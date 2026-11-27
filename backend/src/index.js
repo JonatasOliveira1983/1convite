@@ -275,6 +275,9 @@ async function ensureTables() {
         await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN genero TEXT DEFAULT 'homem'`);
       } catch {}
       try {
+        await client.query(`ALTER TABLE tb_acessos_usuarios ADD COLUMN blocked INTEGER DEFAULT 0`);
+      } catch {}
+      try {
         await client.query(`ALTER TABLE tb_vouchers ADD COLUMN gifted_by_name TEXT`);
       } catch {}
       try {
@@ -2774,6 +2777,13 @@ app.post('/api/v1/auth/login', async (req, res) => {
       });
     }
 
+    if (Number(existing.blocked) === 1) {
+      return res.json({
+        success: false,
+        message: 'Esta conta está temporariamente suspensa pelo administrador. Entre em contato com o suporte.'
+      });
+    }
+
     if (existing.password && (!cleanPass || existing.password !== cleanPass)) {
       return res.json({
         success: false,
@@ -2849,8 +2859,8 @@ app.get('/api/v1/auth/me', async (req, res) => {
       });
     }
     const existing = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanContact]);
-    if (!existing) {
-      return res.json({ success: false, user: null });
+    if (!existing || Number(existing.blocked) === 1) {
+      return res.json({ success: false, user: null, blocked: Boolean(existing && Number(existing.blocked) === 1) });
     }
     res.json({
       success: true,
@@ -2877,8 +2887,8 @@ app.get('/api/v1/auth/me', async (req, res) => {
 app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
   try {
     const vouchersRaw = await dbAll('SELECT * FROM tb_vouchers ORDER BY created_at DESC');
-    const usersRaw = await dbAll('SELECT id, name, contact, type, plan, vip_code, expiry_timestamp, created_at, last_login, access_count FROM tb_acessos_usuarios ORDER BY last_login DESC');
-    const paymentsRaw = await dbAll('SELECT payment_id, order_id, plan_id, customer_name, customer_email, billing_type, value_cents, status, vouchers_json, email_sent, email_error, paid_at, created_at FROM tb_pagamentos_asaas ORDER BY created_at DESC LIMIT 30');
+    const usersRaw = await dbAll('SELECT id, name, contact, password, type, plan, vip_code, expiry_timestamp, entitlements_json, blocked, created_at, last_login, access_count FROM tb_acessos_usuarios ORDER BY last_login DESC');
+    const paymentsRaw = await dbAll('SELECT payment_id, order_id, plan_id, customer_name, customer_email, billing_type, value_cents, status, vouchers_json, email_sent, email_error, paid_at, created_at FROM tb_pagamentos_asaas ORDER BY created_at DESC LIMIT 100');
 
     const vouchers = vouchersRaw.map(v => ({
       code: v.code,
@@ -2894,10 +2904,13 @@ app.get('/api/v1/admin/dashboard', requireAdminHeader, async (req, res) => {
       id: u.id,
       name: u.name,
       contact: u.contact,
+      password: u.password || '',
       type: u.type,
       plan: u.plan,
       vipCode: u.vip_code,
       expiryTimestamp: u.expiry_timestamp ? Number(u.expiry_timestamp) : null,
+      entitlements: parseEntitlements(u.entitlements_json),
+      blocked: Boolean(Number(u.blocked)),
       createdAt: u.created_at,
       lastLogin: u.last_login,
       accessCount: Number(u.access_count || 1)
@@ -3020,6 +3033,106 @@ app.post('/api/v1/admin/email-pipeline/test', requireAdminHeader, async (req, re
   } catch (err) {
     console.error('Erro em /admin/email-pipeline/test:', err);
     res.status(500).json({ success: false, message: 'Erro interno ao enviar e-mail de teste.' });
+  }
+});
+
+// ── NOVOS CONTROLES ADM: BLOQUEIO, SENHA, MÓDULOS, CONVITES E RESET DE TESTES ──
+app.post('/api/v1/admin/usuarios/bloquear', requireAdminHeader, async (req, res) => {
+  try {
+    const { contact, blocked } = req.body || {};
+    const clean = String(contact || '').trim().toLowerCase();
+    if (!clean || clean === ADMIN_EMAIL) {
+      return res.status(400).json({ success: false, message: 'Contato inválido ou protegido.' });
+    }
+    await dbRun('UPDATE tb_acessos_usuarios SET blocked = $1 WHERE LOWER(contact) = $2', [blocked ? 1 : 0, clean]);
+    res.json({ success: true, blocked: Boolean(blocked) });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao alterar bloqueio.' });
+  }
+});
+
+app.post('/api/v1/admin/usuarios/senha', requireAdminHeader, async (req, res) => {
+  try {
+    const { contact, newPassword } = req.body || {};
+    const clean = String(contact || '').trim().toLowerCase();
+    const pass = String(newPassword || '').trim();
+    if (!clean || !pass) {
+      return res.status(400).json({ success: false, message: 'Informe contato e nova senha.' });
+    }
+    await dbRun('UPDATE tb_acessos_usuarios SET password = $1 WHERE LOWER(contact) = $2', [pass, clean]);
+    res.json({ success: true, password: pass });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao atualizar senha.' });
+  }
+});
+
+app.post('/api/v1/admin/usuarios/modulos', requireAdminHeader, async (req, res) => {
+  try {
+    const { contact, entitlements = [] } = req.body || {};
+    const clean = String(contact || '').trim().toLowerCase();
+    if (!clean) {
+      return res.status(400).json({ success: false, message: 'Contato obrigatório.' });
+    }
+    const cleanList = Array.from(new Set(Array.isArray(entitlements) ? entitlements : []));
+    await dbRun('UPDATE tb_acessos_usuarios SET entitlements_json = $1 WHERE LOWER(contact) = $2', [JSON.stringify(cleanList), clean]);
+    res.json({ success: true, entitlements: cleanList });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao atualizar módulos do usuário.' });
+  }
+});
+
+app.post('/api/v1/admin/usuarios/presentear-convites', requireAdminHeader, async (req, res) => {
+  try {
+    const { contact, quantity = 1 } = req.body || {};
+    const clean = String(contact || '').trim().toLowerCase();
+    const qty = Math.max(1, Math.min(50, Math.floor(Number(quantity) || 1)));
+    if (!clean) {
+      return res.status(400).json({ success: false, message: 'Contato obrigatório.' });
+    }
+    const userRow = await dbGet('SELECT name FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [clean]);
+    const nowIso = new Date().toISOString();
+    const created = [];
+    for (let i = 0; i < qty; i++) {
+      const code = generateInviteCode('reino');
+      await dbRun(
+        `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, gifted_by_name, owner_email, created_at)
+         VALUES ($1, 1, 0, 180, 1, $2, $3, $4, $5)`,
+        [code, `Cortesia ADM (${clean})`, userRow?.name || 'Membro 1Convite', clean, nowIso]
+      );
+      created.push(code);
+    }
+    res.json({ success: true, created });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao gerar convites para usuário.' });
+  }
+});
+
+app.delete('/api/v1/admin/usuarios/:contact', requireAdminHeader, async (req, res) => {
+  try {
+    const clean = decodeURIComponent(String(req.params.contact || '')).trim().toLowerCase();
+    if (!clean || clean === ADMIN_EMAIL) {
+      return res.status(400).json({ success: false, message: 'Não é possível excluir a conta do administrador.' });
+    }
+    await dbRun('DELETE FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [clean]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao excluir usuário.' });
+  }
+});
+
+app.post('/api/v1/admin/reset-testes', requireAdminHeader, async (req, res) => {
+  try {
+    const { scope = 'vendas' } = req.body || {};
+    if (scope === 'vendas' || scope === 'tudo') {
+      await dbRun('DELETE FROM tb_pagamentos_asaas');
+    }
+    if (scope === 'usuarios' || scope === 'tudo') {
+      await dbRun('DELETE FROM tb_acessos_usuarios WHERE LOWER(contact) <> $1', [ADMIN_EMAIL]);
+      await dbRun("DELETE FROM tb_vouchers WHERE code NOT IN ('REINO6M', 'VIP2026', 'FAMILIA1C')");
+    }
+    res.json({ success: true, scope });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao limpar dados de teste.' });
   }
 });
 

@@ -515,6 +515,71 @@ export const adminAuthService = {
     return data;
   },
 
+  async toggleUserBlockAsync({ contact, blocked }) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/bloquear`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ contact, blocked })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao alterar bloqueio.');
+    return data;
+  },
+
+  async setUserPasswordAsync({ contact, newPassword }) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/senha`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ contact, newPassword })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao alterar senha.');
+    return data;
+  },
+
+  async setUserModulesAsync({ contact, entitlements }) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/modulos`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ contact, entitlements })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao atualizar módulos.');
+    return data;
+  },
+
+  async giftUserInvitesAsync({ contact, quantity }) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/presentear-convites`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ contact, quantity })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao gerar convites.');
+    return data;
+  },
+
+  async deleteUserAsync(contact) {
+    const resp = await fetch(`${API_BASE}/admin/usuarios/${encodeURIComponent(contact)}`, {
+      method: 'DELETE',
+      headers: getAdminHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao excluir usuário.');
+    return data;
+  },
+
+  async resetTestDataAsync(scope = 'vendas') {
+    const resp = await fetch(`${API_BASE}/admin/reset-testes`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify({ scope })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data?.success) throw new Error(data?.message || 'Erro ao limpar dados de teste.');
+    return data;
+  },
+
   async createVoucherAsync({ code, maxUses = 1, daysValid = 180, notes = '' }) {
     try {
       const resp = await fetch(`${API_BASE}/admin/vouchers`, {
