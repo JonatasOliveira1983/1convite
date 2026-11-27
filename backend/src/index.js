@@ -2643,6 +2643,14 @@ app.post('/api/v1/auth/register', async (req, res) => {
     let daysValid = 0;
     let plan = 'Membro Convidado';
 
+    if (!cleanVip) {
+      return res.json({
+        success: false,
+        requiresPlan: true,
+        message: 'O acesso ao 1Convite é exclusivo para assinantes ou convidados. Adquira um plano ou informe um Código de Convite VIP válido para usar por 6 meses gratuitos.',
+      });
+    }
+
     if (cleanVip) {
       const voucher = await dbGet('SELECT * FROM tb_vouchers WHERE code = $1', [cleanVip]);
       if (!voucher) {
@@ -2761,14 +2769,25 @@ app.post('/api/v1/auth/login', async (req, res) => {
     if (!existing) {
       return res.json({
         success: false,
-        message: 'Usuário não encontrado. Se for sua primeira vez, clique em "Cadastrar-se".'
+        requiresPlan: true,
+        message: 'Nenhuma assinatura encontrada para este contato. Adquira um pacote ou ative um Código de Convite VIP para acessar.'
       });
     }
 
-    if (existing.password && cleanPass && existing.password !== cleanPass) {
+    if (existing.password && (!cleanPass || existing.password !== cleanPass)) {
       return res.json({
         success: false,
-        message: 'Senha incorreta. Tente novamente.'
+        message: 'Senha incorreta. Confira a senha enviada no seu e-mail e tente novamente.'
+      });
+    }
+
+    const isVipActive = (existing.type === 'vip' || existing.type === 'admin') &&
+      (!existing.expiry_timestamp || Number(existing.expiry_timestamp) > Date.now());
+    if (!isVipActive) {
+      return res.json({
+        success: false,
+        requiresPlan: true,
+        message: 'Seu acesso não está ativo ou expirou. Adquira um pacote ou ative um Código de Convite VIP para continuar.'
       });
     }
 

@@ -115,6 +115,10 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
       setErrorMsg('Defina uma senha simples de acesso.');
       return;
     }
+    if (!vipCode.trim()) {
+      setErrorMsg('Para criar conta sem comprar um plano, informe um Código de Convite VIP válido (6 meses grátis) ou adquira um pacote.');
+      return;
+    }
 
     setLoading(true);
 
@@ -154,14 +158,16 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
     }, 900);
   };
 
-  const handlePillarClick = (pillarName) => {
-    try {
-      localStorage.setItem('1convite_guest_mode', 'true');
-    } catch (e) {
-      console.warn(e);
-    }
-    if (onExploreGuest) {
-      onExploreGuest(pillarName);
+  const handlePillarClick = () => {
+    setErrorMsg('Acesso exclusivo para membros com assinatura ativa ou Código de Convite VIP.');
+    setViewMode('login');
+  };
+
+  const handleGoToPlans = () => {
+    if (onBackToLanding) {
+      onBackToLanding();
+    } else {
+      window.location.href = '/#planos';
     }
   };
 
@@ -270,22 +276,32 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
               </button>
             </div>
 
-            {/* Linha 3: Botão Principal Dourado/Amarelo */}
+            {/* Linha 3: Botão Principal */}
             <button 
               type="button" 
               className="c6-btn-primary"
               onClick={() => { setViewMode('login'); setErrorMsg(''); }}
             >
-              <span>Acessar conta</span>
+              <span>Já comprei • Acessar conta</span>
             </button>
 
-            {/* Linha 4: Botão Secundário Noturno */}
+            {/* Linha 4: Botão Secundário Convite VIP */}
             <button 
               type="button" 
               className="c6-btn-secondary"
               onClick={() => { setViewMode('register'); setErrorMsg(''); }}
             >
-              <span>Criar nova conta ou Ativar VIP</span>
+              <span>Tenho um Convite VIP (6 Meses Grátis)</span>
+            </button>
+
+            {/* Linha 5: Comprar Pacote */}
+            <button
+              type="button"
+              className="c6-btn-secondary"
+              style={{ marginTop: '8px', borderColor: 'rgba(16, 185, 129, 0.45)', color: '#34d399' }}
+              onClick={handleGoToPlans}
+            >
+              <span>Não tenho acesso • Adquirir um Pacote →</span>
             </button>
           </>
         )}
@@ -336,7 +352,25 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
 
               {errorMsg && (
                 <div className="c6-alert-msg c6-alert-error">
-                  {errorMsg}
+                  <div>{errorMsg}</div>
+                  <button
+                    type="button"
+                    onClick={handleGoToPlans}
+                    style={{
+                      marginTop: '8px',
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(16, 185, 129, 0.5)',
+                      background: 'rgba(16, 185, 129, 0.16)',
+                      color: '#34d399',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Adquirir um Pacote Agora →
+                  </button>
                 </div>
               )}
               {successMsg && (
@@ -409,7 +443,7 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
               <div className="c6-vip-input-wrap">
                 <div className="c6-drawer-field">
                   <label className="c6-drawer-label">
-                    <span>Código VIP (Opcional)</span>
+                    <span>Código de Convite VIP *</span>
                     <span style={{ color: '#FACC15', fontWeight: '800' }}>6 Meses Grátis</span>
                   </label>
                   <input
@@ -426,7 +460,25 @@ export default function LoginPage({ onLoginSuccess, onExploreGuest, onBackToLand
 
               {errorMsg && (
                 <div className="c6-alert-msg c6-alert-error">
-                  {errorMsg}
+                  <div>{errorMsg}</div>
+                  <button
+                    type="button"
+                    onClick={handleGoToPlans}
+                    style={{
+                      marginTop: '8px',
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(16, 185, 129, 0.5)',
+                      background: 'rgba(16, 185, 129, 0.16)',
+                      color: '#34d399',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Adquirir um Pacote Agora →
+                  </button>
                 </div>
               )}
               {successMsg && (

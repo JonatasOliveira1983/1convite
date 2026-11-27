@@ -486,10 +486,11 @@ function App() {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    if (typeof window === 'undefined') return true;
+    if (typeof window === 'undefined') return false;
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('login') === 'true') return false;
-    return localStorage.getItem('1convite_logged_in') === 'true' || localStorage.getItem('1convite_guest_mode') === 'true';
+    if (urlParams.get('login') === 'true' || urlParams.get('vip')) return false;
+    try { localStorage.removeItem('1convite_guest_mode'); } catch {}
+    return localStorage.getItem('1convite_logged_in') === 'true';
   });
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [unlockOfferId, setUnlockOfferId] = useState(null);
@@ -3122,7 +3123,7 @@ Em nome de Jesus, Amém.`;
   if (!isLoggedIn) {
     return (
       <LoginPage 
-        onBackToLanding={!isCapacitor ? () => navigateAppRoute(false) : undefined}
+        onBackToLanding={!isCapacitor ? () => { navigateAppRoute(false); window.location.hash = '#planos'; } : undefined}
         onLoginSuccess={(userData) => {
           setIsLoggedIn(true);
           setProfileName(userData.name);
