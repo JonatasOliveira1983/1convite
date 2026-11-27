@@ -47,27 +47,8 @@
         ]
       }
     </script>
-    <!-- Limpeza de emergência de caches corrompidos e desregistro de Service Workers -->
-    <script>
-      try {
-        if ('caches' in window) {
-          caches.keys().then(function(names) {
-            names.forEach(function(name) {
-              caches.delete(name);
-            });
-          });
-        }
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function(regs) {
-            for (var r of regs) {
-              r.unregister();
-            }
-          });
-        }
-      } catch (e) {
-        console.warn('Erro ao limpar caches:', e);
-      }
-    </script>
+    <link rel="preconnect" href="https://oneconvite.onrender.com" crossorigin />
+    <link rel="dns-prefetch" href="https://oneconvite.onrender.com" />
     <!-- Previne erros do React Fast Refresh em compilações locais -->
     <script>
       if (!window.$RefreshReg$) window.$RefreshReg$ = () => {};
