@@ -3416,6 +3416,28 @@ app.get('/api/v1/admin/sales-funnel', requireAdminHeader, async (req, res) => {
   }
 });
 
+app.get('/api/v1/vouchers/info/:code', async (req, res) => {
+  try {
+    const cleanCode = decodeURIComponent(String(req.params.code || '')).trim().toUpperCase();
+    if (!cleanCode) {
+      return res.json({ success: false });
+    }
+    const voucher = await dbGet('SELECT code, days_valid, gifted_by_name, active FROM tb_vouchers WHERE code = $1', [cleanCode]);
+    if (!voucher) {
+      return res.json({ success: false });
+    }
+    return res.json({
+      success: true,
+      code: voucher.code,
+      daysValid: Number(voucher.days_valid) || 180,
+      giftedByName: voucher.gifted_by_name || '',
+      active: Boolean(Number(voucher.active))
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false });
+  }
+});
+
 app.post('/api/v1/vouchers/validate', async (req, res) => {
   try {
     const { code, guestName = '', guestEmail = '' } = req.body || {};

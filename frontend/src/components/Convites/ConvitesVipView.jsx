@@ -497,7 +497,7 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
               <div className="cv-gv-header">
                 <img src={appLogoDark} alt="1Convite" className="cv-gv-logo" />
                 <div className="cv-gv-seal">
-                  <span className="cv-gv-seal-big">180</span>
+                  <span className="cv-gv-seal-big">{activeVoucher?.daysValid || 180}</span>
                   <span className="cv-gv-seal-small">DIAS</span>
                   <span className="cv-gv-seal-small">GRÁTIS</span>
                 </div>
