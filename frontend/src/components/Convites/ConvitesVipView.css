@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
 .cv-container {
   max-width: 1020px;
   margin: 0 auto;
   padding: 20px 16px 96px;
   color: #fafafa;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .cv-topbar {
@@ -19,57 +21,56 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #e4e4e7;
-  padding: 8px 14px;
+  padding: 8px 15px;
   border-radius: 999px;
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .cv-badge-gold {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: #fbbf24;
-  background: rgba(245, 158, 11, 0.14);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 5px 12px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.32);
+  padding: 5px 13px;
   border-radius: 999px;
 }
 
 .cv-hero-card {
   display: grid;
-  grid-template-columns: 1.25fr 0.95fr;
-  gap: 24px;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 28px;
   align-items: center;
-  background: linear-gradient(145deg, #131318 0%, #0d1117 100%);
-  border: 1px solid rgba(251, 191, 36, 0.25);
+  background: linear-gradient(145deg, #111217 0%, #090b10 100%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 22px;
-  padding: 26px 24px;
+  padding: 28px 24px;
   margin-bottom: 24px;
 }
 
 .cv-kicker {
   display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  color: #fbbf24;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f5d061;
   margin-bottom: 8px;
 }
 
 .cv-title {
   margin: 0 0 12px;
-  font-size: 1.55rem;
-  line-height: 1.25;
-  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1.28;
+  font-weight: 700;
   color: #ffffff;
+  letter-spacing: -0.015em;
 }
 
 .cv-subtitle {
   margin: 0 0 18px;
-  font-size: 0.92rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.62;
   color: #d4d4d8;
 }
 
@@ -77,16 +78,17 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  margin-bottom: 18px;
 }
 
 .cv-stat-pill {
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   padding: 10px 16px;
-  min-width: 140px;
+  min-width: 148px;
 }
 
 .cv-stat-pill strong {
@@ -105,87 +107,264 @@
   margin-top: 3px;
 }
 
+/* Personalização da Dedicatória */
+.cv-dedication-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cv-dedication-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e4e4e7;
+}
+
+.cv-dedication-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #18181f;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  outline: none;
+}
+
+.cv-dedication-input:focus {
+  border-color: #d4af37;
+}
+
+.cv-verse-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cv-verse-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #d4d4d8;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cv-verse-pill.active {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: rgba(212, 175, 55, 0.55);
+  color: #fde68a;
+}
+
+/* ── VOUCHER VERTICAL DE LUXO (FIEL AO CONVITE PORTAL DE LUZ) ── */
 .cv-preview-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.cv-vip-card-visual {
+.cv-gv-card {
   width: 100%;
-  max-width: 340px;
-  background: linear-gradient(135deg, #1b1409 0%, #09090b 65%, #1d150a 100%);
-  border: 1.5px solid #d97706;
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.55);
+  max-width: 365px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 16, 22, 0.9) 45%, rgba(26, 20, 10, 0.95) 100%);
+  border: 1px solid rgba(229, 193, 88, 0.5);
+  border-radius: 22px;
+  padding: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 42px rgba(212, 175, 55, 0.14);
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
 }
 
-.cv-vip-card-top {
+.cv-gv-inner {
+  position: relative;
+  background: rgba(10, 10, 14, 0.55);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 15px;
+  padding: 20px 18px 16px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.cv-gv-gold-bars {
+  position: absolute;
+  top: 14px;
+  left: -8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.cv-gv-bar {
+  height: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #aa7c11 0%, #f5e199 55%, #d4af37 100%);
+  opacity: 0.85;
+}
+
+.cv-gv-bar-1 { width: 52px; }
+.cv-gv-bar-2 { width: 34px; opacity: 0.55; }
+
+.cv-gv-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.cv-vip-logo {
-  height: 20px;
+.cv-gv-logo {
+  height: 24px;
   width: auto;
+  object-fit: contain;
 }
 
-.cv-vip-pill {
-  font-size: 0.65rem;
+.cv-gv-seal {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5e199 0%, #d4af37 55%, #9f710d 100%);
+  color: #161105;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
+  flex-shrink: 0;
+}
+
+.cv-gv-seal-big {
+  font-size: 16px;
   font-weight: 800;
-  color: #fde68a;
-  background: rgba(245, 158, 11, 0.18);
-  border: 1px solid rgba(245, 158, 11, 0.45);
-  padding: 3px 9px;
-  border-radius: 999px;
 }
 
-.cv-vip-card-art img {
-  width: 100%;
-  height: 132px;
-  object-fit: cover;
+.cv-gv-seal-small {
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cv-gv-kicker {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e5c158;
+  margin-bottom: 4px;
+}
+
+.cv-gv-serif-title {
+  margin: 0 0 10px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.05;
+  color: #f8eab8;
+}
+
+.cv-gv-people {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #e4e4e7;
+}
+
+.cv-gv-to strong,
+.cv-gv-from strong {
+  color: #f5d061;
+}
+
+.cv-gv-dedication {
+  margin: 0 0 12px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.38;
+  color: #f4f4f5;
+}
+
+.cv-gv-divider {
+  height: 1px;
+  border-top: 1px dashed rgba(212, 175, 55, 0.4);
+  margin: 10px 0 12px;
+}
+
+.cv-gv-bottom-grid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cv-gv-code-box {
+  flex: 1;
+  background: rgba(9, 9, 12, 0.85);
+  border: 1px dashed rgba(212, 175, 55, 0.55);
   border-radius: 10px;
-  display: block;
-}
-
-.cv-vip-card-bottom {
-  margin-top: 10px;
+  padding: 9px 10px;
   text-align: center;
 }
 
-.cv-vip-quote {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 0.82rem;
-  color: #fde68a;
-  margin-bottom: 6px;
+.cv-gv-code-label {
+  display: block;
+  font-size: 0.65rem;
+  color: #a1a1aa;
+  margin-bottom: 2px;
 }
 
-.cv-vip-code-sample {
-  background: #09090b;
-  border: 1px dashed rgba(251, 191, 36, 0.55);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-family: monospace;
+.cv-gv-code-value {
+  font-family: 'Montserrat', monospace;
   font-size: 1rem;
   font-weight: 800;
-  color: #fbbf24;
   letter-spacing: 0.1em;
+  color: #f5d061;
+}
+
+.cv-gv-qr-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  flex-shrink: 0;
+}
+
+.cv-gv-qr-box img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cv-gv-auth-seal {
+  margin-top: 10px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: rgba(245, 225, 153, 0.72);
+  letter-spacing: 0.04em;
 }
 
 .cv-preview-caption {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 0.74rem;
   color: #a1a1aa;
   text-align: center;
 }
 
+/* Seção Compra de Convites */
 .cv-buy-section {
   background: #121217;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 24px;
@@ -193,16 +372,15 @@
 
 .cv-kicker-green {
   display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: #34d399;
-  letter-spacing: 0.08em;
   margin-bottom: 6px;
 }
 
 .cv-buy-header h2 {
   margin: 0 0 6px;
-  font-size: 1.3rem;
+  font-size: 1.28rem;
 }
 
 .cv-buy-header p {
@@ -218,8 +396,8 @@
 }
 
 .cv-offer-card {
-  background: #191920;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #18181f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 18px;
   display: flex;
@@ -229,15 +407,14 @@
 }
 
 .cv-offer-card.cv-offer-highlight {
-  background: linear-gradient(155deg, rgba(245, 158, 11, 0.12) 0%, #191920 65%);
-  border-color: rgba(245, 158, 11, 0.5);
+  background: linear-gradient(155deg, rgba(245, 158, 11, 0.1) 0%, #18181f 65%);
+  border-color: rgba(212, 175, 55, 0.45);
 }
 
 .cv-offer-tag {
-  font-size: 0.68rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
   color: #34d399;
-  letter-spacing: 0.06em;
 }
 
 .cv-tag-gold {
@@ -246,14 +423,14 @@
 
 .cv-offer-card h3 {
   margin: 0;
-  font-size: 1.12rem;
+  font-size: 1.1rem;
 }
 
 .cv-offer-desc {
   margin: 0;
   font-size: 0.84rem;
   color: #cbd5e1;
-  line-height: 1.45;
+  line-height: 1.48;
 }
 
 .cv-qty-row {
@@ -270,7 +447,7 @@
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   background: #22222b;
   color: #ffffff;
   font-size: 1.1rem;
@@ -286,7 +463,7 @@
   border-radius: 8px;
   padding: 6px;
   color: #ffffff;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.95rem;
 }
 
@@ -337,7 +514,7 @@
   background: #10b981;
   color: #052e16;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   cursor: pointer;
 }
 
@@ -346,16 +523,17 @@
   padding: 12px 16px;
   border-radius: 999px;
   border: none;
-  background: #f59e0b;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   color: #1c1917;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   cursor: pointer;
 }
 
+/* Lista de Convites */
 .cv-list-section {
   background: #121217;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 20px;
   padding: 24px;
 }
@@ -369,17 +547,17 @@
 
 .cv-list-head h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.18rem;
 }
 
 .cv-refresh-btn {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #e4e4e7;
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -387,7 +565,7 @@
   text-align: center;
   padding: 28px 18px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
   border-radius: 16px;
   color: #a1a1aa;
 }
@@ -405,8 +583,8 @@
 }
 
 .cv-voucher-item {
-  background: #191920;
-  border: 1px solid rgba(245, 158, 11, 0.38);
+  background: #18181f;
+  border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -427,14 +605,14 @@
 }
 
 .cv-status-badge {
-  font-size: 0.66rem;
-  font-weight: 800;
-  padding: 4px 9px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
   border-radius: 999px;
 }
 
 .cv-status-badge.avail {
-  background: rgba(245, 158, 11, 0.18);
+  background: rgba(245, 158, 11, 0.16);
   color: #fbbf24;
 }
 
@@ -444,22 +622,22 @@
 }
 
 .cv-days-pill {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: #a1a1aa;
   font-weight: 600;
 }
 
 .cv-voucher-code {
   background: #0d0d11;
-  border: 1px dashed rgba(251, 191, 36, 0.45);
+  border: 1px dashed rgba(212, 175, 55, 0.45);
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   font-family: monospace;
-  font-size: 1.2rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  color: #fbbf24;
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #f5d061;
 }
 
 .cv-redeemed-info {
@@ -504,12 +682,12 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
   padding: 9px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.8rem;
   cursor: pointer;
 }
 
-/* Template PDF offscreen em alta resolução */
+/* Template PDF offscreen fiel ao Voucher Vertical de Luxo */
 .cv-pdf-offscreen {
   position: fixed;
   left: -9999px;
@@ -517,104 +695,72 @@
   z-index: -1;
 }
 
-.cv-pdf-canvas-card {
-  width: 900px;
-  background: linear-gradient(135deg, #17120a 0%, #09090b 60%, #1a1309 100%);
-  border: 3px solid #d97706;
-  border-radius: 22px;
-  padding: 32px;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.cv-pdf-luxury-sheet {
+  width: 620px;
+  padding: 28px;
+  background: radial-gradient(circle at 50% 25%, #1c160c 0%, #060911 75%);
+  box-sizing: border-box;
 }
 
-.cv-pdf-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(251, 191, 36, 0.28);
-  padding-bottom: 18px;
-  margin-bottom: 24px;
+.cv-gv-card-pdf {
+  max-width: 100%;
+  padding: 14px;
 }
 
-.cv-pdf-logo {
-  height: 36px;
-  width: auto;
+.cv-gv-inner-pdf {
+  padding: 34px 28px 26px;
 }
 
-.cv-pdf-pill {
-  background: rgba(250, 204, 21, 0.16);
-  border: 1px solid rgba(250, 204, 21, 0.5);
-  color: #fde68a;
-  font-size: 13px;
-  font-weight: 800;
-  padding: 7px 16px;
-  border-radius: 999px;
+.cv-gv-logo-pdf {
+  height: 32px;
 }
 
-.cv-pdf-body {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 28px;
-  align-items: center;
+.cv-gv-seal-pdf {
+  width: 72px;
+  height: 72px;
 }
 
-.cv-pdf-art-col img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 2px solid rgba(251, 191, 36, 0.45);
+.cv-gv-seal-pdf .cv-gv-seal-big {
+  font-size: 21px;
 }
 
-.cv-pdf-eyebrow {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #fbbf24;
-  margin-bottom: 8px;
-}
-
-.cv-pdf-info-col h2 {
-  margin: 0 0 12px;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 26px;
-  color: #ffffff;
-}
-
-.cv-pdf-info-col p {
-  margin: 0 0 18px;
-  font-size: 15px;
-  line-height: 1.55;
-  color: #d4d4d8;
-}
-
-.cv-pdf-code-box {
-  background: #09090b;
-  border: 2px dashed #f59e0b;
-  border-radius: 14px;
-  padding: 14px 18px;
+.cv-gv-serif-pdf {
+  font-size: 3.1rem;
   margin-bottom: 14px;
-  text-align: center;
 }
 
-.cv-pdf-code-box span {
-  display: block;
-  font-size: 11px;
-  color: #a1a1aa;
-  margin-bottom: 4px;
+.cv-gv-dedication-pdf {
+  font-size: 1.32rem;
+  margin-bottom: 12px;
 }
 
-.cv-pdf-code-box strong {
-  font-family: monospace;
-  font-size: 28px;
-  color: #fbbf24;
-  letter-spacing: 0.15em;
+.cv-pdf-benefits {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  margin: 0 0 14px;
 }
 
-.cv-pdf-link {
-  font-size: 13px;
-  color: #34d399;
-  font-weight: 700;
+.cv-gv-bottom-pdf {
+  gap: 16px;
+}
+
+.cv-gv-qr-pdf {
+  width: 96px;
+  height: 96px;
+}
+
+.cv-pdf-steps {
+  margin-top: 18px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: left;
+  font-size: 0.78rem;
+  color: #d4d4d8;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 @media (max-width: 760px) {
@@ -628,6 +774,6 @@
   }
 
   .cv-title {
-    font-size: 1.3rem;
+    font-size: 1.28rem;
   }
 }

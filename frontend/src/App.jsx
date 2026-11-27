@@ -38,6 +38,7 @@ import banner3 from './assets/banners/3.png';
 import heroMountainsImg from './assets/feed/hero_mountains.jpg';
 import treinoTemploImg from './assets/feed/treino_templo.jpg';
 import bibliaSunsetBg from './assets/biblia/biblia_sunset_bg.jpg';
+import conviteVipCardBg from './assets/landing/convite_vip.jpg';
 const TreinoTemploView = lazy(() => import('./components/TreinoTemplo/TreinoTemploView'));
 import LoginPage from './components/Auth/LoginPage';
 const AdminPanel = lazy(() => import('./components/Admin/AdminPanel'));
@@ -3946,7 +3947,7 @@ Em nome de Jesus, Amém.`;
                     15 min • Sem Equipamentos • Rotinas Guiadas TemploFit
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setActiveTab('treino-templo'); }}
                       style={{
@@ -3969,24 +3970,6 @@ Em nome de Jesus, Amém.`;
                       </svg>
                       <span>Iniciar Treino</span>
                     </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setActiveTab('convites-vip'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        background: 'rgba(245, 158, 11, 0.92)',
-                        color: '#1c1917',
-                        fontWeight: '800',
-                        fontSize: '0.8rem',
-                        border: 'none',
-                        padding: '8px 14px',
-                        borderRadius: '10px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <span>Convites VIP</span>
-                    </button>
                     <span style={{ fontSize: '0.74rem', color: 'rgba(255, 255, 255, 0.6)' }}>
                       Cuidando do Templo de Deus
                     </span>
@@ -3994,6 +3977,101 @@ Em nome de Jesus, Amém.`;
                 </div>
               </div>
             )}
+
+            {/* 4B. BLOCO DEDICADO: CONVITES VIP (EM DESTAQUE LOGO ABAIXO DO TEMPLOFIT) */}
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                marginBottom: '26px',
+                minHeight: '196px',
+                border: '1px solid rgba(217, 119, 6, 0.38)',
+                boxShadow: '0 12px 28px rgba(0, 0, 0, 0.45)',
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                setActiveTab('convites-vip');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              <img
+                src={conviteVipCardBg}
+                alt="Convites VIP 1Convite"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block'
+                }}
+              />
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 1,
+                  minHeight: '196px',
+                  background: 'linear-gradient(95deg, rgba(9, 10, 14, 0.94) 0%, rgba(12, 13, 18, 0.84) 55%, rgba(15, 12, 8, 0.52) 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  padding: '22px 20px',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: '700',
+                    letterSpacing: '0.04em',
+                    color: '#FBBF24',
+                    background: 'rgba(245, 158, 11, 0.14)',
+                    border: '1px solid rgba(245, 158, 11, 0.32)',
+                    padding: '4px 10px',
+                    borderRadius: '999px',
+                    alignSelf: 'flex-start',
+                    marginBottom: '10px'
+                  }}
+                >
+                  Vale-Presente Oficial • 180 dias grátis
+                </span>
+
+                <h3 style={{ margin: '0 0 6px', fontSize: '1.22rem', fontWeight: '700', color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+                  Convites VIP: Abençoe quem você ama
+                </h3>
+
+                <p style={{ margin: '0 0 14px', fontSize: '0.84rem', lineHeight: '1.5', color: 'rgba(244, 244, 245, 0.86)', maxWidth: '520px' }}>
+                  Gerencie seus Vales-Presente dourados, personalize com dedicatória e QR Code, baixe em PDF ou envie pelo WhatsApp.
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTab('convites-vip');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                      color: '#1C1917',
+                      fontWeight: '800',
+                      fontSize: '0.84rem',
+                      border: 'none',
+                      padding: '10px 18px',
+                      borderRadius: '999px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span>Abrir Meus Convites VIP →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* 5. SEÇÃO BIBLIOTECA & FERRAMENTAS (COM IMAGENS DE FUNDO — DESKTOP & APP) */}
             <div style={{ marginBottom: '26px' }}>

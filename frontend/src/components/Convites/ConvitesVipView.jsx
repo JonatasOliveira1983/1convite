@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import QRCode from 'qrcode';
 import './ConvitesVipView.css';
-import conviteVipArt from '../../assets/landing/convite_vip.jpg';
 import appLogoDark from '../../assets/logomarca_dark.png';
 import AsaasCheckoutModal from '../Checkout/AsaasCheckoutModal';
 
@@ -18,6 +18,24 @@ function getApiBase() {
     : import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1';
 }
 
+const VERSICULOS_SUGESTAO = [
+  {
+    id: 'numeros',
+    label: 'Números 6:24',
+    texto: '“O Senhor te abençoe e te guarde; o Senhor faça resplandecer o seu rosto sobre ti.”',
+  },
+  {
+    id: 'jeremias',
+    label: 'Jeremias 29:11',
+    texto: '“Eu é que sei os pensamentos que tenho a vosso respeito, diz o Senhor; pensamentos de paz e de esperança.”',
+  },
+  {
+    id: 'salmos',
+    label: 'Salmos 23:1',
+    texto: '“O Senhor é o meu pastor; nada me faltará. Ele refrigera a minha alma e guia meus passos.”',
+  },
+];
+
 /**
  * Gera um PDF 1.4 válido a partir de um JPEG (DataURL) sem dependências externas.
  */
@@ -29,10 +47,10 @@ function buildSingleImagePdfBlob(jpegDataUrl, imgWidthPx, imgHeightPx) {
     imgBytes[i] = binaryStr.charCodeAt(i);
   }
 
-  // Página A4 paisagem (842 x 595 pt) ou proporcional com margem elegante
-  const pageW = 842;
-  const pageH = 595;
-  const margin = 40;
+  // Página A4 retrato (595 x 842 pt) — ideal para o Voucher Vertical de Luxo
+  const pageW = 595;
+  const pageH = 842;
+  const margin = 34;
   const maxW = pageW - margin * 2;
   const maxH = pageH - margin * 2;
   const scale = Math.min(maxW / imgWidthPx, maxH / imgHeightPx);
@@ -101,6 +119,12 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
   const [copiedCode, setCopiedCode] = useState('');
   const [downloadingCode, setDownloadingCode] = useState('');
   const [pdfRenderVoucher, setPdfRenderVoucher] = useState(null);
+
+  // Personalização do Voucher (Dedicatória + Versículo)
+  const [recipientName, setRecipientName] = useState('');
+  const [customDedication, setCustomDedication] = useState(VERSICULOS_SUGESTAO[0].texto);
+  const [previewQrUrl, setPreviewQrUrl] = useState('');
+  const [pdfQrUrl, setPdfQrUrl] = useState('');
   const pdfCardRef = useRef(null);
 
   const loadConvites = async () => {
@@ -128,6 +152,17 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
   const redeemedVouchers = vouchers.filter((v) => v.usedCount >= v.maxUses);
   const previewCode = availableVouchers[0]?.code || vouchers[0]?.code || 'REINO-VIP';
 
+  useEffect(() => {
+    const url = `https://1convite.com.br/app?vip=${encodeURIComponent(previewCode)}`;
+    QRCode.toDataURL(url, {
+      width: 140,
+      margin: 1,
+      color: { dark: '#0B0B0F', light: '#F5E199' },
+    })
+      .then((dataUrl) => setPreviewQrUrl(dataUrl))
+      .catch(() => {});
+  }, [previewCode]);
+
   const handleCopyInvite = (code) => {
     const link = `https://1convite.com.br/app?vip=${encodeURIComponent(code)}`;
     if (navigator.clipboard) {
@@ -140,10 +175,12 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
   const handleSendWhatsApp = (voucher) => {
     const sender = userInfo.name || userName || 'um amigo especial';
     const link = `https://1convite.com.br/app?vip=${encodeURIComponent(voucher.code)}`;
+    const saudacao = recipientName.trim() ? `Olá, ${recipientName.trim()}! ` : 'Olá! ';
     const msg =
-      `Olá! Deus colocou você no meu coração hoje.\n\n` +
-      `Estou te presenteando com um *Convite VIP 1Convite (180 dias grátis)* enviado por *${sender}*!\n\n` +
-      `Você vai ter acesso à Bíblia Sagrada ACF narrada, Café com Deus 365, TemploFit, Mentores Bíblicos e muito mais.\n\n` +
+      `${saudacao}Deus colocou você no meu coração hoje.\n\n` +
+      `${customDedication}\n\n` +
+      `Estou te presenteando com um *Convite VIP 1Convite (${voucher.daysValid} dias grátis)* enviado por *${sender}*!\n` +
+      `Você vai ter acesso à Bíblia Sagrada ACF narrada, Café com Deus 365, TemploFit e Mentores Bíblicos.\n\n` +
       `*Seu Código VIP:* ${voucher.code}\n` +
       `*Resgate seu presente aqui:* ${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
@@ -151,67 +188,80 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
 
   const handleDownloadPdf = async (voucher) => {
     setDownloadingCode(voucher.code);
-    setPdfRenderVoucher(voucher);
-    setTimeout(async () => {
-      try {
-        if (!pdfCardRef.current) return;
-        const canvas = await html2canvas(pdfCardRef.current, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#09090b',
-        });
-        const jpegUrl = canvas.toDataURL('image/jpeg', 0.94);
-        const pdfBlob = buildSingleImagePdfBlob(jpegUrl, canvas.width, canvas.height);
-        const url = URL.createObjectURL(pdfBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Convite-VIP-1Convite-${voucher.code}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } catch (err) {
-        console.error('Erro ao gerar PDF do convite:', err);
-      } finally {
-        setDownloadingCode('');
-        setPdfRenderVoucher(null);
-      }
-    }, 140);
+    try {
+      const link = `https://1convite.com.br/app?vip=${encodeURIComponent(voucher.code)}`;
+      const qrData = await QRCode.toDataURL(link, {
+        width: 220,
+        margin: 1,
+        color: { dark: '#0B0B0F', light: '#F5E199' },
+      });
+      setPdfQrUrl(qrData);
+      setPdfRenderVoucher(voucher);
+
+      setTimeout(async () => {
+        try {
+          if (!pdfCardRef.current) return;
+          const canvas = await html2canvas(pdfCardRef.current, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#060911',
+          });
+          const jpegUrl = canvas.toDataURL('image/jpeg', 0.95);
+          const pdfBlob = buildSingleImagePdfBlob(jpegUrl, canvas.width, canvas.height);
+          const url = URL.createObjectURL(pdfBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Convite-VIP-1Convite-${voucher.code}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        } catch (err) {
+          console.error('Erro ao gerar PDF do convite:', err);
+        } finally {
+          setDownloadingCode('');
+          setPdfRenderVoucher(null);
+        }
+      }, 180);
+    } catch {
+      setDownloadingCode('');
+    }
   };
 
   const unitTotal = selectedQty === 10 ? 240.99 : Number((24.99 * selectedQty).toFixed(2));
+  const senderDisplay = (userInfo.name || userName || 'Um Irmão em Cristo').trim();
 
   return (
     <div className="cv-container">
-      {/* Header */}
+      {/* Header Unslop */}
       <div className="cv-topbar">
         <button type="button" className="cv-back-btn" onClick={onBack}>
           ← Voltar
         </button>
-        <span className="cv-badge-gold">EXCLUSIVO • CONTROLE DE CONVITES VIP</span>
+        <span className="cv-badge-gold">Controle de Convites VIP</span>
       </div>
 
-      {/* Hero Personalizado (Convidado vs Comprador) */}
+      {/* Hero Personalizado + Prévia Fiel do Voucher Portal de Luz */}
       <section className="cv-hero-card">
         <div className="cv-hero-copy">
           {userInfo.isInvitedUser ? (
             <>
-              <span className="cv-kicker">CORRENTE DE BÊNÇÃO • VOCÊ FOI LEMBRADO(A)</span>
+              <span className="cv-kicker">Corrente de Bênção • Você foi lembrado(a)</span>
               <h1 className="cv-title">
-                Você recebeu um presente com amor{userInfo.giftedByName ? ` de ${userInfo.giftedByName}` : ''}. Agora, abençoe outra vida!
+                Você recebeu um presente{userInfo.giftedByName ? ` de ${userInfo.giftedByName}` : ''}. Agora, abençoe outra vida!
               </h1>
               <p className="cv-subtitle">
-                Alguém especial presenteou você com <strong>180 dias gratuitos no 1Convite</strong> porque desejou o melhor para a sua caminhada com Deus. Hoje você também pode ser canal de transformação: dê <strong>6 meses VIP completos</strong> para alguém que precisa de esperança, direção e Palavra diária — por apenas <strong>R$ 24,99</strong>.
+                Alguém especial presenteou você com <strong>180 dias gratuitos no 1Convite</strong> porque desejou o melhor para a sua caminhada com Deus. Hoje você também pode ser canal de transformação: dê <strong>6 meses VIP completos</strong> para alguém que ama por apenas <strong>R$ 24,99</strong>.
               </p>
             </>
           ) : (
             <>
-              <span className="cv-kicker">MULTIPLIQUE O REINO • SEU CÍRCULO DE FÉ</span>
+              <span className="cv-kicker">Multiplique o Reino • Seu Círculo de Fé</span>
               <h1 className="cv-title">
                 Não guarde a Palavra só para você. Entregue um Convite VIP hoje!
               </h1>
               <p className="cv-subtitle">
-                Cada <strong>Vale-Presente 1Convite</strong> libera <strong>180 dias de acesso VIP completo</strong> (Bíblia Narrada, Café com Deus 365, TemploFit e Mentores Bíblicos) sem o seu convidado pagar nada. Escolha um convite disponível abaixo ou adquira novos convites para sua família, célula ou igreja.
+                Cada <strong>Vale-Presente 1Convite</strong> libera <strong>180 dias de acesso VIP completo</strong> (Bíblia Narrada, Café com Deus 365, TemploFit e Mentores Bíblicos) sem o seu convidado pagar nada. Personalize a dedicatória abaixo, baixe o Cartão-Joia em PDF ou envie no WhatsApp.
               </p>
             </>
           )}
@@ -226,25 +276,86 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
               <span>Vidas já abençoadas</span>
             </div>
           </div>
+
+          {/* Personalização rápida da dedicatória */}
+          <div className="cv-dedication-box">
+            <label className="cv-dedication-label">
+              Personalize seu cartão antes de baixar em PDF ou enviar:
+            </label>
+            <input
+              type="text"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              placeholder="Para: Nome do amigo ou familiar (opcional)"
+              className="cv-dedication-input"
+              maxLength={45}
+            />
+            <div className="cv-verse-pills">
+              {VERSICULOS_SUGESTAO.map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  className={`cv-verse-pill ${customDedication === v.texto ? 'active' : ''}`}
+                  onClick={() => setCustomDedication(v.texto)}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Vitrine do Convite Prêmio Dourado */}
+        {/* Prévia Fiel do Cartão Vertical de Luxo (ConvitePortalLuz + QR + Selo) */}
         <div className="cv-preview-wrap">
-          <div className="cv-vip-card-visual">
-            <div className="cv-vip-card-top">
-              <img src={appLogoDark} alt="1Convite" className="cv-vip-logo" />
-              <span className="cv-vip-pill">180 DIAS VIP GRÁTIS</span>
-            </div>
-            <div className="cv-vip-card-art">
-              <img src={conviteVipArt} alt="Cartão Convite Prêmio 1Convite" />
-            </div>
-            <div className="cv-vip-card-bottom">
-              <div className="cv-vip-quote">“Você é Especial • Presente de {(userInfo.name || userName || 'Um Amigo').split(' ')[0]}”</div>
-              <div className="cv-vip-code-sample">{previewCode}</div>
+          <div className="cv-gv-card">
+            <div className="cv-gv-inner">
+              <div className="cv-gv-gold-bars" aria-hidden="true">
+                <div className="cv-gv-bar cv-gv-bar-1" />
+                <div className="cv-gv-bar cv-gv-bar-2" />
+              </div>
+
+              <div className="cv-gv-header">
+                <img src={appLogoDark} alt="1Convite" className="cv-gv-logo" />
+                <div className="cv-gv-seal">
+                  <span className="cv-gv-seal-big">180</span>
+                  <span className="cv-gv-seal-small">DIAS</span>
+                  <span className="cv-gv-seal-small">GRÁTIS</span>
+                </div>
+              </div>
+
+              <div className="cv-gv-kicker">Gift Voucher • VIP</div>
+              <h2 className="cv-gv-serif-title">Você é Especial</h2>
+
+              <div className="cv-gv-people">
+                {recipientName.trim() && (
+                  <div className="cv-gv-to">Para: <strong>{recipientName.trim()}</strong></div>
+                )}
+                <div className="cv-gv-from">Presente de <strong>{senderDisplay}</strong></div>
+              </div>
+
+              <p className="cv-gv-dedication">{customDedication}</p>
+
+              <div className="cv-gv-divider" />
+
+              <div className="cv-gv-bottom-grid">
+                <div className="cv-gv-code-box">
+                  <span className="cv-gv-code-label">Código do Seu Convite</span>
+                  <strong className="cv-gv-code-value">{previewCode}</strong>
+                </div>
+                {previewQrUrl && (
+                  <div className="cv-gv-qr-box">
+                    <img src={previewQrUrl} alt="QR Code de Ativação" />
+                  </div>
+                )}
+              </div>
+
+              <div className="cv-gv-auth-seal">
+                Convite Oficial • Ecossistema 1Convite
+              </div>
             </div>
           </div>
           <p className="cv-preview-caption">
-            Prévia oficial do Convite Prêmio enviado em PDF ou pelo WhatsApp
+            Prévia oficial do Voucher Vertical com QR Code e dedicatória
           </p>
         </div>
       </section>
@@ -253,18 +364,17 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
       <section className="cv-buy-section">
         <div className="cv-buy-header">
           <div>
-            <span className="cv-kicker-green">EXPANDIR MEUS CONVITES</span>
+            <span className="cv-kicker-green">Expandir Meus Convites</span>
             <h2>Envie o Reino para mais pessoas por apenas R$ 24,99</h2>
             <p>
-              Compre 1 convite avulso ou escolha a quantidade que desejar. Cada convite dá <strong>6 meses VIP gratuitos</strong> para o seu convidado e fica salvo aqui na hora!
+              Compre 1 convite avulso ou escolha a quantidade que desejar. Cada convite dá <strong>6 meses VIP gratuitos</strong> para o seu convidado e fica salvo aqui na hora.
             </p>
           </div>
         </div>
 
         <div className="cv-buy-grid">
-          {/* Card Quantidade Livre */}
           <div className="cv-offer-card">
-            <div className="cv-offer-tag">COMPRA FLEXÍVEL • R$ 24,99 / CONVITE</div>
+            <div className="cv-offer-tag">Compra Flexível • R$ 24,99 / convite</div>
             <h3>Escolha quantos convites deseja</h3>
             <p className="cv-offer-desc">
               Ideal para presentear um amigo especial, cônjuge, filhos ou colegas de trabalho.
@@ -310,9 +420,8 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
             </button>
           </div>
 
-          {/* Card Pacote Sugestão 10 Convites */}
           <div className="cv-offer-card cv-offer-highlight">
-            <div className="cv-offer-tag cv-tag-gold">SUGESTÃO ESPECIAL • CÉLULAS &amp; FAMÍLIAS</div>
+            <div className="cv-offer-tag cv-tag-gold">Sugestão Especial • Células &amp; Famílias</div>
             <h3>Pacote 10 Convites VIP</h3>
             <p className="cv-offer-desc">
               Abençoe toda a sua célula, grupo de oração, ministério ou família com 10 Vales-Presente de 180 dias cada.
@@ -348,7 +457,7 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
           <div className="cv-empty-box">
             <h3>Você ainda não possui convites disponíveis na sua conta</h3>
             <p>
-              Adquira seu primeiro Convite VIP acima por apenas <strong>R$ 24,99</strong> e envie o cartão-presente oficial em PDF ou pelo WhatsApp para abençoar alguém hoje!
+              Adquira seu primeiro Convite VIP acima por apenas <strong>R$ 24,99</strong> e envie o Voucher em PDF com QR Code ou pelo WhatsApp para abençoar alguém hoje.
             </p>
           </div>
         ) : (
@@ -359,7 +468,7 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
                 <div key={v.code} className={`cv-voucher-item ${isUsed ? 'is-used' : ''}`}>
                   <div className="cv-voucher-top">
                     <span className={`cv-status-badge ${isUsed ? 'used' : 'avail'}`}>
-                      {isUsed ? '✓ RESGATADO' : '★ DISPONÍVEL PARA ENVIAR'}
+                      {isUsed ? '✓ Resgatado' : '★ Disponível para enviar'}
                     </span>
                     <span className="cv-days-pill">{v.daysValid} dias VIP</span>
                   </div>
@@ -403,30 +512,64 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
         )}
       </section>
 
-      {/* Template oculto em alta resolução para gerar o PDF oficial do Convite Prêmio */}
+      {/* Template PDF offscreen fiel ao Voucher Vertical de Luxo + QR Code + Guia 3 Passos */}
       {pdfRenderVoucher && (
         <div className="cv-pdf-offscreen" aria-hidden="true">
-          <div ref={pdfCardRef} className="cv-pdf-canvas-card">
-            <div className="cv-pdf-top">
-              <img src={appLogoDark} alt="1Convite" className="cv-pdf-logo" />
-              <span className="cv-pdf-pill">VALE-PRESENTE • {pdfRenderVoucher.daysValid} DIAS VIP GRATUITOS</span>
-            </div>
-            <div className="cv-pdf-body">
-              <div className="cv-pdf-art-col">
-                <img src={conviteVipArt} alt="Convite VIP 1Convite" />
-              </div>
-              <div className="cv-pdf-info-col">
-                <div className="cv-pdf-eyebrow">VOCÊ FOI LEMBRADO(A) COM CARINHO</div>
-                <h2>Um presente especial de {(userInfo.name || userName || 'Alguém Especial')}</h2>
-                <p>
-                  Este Convite VIP libera acesso gratuito por {pdfRenderVoucher.daysValid} dias à Bíblia Sagrada ACF narrada, Café com Deus 365, TemploFit, 7 Mentores Bíblicos e Trilha do Reino.
-                </p>
-                <div className="cv-pdf-code-box">
-                  <span>SEU CÓDIGO EXCLUSIVO DE RESGATE:</span>
-                  <strong>{pdfRenderVoucher.code}</strong>
+          <div ref={pdfCardRef} className="cv-pdf-luxury-sheet">
+            <div className="cv-gv-card cv-gv-card-pdf">
+              <div className="cv-gv-inner cv-gv-inner-pdf">
+                <div className="cv-gv-gold-bars" aria-hidden="true">
+                  <div className="cv-gv-bar cv-gv-bar-1" />
+                  <div className="cv-gv-bar cv-gv-bar-2" />
                 </div>
-                <div className="cv-pdf-link">
-                  Acesse agora: https://1convite.com.br/app?vip={pdfRenderVoucher.code}
+
+                <div className="cv-gv-header">
+                  <img src={appLogoDark} alt="1Convite" className="cv-gv-logo cv-gv-logo-pdf" />
+                  <div className="cv-gv-seal cv-gv-seal-pdf">
+                    <span className="cv-gv-seal-big">{pdfRenderVoucher.daysValid}</span>
+                    <span className="cv-gv-seal-small">DIAS</span>
+                    <span className="cv-gv-seal-small">GRÁTIS</span>
+                  </div>
+                </div>
+
+                <div className="cv-gv-kicker">Gift Voucher • VIP</div>
+                <h2 className="cv-gv-serif-title cv-gv-serif-pdf">Você é Especial</h2>
+
+                <div className="cv-gv-people">
+                  {recipientName.trim() && (
+                    <div className="cv-gv-to">Para: <strong>{recipientName.trim()}</strong></div>
+                  )}
+                  <div className="cv-gv-from">Presente de <strong>{senderDisplay}</strong></div>
+                </div>
+
+                <p className="cv-gv-dedication cv-gv-dedication-pdf">{customDedication}</p>
+
+                <p className="cv-pdf-benefits">
+                  Bíblia Sagrada ACF Narrada • Café com Deus 365 • TemploFit • 7 Mentores Bíblicos • Trilha do Reino
+                </p>
+
+                <div className="cv-gv-divider" />
+
+                <div className="cv-gv-bottom-grid cv-gv-bottom-pdf">
+                  <div className="cv-gv-code-box">
+                    <span className="cv-gv-code-label">Código do Seu Convite</span>
+                    <strong className="cv-gv-code-value">{pdfRenderVoucher.code}</strong>
+                  </div>
+                  {pdfQrUrl && (
+                    <div className="cv-gv-qr-box cv-gv-qr-pdf">
+                      <img src={pdfQrUrl} alt="QR Code" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="cv-pdf-steps">
+                  <div><strong>1.</strong> Aponte a câmera para o QR Code ou acesse <strong>1convite.com.br/app</strong></div>
+                  <div><strong>2.</strong> Toque em <strong>Tenho um Convite VIP</strong> e digite o código acima</div>
+                  <div><strong>3.</strong> Crie seu acesso gratuito e aproveite <strong>{pdfRenderVoucher.daysValid} dias VIP</strong></div>
+                </div>
+
+                <div className="cv-gv-auth-seal">
+                  Convite Oficial • Ecossistema 1Convite • Código {pdfRenderVoucher.code}
                 </div>
               </div>
             </div>
