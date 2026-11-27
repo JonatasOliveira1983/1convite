@@ -8,6 +8,7 @@ import pacoteSementeiraBg from '../../assets/convites/pacote-sementeira.jpg';
 import pacoteColheitaBg from '../../assets/convites/pacote-colheita.jpg';
 import pacoteEmbaixadoresBg from '../../assets/convites/pacote-embaixadores.jpg';
 import AsaasCheckoutModal from '../Checkout/AsaasCheckoutModal';
+import { adminAuthService } from '../../services/adminAuthService';
 
 function getApiBase() {
   const isCapacitor = Boolean(
@@ -168,8 +169,30 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
   const [customDedication, setCustomDedication] = useState(VERSICULOS_SUGESTAO[0].texto);
   const [previewQrUrl, setPreviewQrUrl] = useState('');
   const [pdfQrUrl, setPdfQrUrl] = useState('');
+  const [admGenLoading, setAdmGenLoading] = useState(false);
+  const [admCustomQty, setAdmCustomQty] = useState(5);
   const pdfCardRef = useRef(null);
   const buySectionRef = useRef(null);
+  const isAdminUser = String(userEmail || '').trim().toLowerCase() === 'jonatasprojetos2013@gmail.com';
+
+  const handleAdmGenerateFree = async (qty) => {
+    const amount = Math.max(1, Math.min(50, Number(qty) || 1));
+    setAdmGenLoading(true);
+    try {
+      const res = await adminAuthService.giftUserInvitesAsync({ contact: userEmail, quantity: amount });
+      if (res?.success) {
+        setShareToast(`⚡ +${amount} Convite(s) VIP gratuito(s) gerado(s) para sua conta ADM!`);
+        setTimeout(() => setShareToast(''), 5000);
+        await loadConvites();
+      } else {
+        setShareToast(res?.message || 'Não foi possível gerar os convites ADM.');
+      }
+    } catch {
+      setShareToast('Erro de conexão ao gerar convites ADM.');
+    } finally {
+      setAdmGenLoading(false);
+    }
+  };
 
   const loadConvites = async () => {
     setLoading(true);
@@ -387,6 +410,46 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
               <span>Vidas já abençoadas</span>
             </div>
           </div>
+
+          {isAdminUser && (
+            <div className="cv-adm-box">
+              <div className="cv-adm-head">
+                <span className="cv-adm-badge">👑 Modo ADM • Emissão Gratuita</span>
+                <p>Gere quantos convites VIP (180 dias) quiser sem pagar, já prontos para PDF e WhatsApp:</p>
+              </div>
+              <div className="cv-adm-actions">
+                {[1, 5, 10, 20].map((q) => (
+                  <button
+                    key={q}
+                    type="button"
+                    disabled={admGenLoading}
+                    onClick={() => handleAdmGenerateFree(q)}
+                    className="cv-adm-btn"
+                  >
+                    +{q}
+                  </button>
+                ))}
+                <div className="cv-adm-custom">
+                  <input
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={admCustomQty}
+                    onChange={(e) => setAdmCustomQty(Math.max(1, Math.min(50, Number(e.target.value) || 1)))}
+                    aria-label="Quantidade personalizada ADM"
+                  />
+                  <button
+                    type="button"
+                    disabled={admGenLoading}
+                    onClick={() => handleAdmGenerateFree(admCustomQty)}
+                    className="cv-adm-btn is-primary"
+                  >
+                    {admGenLoading ? 'Gerando...' : 'Gerar Grátis'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="cv-dedication-box">
             <label className="cv-dedication-label">
