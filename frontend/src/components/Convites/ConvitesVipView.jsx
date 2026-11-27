@@ -160,6 +160,8 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
   const [checkoutOffer, setCheckoutOffer] = useState(null);
   const [copiedCode, setCopiedCode] = useState('');
   const [downloadingCode, setDownloadingCode] = useState('');
+  const [sharingCode, setSharingCode] = useState('');
+  const [shareToast, setShareToast] = useState('');
   const [pdfRenderVoucher, setPdfRenderVoucher] = useState(null);
 
   const [recipientName, setRecipientName] = useState('');
@@ -215,8 +217,31 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
     setTimeout(() => setCopiedCode(''), 2500);
   };
 
-  const handleSendWhatsApp = (voucher) => {
+  const renderVoucherCanvas = async (voucher) => {
+    const link = `https://1convite.com.br/app?vip=${encodeURIComponent(voucher.code)}`;
+    const qrData = await QRCode.toDataURL(link, {
+      width: 260,
+      margin: 1,
+      color: { dark: '#0B0B0F', light: '#F5E199' },
+    });
+    setPdfQrUrl(qrData);
+    setPdfRenderVoucher(voucher);
+
+    await new Promise((r) => setTimeout(r, 200));
+    if (!pdfCardRef.current) {
+      throw new Error('Cartão do voucher não disponível.');
+    }
+    return html2canvas(pdfCardRef.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#060911',
+    });
+  };
+
+  const handleSendWhatsApp = async (voucher) => {
     if (!voucher) return;
+    setSharingCode(voucher.code);
+    setShareToast('');
     const sender = userInfo.name || userName || 'um amigo especial';
     const link = `https://1convite.com.br/app?vip=${encodeURIComponent(voucher.code)}`;
     const saudacao = recipientName.trim() ? `Olá, ${recipientName.trim()}! ` : 'Olá! ';
@@ -227,49 +252,84 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
       `Você vai ter acesso à Bíblia Sagrada ACF narrada, Café com Deus 365, TemploFit e Mentores Bíblicos.\n\n` +
       `*Seu Código VIP:* ${voucher.code}\n` +
       `*Resgate seu presente aqui:* ${link}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+
+    try {
+      const canvas = await renderVoucherCanvas(voucher);
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.96));
+      if (blob) {
+        const file = new File([blob], `Convite-VIP-1Convite-${voucher.code}.png`, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Convite VIP 1Convite',
+            text: msg,
+          });
+          setShareToast('Convite compartilhado com a imagem e o link!');
+          setTimeout(() => setShareToast(''), 5000);
+          return;
+        }
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            await navigator.clipboard.write([new window.ClipboardItem({ 'image/png': blob })]);
+            setShareToast('Imagem do Voucher copiada! No WhatsApp Web, aperte Ctrl+V na conversa para enviar o cartão junto com o link.');
+            setTimeout(() => setShareToast(''), 8000);
+          } catch {
+            // fallback apenas texto se clipboard de imagem for bloqueado
+          }
+        }
+      }
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      if (err?.name !== 'AbortError') {
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+      }
+    } finally {
+      setSharingCode('');
+      setPdfRenderVoucher(null);
+    }
+  };
+
+  const handleDownloadPng = async (voucher) => {
+    if (!voucher) return;
+    setDownloadingCode(`png_${voucher.code}`);
+    try {
+      const canvas = await renderVoucherCanvas(voucher);
+      const pngUrl = canvas.toDataURL('image/png', 0.96);
+      const a = document.createElement('a');
+      a.href = pngUrl;
+      a.download = `Convite-VIP-1Convite-${voucher.code}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('Erro ao baixar PNG do convite:', err);
+    } finally {
+      setDownloadingCode('');
+      setPdfRenderVoucher(null);
+    }
   };
 
   const handleDownloadPdf = async (voucher) => {
     if (!voucher) return;
     setDownloadingCode(voucher.code);
     try {
-      const link = `https://1convite.com.br/app?vip=${encodeURIComponent(voucher.code)}`;
-      const qrData = await QRCode.toDataURL(link, {
-        width: 260,
-        margin: 1,
-        color: { dark: '#0B0B0F', light: '#F5E199' },
-      });
-      setPdfQrUrl(qrData);
-      setPdfRenderVoucher(voucher);
-
-      setTimeout(async () => {
-        try {
-          if (!pdfCardRef.current) return;
-          const canvas = await html2canvas(pdfCardRef.current, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: '#060911',
-          });
-          const jpegUrl = canvas.toDataURL('image/jpeg', 0.95);
-          const pdfBlob = buildSingleImagePdfBlob(jpegUrl, canvas.width, canvas.height);
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `Convite-VIP-1Convite-${voucher.code}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        } catch (err) {
-          console.error('Erro ao gerar PDF do convite:', err);
-        } finally {
-          setDownloadingCode('');
-          setPdfRenderVoucher(null);
-        }
-      }, 180);
-    } catch {
+      const canvas = await renderVoucherCanvas(voucher);
+      const jpegUrl = canvas.toDataURL('image/jpeg', 0.95);
+      const pdfBlob = buildSingleImagePdfBlob(jpegUrl, canvas.width, canvas.height);
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Convite-VIP-1Convite-${voucher.code}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erro ao gerar PDF do convite:', err);
+    } finally {
       setDownloadingCode('');
+      setPdfRenderVoucher(null);
     }
   };
 
@@ -422,9 +482,10 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
               <button
                 type="button"
                 className="cv-preview-btn-wpp"
+                disabled={sharingCode === activeVoucher.code}
                 onClick={() => handleSendWhatsApp(activeVoucher)}
               >
-                Enviar no WhatsApp
+                {sharingCode === activeVoucher.code ? 'Preparando imagem...' : 'Enviar no WhatsApp (com Imagem)'}
               </button>
               <button
                 type="button"
@@ -433,6 +494,14 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
                 onClick={() => handleDownloadPdf(activeVoucher)}
               >
                 {downloadingCode === activeVoucher.code ? 'Gerando PDF...' : 'Baixar em PDF'}
+              </button>
+              <button
+                type="button"
+                className="cv-preview-btn-png"
+                disabled={downloadingCode === `png_${activeVoucher.code}`}
+                onClick={() => handleDownloadPng(activeVoucher)}
+              >
+                {downloadingCode === `png_${activeVoucher.code}` ? 'Gerando PNG...' : 'Baixar Imagem (PNG)'}
               </button>
             </div>
           ) : (
@@ -445,6 +514,10 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
                 Adquirir Convite VIP Abaixo ↓
               </button>
             </div>
+          )}
+
+          {shareToast && (
+            <div className="cv-share-toast">{shareToast}</div>
           )}
 
           <p className="cv-preview-caption">
@@ -591,9 +664,10 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
                       <button
                         type="button"
                         className="cv-act-wpp"
+                        disabled={sharingCode === v.code}
                         onClick={() => handleSendWhatsApp(v)}
                       >
-                        Enviar no WhatsApp
+                        {sharingCode === v.code ? 'Preparando imagem...' : 'Enviar no WhatsApp (com Imagem)'}
                       </button>
                       <button
                         type="button"
@@ -606,9 +680,10 @@ export default function ConvitesVipView({ userEmail, userName, onBack }) {
                       <button
                         type="button"
                         className="cv-act-copy"
-                        onClick={() => handleCopyInvite(v.code)}
+                        disabled={downloadingCode === `png_${v.code}`}
+                        onClick={() => handleDownloadPng(v)}
                       >
-                        {copiedCode === v.code ? '✓ Link Copiado' : 'Copiar Link'}
+                        {downloadingCode === `png_${v.code}` ? 'Gerando PNG...' : 'Baixar Imagem'}
                       </button>
                     </div>
                   )}
