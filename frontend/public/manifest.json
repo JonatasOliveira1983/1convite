@@ -1,31 +1,25 @@
 {
   "short_name": "1Convite",
   "name": "1Convite • Plataforma do Reino",
-  "description": "Plataforma de Engajamento do Reino, Meditação e Sabedoria Bíblica",
+  "description": "Bíblia Sagrada ACF narrada, Café com Deus 365, TemploFit, Mentores Bíblicos e Convites VIP",
   "icons": [
     {
-      "src": "/favicon.png?v=2.4",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "/pwa-192x192.png?v=2.4",
+      "src": "/pwa-192x192.png?v=3.2",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "/pwa-512x512.png?v=2.4",
+      "src": "/pwa-512x512.png?v=3.2",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "/",
+  "start_url": "/app",
   "scope": "/",
-  "background_color": "#121212",
-  "theme_color": "#121212",
+  "background_color": "#070A10",
+  "theme_color": "#070A10",
   "display": "standalone",
   "orientation": "portrait",
   "categories": ["lifestyle", "social"],
