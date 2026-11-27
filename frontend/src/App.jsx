@@ -3087,27 +3087,6 @@ Em nome de Jesus, Amém.`;
     return <ChamaLoader size={84} label="1Convite" fullScreen />;
   }
 
-  // ── Renderização do Painel de Controle Administrativo (Master Admin) ──
-  if (isAdminMode && showAdminPanel) {
-    return (
-      <Suspense fallback={<AppBootFallback />}>
-        <AdminPanel 
-          onOpenApp={() => setShowAdminPanel(false)}
-          onOpenLanding={() => {
-            setShowAdminPanel(false);
-            navigateAppRoute(false);
-          }}
-          onLogout={() => {
-            adminAuthService.setAdminSession(false);
-            setIsAdminMode(false);
-            setShowAdminPanel(false);
-            setIsLoggedIn(false);
-          }}
-        />
-      </Suspense>
-    );
-  }
-
   if (showLanding) {
     return (
       <Suspense fallback={<AppBootFallback />}>
@@ -3161,8 +3140,10 @@ Em nome de Jesus, Amém.`;
           }
           if (userData.isAdmin) {
             setIsAdminMode(true);
-            setShowAdminPanel(true);
+            setShowAdminPanel(false);
             setIsPremiumUser(true);
+            setActiveTab('admin-panel');
+            return;
           } else {
             setIsAdminMode(false);
             setShowAdminPanel(false);
@@ -3297,10 +3278,10 @@ Em nome de Jesus, Amém.`;
             {(isAdminMode || adminAuthService.isCurrentSessionAdmin() || (profileEmail || '').trim().toLowerCase() === 'jonatasprojetos2013@gmail.com') && (
               <button
                 type="button"
-                className="desktop-nav-item"
+                className={`desktop-nav-item ${activeTab === 'admin-panel' ? 'active' : ''}`}
                 onClick={() => {
                   setIsAdminMode(true);
-                  setShowAdminPanel(true);
+                  setActiveTab('admin-panel');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 style={{ color: '#fbbf24', marginTop: '4px' }}
@@ -9714,6 +9695,15 @@ Em nome de Jesus, Amém.`;
             onBack={() => setActiveTab('dashboard')}
             userContact={profileEmail || 'convidado@1convite.com.br'}
             onEarnCoins={handleEarnCoins}
+          />
+        )}
+
+        {/* ════════════ ABA PAINEL ADM INTEGRADO AO LAYOUT ════════════ */}
+        {activeTab === 'admin-panel' && (isAdminMode || adminAuthService.isCurrentSessionAdmin() || (profileEmail || '').trim().toLowerCase() === 'jonatasprojetos2013@gmail.com') && (
+          <AdminPanel
+            onOpenApp={() => setActiveTab('dashboard')}
+            onOpenLanding={() => navigateAppRoute(false)}
+            onLogout={handleLogout}
           />
         )}
 
