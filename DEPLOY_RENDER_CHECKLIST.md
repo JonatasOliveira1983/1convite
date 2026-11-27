@@ -1,9 +1,9 @@
-# Checklist de Deploy no Render (Blog + Asaas + Resend)
+# Checklist de Deploy no Render (Backend + Blog + Asaas Produção + Resend)
 
 ## 1. Web Service do Blog (`oneconvite-blog`)
-No painel do Render, clique em **New → Web Service** e conecte ao repositório `JonatasOliveira1983/1convite`:
+No painel do Render, em **New → Web Service** conectado ao repositório `JonatasOliveira1983/1convite`:
 
-- **Name:** `oneconvite-blog` (para corresponder à URL `https://oneconvite-blog.onrender.com`)
+- **Name:** `oneconvite-blog` (`https://oneconvite-blog.onrender.com`)
 - **Root Directory:** `blog`
 - **Build Command:** `npm install && npm run build`
 - **Start Command:** `node build`
@@ -23,14 +23,22 @@ No painel do Render, clique em **New → Web Service** e conecte ao repositório
 ---
 
 ## 2. Variáveis do Backend Principal (`oneconvite`)
-No serviço `oneconvite` já existente no Render (`https://oneconvite.onrender.com`), adicione:
+No serviço `oneconvite` no Render (`https://oneconvite.onrender.com`), mantenha configuradas:
 
-- `ASAAS_API_KEY` = sua chave Asaas (`$aact_hmlg_...` para Sandbox ou `$aact_prod_...` para Produção)
-- `ASAAS_WEBHOOK_TOKEN` = mesmo token secreto cadastrado no painel do Asaas (opcional)
-- `RESEND_API_KEY` = sua chave `re_...` do Resend
+- `ASAAS_API_URL` = `https://api.asaas.com/v3` *(Produção)*
+- `ASAAS_API_KEY` = chave de Produção (`$aact_prod_...`)
+- `ASAAS_WEBHOOK_TOKEN` = token secreto cadastrado no painel do Asaas *(opcional; o backend também valida diretamente na API do Asaas)*
+- `RESEND_API_KEY` = chave `re_...` do Resend
 - `RESEND_FROM_EMAIL` = remetente verificado no Resend (ex.: `1Convite <noreply@1convite.com.br>`)
+- `TURSO_DATABASE_URL` = URL do banco Turso (`libsql://...`)
+- `TURSO_AUTH_TOKEN` = token de autenticação Turso
+- `ADMIN_PASSWORD` = senha administrativa padrão
 - `FRONTEND_URL` = `https://1convite.com.br`
+- `PORT` = `3001` (ou porta injetada pelo Render)
 
-### Webhook no Painel do Asaas
+### Webhook no Painel do Asaas (Produção)
 - **URL:** `https://oneconvite.onrender.com/api/v1/pagamentos/webhook`
-- **Eventos:** `PAYMENT_CONFIRMED`, `PAYMENT_RECEIVED`, `PAYMENT_CREDIT_CARD_CAPTURED`
+- **Versão da API:** `v3`
+- **Tipo de envio:** `Não sequencial`
+- **Fila de sincronização:** Ativada
+- **Eventos (Cobranças):** `PAYMENT_CONFIRMED`, `PAYMENT_RECEIVED`

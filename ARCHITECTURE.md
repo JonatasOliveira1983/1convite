@@ -68,9 +68,18 @@ O **1Convite (`v3.2.0`)** é uma plataforma completa de edificação cristã di�
 
 ---
 
-## 3. Painel de Controle Mestre (Admin) & Fluxo Comercial
+## 3. Autenticação, Controle de Acesso e Painel ADM Integrado
 
-- **Autenticação Administrativa:** Protegida via header `x-admin-email` e persistência real do perfil/avatar Admin em `tb_acessos_usuarios`.
+- **Acesso Fechado no `/app` (`LoginPage.jsx` + `/api/v1/auth/login`):**
+  - Não há entrada gratuita aberta na tela de login. O acesso exige **e-mail e senha de assinatura ativa** ou **ativação com Código de Convite VIP** (válido por 180 dias).
+  - Contas marcadas como `blocked = 1` são bloqueadas imediatamente no `/auth/login` e no `/auth/me`.
+  - O botão **"Não tenho acesso • Adquirir um Pacote →"** redireciona para a página oficial de vendas (`/`) com rolagem automática até `#planos`.
+  - **Sair da Conta (Logout):** Disponível no menu lateral Desktop, no menu inferior Mobile e na aba **Minha Conta**.
+- **Painel ADM Integrado (`AdminPanel.jsx`):**
+  - Acessível pelo link exclusivo **Painel ADM** no menu lateral (visível apenas para `jonatasprojetos2013@gmail.com`) integrado dentro da interface do sistema.
+  - Autenticação administrativa protegida via header `x-admin-email` e persistência do perfil/avatar Admin em `tb_acessos_usuarios`.
+  - **Controles de Usuários & Planos:** Filtro (`Todos`, `VIP`, `Gratuitos`, `Bloqueados`), visualização de senha com botão de copiar credenciais, edição de senha, bloqueio/desbloqueio imediato, ativação/desativação por módulo (`ebooks`, `mulher_virtuosa`, `pregador`), presente de `+N` Convites VIP, exclusão de usuário de teste e **Exportar CSV** (Usuários e Vendas Asaas).
+  - **Limpeza Pré-Lançamento (`/api/v1/admin/reset-testes`):** Botões na aba **Funil & Saúde** para limpar vendas de teste, usuários/vouchers de teste ou ambos, preservando a conta Admin e os códigos base (`REINO6M`, `VIP2026`, `FAMILIA1C`).
 - **Funil Comercial Asaas Produção:** Planos anuais (Semente R\$ 67, Edificação R\$ 97, Reino R\$ 147), Order Bump (5 E-books R\$ 19,90), Upsell Combo (R\$ 47), Downsells (R\$ 24,90) e Pacotes de Convites VIP (Avulso R\$ 24,99, Sementeira R\$ 237,40, Colheita R\$ 337,35, Embaixadores R\$ 424,83).
 - **Pipeline de E-mails (Resend):** 8 etapas monitoradas com fila sequencial (`650ms` + retry em `429`) e textos transacionais otimizados para entrega na caixa Principal.
 
