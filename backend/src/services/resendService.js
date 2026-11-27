@@ -553,11 +553,11 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
       status: 'active',
       trigger: 'Automático na confirmação de Pacotes Sementeira, Colheita, Embaixadores ou Avulso',
       sender: senderEmail,
-      subject: 'Seus Convites VIP foram liberados no 1Convite!',
+      subject: '1Convite: convites adicionados à sua conta',
       stats: statsMap.convites_pack || { sent: 0, failed: 0 },
       previewHtml: buildConvitesPackEmailHtml({
         name: 'Carlos Ferreira',
-        packageName: 'Pacote Colheita — 15 Convites VIP (10% OFF)',
+        packageName: 'Pacote Colheita (15 convites)',
         invitesCount: 15,
         valueReais: 337.35,
         siteUrl,
@@ -568,45 +568,47 @@ export function getEmailPipelineStages({ statsMap = {}, siteUrl = 'https://1conv
 
 export function buildConvitesPackEmailHtml({
   name,
-  packageName = 'Convite VIP 1Convite',
+  packageName = 'Convites 1Convite',
   invitesCount = 1,
   valueReais = 24.99,
   siteUrl = 'https://1convite.com.br',
 }) {
   const safeName = escapeHtml(name || 'Irmão(ã)');
-  const safePack = escapeHtml(packageName);
+  const cleanPackLabel = String(packageName || 'Convites 1Convite')
+    .replace(/\s*\([^)]*OFF[^)]*\)/gi, '')
+    .replace(/\bVIP\b/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  const safePack = escapeHtml(cleanPackLabel);
   const safeSite = escapeHtml(siteUrl.replace(/\/$/, ''));
   const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
   const count = Math.max(1, Number(invitesCount || 1));
   const valorFormatado = Number(valueReais || 0).toFixed(2).replace('.', ',');
 
   return `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:16px;border:1px solid #27272a;">
-      <div style="text-align:center;margin-bottom:16px;">
-        <img src="${logoUrl}" alt="1Convite" height="34" style="display:inline-block;height:34px;width:auto;" />
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
+      <div style="margin-bottom:18px;">
+        <img src="${logoUrl}" alt="1Convite" height="30" style="display:inline-block;height:30px;width:auto;" />
       </div>
-      <span style="display:inline-block;background:rgba(245,158,11,0.16);color:#fbbf24;border:1px solid rgba(245,158,11,0.4);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">CONVITES VIP LIBERADOS</span>
-      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Compra confirmada, ${safeName}!</h2>
+      <div style="font-size:12px;color:#a1a1aa;margin-bottom:6px;">Atualização da sua conta 1Convite</div>
+      <h2 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Olá, ${safeName}. Seus convites estão disponíveis.</h2>
       <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
-        Recebemos a confirmação da sua compra de <strong style="color:#fbbf24;">${safePack}</strong>. Seus novos Vales-Presente já estão disponíveis na aba <strong>Convites VIP</strong> do seu aplicativo!
+        Confirmamos o registro do pedido referente a <strong style="color:#ffffff;">${safePack}</strong>. Os ${count} convite${count > 1 ? 's' : ''} já foram vinculados à sua conta na área <strong>Convites VIP</strong> do aplicativo.
       </p>
 
-      <div style="background:linear-gradient(135deg,#18140d 0%,#0b0d14 60%,#1a1309 100%);border:1.5px solid #d97706;border-radius:14px;padding:18px;margin:18px 0;">
-        <div style="font-size:12px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Resumo da sua Compra</div>
-        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Pacote:</strong> ${safePack}</div>
-        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Quantidade Liberada:</strong> <span style="color:#34d399;font-weight:800;">${count} Convite${count > 1 ? 's' : ''} VIP (180 dias grátis cada)</span></div>
-        <div style="font-size:13.5px;color:#e4e4e7;"><strong>Valor Pago:</strong> R$ ${valorFormatado}</div>
+      <div style="background:#111114;border:1px solid #27272a;border-radius:10px;padding:16px;margin:18px 0;">
+        <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:10px;">Resumo do registro</div>
+        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Item:</strong> ${safePack}</div>
+        <div style="font-size:13.5px;color:#e4e4e7;margin-bottom:6px;"><strong>Quantidade adicionada:</strong> ${count} convite${count > 1 ? 's' : ''} (validade de 180 dias cada)</div>
+        <div style="font-size:13.5px;color:#e4e4e7;"><strong>Valor confirmado:</strong> R$ ${valorFormatado}</div>
       </div>
 
-      <div style="background:#141418;border:1px dashed #3f3f46;border-radius:10px;padding:13px 15px;margin:16px 0;font-size:13px;color:#d4d4d8;line-height:1.55;">
-        <strong style="color:#ffffff;">Como enviar para quem você ama:</strong><br/>
-        1. Abra o app em <a href="${safeSite}/app" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/app</a> e toque em <strong>Convites VIP</strong>.<br/>
-        2. Personalize a dedicatória e o versículo do cartão.<br/>
-        3. Clique em <strong>Enviar no WhatsApp (com Imagem)</strong> ou <strong>Baixar em PDF</strong>.
-      </div>
+      <p style="color:#d4d4d8;font-size:13.5px;line-height:1.6;margin:16px 0;">
+        Para acessar, personalizar o cartão e enviar pelo WhatsApp ou baixar em PDF, entre na sua conta em <a href="${safeSite}/app" style="color:#34d399;text-decoration:underline;">${safeSite}/app</a> e abra a aba <strong>Convites VIP</strong>.
+      </p>
 
-      <div style="text-align:center;margin:22px 0 4px;">
-        <a href="${safeSite}/app" style="display:inline-block;background:#f59e0b;color:#1c1917;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;">Acessar Meus ${count} Convite${count > 1 ? 's' : ''} VIP →</a>
+      <div style="margin:20px 0 6px;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#10b981;color:#052e16;font-weight:700;font-size:14px;padding:11px 22px;border-radius:8px;text-decoration:none;">Abrir minha conta 1Convite</a>
       </div>
     </div>
   `;
@@ -623,12 +625,24 @@ export async function sendConvitesPackPurchaseEmail({
   if (!to || !String(to).includes('@')) {
     return { ok: false, skipped: true, reason: 'Contato não é e-mail' };
   }
-  const html = buildConvitesPackEmailHtml({ name, packageName, invitesCount, valueReais, siteUrl });
   const count = Math.max(1, Number(invitesCount || 1));
+  const valorFormatado = Number(valueReais || 0).toFixed(2).replace('.', ',');
+  const cleanSite = siteUrl.replace(/\/$/, '');
+  const html = buildConvitesPackEmailHtml({ name, packageName, invitesCount, valueReais, siteUrl });
+  const text = [
+    `Olá, ${name || 'Irmão(ã)'}.`,
+    '',
+    `Confirmamos o registro do seu pedido no 1Convite: ${count} convite${count > 1 ? 's' : ''} (validade de 180 dias cada) adicionados à sua conta.`,
+    `Valor confirmado: R$ ${valorFormatado}`,
+    '',
+    `Acesse sua conta em ${cleanSite}/app e abra a aba Convites VIP para enviar pelo WhatsApp ou baixar em PDF.`,
+  ].join('\n');
+
   return sendEmail({
     to,
-    subject: `Confirmado! Seus ${count} Convite${count > 1 ? 's' : ''} VIP chegaram no 1Convite`,
+    subject: `1Convite: ${count} convite${count > 1 ? 's' : ''} adicionados à sua conta`,
     html,
+    text,
   });
 }
 
@@ -694,33 +708,37 @@ export async function sendFunnelAddonWelcomeEmail({
 
   const html = `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:540px;margin:0 auto;background:#09090b;color:#fafafa;padding:28px 22px;border-radius:14px;border:1px solid #27272a;">
-      <div style="text-align:center;margin-bottom:14px;">
-        <img src="${logoUrl}" alt="1Convite" height="32" style="display:inline-block;height:32px;width:auto;" />
+      <div style="margin-bottom:14px;">
+        <img src="${logoUrl}" alt="1Convite" height="30" style="display:inline-block;height:30px;width:auto;" />
       </div>
-      <span style="display:inline-block;background:rgba(16,185,129,0.16);color:#34d399;border:1px solid rgba(16,185,129,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;">MÓDULO DESBLOQUEADO</span>
-      <h2 style="margin:14px 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Seu acesso especial foi liberado, ${safeName}!</h2>
+      <div style="font-size:12px;color:#a1a1aa;margin-bottom:6px;">Atualização da sua conta 1Convite</div>
+      <h2 style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;color:#ffffff;">Acesso atualizado para ${safeName}</h2>
       <p style="color:#d4d4d8;font-size:14px;line-height:1.6;">
-        Confirmamos a liberação de <strong style="color:#fbbf24;">${safeOffer}</strong> na sua conta do <strong>1Convite</strong>. Os cadeados já foram abertos e você já pode aproveitar todo o conteúdo agora mesmo:
+        Confirmamos a liberação de <strong style="color:#ffffff;">${safeOffer}</strong> na sua conta do <strong>1Convite</strong>. O conteúdo já está ativo para uso imediato:
       </p>
-      <div style="background:#111114;border:1px solid #27272a;border-radius:12px;padding:16px 18px;margin:16px 0;">
-        <div style="font-size:12px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">O que foi liberado para você:</div>
+      <div style="background:#111114;border:1px solid #27272a;border-radius:10px;padding:16px 18px;margin:16px 0;">
+        <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:10px;">Recursos incluídos na sua conta:</div>
         <ul style="margin:0;padding-left:18px;">
           ${itemsHtml}
         </ul>
       </div>
-      <div style="background:#141418;border:1px dashed #3f3f46;border-radius:10px;padding:12px 14px;margin:16px 0;font-size:13px;color:#a1a1aa;line-height:1.5;">
-        <strong style="color:#ffffff;">Como acessar no Computador ou Celular:</strong><br/>
-        Acesse pelo navegador em <a href="${safeSite}/app" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/app</a> usando seu e-mail cadastrado, ou baixe o app para celular em <a href="${safeSite}/baixar" style="color:#34d399;text-decoration:none;font-weight:600;">${safeSite}/baixar</a>.
-      </div>
-      <div style="text-align:center;margin:22px 0 6px;">
-        <a href="${safeSite}/app" style="display:inline-block;background:#22c55e;color:#052e16;font-weight:800;padding:13px 26px;border-radius:999px;text-decoration:none;">Acessar Meu Conteúdo Agora</a>
+      <p style="color:#d4d4d8;font-size:13px;line-height:1.55;">
+        Acesse pelo navegador em <a href="${safeSite}/app" style="color:#34d399;text-decoration:underline;">${safeSite}/app</a> ou no celular em <a href="${safeSite}/baixar" style="color:#34d399;text-decoration:underline;">${safeSite}/baixar</a>.
+      </p>
+      <div style="margin:20px 0 6px;">
+        <a href="${safeSite}/app" style="display:inline-block;background:#10b981;color:#052e16;font-weight:700;padding:11px 22px;border-radius:8px;text-decoration:none;">Abrir minha conta 1Convite</a>
       </div>
     </div>
   `;
+  const cleanTitle = offerTitle.replace(/\s*\([^)]*OFF[^)]*\)/gi, '').trim();
+  const cleanSite = siteUrl.replace(/\/$/, '');
+  const text = `Olá, ${name || 'Irmão(ã)'}.\n\nConfirmamos a liberação de ${cleanTitle} na sua conta 1Convite.\nAcesse agora em ${cleanSite}/app.`;
+
   return sendEmail({
     to,
-    subject: `Desbloqueado! ${offerTitle} liberado no 1Convite`,
+    subject: `1Convite: ${cleanTitle} ativo na sua conta`,
     html,
+    text,
   });
 }
 
