@@ -496,6 +496,7 @@ export default function LandingPage({ onEnterApp }) {
             <video
               className="sp-hero-bg-video"
               src="/videos/hero-bg.mp4"
+              preload="metadata"
               autoPlay
               loop
               muted

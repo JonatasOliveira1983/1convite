@@ -1337,8 +1337,9 @@ function App() {
   const [profileName, setProfileName] = useState(() => localStorage.getItem('1convite_user_name') || 'Membro Convidado');
   const [profileEmail, setProfileEmail] = useState(() => localStorage.getItem('1convite_user_email') || 'membro@1convite.com');
 
-  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud (isolado por usuário)
+  // Carrega Chaminhas & Itens da Lojinha do Turso Cloud (isolado por usuário e somente no /app)
   useEffect(() => {
+    if (!isCapacitor && currentPath !== '/app') return;
     const contact = (profileEmail || 'convidado@1convite.com.br').trim().toLowerCase();
     gamificacaoLoadedRef.current = false;
     fetch(`${API_BASE}/gamificacao/state?contact=${encodeURIComponent(contact)}`)
@@ -1365,7 +1366,7 @@ function App() {
       .catch(() => {
         gamificacaoLoadedRef.current = true;
       });
-  }, [profileEmail]);
+  }, [profileEmail, currentPath]);
 
   // Sincroniza alterações de Chaminhas ou Compras na Lojinha com o Turso Cloud
   useEffect(() => {
@@ -2226,7 +2227,11 @@ function App() {
     } catch (e) { console.error(e); }
   };
 
-  useEffect(() => { loadAppData(); loadBibleBooks(); }, []);
+  useEffect(() => {
+    if (!isCapacitor && currentPath !== '/app') return;
+    loadAppData();
+    loadBibleBooks();
+  }, [currentPath]);
 
   useEffect(() => {
     if (activeTab !== 'biblia') return;
