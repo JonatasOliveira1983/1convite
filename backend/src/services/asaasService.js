@@ -84,6 +84,26 @@ export const FUNNEL_OFFERS = {
     valorReais: 24.9,
     entitlements: ['pregador'],
   },
+  convite_extra: {
+    id: 'convite_extra',
+    stage: 'convite',
+    nome: 'Convite VIP 1Convite (180 Dias)',
+    valorCentavos: 2499,
+    valorReais: 24.99,
+    convites: 1,
+    conviteDias: 180,
+    entitlements: [],
+  },
+  convite_pacote_10: {
+    id: 'convite_pacote_10',
+    stage: 'convite',
+    nome: 'Pacote 10 Convites VIP (180 Dias cada)',
+    valorCentavos: 24099,
+    valorReais: 240.99,
+    convites: 10,
+    conviteDias: 180,
+    entitlements: [],
+  },
 };
 
 export function getPlanById(planId) {

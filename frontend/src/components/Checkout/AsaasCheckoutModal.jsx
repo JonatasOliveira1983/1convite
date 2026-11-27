@@ -74,6 +74,18 @@ const OFFERS_MAP = {
     valorReais: 24.9,
     desc: 'Esboços, referências e ferramentas práticas de pregação e ensino.',
   },
+  convite_extra: {
+    id: 'convite_extra',
+    titulo: 'Convite VIP 1Convite (180 Dias)',
+    valorReais: 24.99,
+    desc: 'Libere 6 meses de acesso VIP gratuito para abençoar outra pessoa.',
+  },
+  convite_pacote_10: {
+    id: 'convite_pacote_10',
+    titulo: 'Pacote Especial 10 Convites VIP',
+    valorReais: 240.99,
+    desc: '10 Vales-Presente de 180 dias VIP cada para abençoar família, células e igreja.',
+  },
 };
 
 function saveLocalEntitlements(ents = []) {
@@ -99,9 +111,18 @@ function getApiBase() {
     : import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1';
 }
 
-export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onClose, onSuccess }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+export default function AsaasCheckoutModal({
+  isOpen,
+  planId,
+  offerId = null,
+  quantity = 1,
+  defaultName = '',
+  defaultEmail = '',
+  onClose,
+  onSuccess,
+}) {
+  const [name, setName] = useState(defaultName);
+  const [email, setEmail] = useState(defaultEmail);
   const [cpfCnpj, setCpfCnpj] = useState('');
   const [phone, setPhone] = useState('');
   const [billingType, setBillingType] = useState('PIX');
@@ -119,13 +140,21 @@ export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onC
 
   const plan = PLANOS_MAP[planId] || PLANOS_MAP.popular;
   const activeOffer = activeOfferId ? OFFERS_MAP[activeOfferId] : null;
+  const safeQty = Math.max(1, Math.min(50, Math.floor(Number(quantity) || 1)));
   const totalCheckoutReais = activeOffer
-    ? activeOffer.valorReais
-    : plan.valorReais + (includeOrderBump ? 19.9 : 0);
+    ? (activeOffer.id === 'convite_extra'
+        ? (safeQty === 10 ? 240.99 : Number((24.99 * safeQty).toFixed(2)))
+        : activeOffer.valorReais)
+    : plan.valorReais + (includeOrderBump ? OFFERS_MAP.order_bump_ebooks.valorReais : 0);
 
   useEffect(() => {
     setActiveOfferId(offerId);
   }, [offerId]);
+
+  useEffect(() => {
+    if (defaultName && !name) setName(defaultName);
+    if (defaultEmail && !email) setEmail(defaultEmail);
+  }, [defaultName, defaultEmail, isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -247,6 +276,7 @@ export default function AsaasCheckoutModal({ isOpen, planId, offerId = null, onC
         body: JSON.stringify({
           planId: activeOffer ? undefined : plan.id,
           offerId: activeOffer ? activeOffer.id : undefined,
+          quantity: activeOffer?.id === 'convite_extra' ? safeQty : 1,
           includeOrderBump: activeOffer ? false : includeOrderBump,
           name: name.trim(),
           email: email.trim(),

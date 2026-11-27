@@ -97,34 +97,31 @@ export async function sendWelcomeAndVouchersEmail({
   const appUrl = `${safeSite}/app`;
   const logoUrl = `${safeSite}/LOGOMARCA_DARK.png`;
 
-  const vouchersHtml = vouchers
-    .map(
-      (code) => `
-      <div style="background:linear-gradient(135deg,#18140d 0%,#0b0d14 60%,#1a1309 100%);border:1.5px solid #d97706;border-radius:14px;padding:18px 18px 16px;margin:12px 0;box-shadow:0 10px 26px rgba(0,0,0,0.45);">
+  const inviteCount = Array.isArray(vouchers) ? vouchers.length : 0;
+  const vouchersHtml = inviteCount > 0
+    ? `
+      <div style="background:linear-gradient(135deg,#18140d 0%,#0b0d14 60%,#1a1309 100%);border:1.5px solid #d97706;border-radius:14px;padding:20px 18px;margin:12px 0;box-shadow:0 10px 26px rgba(0,0,0,0.45);text-align:center;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
           <tr>
             <td align="left" valign="middle">
               <img src="${logoUrl}" alt="1Convite" height="20" style="display:block;height:20px;width:auto;" />
             </td>
             <td align="right" valign="middle">
-              <span style="display:inline-block;background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.45);color:#facc15;border-radius:999px;padding:3px 10px;font-size:10px;font-weight:800;letter-spacing:0.8px;">180 DIAS VIP</span>
+              <span style="display:inline-block;background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.45);color:#facc15;border-radius:999px;padding:3px 10px;font-size:10px;font-weight:800;letter-spacing:0.8px;">${inviteCount} CONVITE${inviteCount > 1 ? 'S' : ''} VIP LIBERADO${inviteCount > 1 ? 'S' : ''}</span>
             </td>
           </tr>
         </table>
-        <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:17px;color:#fde68a;text-align:center;margin:4px 0 10px;">
-          Você é Especial • Vale-Presente 1Convite
+        <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;color:#fde68a;margin:6px 0 8px;">
+          Seus Convites VIP estão prontos!
         </div>
-        <div style="background:#09090b;border:1px dashed rgba(250,204,21,0.5);border-radius:10px;padding:11px 14px;text-align:center;margin-bottom:10px;">
-          <span style="font-family:'Courier New',Courier,monospace;font-size:21px;font-weight:900;letter-spacing:2.5px;color:#facc15;">${escapeHtml(code)}</span>
-        </div>
-        <div style="text-align:center;">
-          <a href="${appUrl}?vip=${encodeURIComponent(code)}" style="color:#fb923c;font-size:12px;font-weight:700;text-decoration:none;">
-            Link direto para o convidado resgatar →
-          </a>
-        </div>
+        <p style="margin:0 0 14px;color:#d4d4d8;font-size:13.5px;line-height:1.6;">
+          Você tem <strong style="color:#facc15;">${inviteCount} Vale${inviteCount > 1 ? 's' : ''}-Presente VIP (180 dias grátis cada)</strong> disponíveis na aba <strong style="color:#ffffff;">Convites VIP</strong> dentro do seu aplicativo 1Convite. Por lá você pode visualizar o Cartão-Convite Prêmio, baixar em PDF ou enviar direto pelo WhatsApp para quem você ama!
+        </p>
+        <a href="${appUrl}" style="display:inline-block;background:#f59e0b;color:#1c1917;font-weight:800;font-size:13px;padding:11px 22px;border-radius:999px;text-decoration:none;">
+          Acessar Meus Convites VIP →
+        </a>
       </div>`
-    )
-    .join('');
+    : '';
 
   const credentialsHtml = tempPassword
     ? `
@@ -589,6 +586,12 @@ export async function sendFunnelAddonWelcomeEmail({
       '<strong>Planner Espiritual Diário:</strong> Organize sua rotina devocional, metas de oração e leitura.',
       '<strong>15 Devocionais Exclusivos:</strong> Reflexões profundas para a mulher cristã em todas as estações.',
       '<strong>Caderno de Orações:</strong> Registre seus pedidos e celebre cada oração respondida.',
+    ];
+  } else if (lower.includes('convite') || lower.includes('pacote')) {
+    unlockedItems = [
+      '<strong>Novos Convites VIP Adicionados:</strong> Seus novos vales-presente de 180 dias gratuitos já estão disponíveis na sua conta.',
+      '<strong>Cartão Prêmio em PDF & WhatsApp:</strong> Acesse a aba <em>Convites VIP</em> dentro do app para baixar o PDF oficial ou enviar pelo WhatsApp com 1 clique.',
+      '<strong>Multiplicando o Reino:</strong> Cada pessoa presenteada ganha 6 meses de acesso VIP completo no 1Convite.',
     ];
   } else if (lower.includes('book') || lower.includes('pdf')) {
     unlockedItems = [

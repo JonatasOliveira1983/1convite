@@ -276,6 +276,21 @@ async function ensureTables() {
       try {
         await client.query(`ALTER TABLE tb_vouchers ADD COLUMN gifted_by_name TEXT`);
       } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_vouchers ADD COLUMN owner_email TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_vouchers ADD COLUMN redeemed_by_name TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_vouchers ADD COLUMN redeemed_by_email TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_vouchers ADD COLUMN redeemed_at TEXT`);
+      } catch {}
+      try {
+        await client.query(`ALTER TABLE tb_pagamentos_asaas ADD COLUMN quantity INTEGER DEFAULT 1`);
+      } catch {}
 
       // Tabelas do módulo TemploFit (evolução, histórico de sessões, cargas, peso e rotinas)
       await client.query(`
@@ -2080,7 +2095,9 @@ async function fulfillPaidOrderInternal(paymentId, paidStatus = 'CONFIRMED') {
   }
 
   const orderEntitlements = parseEntitlements(order.entitlements_json);
-  const isFunnelAddon = ['upsell', 'downsell', 'order_bump'].includes(String(order.funnel_stage || ''));
+  const isFunnelAddon = ['upsell', 'downsell', 'order_bump', 'convite'].includes(String(order.funnel_stage || ''));
+  const addonOffer = isFunnelAddon ? getFunnelOfferById(order.plan_id) : null;
+  const orderQty = Math.max(1, Number(order.quantity || 1));
   const plan = isFunnelAddon ? null : (getPlanById(order.plan_id) || getPlanById('basico'));
   let vouchers = [];
   try {
@@ -2090,20 +2107,29 @@ async function fulfillPaidOrderInternal(paymentId, paidStatus = 'CONFIRMED') {
   }
 
   const nowIso = new Date().toISOString();
-  const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && (isFunnelAddon || vouchers.length > 0);
+  const alreadyFulfilled = PAID_STATUSES.has(String(order.status || '').toUpperCase()) && (isFunnelAddon ? (!addonOffer?.convites || vouchers.length > 0) : vouchers.length > 0);
   const cleanEmail = order.customer_email.trim().toLowerCase();
   let existingUser = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanEmail]);
   let tempPassword = '';
   let mergedEnts = mergeEntitlements(existingUser?.entitlements_json, orderEntitlements);
 
   if (!alreadyFulfilled) {
-    if (plan && vouchers.length === 0) {
-      for (let i = 0; i < plan.convites; i++) {
-        const code = generateInviteCode(plan.id);
+    const vouchersToCreate = plan
+      ? plan.convites
+      : (addonOffer?.convites ? addonOffer.convites * orderQty : 0);
+    const voucherDays = plan ? plan.conviteDias : (addonOffer?.conviteDias || 180);
+    const voucherPrefix = plan ? plan.id : 'reino';
+    const voucherNotes = plan
+      ? `Convite do ${plan.nome} (${cleanEmail})`
+      : `Convite VIP Avulso (${cleanEmail})`;
+
+    if (vouchersToCreate > 0 && vouchers.length === 0) {
+      for (let i = 0; i < vouchersToCreate; i++) {
+        const code = generateInviteCode(voucherPrefix);
         await dbRun(
-          `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, gifted_by_name, created_at)
-           VALUES ($1, 1, 0, $2, 1, $3, $4, $5)`,
-          [code, plan.conviteDias, `Convite do ${plan.nome} (${order.customer_email})`, order.customer_name, nowIso]
+          `INSERT INTO tb_vouchers (code, max_uses, used_count, days_valid, active, notes, gifted_by_name, owner_email, created_at)
+           VALUES ($1, 1, 0, $2, 1, $3, $4, $5, $6)`,
+          [code, voucherDays, voucherNotes, order.customer_name, cleanEmail, nowIso]
         );
         vouchers.push(code);
       }
@@ -2265,8 +2291,10 @@ app.get('/api/v1/pagamentos/recentes', async (req, res) => {
 
 app.post('/api/v1/pagamentos/checkout', async (req, res) => {
   try {
-    const { planId, offerId, includeOrderBump = false, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
-    const offer = offerId ? getFunnelOfferById(offerId) : null;
+    const { planId, offerId, quantity = 1, includeOrderBump = false, name, email, cpfCnpj, phone, billingType = 'PIX' } = req.body || {};
+    const qty = Math.max(1, Math.min(50, Math.floor(Number(quantity) || 1)));
+    const effectiveOfferId = offerId === 'convite_extra' && qty === 10 ? 'convite_pacote_10' : offerId;
+    const offer = effectiveOfferId ? getFunnelOfferById(effectiveOfferId) : null;
     const plan = offer ? null : getPlanById(planId);
     if (!offer && !plan) {
       return res.status(400).json({ success: false, message: 'Plano ou oferta inválida.' });
@@ -2288,8 +2316,10 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
 
     const bumpOffer = FUNNEL_OFFERS.order_bump_ebooks;
     const hasBump = !offer && Boolean(includeOrderBump);
+    const isConviteUnit = offer?.id === 'convite_extra';
+    const orderQuantity = isConviteUnit ? qty : 1;
     const totalCents = offer
-      ? offer.valorCentavos
+      ? (isConviteUnit ? offer.valorCentavos * qty : offer.valorCentavos)
       : plan.valorCentavos + (hasBump ? bumpOffer.valorCentavos : 0);
     const totalReais = totalCents / 100;
     const entitlements = offer
@@ -2297,7 +2327,7 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
       : (hasBump ? bumpOffer.entitlements : []);
     const funnelStage = offer ? offer.stage : (hasBump ? 'principal+bump' : 'principal');
     const description = offer
-      ? `1Convite - ${offer.nome}`
+      ? (isConviteUnit && qty > 1 ? `1Convite - ${qty}x Convites VIP (180 Dias)` : `1Convite - ${offer.nome}`)
       : `1Convite - ${plan.nome}${hasBump ? ' + 5 E-books Premium' : ''} (${plan.convites} convite${plan.convites > 1 ? 's' : ''})`;
 
     const orderId = `ord_1c_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -2320,8 +2350,8 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
     const nowIso = new Date().toISOString();
     await dbRun(
       `INSERT INTO tb_pagamentos_asaas
-       (payment_id, order_id, plan_id, customer_name, customer_email, customer_cpf, customer_phone, asaas_customer_id, billing_type, value_cents, status, invoice_url, entitlements_json, funnel_stage, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+       (payment_id, order_id, plan_id, customer_name, customer_email, customer_cpf, customer_phone, asaas_customer_id, billing_type, value_cents, status, invoice_url, entitlements_json, funnel_stage, quantity, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
       [
         charge.paymentId,
         orderId,
@@ -2337,6 +2367,7 @@ app.post('/api/v1/pagamentos/checkout', async (req, res) => {
         charge.invoiceUrl || '',
         JSON.stringify(entitlements),
         funnelStage,
+        orderQuantity,
         nowIso,
       ]
     );
@@ -2565,7 +2596,15 @@ app.post('/api/v1/auth/register', async (req, res) => {
         return res.json({ success: false, message: 'Este código atingiu o limite máximo de utilizações permitidas.' });
       }
 
-      await dbRun('UPDATE tb_vouchers SET used_count = COALESCE(used_count, 0) + 1 WHERE code = $1', [cleanVip]);
+      await dbRun(
+        `UPDATE tb_vouchers
+         SET used_count = COALESCE(used_count, 0) + 1,
+             redeemed_by_name = COALESCE(redeemed_by_name, $1),
+             redeemed_by_email = COALESCE(redeemed_by_email, $2),
+             redeemed_at = COALESCE(redeemed_at, $3)
+         WHERE code = $4`,
+        [cleanName || 'Convidado', cleanContactLower, new Date().toISOString(), cleanVip]
+      );
       isVip = true;
       daysValid = Number(voucher.days_valid) || 180;
       plan = `Membro VIP (${cleanVip})`;
@@ -3199,7 +3238,15 @@ app.post('/api/v1/vouchers/validate', async (req, res) => {
     if (Number(voucher.max_uses) > 0 && Number(voucher.used_count || 0) >= Number(voucher.max_uses)) {
       return res.json({ success: false, message: 'Este código atingiu o limite máximo de utilizações permitidas.' });
     }
-    await dbRun('UPDATE tb_vouchers SET used_count = COALESCE(used_count, 0) + 1 WHERE code = $1', [cleanCode]);
+    await dbRun(
+      `UPDATE tb_vouchers
+       SET used_count = COALESCE(used_count, 0) + 1,
+           redeemed_by_name = COALESCE(redeemed_by_name, $1),
+           redeemed_by_email = COALESCE(redeemed_by_email, $2),
+           redeemed_at = COALESCE(redeemed_at, $3)
+       WHERE code = $4`,
+      [guestName || 'Convidado', guestEmail ? String(guestEmail).trim().toLowerCase() : null, new Date().toISOString(), cleanCode]
+    );
 
     const daysValid = Number(voucher.days_valid) || 180;
     const giftedByName = voucher.gifted_by_name || '';
@@ -3223,6 +3270,67 @@ app.post('/api/v1/vouchers/validate', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Erro ao validar código de convite.' });
+  }
+});
+
+// ── ÁREA DE CONTROLE DE CONVITES VIP (MEUS CONVITES) ─────────────────────────
+app.get('/api/v1/convites/meus', async (req, res) => {
+  try {
+    const cleanContact = String(req.query.contact || req.headers['x-user-email'] || '').trim().toLowerCase();
+    if (!cleanContact || cleanContact === 'convidado@1convite.com.br' || cleanContact === 'membro@1convite.com') {
+      return res.json({
+        success: true,
+        userInfo: { name: 'Convidado', contact: cleanContact, isInvitedUser: false, giftedByName: '' },
+        vouchers: [],
+      });
+    }
+
+    const userRow = await dbGet('SELECT * FROM tb_acessos_usuarios WHERE LOWER(contact) = $1', [cleanContact]);
+    let giftedByName = '';
+    const userVipCode = userRow?.vip_code || '';
+    const isInvitedUser = Boolean(userVipCode);
+
+    if (userVipCode) {
+      const originVoucher = await dbGet('SELECT gifted_by_name FROM tb_vouchers WHERE code = $1', [userVipCode]);
+      giftedByName = originVoucher?.gifted_by_name || '';
+    }
+
+    const rows = await dbAll(
+      `SELECT * FROM tb_vouchers
+       WHERE LOWER(COALESCE(owner_email, '')) = $1
+          OR LOWER(COALESCE(notes, '')) LIKE $2
+       ORDER BY created_at DESC`,
+      [cleanContact, `%(${cleanContact})%`]
+    );
+
+    const vouchers = (rows || []).map((v) => ({
+      code: v.code,
+      maxUses: Number(v.max_uses || 1),
+      usedCount: Number(v.used_count || 0),
+      daysValid: Number(v.days_valid || 180),
+      active: Boolean(Number(v.active ?? 1)),
+      giftedByName: v.gifted_by_name || userRow?.name || '',
+      redeemedByName: v.redeemed_by_name || '',
+      redeemedByEmail: v.redeemed_by_email || '',
+      redeemedAt: v.redeemed_at || null,
+      createdAt: v.created_at,
+    }));
+
+    res.json({
+      success: true,
+      userInfo: {
+        name: userRow?.name || 'Membro 1Convite',
+        contact: cleanContact,
+        plan: userRow?.plan || 'Membro VIP',
+        isInvitedUser,
+        vipCode: userVipCode || null,
+        giftedByName,
+      },
+      vouchers,
+    });
+  } catch (err) {
+    console.error('Erro em /convites/meus:', err);
+    res.status(500).json({ success: false, message: 'Erro ao carregar convites VIP.' });
   }
 });
 

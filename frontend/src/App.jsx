@@ -23,6 +23,7 @@ const CafeComDeusView = lazyWithRetry(() => import('./components/CafeComDeus/Caf
 const MulherVirtuosaView = lazyWithRetry(() => import('./components/MulherVirtuosa/MulherVirtuosaView'));
 const BibliotecaPregadorView = lazyWithRetry(() => import('./components/BibliotecaPregador/BibliotecaPregadorView'));
 const BibliotecaEbooksView = lazyWithRetry(() => import('./components/BibliotecaEbooks/BibliotecaEbooksView'));
+const ConvitesVipView = lazyWithRetry(() => import('./components/Convites/ConvitesVipView'));
 const UpgradeVoucherModal = lazyWithRetry(() => import('./components/Upgrade/UpgradeVoucherModal'));
 import cafeData from './data/cafe_com_deus_365.json';
 import cafeSinteseData from './data/cafeComDeusSintese365.json';
@@ -3203,6 +3204,11 @@ Em nome de Jesus, Amém.`;
                 icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
               },
               {
+                id: 'convites-vip',
+                label: 'Convites VIP',
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              },
+              {
                 id: 'conta',
                 label: 'Minha Conta',
                 icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -3940,7 +3946,7 @@ Em nome de Jesus, Amém.`;
                     15 min • Sem Equipamentos • Rotinas Guiadas TemploFit
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setActiveTab('treino-templo'); }}
                       style={{
@@ -3962,6 +3968,24 @@ Em nome de Jesus, Amém.`;
                         <polygon points="5 3 19 12 5 21 5 3" />
                       </svg>
                       <span>Iniciar Treino</span>
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setActiveTab('convites-vip'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        background: 'rgba(245, 158, 11, 0.92)',
+                        color: '#1c1917',
+                        fontWeight: '800',
+                        fontSize: '0.8rem',
+                        border: 'none',
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <span>Convites VIP</span>
                     </button>
                     <span style={{ fontSize: '0.74rem', color: 'rgba(255, 255, 255, 0.6)' }}>
                       Cuidando do Templo de Deus
@@ -9527,6 +9551,15 @@ Em nome de Jesus, Amém.`;
         {activeTab === 'ebooks-premium' && (
           <BibliotecaEbooksView 
             onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
+        {/* ════════════ ABA CONVITES VIP (CONTROLE E COMPRA DE CONVITES) ════════════ */}
+        {activeTab === 'convites-vip' && (
+          <ConvitesVipView
+            userEmail={profileEmail}
+            userName={profileName}
+            onBack={() => setActiveTab('dashboard')}
           />
         )}
 
