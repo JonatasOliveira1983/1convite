@@ -1,15 +1,14 @@
 {
-  "version": "v3.1.0",
-  "build": "2026112601",
-  "releaseDate": "2026-11-26",
+  "version": "v3.2.0",
+  "build": "2026112701",
+  "releaseDate": "2026-11-27",
   "minAppVersion": "1.0.0",
   "changelog": [
-    "Jornada TemploFit 6 Meses em Casa (30 sessões diárias sem equipamentos), Mapa de Calor Anual, Troca de Exercício, Recordes Pessoais (PR) e Reset de Registros no Turso.",
-    "Biblioteca do Pregador e Planner da Mulher Virtuosa completos com persistência na nuvem Turso e layout Desktop responsivo.",
-    "Bíblia Sagrada com paisagens sonoras simultâneas (Chuva, Ondas, Piano) sem interferência na narração.",
-    "Design System Unslop com controle unificado de Modo Claro/Escuro, Paletas e Tamanho de Letra em Minha Conta.",
-    "Painel de Controle Mestre (ADM) com banner de branding, liberação manual de VIP, ações de vendas Asaas, disparo de campanhas Resend e Saúde do Sistema.",
-    "App Android (Capacitor 8) com @capacitor/app, @capacitor/filesystem, @capacitor/share, download nativo de Wallpapers 4K/PDFs e segurança Cloudflare."
+    "Nova área Convites VIP com Voucher Vertical de Luxo (fundo rajado dourado, dedicatória, QR Code, PDF, PNG e envio com imagem no WhatsApp).",
+    "3 Pacotes Especiais de Convites VIP (Sementeira 10x, Colheita 15x e Embaixadores do Reino 20x) + compra avulsa por R$ 24,99.",
+    "Ativação do Asaas em Produção Real (PIX, Cartão, Webhooks) e fila sequencial anti-429 no Resend com e-mails transacionais otimizados.",
+    "Banco de dados Turso 100% isolado por conta (avatar Admin, chaminhas, lojinha e trilha 30 dias).",
+    "Otimização de performance (58 imagens comprimidas, mentores em 25 KB, code-splitting) e eliminação da tela branca no PWA/Android (#070A10)."
   ],
-  "updateTimestamp": 1795728000000
+  "updateTimestamp": 1795758000000
 }

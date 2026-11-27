@@ -5,7 +5,7 @@
 
 import { ragService } from './ragService.js';
 import { LAYA_MENTORES, LayaEngine } from './layaEngine.js';
-import { PLANOS_1CONVITE, isAsaasConfigured } from './asaasService.js';
+import { PLANOS_1CONVITE, FUNNEL_OFFERS, isAsaasConfigured, isSandboxKey } from './asaasService.js';
 import { isResendConfigured } from './resendService.js';
 import pool from '../database/pool.js';
 
@@ -287,7 +287,7 @@ class McpServer {
 
           result = {
             status: 'online',
-            version: '3.1.0',
+            version: '3.2.0',
             service: '1Convite Core Engine & MCP Server',
             protocol_version: '2024-11-05',
             database: {
@@ -335,8 +335,10 @@ class McpServer {
         case 'get_payment_plans': {
           result = {
             asaas_configurado: isAsaasConfigured(),
+            modo_asaas: isSandboxKey() ? 'sandbox' : 'producao',
             resend_configurado: isResendConfigured(),
-            planos: Object.values(PLANOS_1CONVITE)
+            planos: Object.values(PLANOS_1CONVITE),
+            ofertas_e_pacotes_convites: Object.values(FUNNEL_OFFERS)
           };
           break;
         }

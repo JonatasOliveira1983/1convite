@@ -1,12 +1,12 @@
 {
   "uri": "viking://1convite",
   "name": "1Convite Hierarchical Context Database",
-  "version": "3.1.0",
-  "description": "Sistema de arquivos virtual de contexto do 1Convite compatível com OpenViking. Organiza conhecimento bíblico, TemploFit 6 Meses, Mulher Virtuosa, Biblioteca do Pregador, 5 E-books PDF, Painel ADM Mestre, pagamentos Asaas e segurança Cloudflare.",
+  "version": "3.2.0",
+  "description": "Sistema de arquivos virtual de contexto do 1Convite compatível com OpenViking. Organiza conhecimento bíblico, Convites VIP (Voucher com QR Code e 3 pacotes), TemploFit 6 Meses, Mulher Virtuosa, Biblioteca do Pregador, 5 E-books PDF, Painel ADM Mestre, Asaas Produção e segurança Cloudflare.",
   "layers": {
-    "L0": "Metadados estruturados, rotas (/, /app, /checkout, /blog, /api/v1) e políticas de segurança Cloudflare (_headers + rate limit)",
-    "L1": "Resumos executivos, funil de vendas Asaas/Resend e contexto unificado dos módulos",
-    "L2": "Dados profundos: 31.106 versículos ACF, 20 artigos do Reino, 5 E-books PDF, Jornada TemploFit 6 Meses, 21 Esboços + 20 Estudos + 16 Teologias + 21 Mapas e 15 Devocionais Femininos"
+    "L0": "Metadados estruturados, rotas (/, /app, /baixar, /checkout, /blog, /api/v1), manifest PWA #070A10 e políticas de segurança Cloudflare (_headers + rate limit)",
+    "L1": "Resumos executivos, funil de vendas Asaas Produção (api.asaas.com/v3), fila anti-429 Resend (8 etapas) e isolamento Turso por user_contact",
+    "L2": "Dados profundos: 31.106 versículos ACF, 20 artigos do Reino, Convites VIP (Sementeira 10x, Colheita 15x, Embaixadores 20x), 5 E-books PDF, Jornada TemploFit 6 Meses, 21 Esboços + 20 Estudos + 16 Teologias + 21 Mapas e 15 Devocionais Femininos"
   },
   "root_directories": [
     "viking://1convite/knowledge",

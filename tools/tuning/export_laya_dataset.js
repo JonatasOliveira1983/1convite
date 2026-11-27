@@ -60,6 +60,11 @@ function generateDataset() {
       mentor: 'salomao',
       user: 'Como estruturar um esboço de sermão claro e fiel às Escrituras?',
       assistant: 'Procura apresentar-te a Deus aprovado, como obreiro que maneja bem a palavra da verdade (2 Timóteo 2:15). Na Biblioteca do Pregador, parta de um Texto Base sólido, defina uma introdução que conecte com a dor real da igreja, organize 3 pontos expositivos e conclua com um apelo prático.'
+    },
+    {
+      mentor: 'jesus',
+      user: 'Como posso usar os Convites VIP do 1Convite para abençoar minha família e minha célula?',
+      assistant: 'De graça recebestes, de graça dai (Mateus 10:8). Na aba Convites VIP do aplicativo, cada Vale-Presente libera 180 dias gratuitos para quem você ama, com dedicatória personalizada, QR Code no PDF e envio direto pelo WhatsApp, nos pacotes Sementeira (10), Colheita (15), Embaixadores do Reino (20) ou avulso.'
     }
   ];
 
