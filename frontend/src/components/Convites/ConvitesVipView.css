@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 .cv-container {
-  max-width: 1020px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 20px 16px 96px;
   color: #fafafa;
@@ -40,9 +40,9 @@
 
 .cv-hero-card {
   display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
+  grid-template-columns: 1.1fr 0.95fr;
   gap: 28px;
-  align-items: center;
+  align-items: start;
   background: linear-gradient(145deg, #111217 0%, #090b10 100%);
   border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 22px;
@@ -107,7 +107,6 @@
   margin-top: 3px;
 }
 
-/* Personalização da Dedicatória */
 .cv-dedication-box {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -163,7 +162,7 @@
   color: #fde68a;
 }
 
-/* ── VOUCHER VERTICAL DE LUXO (FIEL AO CONVITE PORTAL DE LUZ) ── */
+/* ── VOUCHER VERTICAL MAIS ALTO COM FUNDO RAJADO DOURADO ── */
 .cv-preview-wrap {
   display: flex;
   flex-direction: column;
@@ -172,12 +171,12 @@
 
 .cv-gv-card {
   width: 100%;
-  max-width: 365px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 16, 22, 0.9) 45%, rgba(26, 20, 10, 0.95) 100%);
-  border: 1px solid rgba(229, 193, 88, 0.5);
-  border-radius: 22px;
+  max-width: 375px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(15, 16, 22, 0.92) 45%, rgba(26, 20, 10, 0.96) 100%);
+  border: 1.5px solid rgba(229, 193, 88, 0.58);
+  border-radius: 24px;
   padding: 10px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 42px rgba(212, 175, 55, 0.14);
+  box-shadow: 0 26px 64px rgba(0, 0, 0, 0.72), 0 0 44px rgba(212, 175, 55, 0.16);
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
@@ -185,17 +184,21 @@
 
 .cv-gv-inner {
   position: relative;
-  background: rgba(10, 10, 14, 0.55);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 15px;
-  padding: 20px 18px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.36);
+  border-radius: 16px;
+  padding: 28px 20px 24px;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .cv-gv-gold-bars {
   position: absolute;
-  top: 14px;
+  top: 16px;
   left: -8px;
   display: flex;
   flex-direction: column;
@@ -207,28 +210,28 @@
   height: 4px;
   border-radius: 3px;
   background: linear-gradient(90deg, #aa7c11 0%, #f5e199 55%, #d4af37 100%);
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
-.cv-gv-bar-1 { width: 52px; }
-.cv-gv-bar-2 { width: 34px; opacity: 0.55; }
+.cv-gv-bar-1 { width: 56px; }
+.cv-gv-bar-2 { width: 36px; opacity: 0.6; }
 
 .cv-gv-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .cv-gv-logo {
-  height: 24px;
+  height: 25px;
   width: auto;
   object-fit: contain;
 }
 
 .cv-gv-seal {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: linear-gradient(135deg, #f5e199 0%, #d4af37 55%, #9f710d 100%);
   color: #161105;
@@ -237,12 +240,12 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
-  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.38);
   flex-shrink: 0;
 }
 
 .cv-gv-seal-big {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
 }
 
@@ -253,20 +256,20 @@
 }
 
 .cv-gv-kicker {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #e5c158;
+  color: #f5d061;
   margin-bottom: 4px;
 }
 
 .cv-gv-serif-title {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 2.2rem;
   line-height: 1.05;
   color: #f8eab8;
 }
@@ -274,9 +277,9 @@
 .cv-gv-people {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  margin-bottom: 10px;
-  font-size: 0.8rem;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
   color: #e4e4e7;
 }
 
@@ -286,58 +289,73 @@
 }
 
 .cv-gv-dedication {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: 1.02rem;
-  line-height: 1.38;
+  font-size: 1.08rem;
+  line-height: 1.42;
   color: #f4f4f5;
 }
 
-.cv-gv-divider {
-  height: 1px;
-  border-top: 1px dashed rgba(212, 175, 55, 0.4);
-  margin: 10px 0 12px;
+/* Linha tracejada destacada do cupom */
+.cv-gv-coupon-tear {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+
+.cv-tear-icon {
+  font-size: 1rem;
+  color: #f5d061;
+  line-height: 1;
+}
+
+.cv-tear-line {
+  flex: 1;
+  height: 0;
+  border-top: 2px dashed rgba(245, 208, 97, 0.85);
 }
 
 .cv-gv-bottom-grid {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   justify-content: space-between;
 }
 
 .cv-gv-code-box {
   flex: 1;
-  background: rgba(9, 9, 12, 0.85);
-  border: 1px dashed rgba(212, 175, 55, 0.55);
-  border-radius: 10px;
-  padding: 9px 10px;
+  background: rgba(9, 9, 12, 0.88);
+  border: 2px dashed rgba(245, 208, 97, 0.82);
+  border-radius: 12px;
+  padding: 12px 10px;
   text-align: center;
 }
 
 .cv-gv-code-label {
   display: block;
-  font-size: 0.65rem;
-  color: #a1a1aa;
-  margin-bottom: 2px;
+  font-size: 0.66rem;
+  color: #d4d4d8;
+  margin-bottom: 3px;
 }
 
 .cv-gv-code-value {
   font-family: 'Montserrat', monospace;
-  font-size: 1rem;
+  font-size: 1.08rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: #f5d061;
 }
 
 .cv-gv-qr-box {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  border: 2px solid rgba(245, 208, 97, 0.78);
   flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 .cv-gv-qr-box img {
@@ -347,21 +365,65 @@
 }
 
 .cv-gv-auth-seal {
-  margin-top: 10px;
-  font-size: 0.66rem;
+  margin-top: 14px;
+  font-size: 0.68rem;
   font-weight: 600;
-  color: rgba(245, 225, 153, 0.72);
+  color: rgba(245, 225, 153, 0.82);
   letter-spacing: 0.04em;
 }
 
+/* Botões logo abaixo do Voucher */
+.cv-preview-actions {
+  width: 100%;
+  max-width: 375px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.cv-preview-btn-wpp {
+  background: #22c55e;
+  color: #052e16;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 800;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.cv-preview-btn-pdf {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #1c1917;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 800;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.cv-preview-btn-buy {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #1c1917;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
 .cv-preview-caption {
-  margin: 10px 0 0;
+  margin: 9px 0 0;
   font-size: 0.74rem;
   color: #a1a1aa;
   text-align: center;
 }
 
-/* Seção Compra de Convites */
+/* Seção Compra de Convites + 3 Pacotes Especiais */
 .cv-buy-section {
   background: #121217;
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -389,48 +451,151 @@
   font-size: 0.88rem;
 }
 
-.cv-buy-grid {
+.cv-packages-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
-.cv-offer-card {
-  background: #18181f;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+.cv-pkg-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  min-height: 290px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-pkg-card.is-featured {
+  border-color: rgba(245, 158, 11, 0.65);
+  box-shadow: 0 14px 36px rgba(245, 158, 11, 0.16);
+}
+
+.cv-pkg-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cv-pkg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 11, 15, 0.68) 0%, rgba(10, 11, 15, 0.92) 65%, rgba(10, 11, 15, 0.97) 100%);
+}
+
+.cv-pkg-content {
+  position: relative;
+  z-index: 1;
   padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
+  flex: 1;
+  gap: 10px;
 }
 
-.cv-offer-card.cv-offer-highlight {
-  background: linear-gradient(155deg, rgba(245, 158, 11, 0.1) 0%, #18181f 65%);
-  border-color: rgba(212, 175, 55, 0.45);
+.cv-pkg-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.cv-offer-tag {
+.cv-pkg-discount {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: rgba(245, 158, 11, 0.22);
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  color: #fde68a;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.cv-pkg-qty {
   font-size: 0.72rem;
   font-weight: 700;
   color: #34d399;
 }
 
-.cv-tag-gold {
-  color: #fbbf24;
+.cv-pkg-title {
+  margin: 2px 0 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
 }
 
-.cv-offer-card h3 {
+.cv-pkg-desc {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #d4d4d8;
 }
 
-.cv-offer-desc {
-  margin: 0;
-  font-size: 0.84rem;
+.cv-pkg-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: auto;
+}
+
+.cv-price-old {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.cv-pkg-price {
+  font-size: 1.48rem;
+  color: #f5d061;
+  line-height: 1.1;
+}
+
+.cv-pkg-unit {
+  font-size: 0.74rem;
   color: #cbd5e1;
-  line-height: 1.48;
+}
+
+/* Barra de Compra Unitária Flexível */
+.cv-unit-bar {
+  background: #18181f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.cv-offer-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #34d399;
+  margin-bottom: 4px;
+}
+
+.cv-unit-copy h3 {
+  margin: 0 0 4px;
+  font-size: 1.06rem;
+}
+
+.cv-unit-copy p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.cv-unit-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .cv-qty-row {
@@ -438,7 +603,7 @@
   align-items: center;
   gap: 8px;
   background: #101014;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -484,28 +649,6 @@
   color: #a1a1aa;
 }
 
-.cv-pack-price {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.cv-price-old {
-  font-size: 0.78rem;
-  color: #94a3b8;
-  text-decoration: line-through;
-}
-
-.cv-pack-price strong {
-  font-size: 1.45rem;
-  color: #fbbf24;
-}
-
-.cv-pack-price small {
-  font-size: 0.76rem;
-  color: #fde68a;
-}
-
 .cv-btn-primary {
   width: 100%;
   padding: 12px 16px;
@@ -514,7 +657,7 @@
   background: #10b981;
   color: #052e16;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   cursor: pointer;
 }
 
@@ -526,7 +669,7 @@
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   color: #1c1917;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   cursor: pointer;
 }
 
@@ -629,7 +772,7 @@
 
 .cv-voucher-code {
   background: #0d0d11;
-  border: 1px dashed rgba(212, 175, 55, 0.45);
+  border: 1.5px dashed rgba(245, 208, 97, 0.65);
   border-radius: 10px;
   padding: 10px;
   text-align: center;
@@ -687,7 +830,7 @@
   cursor: pointer;
 }
 
-/* Template PDF offscreen fiel ao Voucher Vertical de Luxo */
+/* Template PDF offscreen mais alto com fundo rajado dourado e QR maior */
 .cv-pdf-offscreen {
   position: fixed;
   left: -9999px;
@@ -696,8 +839,8 @@
 }
 
 .cv-pdf-luxury-sheet {
-  width: 620px;
-  padding: 28px;
+  width: 640px;
+  padding: 26px;
   background: radial-gradient(circle at 50% 25%, #1c160c 0%, #060911 75%);
   box-sizing: border-box;
 }
@@ -708,68 +851,83 @@
 }
 
 .cv-gv-inner-pdf {
-  padding: 34px 28px 26px;
+  padding: 40px 30px 30px;
+  min-height: 780px;
 }
 
 .cv-gv-logo-pdf {
-  height: 32px;
+  height: 34px;
 }
 
 .cv-gv-seal-pdf {
-  width: 72px;
-  height: 72px;
+  width: 78px;
+  height: 78px;
 }
 
 .cv-gv-seal-pdf .cv-gv-seal-big {
-  font-size: 21px;
+  font-size: 22px;
 }
 
 .cv-gv-serif-pdf {
-  font-size: 3.1rem;
+  font-size: 3.3rem;
   margin-bottom: 14px;
 }
 
 .cv-gv-dedication-pdf {
-  font-size: 1.32rem;
+  font-size: 1.38rem;
   margin-bottom: 12px;
 }
 
 .cv-pdf-benefits {
-  font-size: 0.82rem;
-  color: #cbd5e1;
+  font-size: 0.84rem;
+  color: #e4e4e7;
   margin: 0 0 14px;
 }
 
 .cv-gv-bottom-pdf {
-  gap: 16px;
+  gap: 18px;
+}
+
+.cv-gv-code-box-pdf {
+  padding: 18px 14px;
+}
+
+.cv-gv-code-box-pdf .cv-gv-code-value {
+  font-size: 1.4rem;
 }
 
 .cv-gv-qr-pdf {
-  width: 96px;
-  height: 96px;
+  width: 132px;
+  height: 132px;
 }
 
 .cv-pdf-steps {
-  margin-top: 18px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(9, 9, 12, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 12px;
   text-align: left;
-  font-size: 0.78rem;
-  color: #d4d4d8;
+  font-size: 0.8rem;
+  color: #e4e4e7;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
-@media (max-width: 760px) {
-  .cv-hero-card,
-  .cv-buy-grid {
+@media (max-width: 900px) {
+  .cv-packages-grid {
     grid-template-columns: 1fr;
   }
 
+  .cv-unit-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
   .cv-hero-card {
+    grid-template-columns: 1fr;
     padding: 20px 16px;
   }
 

@@ -82,9 +82,21 @@ const OFFERS_MAP = {
   },
   convite_pacote_10: {
     id: 'convite_pacote_10',
-    titulo: 'Pacote Especial 10 Convites VIP',
-    valorReais: 240.99,
-    desc: '10 Vales-Presente de 180 dias VIP cada para abençoar família, células e igreja.',
+    titulo: 'Pacote Sementeira — 10 Convites VIP',
+    valorReais: 237.4,
+    desc: '10 Vales-Presente de 180 dias VIP cada com 5% de desconto.',
+  },
+  convite_pacote_15: {
+    id: 'convite_pacote_15',
+    titulo: 'Pacote Colheita — 15 Convites VIP',
+    valorReais: 337.35,
+    desc: '15 Vales-Presente de 180 dias VIP cada com 10% de desconto.',
+  },
+  convite_pacote_20: {
+    id: 'convite_pacote_20',
+    titulo: 'Pacote Embaixadores do Reino — 20 Convites VIP',
+    valorReais: 424.83,
+    desc: '20 Vales-Presente de 180 dias VIP cada com 15% de desconto.',
   },
 };
 
