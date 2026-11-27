@@ -3294,6 +3294,17 @@ Em nome de Jesus, Amém.`;
               </span>
               <span>Página Oficial & Planos</span>
             </button>
+            <button
+              type="button"
+              className="desktop-nav-item"
+              onClick={handleLogout}
+              style={{ color: '#f87171', marginTop: '4px' }}
+            >
+              <span className="desktop-nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              </span>
+              <span>Sair da Conta</span>
+            </button>
           </nav>
 
           <button
@@ -9790,21 +9801,49 @@ Em nome de Jesus, Amém.`;
                 gap: '3px',
                 color: isActive ? activeColor : 'rgba(255, 255, 255, 0.45)',
                 cursor: 'pointer',
-                padding: '6px 10px',
+                padding: '6px 6px',
                 minHeight: '48px',
-                minWidth: '52px',
+                minWidth: '46px',
                 borderRadius: '14px',
                 transition: 'all 0.2s ease',
                 transform: isActive ? 'scale(1.05)' : 'scale(1)'
               }}
             >
               {item.icon}
-              <span style={{ fontSize: '0.66rem', fontWeight: isActive ? '800' : '600' }}>
+              <span style={{ fontSize: '0.64rem', fontWeight: isActive ? '800' : '600' }}>
                 {item.label}
               </span>
             </button>
           );
         })}
+        <button
+          type="button"
+          onClick={handleLogout}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '3px',
+            color: '#f87171',
+            cursor: 'pointer',
+            padding: '6px 6px',
+            minHeight: '48px',
+            minWidth: '46px',
+            borderRadius: '14px'
+          }}
+        >
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span style={{ fontSize: '0.64rem', fontWeight: '700' }}>
+            Sair
+          </span>
+        </button>
       </nav>
 
       {/* ════════════ MODAL DE UPGRADE & RESGATE DE VOUCHER ════════════ */}
