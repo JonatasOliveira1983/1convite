@@ -42,6 +42,10 @@ export default function BaptismMap({ churches = [], selectedChurch, userCoords, 
     markersLayerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
 
+    setTimeout(() => {
+      if (mapRef.current) mapRef.current.invalidateSize();
+    }, 250);
+
     return () => {
       map.remove();
       mapRef.current = null;

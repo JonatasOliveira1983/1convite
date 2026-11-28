@@ -1115,6 +1115,13 @@ body.light-mode .ide-filter-chip,
   color: #374151;
 }
 
+body.light-mode .ide-geo-error,
+:root:not(.dark-mode) .ide-geo-error {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
 @media (max-width: 600px) {
   .ide-acronym-row {
     grid-template-columns: 1fr;

@@ -3592,21 +3592,55 @@ app.get('/api/v1/igrejas/proximas', async (req, res) => {
     let originLabel = 'Sua localização atual';
 
     if ((!Number.isFinite(lat) || !Number.isFinite(lon)) && cepRaw.length === 8) {
-      const viaResp = await fetch(`https://viacep.com.br/ws/${cepRaw}/json/`);
-      const viaData = await viaResp.json();
-      if (viaData && !viaData.erro) {
-        const addrQuery = [viaData.logradouro, viaData.bairro, viaData.localidade, viaData.uf, 'Brasil']
-          .filter(Boolean)
-          .join(', ');
-        originLabel = `${viaData.localidade} - ${viaData.uf} (CEP ${cepRaw})`;
-        const nomResp = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(addrQuery)}`,
-          { headers: { 'User-Agent': '1Convite-IDE/3.3 (https://1convite.com.br)' } }
-        );
-        const nomList = await nomResp.json();
-        if (Array.isArray(nomList) && nomList[0]) {
-          lat = parseFloat(nomList[0].lat);
-          lon = parseFloat(nomList[0].lon);
+      // 1) Tenta BrasilAPI v2 (retorna endereço + coordenadas diretamente)
+      try {
+        const bResp = await fetch(`https://brasilapi.com.br/api/cep/v2/${cepRaw}`);
+        if (bResp.ok) {
+          const bData = await bResp.json();
+          if (bData?.city) {
+            originLabel = `${bData.city} - ${bData.state} (CEP ${cepRaw})`;
+          }
+          const bLat = parseFloat(bData?.location?.coordinates?.latitude);
+          const bLon = parseFloat(bData?.location?.coordinates?.longitude);
+          if (Number.isFinite(bLat) && Number.isFinite(bLon)) {
+            lat = bLat;
+            lon = bLon;
+          }
+        }
+      } catch {}
+
+      // 2) Fallback: ViaCEP + Nominatim em cascata
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        const viaResp = await fetch(`https://viacep.com.br/ws/${cepRaw}/json/`);
+        const viaData = await viaResp.json();
+        const queries = [];
+        if (viaData && !viaData.erro) {
+          originLabel = `${viaData.localidade} - ${viaData.uf} (CEP ${cepRaw})`;
+          if (viaData.logradouro && viaData.localidade) {
+            queries.push(`${viaData.logradouro}, ${viaData.localidade}, ${viaData.uf}, Brasil`);
+          }
+          if (viaData.bairro && viaData.localidade) {
+            queries.push(`${viaData.bairro}, ${viaData.localidade}, ${viaData.uf}, Brasil`);
+          }
+          if (viaData.localidade) {
+            queries.push(`${viaData.localidade}, ${viaData.uf}, Brasil`);
+          }
+        }
+        queries.push(`${cepRaw.slice(0, 5)}-${cepRaw.slice(5)}, Brasil`);
+
+        for (const qItem of queries) {
+          try {
+            const nomResp = await fetch(
+              `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(qItem)}`,
+              { headers: { 'User-Agent': '1Convite-IDE/3.3 (https://1convite.com.br)' } }
+            );
+            const nomList = await nomResp.json();
+            if (Array.isArray(nomList) && nomList[0]) {
+              lat = parseFloat(nomList[0].lat);
+              lon = parseFloat(nomList[0].lon);
+              break;
+            }
+          } catch {}
         }
       }
     } else if ((!Number.isFinite(lat) || !Number.isFinite(lon)) && queryText) {
