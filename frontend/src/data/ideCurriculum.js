@@ -1,6 +1,4 @@
-// Gerado a partir de i.d.e.-estudos (Block1Lessons..Block4Lessons)
-// Apresentadores do Podcast IDE Boas Notícias: Pedro (Instrutor) & Lívia (Perguntas e Leitura)
-
+// Gerado a partir de i.d.e.-estudos
 export const IDE_BLOCKS = [
   {
     "blockNumber": 1,
@@ -213,7 +211,30 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Você costuma enxergar seu relacionamento com Deus mais como o de um filho desfrutando da presença do Pai ou como o de alguém tentando cumprir metas religiosas para não ser reprovado? Escreva em poucas linhas o que falou mais forte ao seu coração nesta primeira aula.",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O Rei que criou você à Sua imagem nunca desistiu de habitar com você. Você não precisa \"se consertar primeiro\", cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. O sacrifício e a obra de Jesus já bastam. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O Rei que criou você à Sua imagem nunca desistiu de habitar com você. Você não precisa \"se consertar primeiro\", cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. O sacrifício e a obra de Jesus já bastam. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_01.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, já começo com uma pergunta que muita gente tem: quando alguém abre a Bíblia pela primeira vez, muitas vezes acha que vai encontrar um livro frio, cheio de regras e cobranças. Mas afinal, como tudo começou? O que existia antes de qualquer mandamento?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Gênesis 1, versículos 1 a 3: No princípio criou Deus os céus e a terra. E a terra era sem forma e vazia; e havia trevas sobre a face do abismo; e o Espírito de Deus se movia sobre a face das águas. E disse Deus: Haja luz; e houve luz. Olha que lindo! Antes de existir qualquer mandamento escrito em tábuas de pedra ou qualquer templo feito por mãos humanas, já existia um Rei amoroso trazendo luz, ordem e vida onde antes havia vazio. Deus não criou o universo negociando com ninguém; Ele criou por amor e governa pela Sua Palavra."
+      },
+      {
+        "question": "Isso já muda tudo! Agora vem a minha segunda pergunta: onde Jesus entra nessa história? Ele foi um plano B que Deus inventou depois que a humanidade pecou, ou Ele já estava lá desde a criação?",
+        "answer": "Ficou cristalino, né? Todas as coisas foram criadas por meio de Jesus e para Ele. Jesus nunca foi um plano de emergência! Ele é o Rei Criador desde o primeiro segundo da história."
+      },
+      {
+        "question": "Incrível, Pedro! E quanto a nós? Por que Deus criou o ser humano, e qual era a nossa verdadeira identidade lá no Jardim do Éden?",
+        "answer": "Gênesis 1, versículos 26 e 27 diz assim: E disse Deus: Façamos o homem à nossa imagem, conforme a nossa semelhança; e domine sobre os peixes do mar, e sobre as aves dos céus, e sobre o gado, e sobre toda a terra, e sobre todo o réptil que se move sobre a terra. E criou Deus o homem à sua imagem; à imagem de Deus o criou; homem e mulher os criou. Preste atenção nisso, você que está nos ouvindo: Deus não criou empregados assustados tentando ganhar aprovação para não serem demitidos. Ele criou filhos à Sua imagem e semelhança, para caminhar com Ele no Jardim sem medo, sem cortinas e sem barreiras."
+      },
+      {
+        "question": "Que alívio saber disso! Agora a minha quarta pergunta: lá em Gênesis 2 diz que Deus descansou no sétimo dia. Por que Ele descansou? O Deus Todo-Poderoso ficou cansado?",
+        "answer": "Lendo Gênesis 2, versículos 2 e 3: E havendo Deus acabado no dia sétimo a obra que fizera, descansou no sétimo dia de toda a sua obra, que tinha feito. E abençoou Deus o dia sétimo, e o santificou; porque nele descansou de toda a sua obra que Deus criara e fizera. Deus não descansou por cansaço — Ele descansou porque a obra estava terminada e perfeita! E faça as contas com a gente: Adão e Eva foram criados no sexto dia. O sétimo dia foi o primeiro dia completo de vida deles na terra. Ou seja, eles não trabalharam seis dias para merecer descansar no sétimo — o primeiro dia inteiro da vida humana começou dentro do descanso de uma obra que Deus já havia finalizado!"
+      },
+      {
+        "question": "Uau, Pedro! Então a minha quinta pergunta é: esse descanso lá do Éden aponta para o que Jesus fez por nós na cruz hoje?",
+        "answer": "Exatamente! E dessa vez eu mesmo vou ler na íntegra a confirmação do Novo Testamento lá em Hebreus, capítulo 4, versículos 9 e 10. Acompanhe na sua Bíblia: Portanto, resta ainda um repouso para o povo de Deus. Porque aquele que entrou no seu repouso, ele próprio repousou de suas obras, como Deus das suas. Quando você crê na obra consumada de Jesus, você para de tentar se salvar pelo seu próprio esforço e entra no verdadeiro descanso de Deus."
+      }
+    ]
   },
   {
     "lessonNumber": 2,
@@ -369,7 +390,30 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Em quais momentos você ainda tenta usar \"folhas de figueira\" para parecer aceitável diante de Deus? Como a promessa de Gênesis 3:15 traz alívio para o seu coração?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_02.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, na Aula 1 nós vimos a beleza do Jardim e o plano original de Deus. Mas quando a gente abre o capítulo 3 de Gênesis, parece que tudo desaba. Como a desconfiança entrou no coração humano e por que a serpente atacou justamente a confiança deles em Deus?",
+        "answer": "Excelente pergunta, Lívia. A serpente não começou atacando uma regra ou um mandamento isolado; ela atacou o caráter de Deus, fazendo o ser humano acreditar que o Criador estava escondendo algo bom deles. Vamos ler isso na Bíblia? Abra com a gente em Gênesis, capítulo 3, versículos 1 a 6. Lívia, lê para a gente na íntegra."
+      },
+      {
+        "question": "Estou com o texto aberto aqui. Diz assim em Gênesis 3, versículos 1 a 6: Ora, a serpente era mais sutil que todos os animais do campo que o Senhor Deus tinha feito. E esta disse à mulher: É assim que Deus disse: Não comereis de toda a árvore do jardim? E disse a mulher à serpente: Do fruto das árvores do jardim comeremos, mas do fruto da árvore que está no meio do jardim, disse Deus: Não comereis dele, nele não tocareis, para que não morrais. Então a serpente disse à mulher: Certamente não morreis. Porque Deus sabe que no dia em que dele comerdes se abrirão os vós olhos, e sereis como Deus, conhecendo o bem e o mal. E viu a mulher que aquela árvore era boa para se comer, e agradável aos olhos, e árvore desejável para dar entendimento; tomou do seu fruto, e comeu, e deu também a seu marido, e ele comeu com ela.",
+        "answer": "Veja que forte, Lívia. A raiz do pecado nunca foi apenas comer um fruto; foi a troca da confiança na bondade de Deus pelo desejo de autonomia. Eles tentaram usurpar o trono e definir o bem e o mal por conta própria, achando que seriam mais felizes distantes do governo do Pai."
+      },
+      {
+        "question": "E o resultado disso foi imediato, né? Medo, vergonha e aquela tentativa desesperada de se esconder. Mas Lívia, me explica: o que significam aquelas folhas de figueira que eles usaram logo depois?",
+        "answer": "As folhas de figueira são o retrato mais antigo do esforço religioso humano! A gente tenta costurar a própria aparência, disfarçar a culpa e esconder os próprios erros com a nossa força. Mas a Bíblia nos mostra que isso nunca devolve a verdadeira paz. Vamos ler Gênesis 3, versículos 7 a 11 e também o versículo 21. Lívia, faz a leitura para a gente."
+      },
+      {
+        "question": "Com certeza. Diz assim em Gênesis 3:7-11 e 21: Então foram abertos os olhos de ambos, e conheceram que estavam nus; e coseram folhas de figueira, e fizeram para si cinturas. E ouviram a voz do Senhor Deus, que passeava no jardim pela viração do dia; e escondeu-se Adão e sua mulher da presença do Senhor Deus, entre as árvores do jardim. E chamou o Senhor Deus a Adão, e disse-lhe: Onde estás? E ele disse: Ouvi a tua voz no jardim, e temi, porque estava nu, e me escondi. E Deus disse: Quem te mostrou que estavas nu? Comeste tu da árvore de que te ordenei que não comesses? ... E fez o Senhor Deus a Adão e à sua mulher túnicas de pele, e os vestiu.",
+        "answer": "Preste muita atenção nisso: não foi o ser humano que saiu procurando Deus; foi Deus quem veio ao encontro do homem perdido, perguntando 'Onde estás?'. E mais do que isso: Deus substituiu as folhas frágeis que eles costuraram por túnicas de pele. Isso aponta para o fato de que um inocente precisava derramar sangue para cobrir a vergonha humana. Isso é lindo demais! E logo depois disso, Deus faz a primeira grande promessa da Bíblia, antes mesmo de qualquer lei ou templo. Pedro, lê para a gente o versículo 15 de Gênesis 3. Vamos lá. Gênesis 3, versículo 15 diz assim na Palavra de Deus: Porei inimizade entre ti e a mulher, entre a tua descendência e o seu descendente. Este te ferirá a cabeça, e tu lhe ferirás o calcanhar. Esse é o chamado Protoevangelho, a primeira promessa do Salvador! Antes que qualquer sentença final feche o jardim, Deus decreta que o Descendente da mulher esmagaria a cabeça da serpente. A vitória de Cristo já estava decretada desde a fundação da história!"
+      },
+      {
+        "question": "Isso me traz uma paz tão grande... Mas como isso se conecta com a nossa vida hoje? Como o Novo Testamento explica essa troca do Primeiro Adão para o Último Adão?",
+        "answer": "Diz assim em Romanos 5:19: Porque, como, pela desobediência de um só homem, muitos se tornaram pecadores, assim também, por meio da obediência de um só, muitos se tornarão justos. Aleluia! Onde abundou o pecado pela queda de Adão, superabundou a graça pela obediência perfeita de Jesus Cristo, o nosso Salvador. Você não precisa mais se esconder atrás de desculpas, de aparências ou de folhas de figueira religiosas. O Salvador prometido lá no Éden já venceu na cruz por você. E se hoje o Espírito Santo falou ao seu coração, saiba que não existe nenhum impedimento entre você e Deus. O sacrifício de Jesus já basta. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que o Pai pede é que você creia de todo o coração e responda ao amor d'Ele através do batismo."
+      }
+    ]
   },
   {
     "lessonNumber": 3,
@@ -534,7 +578,34 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Como saber que Abraão foi justificado pela fé antes de qualquer lei escrita muda a maneira como você mede a sua própria aceitação diante de Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_03.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, confesso que essa aula mexe muito comigo. Muita gente cresceu ouvindo que, no Antigo Testamento, as pessoas precisavam cumprir regras pesadas e carregar um fardo enorme para serem aceitas por Deus, e que a graça só apareceu no Novo Testamento. Mas afinal, como Abraão foi aceito por Deus séculos antes de existir a Lei de Moisés?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Gênesis 12, versículos 1 a 3: Ora, o Senhor disse a Abrão: Sai da tua terra, e da tua parentescos, e da casa de teu pai, para a terra que eu te mostrarei. E eu far-te-ei um grande povo, e abençoar-te-ei e engrandecerei o teu nome; e tu serás uma bênção. E abençoarei os que te abençoarão, e amaldiçoarei os que te amaldiçoarão; e em ti serão benditas todas as famílias da terra. Preste muita atenção nisso, você que nos ouve: antes mesmo de qualquer mandamento gravado em tábuas de pedra, Deus já estava operando pela promessa e pela graça. Deus chama Abraão para sair do seu conforto não porque ele era perfeito ou tinha cumprido uma lista de rituais, mas porque Ele desejava abençoar todas as famílias da terra através de uma aliança de amor."
+      },
+      {
+        "question": "Mas Pedro, como a Bíblia define exatamente o momento em que Abraão foi considerado justo diante de Deus? Qual foi o critério usado?",
+        "answer": "Vamos ver isso em Gênesis, capítulo 15, versículos 1 a 6. Abra a Bíblia e acompanhe com a gente. Lívia, por favor, faça a leitura desse texto maravilhoso."
+      },
+      {
+        "question": "Diz assim em Gênesis 15, versículos 1 a 6: Depois destas coisas veio a palavra do Senhor a Abrão em visão, dizendo: Não temas, Abrão, eu sou o teu escudo, o teu galardão sobremaneira grande. Então disse Abrão: Senhor Deus, que me hás de dar, pois ando sem filhos, e o mordomo da minha casa é o damasceno Eliezer? Disse mais Abrão: Eis que não me tens dado sementes, e eis que um nascido na minha casa será o meu herdeiro. E eis que veio a palavra do Senhor a ele, dizendo: Este não será o teu herdeiro; mas aquele que houver de sair das tuas entranhas, esse será o teu herdeiro. Então o levou fora, e disse: Olha agora para os céus, e conta as estrelas, se as podes contar. E disse-lhe: Assim será a tua semente. E creu ele no Senhor, e isso foi-lhe imputado para justiça.",
+        "answer": "Olha que profundidade! Abraão olhou para o céu estrelado, viu a própria fraqueza humana e a velhice, mas creu na promessa de Deus. E a Bíblia diz que isso lhe foi imputado — ou seja, creditado — para justiça. Deus declara justo quem confia n'Ele, e não quem tenta pagar uma dívida espiritual por esforço próprio."
+      },
+      {
+        "question": "Isso é libertador demais! Mas tem gente que ainda pode pensar: 'Ah, mas isso era exclusivo de Abraão'. O Novo Testamento confirma essa mesma regra para nós hoje?",
+        "answer": "Confirma totalmente! O apóstolo Paulo explica isso de forma brilhante lá em Romanos, capítulo 4, versículos 1 a 5. Lívia, lê esse trecho para nós, por favor."
+      },
+      {
+        "question": "Com certeza. Romanos 4, versículos 1 a 5 diz: Que diremos, pois, ter alcançado Abraão, nosso pai segundo a carne? Porque, se Abraão foi justificado pelas obras, tem de que se gloriar, mas não perante Deus. Pois que diz a Escrituras? Creu Abraão a Deus, e isso lhe foi imputado por justiça. Ora, ao que trabalha não se lhe conta a dívida como dádiva, mas como dívida. Mas, ao que não trabalha, mas crê naquele que justifica o ímpio, a sua fé lhe é imputada por justiça.",
+        "answer": "Veja a clareza da linguagem contábil de Paulo: quem trabalha recebe salário como obrigação devida; mas quem crê recebe justiça como presente gratuito de Deus. A salvação nunca foi um prêmio para os que se acham bons o bastante, mas um presente para quem confia na obra de Cristo."
+      },
+      {
+        "question": "Para fecharmos esse entendimento na Bíblia, como Gálatas resume a nossa posição nessa mesma família da fé?",
+        "answer": "Vamos abrir em Gálatas, capítulo 3, versículos 6 a 9. Lívia, faça a leitura final de hoje para selar essa verdade no nosso coração. Diz assim em Gálatas 3, versículos 6 a 9: Assim como Abraão creu em Deus, e isso lhe foi atribuído para justiça. Sabei, pois, que os da fé é que são filhos de Abraão. Ora, tendo a Escritura previsto que Deus havia de justificar os gentios pela fé, anunciou primeiro o evangelho a Abraão, dizendo: Todas as nações serão benditas em ti. De sorte que os da fé são benditos com o crente Abraão. Que maravilha! Resumindo o que aprendemos hoje: séculos antes de existir qualquer código de leis escritas em pedra no Monte Sinai, Deus já havia estabelecido que a reconciliação e a justiça são obtidas unicamente pela fé. Abraão não foi justificado por rituais ou méritos humanos, mas por confiar na promessa de Deus. E a boa notícia é que essa mesma promessa alcança você hoje: se você crê em Jesus, você é herdeiro dessa graça imerecida, sem precisar carregar fardos legais para provar o seu valor."
+      }
+    ]
   },
   {
     "lessonNumber": 4,
@@ -686,7 +757,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Você percebe em sua caminhada cristã a diferença entre agir por amor como filho da promessa e agir por medo para tentar garantir sua aprovação?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_04.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, confesso que essa aula mexe muito comigo. Muitas vezes a gente cresce achando que precisa conquistar o amor de Deus todos os dias pelo nosso próprio esforço. Como a Bíblia explica essa diferença entre a promessa de Deus e a tentativa humana de merecer a salvação?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Gênesis 15, versículos 17 a 18: E poente-se o sol, houve trevas; e eis um forno fumegante e uma tocha de fogo que passou por entre aqueles pedaços. Naquele mesmo dia fez o SENHOR aliança com Abrão, dizendo: À tua descendência tenho dado esta terra, desde o rio do Egito até ao grande rio Eufrates. Olha que cena impressionantes, Lívia! Naquele tempo, quando duas pessoas faziam um acordo solene, elas caminhavam juntas entre os pedaços de animais, assumindo a culpa caso quebrassem o pacto. Mas aqui, quem passa pelo fogo é apenas Deus, enquanto Abraão dorme profundamente. Deus assumiu sozinho a responsabilidade pela aliança. Ele estava dizendo: 'Se a aliança for quebrada, Eu pagarei o preço.' Essa é a graça pura!"
+      },
+      {
+        "question": "Nossa, isso é maravilhoso! Deus não colocou o peso nas costas de Abraão. Mas e quanto à Lei de Moisés que veio séculos depois? As pessoas não precisavam cumprir a Lei para serem salvas? Como o apóstolo Paulo explica isso no Novo Testamento?",
+        "answer": "Com certeza. Diz assim em Gálatas 3, versículos 15 a 17: Irmãos, como homem falo; se a aliança é de um homem, ninguém a anula ou a derroga, senão que confirmada. Ora, as promessas foram feitas a Abraão e à sua posteridade. Não diz: E às posteridades, como de muitos, mas como de um: E à tua posteridade, que é Cristo. Mas digo isto: Que uma aliança já anteriormente confirmada por Deus, a lei, que veio quatrocentos e trinta anos depois, não a pode ab-rogar, de forma que venha a desfazer a promessa. Amém! A Lei dada no Sinai 430 anos depois nunca teve a função de ser um meio de salvação por esforço humano, mas sim de nos mostrar a nossa necessidade de um Salvador. A promessa feita a Abraão — que se cumpre em Cristo — permanece firme e inabalável."
+      },
+      {
+        "question": "Isso tira um peso imenso dos nossos ombros. E como nós, que cremos hoje, devemos nos ver diante de Deus? Somos escravos cumprindo ordens ou filhos vivendo uma herança?",
+        "answer": "Essa é a chave para a verdadeira liberdade espiritual. Vamos ler a resposta em Gálatas, capítulo 4, versículos 28 e 31. Lívia, faz a leitura para a gente. Diz assim em Gálatas 4, versículos 28 e 31: Mas nós, irmãos, à imitação de Isaque, somos filhos da promessa. De maneira que, irmãos, não somos filhos da escrava, mas da livre. Glória a Deus! Quem tenta se salvar pelo próprio esforço vive como escravo do medo, sempre ansioso pensando se fez o suficiente. Mas quem descansa na obra de Cristo vive como filho legítimo, livre e amado. O Pai já garantiu a nossa herança! Perfeito, Lívia. E se hoje você tem sentido o peso da culpa ou o cansaço de tentar se provar digno diante de Deus, lembre-se da tocha de fogo passando entre os pedaços em Gênesis 15. Jesus já pagou o preço total. Não existe nenhum impedimento entre você e Deus neste exato momento. O sacrifício de Jesus na cruz já basta por completo. Você não precisa se consertar primeiro, nem esperar estar perfeito para se achegar a Ele. Tudo o que o Senhor pede é que você creia de todo o coração e entregue sua vida a Ele. A própria Bíblia nos convida a isso em Marcos 16, versículos 15 e 16. Vamos ler juntos: Amém. O batismo é a expressão pública da nossa fé nessa aliança de amor, onde sepultamos a velha vida de esforço e ressuscitamos para uma nova vida de liberdade como filhos de Deus. Se você deseja dar esse passo de fé, toque no botão logo abaixo do seu Guia de Estudos para encontrar uma igreja próxima de você no mapa, ver a distância até a Igreja Marco Zero e pegar o contato direto de um pastor. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula no IDE Boas Notícias!"
+      }
+    ]
   },
   {
     "lessonNumber": 5,
@@ -839,7 +925,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que muda em sua paz interior ao perceber que Deus olha para a suficiência do Cordeiro Jesus em seu favor, e não para um placar diário dos seus acertos?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_05.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, hoje vamos falar sobre a grande noite da libertação no Egito. Muitas pessoas acham que Deus salva as pessoas porque elas cumprem regras ou alcançam um padrão de perfeição. Mas como a Páscoa original de Êxodo 12 nos revela a verdadeira ordem da salvação e da graça?",
+        "answer": "Com certeza. Diz assim em Êxodo 12, versículos 1 a 7: E falou o Senhor a Moisés e a Arão na terra do Egito, dizendo: Este mesmo mês vos será o princípio dos meses; este vos será o primeiro dos meses do ano. Falai a toda a congregação de Israel, dizendo: A aos dez deste mês tomasse cada um para si um cordeiro, segundo as casas dos pais, um cordeiro para cada família. Mas, se a família for pequena para um cordeiro, então ele e seu vizinho próximo dele o tomarão conforme o número das almas; cada um conforme ao seu comer, fareis a conta conforme ao cordeiro. O cordeiro será sem mácula, um macho de um ano, o cual podereis tomar das ovelhas ou das cabras. E o vereis até ao décimo quarto dia deste mês, e todo o ajuntamento da congregação de Israel o sacrificará à tarde. E tomarão do sangue, e o pô-lo-ão em ambos os umbrais e na verga da porta, nas casas em que o comerem. Que forte! Repare bem na ordem dos fatos: Israel era escravo no Egito e não tinha nenhuma condição de se libertar sozinho. E Deus não entregou os Dez Mandamentos no Egito dizendo 'cumpram isso para eu libertar vocês'. A libertação veio primeiro, inteiramente pela graça do sacrifício de um cordeiro sem defeito."
+      },
+      {
+        "question": "Isso é transformador. Mas Pedro, o que realmente garantia que a família estaria segura lá dentro daquela casa? Era a bondade deles, o comportamento ou a coragem?",
+        "answer": "Vamos ler o que o próprio Deus declarou logo em seguida em Êxodo 12, versículos 12 e 13. Lívia, faz a leitura para nós. Diz assim em Êxodo 12, versículos 12 e 13: E eu passarei pela terra do Egito esta noite, e feriré todo primogênito na terra do Egito, desde os homens até aos animais; e farei juízos sobre todos os deuses do Egito. Eu sou o Senhor. E sangue vos será por sinal nas casas em que estiverdes; quando eu vir o sangue, passarei por cima de vós, e não haverá entre vós praga de mortandade, quando eu ferir a terra do Egito. Note que Deus não disse: 'Quando eu ver o quão espirituais vocês estão lá dentro'. A segurança da família não dependia do nível de perfeição ou do mérito de quem estava atrás da porta, mas exclusivamente do sangue do cordeiro aplicado sobre a porta! Nossa paz diante de Deus repousa na suficiência da obra de Cristo, e não em nossas próprias forças."
+      },
+      {
+        "question": "Isso tira um peso enorme dos nossos ombros. Mas como sabemos que esse cordeiro do Egito apontava diretamente para Jesus? Onde na Bíblia essa conexão fica clara?",
+        "answer": "Ela resplandece em todo o Novo Testamento! Vamos abrir em João, capítulo 1, versículo 29, e também em 1 Coríntios, capítulo 5, versículo 7. Lívia, pode ler esses dois textos para a gente. Aleluia! Séculos depois daquela noite no Egito, quando João Batista apontou para Jesus às margens do Jordão, ele revelou a realidade eterna: Jesus é o Cordeiro sem defeito que remove o pecado do mundo uma vez por todas. Nossa libertação já foi paga pelo sangue precioso de Cristo. Perfeito, Lívia. E por causa dessa obra maravilhosa, não existe nenhum impedimento entre você e Deus hoje. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que o Pai pede é que você creia de todo o coração. A Bíblia nos convida a dar esse passo de fé de maneira muito clara. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16, na íntegra."
+      }
+    ]
   },
   {
     "lessonNumber": 6,
@@ -983,7 +1084,18 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "De que maneira entender a Lei como um espelho e tutor — e não como escada para merecer o céu — traz leveza e clareza para a sua fé?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_06.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, muita gente confunde o propósito dos Dez Mandamentos. Afinal, se Deus deu a Lei no Monte Sinai, por que tantas pessoas pensam erroneamente que ela era um caminho para conquistar a salvação através do próprio esforço?",
+        "answer": "Essa dúvida é muito comum, Lívia, e a Bíblia é cristalina sobre isso. Vamos abrir juntos a Palavra de Deus em Romanos, capítulo 3, versículos 19 e 20. Lívia, faz a leitura na íntegra pra gente, com bastante calma. Estou com o texto aberto aqui. Diz assim em Romanos 3, versículos 19 e 20: Ora, nós sabemos que tudo o que a lei diz, aos que estão debaixo da lei o diz, para que toda boca seja fechada e todo o mundo seja culpável perante Deus. Por isso nenhuma carne será justificada diante dele pelas obras da lei, porque pela lei vem o pleno conhecimento do pecado. Que forte e libertador! A Lei nunca foi dada como um trampolim para o homem subir ao céu por mérito próprio. Pelo contrário: ela silencia qualquer tentativa de autojustificação humana. A função da Lei nunca foi salvar, mas sim nos dar o pleno conhecimento do pecado."
+      },
+      {
+        "question": "Isso me lembra muito a ilustração do espelho ou de um raio-X, não é, Pedro? O espelho mostra a mancha no rosto, mas ele não tem o poder de lavar a sujeira!",
+        "answer": "Exatamente isso, Lívia! A Lei funciona como esse espelho santo que reflete a perfeição de Deus e expõe a nossa profunda incapacidade. Mas se a Lei faz esse papel de diagnóstico, como ela se conecta com a graça? Para onde ela nos aponta? A Bíblia responde isso de forma maravilhosa lá no Novo Testamento. Vamos abrir em Gálatas, capítulo 3, versículos 24 e 25. Lívia lê na íntegra para nós. Com certeza. Diz assim em Gálatas 3, versículos 24 e 25: De maneira que a lei nos serviu de aio para nos conduzir a Cristo, a fim de que fôssemos justificados por fé. Mas, tendo vindo a fé, já não permanecemos subordinados ao aio. Essa palavra \"aio\" ou \"tutor\" no original grego descreve aquele guia responsável por conduzir a criança com segurança pela mão até a casa do Mestre. A Lei teve exatamente esse papel pedagógico e histórico: nos pegar pela mão, mostrar que estávamos perdidos sem Deus, e nos conduzir diretamente para os braços de Cristo, para que fôssemos justificados exclusivamente pela fé. Com toda certeza, Lívia. Resumindo o que aprendemos hoje: a Lei do Sinai revelou a santidade absoluta de Deus, serviu como espelho que expõe a nossa condição humana e funcionou como um tutor provisório cujo único objetivo era nos entregar, salvos e redimidos, nas mãos de Jesus Cristo. Amém. E se você sente que hoje não existe nenhum impedimento entre você e Deus, saiba que o sacrifício de Jesus já é suficiente. Você não precisa esperar estar perfeito para se achegar a Ele. A Bíblia nos convida a crer e dar o passo da fé através do batismo. Vamos ler juntos o que diz Marcos 16, versículos 15 e 16:"
+      }
+    ]
   },
   {
     "lessonNumber": 7,
@@ -1143,7 +1255,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Ao concluir o Bloco 1 (da Criação ao Tabernáculo), qual descoberta sobre a Graça de Deus mais transformou a sua visão da Bíblia até agora?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida."
+    "appealBody": "O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Ele pede é que você creia de todo o coração e seja batizado (Marcos 16:15–16), mergulhando publicamente nessa nova vida.",
+    "bannerImage": "/images/ide/aula_07.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, quando a gente estuda o Antigo Testamento e lê sobre o tabernáculo no deserto, com tantas cortinas, móveis e regras de sacrifício, parece um mundo muito distante da nossa realidade hoje. Qual era o verdadeiro propósito de Deus ao mandar construir aquela tenda no meio do deserto?",
+        "answer": "Com certeza. Diz assim em Êxodo 25, versículos 8 e 9: E me farão um santuário, para que eu possa habitar no meio deles. Conforme a tudo o que eu te mostrar para modelo do tabernáculo, e para modelo de todos os seus móveis, assim o fareis. Olha que lindo e profundo! Esse desejo de Deus de habitar no meio do Seu povo é o mesmo desejo lá do Jardim do Éden, que foi interrompido pelo pecado, mas que nunca deixou o coração do Criador. E séculos mais tarde, esse mesmo tabernáculo ganha carne e osso quando Jesus vem habitar entre nós, como nos diz João 1:14: 'O Verbo se fez carne, e habitou entre nós'."
+      },
+      {
+        "question": "Nossa, que conexão linda! Mas Pedro, as pessoas olham para os móveis daquele tabernáculo — como o altar de bronze, a pia de água, o candelabro, a mesa dos pães... cada detalhe tinha um significado específico, não tinha?",
+        "answer": "Com certeza absoluta. Cada peça era como uma seta luminosa apontando diretamente para a pessoa e a obra de Jesus. O altar de sacrifício apontava para a cruz onde Jesus se entregou por nós; a pia de água, para a purificação; o pão, para Cristo como o Pão da Vida; o candelabro, para a Luz do Mundo; e o incenso, para a intercessão perfeita do nosso Sumo Sacerdote."
+      },
+      {
+        "question": "Mas por que tudo aquilo era tão cheio de regras, véus e barreiras se Deus nos ama tanto? Como a Bíblia explica essa transição entre o tabernáculo antigo e a obra definitiva de Cristo?",
+        "answer": "Para entendermos isso perfeitamente, precisamos abrir a carta aos Hebreus. Vamos ler em Hebreus, capítulo 8, versículos 1 a 3. Lívia, faz a leitura para nós, por favor. O texto de Hebreus 8, versículos 1 a 3 diz assim: Ora, a suma do que temos dito é que temos um sumo sacerdote tal, que está assentado nos céus à destra do trono da Majestade, ministro do santuário e do verdadeiro tabernáculo, o qual o Senhor fundou, e não o homem. Porque todo o sumo sacerdote é constituído para oferecer dons e sacrifícios; pelo que era necessário que este também tivesse alguma coisa que oferecer. Amém! Veja que o texto nos mostra que todo aquele sistema terreno era apenas uma cópia, uma sombra pedagógica e temporária. Os sacrifícios de animais tinham que ser repetidos todos os dias porque nenhum deles podia realmente transformar a consciência humana de forma definitiva."
+      },
+      {
+        "question": "E é aí que entra a grande diferença que a carta aos Hebreus vai mostrar nos capítulos seguintes, não é, Pedro? Como Jesus muda essa história para sempre?",
+        "answer": "Diz assim em Hebreus 9, versículos 11 e 12: Mas Cristo, vindo como sumo sacerdote dos bens futuros, por maior e mais perfeito tabernáculo, não feito por mãos, isto é, não desta criação, nem por sangue de bodes e bezerros, mas por seu próprio sangue, entrou uma vez por todas no santuário, havendo obtido eterna redenção. Glória a Deus! Quando Jesus entregou a Sua vida na cruz, aquele véu espesso do templo que separava o povo da presença de Deus rasgou-se de alto a baixo, de lés a lés. Hoje, em Cristo, você não precisa mais ficar do lado de fora de uma cortina ou depender de sacrifícios repetitivos. Deus habita com você e em você! Que verdade transformadora para fechar este primeiro bloco! E preste muita atenção agora: não existe absolutamente nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam por completo. Você não precisa tentar se consertar primeiro, cumprir uma longa lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que o Senhor nos convida a fazer é crer de todo o coração e responder ao Seu amor. Como o próprio Jesus nos ensinou em Marcos, capítulo 16, versículos 15 e 16: O batismo nas águas é o passo público de quem entendeu que as sombras passaram e que agora vive a realidade da comunhão com o Pai. Se você deseja dar esse passo de fé, toque agora mesmo no botão logo abaixo deste Guia de Estudos. Você poderá ver a igreja mais próxima de você no mapa interativo, conferir a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula!"
+      }
+    ]
   },
   {
     "lessonNumber": 8,
@@ -1291,7 +1422,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que muda em sua ansiedade diária quando você confia que Jesus já reina sobre um trono eterno e inabalável?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_08.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, avançando na história bíblica, nós chegamos ao rei Davi. É muito curioso ver que Davi tinha um desejo nobre de construir uma casa — um templo — para Deus. Mas a resposta de Deus foi completamente inesperada. Por que Deus recusou a oferta de Davi de construir um templo e o que Ele propôs em troca?",
+        "answer": "Com certeza. Diz assim em 2 Samuel 7, versículos 12 a 16: Quando os teus dias forem completos, e andares com teus pais, então levantarei depois de ti a tua semente, que sairá das tuas entranhas, e estabelecerei o seu reino. Este edificará uma casa ao meu nome, e eu estabelecerei o trono do seu reino para sempre. Eu lhe serei por pai, e ele me será por filho; e, se cometer iniquidade, o castigarei com varas de homens, e com chagas dos filhos dos homens. Mas a minha benignidade não se apartará dele, assim como a tirei de Saul, a quem tirei de diante de ti. Porém a tua casa e o teu reino serão firmados para sempre diante de ti; teu trono será estabelecido para sempre. Amém! Veja que lindo: antes que Davi pudesse construir qualquer coisa para Deus, o Senhor prometeu edificar uma linhagem e um reino eterno. Isso nos ensina que a iniciativa da salvação e do governo espiritual pertence inteiramente a Deus. Não é o ser humano construindo um império para impressionar o Criador, mas Deus construindo um Reino eterno para acolher a humanidade."
+      },
+      {
+        "question": "Isso tira um peso enorme dos nossos ombros, porque tentamos tanto construir nossa própria segurança. Mas Pedro, os reis terrenos passam, as dinastias caem e todos os impérios humanos desabam com o tempo. Como essa promessa de um trono eterno se sustenta diante da fragilidade da história humana?",
+        "answer": "Essa é uma excelente reflexão, Lívia. Nenhum rei humano pôde durar para sempre. Por isso, essa promessa aponta muito além de Salomão ou dos descendentes de Davi na carne; ela aponta para o Messias. Vamos ler o Salmo 2, versículos 6 a 8. Lívia, pode fazer a leitura. Diz o Salmo 2, versículos 6 a 8: Eu, porém, ungi o meu Rei sobre o meu santo monte de Sião. Proclamarei o decreto: O Senhor me disse: Tu és meu Filho, eu hoje te gerei. Pede-me, e eu te darei os gentios por herança, e os confins da terra por tua possessão. Aqui temos o retrato do Rei ungido por Deus. Os reis da terra se rebelam contra o Senhor e contra o seu Ungido, mas o decreto divino é irrevogável: Deus estabeleceu o seu Rei em Sião. O trono prometido a Davi não dependia da força política de Israel, mas da fidelidade inabalável do Deus Todo-Poderoso."
+      },
+      {
+        "question": "E como esse quebra-cabeça profético se fecha de vez? Onde a Bíblia mostra o cumprimento exato dessa promessa feita a Davi?",
+        "answer": "Ele se fecha de maneira gloriosa no Novo Testamento, quando o anjo Gabriel anuncia o nascimento dAquele que mudaria a história para sempre. Vamos abrir em Lucas, capítulo 1, versículos 32 e 33. Lívia, leia para nós por favor. O texto de Lucas 1, versículos 32 e 33 diz assim: Este será grande, e será chamado Filho do Altíssimo; e o Senhor Deus lhe dará o trono de Davi, seu pai; E reinará para sempre sobre a casa de Jacó, e o seu reinado não terá fim. Aleluia! Jesus é o cumprimento literal da Aliança Davídica. Ele é o Descendente de Davi, o Filho do Altíssimo, cujo reinado não terá fim. O governo de Jesus não é instável, corruptível nem passageiro. Descansar sob o reinado de Cristo significa saber que a nossa vida, a nossa história e o nosso futuro estão nas mãos de um Rei bom, cujo trono jamais será derrubado, independentemente das crises deste mundo. Hoje aprendemos que Deus não precisa de construções humanas para reinar, mas Ele mesmo estabelece a Sua casa e o Seu Reino eterno através de Jesus Cristo, o herdeiro legítimo do trono de Davi. Entregar as áreas incertas do nosso futuro ao senhorio de Jesus é a decisão mais segura que podemos tomar. Amém. E se você sente no coração o desejo de alinhar a sua vida a esse Reino que jamais terá fim, saiba que não existe nenhum impedimento ou requisito humano mantendo você afastado de Deus hoje. O Rei eterno já inaugurou a Nova Aliança por meio de Jesus. Vamos ler juntos o que a Palavra nos convida a fazer em Marcos 16, versículos 15 e 16: Com muito respeito, amor e sem nenhuma pressão, queremos convidar você a dar esse passo de fé, crendo de todo o coração e respondendo ao amor do nosso Salvador através do batismo. Para isso, basta tocar no botão logo abaixo deste Guia de Estudos para encontrar uma igreja fiel mais próxima de você no mapa, verificar a distância até a Igreja Marco Zero e obter o contato direto da liderança pastoral. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula!"
+      }
+    ]
   },
   {
     "lessonNumber": 9,
@@ -1435,7 +1581,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Existe alguma área em que sua fé acabou se tornando automática ou baseada em aparência? Como voltar à simplicidade de andar humildemente com Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_09.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Com certeza. Diz assim em Isaías 1, versículos 11 a 13 e o 17: De que me serve a mim a multidão dos vossos sacrifícios?, diz o Senhor. Estou fartos dos holocaustos de carneiros e da gordura de animais cevados; e não me agrado do sangue de novilhos, nem de cordeiros, nem de bodes. Quando vós comeis perante a minha face, quem requereu isto de vós, que trelásseis pelos meus átrios? Não continueis a trazer ofertas vãs; o incenso é para mim abominação, e as luas novas, e os sábados, e a convocação das assembleias; não posso suportar iniquidade, nem a assembleia solua. (...) Aprendei a fazei o bem; andai em juízo, atendei ao oprimido; fazei justiça ao órfão, tratai da causa das viúvas.",
+        "answer": "Olha que impressionante, Lívia! Deus diz que está farto de rituais vazios, de cultos mecânicos e de uma religiosidade de fachada. Por quê? Porque o povo cumpria uma rotina religiosa exterior, mas continuava oprimindo os outros, vivendo na injustiça e com o coração distante de Deus. Deus nunca quis um teatro religioso; Ele quer justiça, misericórdia e amor verdadeiro ao próximo."
+      },
+      {
+        "question": "Isso tira um peso enorme dos nossos ombros, mas também nos confronta profundamente. Porque nos mostra que Deus não quer atores religiosos cumprindo um checklist, mas filhos verdadeiros. E quando alguém cai, peca ou percebe que errou feio, como deve se aproximar de Deus? O que o rei Davi descobriu sobre isso?",
+        "answer": "Diz assim no Salmo 51, versículos 16 e 17: Porque não te deleitas em sacrifícios, senão eu os daria; tu não te comprazes em holocaustos. Os sacrifícios para Deus são o espírito quebrantado; a um coração quebrantado e contrito não desprezarás, ó Deus. Que promessa linda e consoladora! Davi entendeu que Deus não aceita suborno espiritual com sacrifícios mecânicos. O que comove o coração de Deus é um espírito quebrantado, um coração humilde e arrependido. Deus acolhe aquele que chega sem máscaras, reconhecendo sua fraqueza e confiando unicamente na Sua misericórdia."
+      },
+      {
+        "question": "Isso é transformador. Mas então, como traduzir essa espiritualidade sincera para o nosso dia a dia? O que Deus realmente pede de nós na prática?",
+        "answer": "O profeta Miqueias resume isso com uma beleza de tirar o fôlego. Vamos abrir em Miqueias, capítulo 6, versículos 6 a 8. Lívia, faz a leitura pra gente."
+      },
+      {
+        "question": "Com certeza. Miqueias 6, versículos 6 a 8: Com que me apresentarei ao Senhor e me inclinarei perante o Deus alto? Apresentar-me-ei com holocaustos, com bezerros de um ano? Agradar-se-á o Senhor de milhares de carneiros, ou de dez milhares de ribeiros de azeite? Dar-lhe-ei o meu primogênito pela minha transgressão, o fruto do meu corpo pelo pecado da minha alma? Ele te declarou, ó homem, o que é bom; e que é o que o Senhor pede de ti, senão que pratiques a justiça, e ames a misericórdia, e andes humildemente com o teu Deus?",
+        "answer": "Praticar a justiça, amar a misericórdia e andar humildemente com o nosso Deus. Essa é a essência da verdadeira adoração! Não é sobre rituais complicados, mas sobre uma vida transformada que transborda amor genuíno e comunhão diária com o Pai."
+      }
+    ]
   },
   {
     "lessonNumber": 10,
@@ -1583,7 +1748,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Como o fato de Jesus já ter carregado integralmente a sua culpa muda a forma como você lida com erros passados e com o perdão?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_10.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, hoje entramos em um terreno absolutamente profundo e emocionante da Palavra. Séculos antes de Jesus nascer em Belém, os profetas já descreviam detalhadamente o Seu sofrimento. Minha primeira pergunta é: por que o Messias, o Rei que veio para reinar, precisou sofrer e ser tratado como um criminoso? Como o Antigo Testamento já antecipava isso?",
+        "answer": "Essa pergunta toca no coração do Evangelho, Lívia! Vamos direto à Palavra de Deus para ver essa revelação impressionante. Abra a Bíblia com a gente no livro do profeta Isaías, capítulo 53, vamos ler os versículos 4 a 6. Lívia, por favor, faça a leitura na íntegra para nós. Com certeza. Diz assim em Isaías 53, versículos 4 a 6: Verdadeiramente ele levou sobre si as nossas enfermidades, e as nossas dores levou sobre si; e nós o reputamos por aflito, ferido de Deus, e oprimido. Mas ele foi traspassado pelas nossas transgressões, e moído pelas nossas iniquidades; o castigo que nos traz a paz estava sobre ele, e pelas suas pisaduras fomos sarados. Todos nós andávamos desgarrados como ovelhas; cada um se desviava pelo seu caminho; e o Senhor fez cair sobre ele a iniquidade de todos nós. Veja que retrato extraordinário! Escrito cerca de setecentos anos antes da cruz, o profeta Isaías descreve o sacrifício de Jesus com tanta precisão que parece um relato ocular de alguém em pé ao lado do Calvário. Jesus não sofreu por culpa própria; Ele levou voluntariamente as nossas transgressões. O castigo que cabia a nós caiu inteiramente sobre Ele para que pudéssemos ter paz."
+      },
+      {
+        "question": "É de tirar o fôlego ver a perfeição desse plano. Mas Pedro, como o Novo Testamento explica essa troca? Como entender na prática o que aconteceu naquele madeiro entre a nossa culpa e a justiça de Deus?",
+        "answer": "O apóstolo Paulo resume isso de forma magistral, Lívia. Vamos abrir em 2 Coríntios, capítulo 5, versículo 21. Lívia, lê esse versículo maravilhoso pra gente. Diz assim em 2 Coríntios 5:21: Àquele que não conheceu pecado, o fez pecado por nós; para que, nele, fôssemos feitos justiça de Deus. Essa é a grande troca do Evangelho! Aquele que era perfeitamente puro e sem mancha assumiu o nosso lugar como se Ele fosse o culpado, para que nós — que éramos os culpados — fôssemos vestidos com a justiça perfeita de Cristo. Deus não ignorou o nosso pecado, Ele o julgou totalmente sobre o Seu próprio Filho para que pudesse nos perdoar com inteira justiça."
+      },
+      {
+        "question": "Isso é transformador demais. Mas confesso que às vezes a gente carrega um peso de culpa tão grande pelo que fez no passado, que acha que Jesus pode ter perdoado os outros, mas não a nós. Como a Bíblia confirma que as nossas culpas foram realmente levadas por Ele?",
+        "answer": "Para responder a essa angústia que muitos de nós sentimos, vamos ler 1 Pedro, capítulo 2, versículo 24. Lívia, por favor, leia esse texto para encorajar quem está nos ouvindo. Amém! Repare bem: Jesus levou os nossos pecados no Seu próprio corpo sobre o madeiro. Se o castigo já foi pago integralmente por Ele, não sobrou nenhuma gota de condenação esperando por quem está em Cristo Jesus. O peso da sua culpa já foi cancelado na cruz. Você pode descansar nessa graça hoje! Perfeito, Lívia. E por causa desse amor tão grande e dessa obra completa na cruz, chegamos ao momento mais especial da nossa jornada. Preste muita atenção no que o nosso Senhor Jesus ordenou em Marcos 16:15 e 16. Lívia, leia para nós, por favor."
+      }
+    ]
   },
   {
     "lessonNumber": 11,
@@ -1735,7 +1915,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que significa para a sua identidade hoje saber que você já é cidadão de um Reino que nunca será destruído?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_12.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, vivemos em um mundo onde governos, economias e impérios humanos parecem fortes, mas mudam o tempo todo e geram tanta incerteza. Como a Bíblia retrata a fragilidade desses reinos em contraste com o plano de Deus?",
+        "answer": "Com certeza. Diz assim em Daniel 2, versículo 44: Mas, nos dias desses reis, o Deus dos céus suscitará um reino que não será jamais destruído; e este reino não passará a outro povo; esmiuçará e consumirá todos estes reinos, e ele subsistirá para sempre. Olha que promessa consoladora! Todos os poderes humanos são passageiros, mas Deus estabeleceu um Reino indestrutível. Ele não depende das crises da terra para continuar reinando."
+      },
+      {
+        "question": "Daniel também teve visões incríveis sobre a figura que receberia esse domínio eterno, não foi, Pedro? Como o profeta descreve esse Ser celestial e humano ao mesmo tempo?",
+        "answer": "Exatamente, Lívia. Vamos avançar para Daniel, capítulo 7, versículos 13 e 14. Leia esses versículos com calma para nós. O texto diz o seguinte em Daniel 7, versículos 13 e 14: Eu estava olhando nas minhas visões da noite, e eis que vinha com as nuvens do céu um como o filho do homem; e dirigiu-se ao ancião de dias, e o fizeram chegar até ele. E foi-lhe dado domínio, e glória, e o reino, para que os povos, nações e homens de todas alínguas o servissem; o seu domínio é domínio eterno, que não passarão, e o seu reino não será destruído. Veja que majestade! Daniel contempla alguém que vem com as nuvens e recebe adoração e domínio universal. E o mais fascinante é que essa expressão, 'Filho do Homem', era o título favorito que Jesus escolhia usar para Si mesmo nos Evangelhos."
+      },
+      {
+        "question": "Isso me traz muita curiosidade, Pedro. Quando Jesus esteve na terra como homem, Ele realmente assumiu diante das autoridades que Ele era esse Rei profetizado por Daniel?",
+        "answer": "Sim, Ele assumiu com toda a clareza, e isso custou a Sua condenação perante o tribunal humano. Vamos abrir o Novo Testamento, no Evangelho de Marcos, capítulo 14, versículo 62. Lívia, lê essa passagem forte para nós. O texto diz em Marcos 14, versículo 62: E Jesus disse-lhe: Eu o sou, e vereis o Filho do homem assentado à direita do todo-poderoso, e vindo com as nuvens do céu. Diante do Sinédrio, Jesus não hesitou. Ele uniu perfeitamente a profecia antiga de Daniel à Sua própria pessoa: Ele é o Rei divino e humano que governa sobre todas as nações. Quando cremos Nele, nós já fazemos parte de um Reino que jamais será destruído, não importa o que aconteça ao nosso redor! Amém! E para aplicarmos isso hoje, lembre-se sempre da nossa dica prática: sempre que as notícias do mundo parecerem assustadoras ou incertas, ore lembrando de Daniel 7:14. O domínio eterno pertence ao Filho do Homem, e Ele cuida de você. Queremos agora fazer um convite muito especial e respeitoso. Não existe nenhum impedimento ou requisito humano entre você e o amor de Deus hoje. O Rei eterno prometido pelos profetas já inaugurou a Sua Nova Aliança. Se o seu coração deseja entregar a vida a esse Rei, a Bíblia nos convida a dar esse passo através do batismo."
+      }
+    ]
   },
   {
     "lessonNumber": 12,
@@ -1886,7 +2081,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que significa para você experimentar uma fé movida pelo Espírito dentro do coração, em vez de cobranças gravadas de fora para dentro?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_12.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, a nossa aula de hoje toca em uma das promessas mais profundas e consoladoras de toda a Escritura. Muitas pessoas tentam se aproximar de Deus na base da força de vontade e acabam frustradas. Como funcionava a aliança antiga e por que Deus prometeu algo totalmente diferente?",
+        "answer": "Essa pergunta é fantástica, Lívia, porque revela o limite dos nossos próprios esforços. Vamos ver o que os profetas anunciaram. Abra a Bíblia com a gente no Antigo Testamento, no livro do profeta Jeremias, capítulo 31, versículos 31 e 32. Lívia, faz a leitura na íntegra pra gente. Lendo aqui em Jeremias 31, versículos 31 e 32: Eis que os dias vêm, diz o Senhor, em que farei uma nova aliança com a casa de Israel e com a casa de Judá. Não conforme a aliança que fiz com seus pais, no dia em que os tomei pela mão, para os tirar da terra do Egito; porquanto eles invalidaram a minha aliança, malgrado eu os haver desposado, diz o Senhor. Veja só! A aliança antiga, feita no monte Sinai, tinha mandamentos perfeitos e santos, mas as tábuas estavam escritas em pedra, do lado de fora do ser humano. O coração humano era rebelde e frágil, incapaz de cumprir por si mesmo. Por isso, Deus anunciava um plano muito superior: uma Nova Aliança baseada em transformação interior, e não apenas em leis externas."
+      },
+      {
+        "question": "Isso traz um alívio imenso para quem carrega culpa no peito. Mas afinal, como Deus prometeu que essa Nova Aliança funcionaria na prática dentro de nós? Onde isso fica claro nos textos de Jeremias?",
+        "answer": "Deus mesmo detalha esse plano maravilhoso logo a seguir. Vamos continuar em Jeremias 31, mas agora nos versículos 33 e 34. Lívia, por favor, leia para nós. Diz assim a Palavra de Deus em Jeremias 31, versículos 33 e 34: Mas esta é a aliança que farei com a casa de Israel depois daqueles dias, diz o Senhor: Porei a minha lei no seu interior, e a escreverei no seu coração; e eu serei o seu Deus e eles serão o meu povo. E não ensinarão mais cada um a seu próximo, nem cada um a seu irmão, dizendo: Conhece ao Senhor; porque todos me conhecerão, desde o menor até ao maior deles, diz o Senhor; porque lhes perdoarei a sua maldade, e nunca mais me lembrarei dos seus pecados. Olha que promessa extraordinária! Deus não apenas diz que vai nos perdoar de forma completa e definitiva — a ponto de prometer que nunca mais se lembrará dos nossos pecados —, mas Ele mesmo escreve a Sua lei no nosso coração. A obediência deixa de ser um peso esmagador de regras e passa a ser uma resposta natural de amor ao Rei que nos salvou."
+      },
+      {
+        "question": "É lindo demais ver que o perdão e a mudança vêm de Deus! Mas como o profeta Ezequiel complementa isso? De que maneira Deus realiza esse milagre de nos dar um coração novo?",
+        "answer": "Com certeza. Ezequiel 36, versículos 25 a 27 diz assim: Então espalharei água pura sobre vós, e ficareis purificados; de todas as vossas imundícias e de todos os vossos ídolos vos purificarei. E dar-vos-ei um coração novo, e porei dentro de vós um espírito novo; e tirarei da vossa carne o coração de pedra, e vos darei um coração de carne. E porei dentro de vós o meu Espírito, e farei que andem nos meus estatutos, e guardem os meus juízos, e os façam. Preste muita atenção nos verbos que Deus usa: \"Eu espalharei\", \"Eu purificarei\", \"Eu darei\", \"Eu tirarei\", \"Eu porei\", \"Eu farei\". A transformação verdadeira na vida cristã não é uma conquista humana obtida na marra, mas sim a habitação do próprio Espírito Santo operando de dentro para fora. Deus retira o coração duro, egoísta e insensible como a pedra, e coloca em nós um coração maleável, cheio de vida, guiado pelo Seu Espírito. Amém! E a grande notícia é que essa Nova Aliança já foi inaugurada pelo sangue precioso de Jesus na cruz. Por isso, se você tem tentado mudar sua vida apenas na base da força de vontade, faça hoje mesmo a oração prática sugerida no Guia: \"Senhor, renova o meu coração pela ação do Teu Espírito.\" Querido ouvinte, não existe nenhum impedimento entre você e Deus hoje. Não há barreiras ou exigências humanas que possam te afastar do amor do Pai. O Rei eterno já abriu o caminho por meio da Nova Aliança. E a própria Bíblia nos convida a selar essa entrega de todo o coração. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16:"
+      }
+    ]
   },
   {
     "lessonNumber": 13,
@@ -2041,7 +2251,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Você já sentiu o peso de tentar misturar a antiga lógica da cobrança com a nova vida no Espírito? O que muda ao abraçar integralmente a Nova Aliança?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_01.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, na aula passada conversamos sobre a promessa da Nova Aliança. Mas confesso que, para muita gente, surge uma dúvida sincera: por que a Antiga Aliança precisou ser substituída? Afinal, ela não veio de Deus?",
+        "answer": "Sim, Lívia, a Antiga Aliança veio de Deus e teve o seu propósito no tempo certo. Mas ela apontava para algo muito maior que viria em Jesus. Para entendermos essa transição gloriosa, vamos abrir a Bíblia em 2 Coríntios, capítulo 3, versículos 3 a 8. Lívia, faz a leitura para a gente com calma."
+      },
+      {
+        "question": "Com certeza. Diz assim em 2 Coríntios 3, versículos 3 a 8: Sendo já manifestos que vós sois a carta de Cristo, ministrada por nós, escrita não com tinta, mas com o Espírito do Deus vivo, não em tábuas de pedra, mas nas tábuas de carne do coração. E a mesma confiança temos que por Cristo temos acesso a Deus; não que sejamos capazes, por nós mesmos, de pensar alguma coisa como de nós mesmos; mas a nossa capacidade vem de Deus, o qual nos habilitou para sermos ministros de uma nova aliança, não da letra, mas do espírito; porque a letra mata, mas o espírito vivifica. E, se o ministério da morte, gravado com letras em pedras, veio em glória, de maneira que os filhos de Israel não podiam olhar firmemente para a face de Moisés, por causa da glória do seu rosto, a qual era passageira, como não será de muito maior glória o ministério do Espírito?",
+        "answer": "Veja que forte essa comparação do apóstolo Paulo! O ministério gravado em pedras — a Lei escrita — trazia um fardo de culpa e morte porque o ser humano caído não conseguia cumpri-la por si mesmo. Mas o ministério do Espírito traz vida, capacitação e transformação de dentro para fora."
+      },
+      {
+        "question": "Isso muda completamente a nossa visão, Pedro! Mas me diga uma coisa: quando lemos sobre o ministério do Espírito, isso quer dizer que a Nova Aliança é apenas uma adaptação da antiga ou ela é algo totalmente superior e novo?",
+        "answer": "Ela é infinitamente superior, Lívia. E o livro de Hebreus explica isso com muita clareza. Vamos abrir em Hebreus, capítulo 8, versículos 6 a 9. Lívia, por favor, leia esses versículos para nós. Lendo aqui em Hebreus 8, versículos 6 a 9: Mas agora alcançou ele ministério tanto mais excelente, quanto é mediador de uma melhor aliança, que está testamentada em melhores promessas. Porque, se aquela primeira fora irrepreensível, nunca se teria buscado lugar para a segunda. Porque, reprovando-os, lhes diz: Eis que virão dias, diz o Senhor, em que com a casa de Israel e com a casa de Judá estarei uma nova aliança. Não conforme a aliança que fiz com seus padres no dia em que os tomei pelas mãos, para os tirar da terra do Egito; como eles não permaneceram naquela aliança, eu para eles não abri meus olhos, diz o Senhor. Amém! A primeira aliança encontrou falha no povo porque o homem precisava de um socorro externo que mudasse o seu interior. Jesus veio como o Mediador de uma aliança superior, baseada em promessas melhores e firmada no sacrifício perfeito da cruz."
+      },
+      {
+        "question": "E para fecharmos a leitura dessa parte, como o autor aos Hebreus resume o fim da antiga e a chegada dessa nova aliança? Continua no mesmo capítulo, né?",
+        "answer": "Exatamente, Lívia. Vamos ler o desfecho desse capítulo em Hebreus 8, versículos 10 a 13. Pode ler, por favor. Diz assim em Hebreus 8, versículos 10 a 13: Porque esta é a aliança que farei com a casa de Israel depois daqueles dias, diz o Senhor: Porei as minhas leis no seu entendimento, ande na sua mente as escreverei; e eu lhes serei por Deus, e eles me serão por povo; e não ensinará cada um a seu próximo, nem cada um ao seu irmão, dizendo: Conhece ao Senhor; porque todos me conhecerão, desde o menor até ao maior deles. Porque serei misericordioso para com suas iniquidades, e de seus pecados e transgressões já não me lembrarei mais. Quando ele diz Nova, torna antiquada a primeira. Ora, o que se torna antiquado e envelhece está perto de desvanecer-se. Que texto maravilhoso! A Antiga Aliança cumpriu o seu tempo e desvaneceu, dando lugar a uma aliança onde o perdão é pleno, o conhecimento de Deus é pessoal e a lei de Deus é gravada pelo Espírito em nossos corações. Nós não ficamos com um pé na Antiga Aliança e outro na Nova; entramos inteiros na liberdade e na suficiência da graça em Cristo! Perfeito, Lívia. E sabendo disso, chegamos ao momento mais precioso do nosso encontro. Queremos conversar com você que tem acompanhado estas aulas com o coração aberto. Talvez você tenha carregado durante anos o peso de tentar alcançar a aprovação de Deus por esforço próprio, vivendo debaixo de regras e culpas. Mas hoje o Senhor te convida a viver a Nova Aliança."
+      }
+    ]
   },
   {
     "lessonNumber": 14,
@@ -2209,7 +2438,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Ao encerrar o Bloco 2, como a declaração de que você não é mais escravo, mas filho e herdeiro (Gálatas 4:7), impacta sua caminhada com Jesus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_14.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, toda a espera dos profetas ao longo dos séculos parece desaguar exatamente neste momento da história. Muita gente se pergunta por que Deus demorou tanto para enviar o Messias. Como a Bíblia explica o momento exato em que Jesus veio ao mundo?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Gálatas 4, versículos 4 a 5: Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei, para remir os que estavam debaixo da lei, para que recebêssemos a adoção de filhos. Olha que profundidade! Na plenitude do tempo — ou seja, no momento exato e perfeito planejado por Deus — Jesus veio. Ele não veio por acaso, mas para resgatar os que estavam sob a condenação da Lei e nos dar algo extraordinário: a adoção de filhos."
+      },
+      {
+        "question": "E quando Jesus finalmente inicia o Seu ministério público, quais foram as primeiras palavras dEle? O que significava esse anúncio do Reino?",
+        "answer": "Vamos conferir em Marcos, capítulo 1, versículos 14 a 15. Lívia, por favor, faça a leitura desse texto para nós. O texto de Marcos 1, versículos 14 e 15 diz o seguinte: E, depois que João foi entregue à prisão, veio Jesus para a Galileia, pregando o evangelho do reino de Deus, e dizendo: O tempo está cumprido, e o reino de Deus está próximo; arrependei-vos e crede no evangelho. Repare bem na palavra 'evangelho', Lívia: significa literalmente Boas Notícias! O Rei chegou não com um chicote ou com condenação, mas anunciando que o governo de Deus está próximo. E o convite é simples: arrepender-se e crer nessas Boas Notícias."
+      },
+      {
+        "question": "Pedro, eu acho impressionante como Jesus aplicava isso na prática do dia a dia. Tem um texto em Lucas que mostra exatamente qual era a missão dEle ao entrar na sinagoga. Como foi isso?",
+        "answer": "Diz assim em Lucas 4, versículos 18 a 21: O Espírito do Senhor é sobre mim, pois que me ungiu para evangelizar os pobres. Enviou-me a curar os quebrantados de coração, a pregar liberdade aos cativos, e restauração da vista aos cegos, a pôr em liberdade os oprimidos, a anunciar o ano aceitável do Senhor. E, cerrando o livro, e tornando a dá-o ao ministro, assentou-se; e os olhos de todos na sinagoga estavam fitos nele. Então começou a dizer-lhes: Hoje se cumpriu esta Escritura em vossos ouvidos. Jesus assumiu publicamente que Ele é o cumprimento de todas as promessas! Ele veio para libertar cativos, curar os quebrantados e inaugurar o ano da graça de Deus. E tem mais: por causa disso, a nossa identidade com Deus mudou completamente."
+      },
+      {
+        "question": "Como assim, Pedro? Como fica a nossa relação com Deus agora que o Rei chegou?",
+        "answer": "Vamos terminar a leitura daquele texto de Gálatas que começamos há pouco, nos versículos 6 e 7. Lívia, lê pra gente por favor. Claro! Gálatas 4, versículos 6 a 7 diz: E, porque sois filhos, Deus enviou aos vossos corações o Espírito de seu Filho, que clama: Aba, Pai. Assim que já não és servo, senão filho; e, se és filho, também herdeiro de Deus por Cristo. Isso é transformador! Nós não somos mais escravos distantes ou servos amedrontados. Pelo Espírito de Cristo em nós, podemos chamar a Deus de 'Aba, Pai' — numa relação de profunda intimidade, amor e filiação. Amém! E se o seu coração reconheceu o Rei Jesus hoje, não existe nenhum impedimento entre você e Deus. Não há nenhuma barreira humana te separando dEle. O Rei eterno já inaugurou a Nova Aliança por amor a você. A Bíblia nos convida a dar passos concretos de fé. Vamos ler o que diz o Evangelho de Marcos, capítulo 16, versículos 15 e 16: Diz assim: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado. Se você crê de todo o coração que Jesus é o seu Rei e Salvador, o batismo é o passo natural de quem deseja selar essa aliança e nascer para uma nova vida. E para te ajudar a dar esse passo com toda tranquilidade, toque agora no botão logo abaixo do Guia de Estudos. Ali você pode buscar uma igreja próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que Deus abençoe a sua vida, e até a nossa próxima aula!"
+      }
+    ]
   },
   {
     "lessonNumber": 15,
@@ -2365,7 +2613,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Como a verdade de que Cristo é o fim da Lei para justiça traz descanso para quem se sentia sempre insuficiente diante de Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_03.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, eu confesso que muitas pessoas se confundem com essa questão da Lei de Moisés na Bíblia. Alguns acham que Jesus veio apagar tudo, enquanto outros acham que ainda precisamos cumprir rituais antigos para alcançar o favor de Deus. Afinal de contas, qual foi o verdadeiro propósito da vinda de Jesus em relação à Lei?",
+        "answer": "Com certeza. Diz assim em Mateus 5, versículos 17 a 20: Não cuideis que vim destruir a lei ou os profetas: não vim ab-rogar, mas cumprir. Porque em verdade vos digo que, até que o céu e a terra passem, nem um jota ou um til passará da lei, sem que tudo seja cumprido. Qualquer, pois, que violar um destes mandamentos, por menor que seja, e assim ensinar aos homens, será o chamado o menor no reino dos céus; aquele, porém, que os cumprir e ensinar será chamado grande no reino dos céus. Porque vos digo que, se a vossa justiça não for maior do que a dos escribas e fariseus, de modo nenhum entrareis no reino dos céus. Veja que forte! Jesus não veio ignorar a santidade de Deus ou jogar a Lei no lixo. Ele veio fazer o que nós jamais conseguiríamos: cumprir integralmente a Lei em nosso lugar. A exigência da justiça divina era perfeita, e Jesus viveu essa perfeição por nós. Mas aí surge uma segunda pergunta muito comum: se Jesus cumpriu tudo, o que acontece então com a nossa busca por justiça?"
+      },
+      {
+        "question": "Essa pergunta mexe muito com a gente, porque a gente vive tentando provar o próprio valor. Vamos ver o que o apóstolo Paulo escreveu sobre isso? Pedro, qual versículo nos ajuda a entender esse ponto?",
+        "answer": "Vamos lá para a carta aos Romanos, capítulo 10, versículo 4. Lívia, lê esse versículo pra gente na íntegra. Diz assim em Romanos 10, versículo 4: Porque o fim da lei é Cristo, para justiça de todo aquele que crê. Que versículo precioso! A palavra original usada ali para fim é telos, que significa tanto o alvo e o propósito final quanto o término. Jesus é o alvo alcançado! Isso significa que Ele encerrou a nossa tentativa infrutífera de tentar conquistar a salvação pelas próprias forças ou pelo cumprimento mecânico de regras. Quem crê em Jesus recebe a justiça dEle de presente. Mas Lívia, alguém pode pensar: 'Se eu já tenho a justiça de Cristo de graça, agora posso viver de qualquer jeito?'"
+      },
+      {
+        "question": "Exatamente! Essa é a grande objeção que surge na mente de quem ainda não entendeu a graça. Como a Bíblia responde a essa preocupação sobre a nossa conduta prática?",
+        "answer": "Vamos abrir a mesma carta aos Romanos, agora no capítulo 13, versículos 8 a 10. Lívia, faz a leitura desse texto pra gente, por favor. Com certeza. Romanos 13, versículos 8 a 10 diz: a ninguém aquiziteis coisa alguma, a não ser o amor com que vos ameis uns aos outros; porque quem ama aos outros cumpriu a lei. Com efeito: Não cometerás adultério, não matarás, não furtarás, não darás falso testemunho, não cobiçarás, e se há algum outro mandamento, tudo nesta palavra se resume: Amarás o teu próximo como a ti mesmo. O amor não maltrata o próximo. De sorte que o cumprimento da lei é o amor. Olha que maravilhoso! A vida nova em Cristo não anula a moral de Deus, ela a eleva ao seu patamar mais alto. Quem tem o Espírito Santo não obedece a Deus por medo de castigo ou para ganhar pontos, mas porque foi transformado pelo amor e agora ama genuinamente ao próximo. O amor transborda como fruto natural da presença de Deus em nós."
+      }
+    ]
   },
   {
     "lessonNumber": 16,
@@ -2513,7 +2776,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que muda em sua oração hoje saber que o véu foi rasgado de alto a baixo e que você pode se aproximar de Deus sem medo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_04.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, hoje vamos falar de um dos momentos mais profundos e definitivos de toda a história humana. Para quem muitas vezes carrega um peso enorme de culpa ou sente que precisa fazer algo mais para alcançar o perdão de Deus, o que aconteceu de fato no momento derradeiro da crucificação?",
+        "answer": "Essa pergunta toca no coração do evangelho, Lívia! Vamos ver o que as Escrituras registram sobre as últimas palavras de Jesus na cruz. Abra com a gente em João, capítulo 19, versículo 30. Lívia, faz a leitura na íntegra pra gente, por favor. Com certeza. Diz assim em João 19, versículo 30: Quando, pois, Jesus tomou o vinagre, disse: Está consumado! E, inclinando a cabeça, rendeu o espírito. Que palavra tremenda: 'Está consumado!' Na língua grega original, essa palavra é 'Tetelestai', que era o termo exato carimbado em documentos de dívida quando um débito era integralmente quitado. Não sobrou absolutamente nada para pagarmos; o saldo foi zerado por completo na cruz."
+      },
+      {
+        "question": "E Pedro, eu fico imaginando o impacto imediato desse sacrifício na terra. O que aconteceu no templo exatamente no instante em que Jesus entregou o espírito?",
+        "answer": "O texto de Mateus 27, versículos 50 e 51, diz assim: E Jesus, clamando outra vez com grande voz, rendeu o espírito. E eis que o véu do templo se rasgou em dois, de alto a baixo; e tremeu a terra, e fenderam-se as rochas. Note um detalhe lindíssimo que o texto nos mostra: o véu do templo não se rasgou de baixo para cima, por mãos humanas, mas de alto a baixo, pelas mãos do próprio Deus. Era o Pai dizendo que a separação havia acabado e que o caminho para a Sua presença estava totalmente aberto para todo aquele que crê."
+      },
+      {
+        "question": "Isso me traz uma paz indescritível! Mas, para não restar nenhuma dúvida sobre a nossa situação diante de Deus, o que aconteceu com as nossas culpas e acusações passadas?",
+        "answer": "Diz assim em Colossenses 2, versículos 13 a 15: E a vós, quando éreis mortos nos delitos e na incircuncisão da vossa carne, os vivificou juntamente com ele, perdoando-vos todas as transgressões, apagando o escrito de dívida que era contra nós, o qual nos era prejudicial, e o tirou do meio, cravo-o na cruz; e, despojando os principados e potestades, os expôs publicamente e deles triunfou em si mesmo. Aleluia! Toda a nossa cédula de dívida, que nos acusava e nos afastava de Deus, foi inteiramente removida e encravada na cruz. A obra de Cristo foi completa, perfeita e definitiva. Não existe saldo devedor nem condenação para quem está em Cristo Jesus. Amém! E com o acesso completamente aberto e a dívida totalmente paga, queremos fazer um convite muito especial e respeitoso a você que tem acompanhado estas aulas. Não há mais nenhum impedimento entre você e o Pai. A salvação é um presente gratuito consumado na cruz por amor a ti."
+      }
+    ]
   },
   {
     "lessonNumber": 17,
@@ -2660,7 +2938,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Que alívio espiritual traz ao seu coração saber que a expiação foi finalizada uma vez por todas e que Cristo já se assentou à direita de Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_05.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, para começarmos nossa conversa de hoje, eu me lembro de como o sistema do santuário terrestre no Antigo Testamento era intenso: sangue correndo, animais sendo sacrificados o tempo todo e os sacerdotes em pé, trabalhando dia após dia sem parar. Mas qual é a grande diferença quando olhamos para Jesus no santuário celestial?",
+        "answer": "Essa pergunta toca no coração do evangelho, Lívia! No antigo tabernáculo, realmente não havia cadeiras para os sacerdotes porque o trabalho deles jamais terminava. Mas vamos abrir a Palavra em Hebreus, capítulo 9, versículos 11 a 14. Lívia, faz a leitura para a gente com calma."
+      },
+      {
+        "question": "Com certeza. Diz assim em Hebreus 9, versículos 11 a 14: Mas, vindo Cristo, o sumo sacerdote dos bens futuros, por um maior e mais perfeito tabernáculo, não feito por mãos, isto é, não desta criação, nem por sangue de bodes e bezerros, mas por seu próprio sangue, entrou uma vez por todas no santuário, havendo obtido uma eterna redenção. Porque, se o sangue dos touros e bodes e a cinza duma novilha esparzida sobre os imundos os santifica, quanto à purificação da carne, quanto mais o sangue de Cristo, que, pelo Espírito eterno, se ofereceu a si mesmo imaculado a Deus, purificará a vossa consciência das obras mortas, para servirdes ao Deus vivo?",
+        "answer": "Veja que extraordinário, ouvinte! Jesus não precisou entrar repetidas vezes como os antigos sacerdotes. Ele entrou no próprio céu, diante de Deus, uma vez por todas, com o Seu próprio sangue, e nos garantiu uma redenção que é eterna. Não há sacrifício pendente, nem sacrifício repetido."
+      },
+      {
+        "question": "Isso é maravilhoso, Pedro! Mas confesso que, por causa de doutrinas que muitos ouviram a vida toda, existe um medo latente: o de que haja uma segunda etapa de juízo ou uma auditoria tardia lá no céu para ver se o sangue de Cristo realmente foi suficiente. A Bíblia apoia esse medo?",
+        "answer": "Nenhum pouco, Lívia! Pelo contrário, a Palavra destrói qualquer pavor desse tipo. Vamos ler o que diz logo adiante, no mesmo capítulo 9 de Hebreus, agora nos versículos 24 a 28. Lívia, por favor. Lendo aqui em Hebreus 9:24 a 28: Porque Cristo não entrou num santuário feito por mãos, figura do verdadeiro, senão no mesmo céu, para agora comparecer por nós perante a face de Deus; nem tampouco para se oferecer muitas vezes, como o sumo sacerdote cada ano entra no santuário com sangue alheio; de outra maneira, anteriormente era necessário que ele andasse padecendo muitas vezes desde a fundação do mundo. Mas agora na consumação dos séculos uma vez se manifestou, para aniquilar o pecado pelo sacrifício de si mesmo. E, como aos homens está ordenado morrerem uma vez, depois disso o juízo, assim também Cristo, oferecendo-se uma vez para tirar os pecados de muitos, aparecerá segunda vez, sem pecado, aos que o esperam para a salvação. Amém! Repare bem: Ele comparece por nós perante a face de Deus. Quando Cristo voltar, não será para lidar com o pecado de novo, como se a cruz tivesse falhado ou deixado pontas soltas, mas para trazer salvação plena aos que O aguardam com confiança e alegria."
+      },
+      {
+        "question": "Glória a Deus por essa clareza! E para fecharmos o argumento de forma definitiva, aquela história de que Jesus teve que esperar séculos para se sentar ou que ainda há trabalho de expiação incompleto... como o texto de Hebreus desfaz isso na prática?",
+        "answer": "Vamos direto ao ponto alto do nosso estudo, Lívia. Abra a Bíblia em Hebreus, capítulo 10, versículos 11 a 18. Leia com bastante atenção para o nosso ouvinte. Diz assim em Hebreus 10, versículos 11 a 18: E assim cada sacerdote的确... perdão, vou reler o versículo 11: E assim cada sacerdote aparece cada dia ministrando e oferecendo muitas vezes os mesmos sacrifícios, que nunca podem tirar os pecados; mas este, havendo oferecido para sempre um único sacrifício pelos pecados, assentou-se à destra de Deus, da(&(*...*)) da orla, esperando até que os seus inimigos sejam postos por escabelo de seus pés. Porque, com uma única oferta, aperfeiçoou para sempre os que são santificados. E também o Espírito Santo nos testifica disso, porque depois de haver dito: Este é o pacto que farei com eles depois daqueles dias, diz o Senhor: Porei as minhas leis em seus corações, e as escreverei em seus entendimentos; acrescenta: E aos seus pecados e iniquidades não me lembrarei mais. Ora, onde há remissão destes, não há mais oblação pelo pecado. Aleluia! Ele SE ASSENTOU! A cadeira no santuário celestial existe porque a obra foi completamente consumada. Onde há remissão definitiva dos pecados, não existe mais oferta pendente, nem julgamento investigativo sobre os salvos. Nosso Sumo Sacerdote está à destra do Pai intercedendo por nós como um Advogado amoroso, e não como um auditor severo querendo reprovar os Seus filhos. Exatamente isso, Lívia. E por causa dessa obra perfeita, não existe nenhum impedimento entre você e Deus hoje. O véu se rasgou de alto a baixo, e o acesso ao Pai está totalmente aberto. Se você deseja entregar sua vida a Ele e caminhar nessa certeza, queremos fazer um convite muito especial. Vamos ler o que diz o Evangelho de Marcos, capítulo 16, versículos 15 e 16:"
+      }
+    ]
   },
   {
     "lessonNumber": 18,
@@ -2808,7 +3105,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que significa na prática descansar das suas próprias obras e abraçar Jesus como o verdadeiro descanso da sua alma todos os dias?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_06.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, lá no comecinho da nossa jornada, na criação, vimos o descanso de Deus no sétimo dia. Mas hoje o tema nos leva a um entendimento ainda mais profundo. Por que tantas pessoas na época apostólica continuavam presas a regras de dias, festas e calendários religiosos, sem conseguir experimentar uma paz verdadeira?",
+        "answer": "Essa pergunta é fantástica, Lívia, porque toca no coração do legalismo versus a graça. As pessoas olhavam para a sombra e esqueciam da Pessoa! Vamos abrir a Palavra em Colossenses, capítulo 2, versículos 16 e 17. Lívia, faz a leitura na íntegra para a gente, por favor. Com certeza. Diz assim em Colossenses 2, versículos 16 e 17: Ninguém, pois, vos julgue por causa de comida e bebida, ou dia de festa, ou lua nova, ou sábados, porque tudo isso tem sido sombra das coisas que haviam de vir; porém o corpo é de Cristo. Veja que revelação libertadora! Festas, luas novas e dias cerimoniais eram apenas a sombra projetada no chão. E quando a pessoa real entra na sala — que é Cristo —, você não fica abraçando a sombra no chão, você abraça a Pessoa! O foco do evangelho não é um calendário litúrgico, mas o próprio Jesus."
+      },
+      {
+        "question": "Isso tira um peso enorme dos ombros da gente, Pedro. Mas então, qual é exatamente esse descanso que Jesus nos oferece? Onde encontramos esse repouso para a alma de quem está cansado de tentar se esforçar para merecer o favor de Deus?",
+        "answer": "O texto sagrado de Mateus 11, versículos 28 a 30, nos diz: Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei. Tomai sobre vós o meu jugo e aprendei de mim, porque sou manso e humilde de coração; e achareis descanso para a vossa alma. Porque o meu jugo é suave, e o meu fardo é leve. Amém! O descanso de Deus não é um dia da semana que você cumpre por medo de punição; o descanso de Deus é uma Pessoa! Jesus nos chama a estar com Ele, a confiar Nele. Quando tentamos nos salvar por meio de esforço próprio, performance religiosa ou rituais, ficamos exaustos. Mas em Jesus encontramos alívio completo para a alma."
+      },
+      {
+        "question": "Isso me leva a outra dúvida importante: como nós entramos, de fato, nesse descanso nos dias de hoje? O que a Bíblia nos ensina sobre cessar as nossas próprias obras para viver essa graça?",
+        "answer": "Vamos direto à carta aos Hebreus, capítulo 4, versículos 3 e depois o versículo 10. Lívia, por favor, leia para os nossos ouvintes. Diz assim em Hebreus 4, versículos 3 e 10: Nós, porém, que cremos, entramos no descanso, assim como disse: Como jurei na minha ira: Não entrarão no meu descanso; embora as obras estivessem consumadas desde a fundação do mundo. (...) Porque quem entrou no descanso de Deus, também ele mesmo repousou das suas obras, assim como Deus das suas. Que maravilha! Entramos no descanso de Deus pela fé, crendo na obra perfeita que Cristo já realizou por nós na cruz. Quando entendemos isso, nós repousamos das nossas próprias obras de autojustificação. Paramos de tentar comprar o amor de Deus com o nosso suor, porque a salvação é um presente consumado por Jesus. Perfeito, Lívia. E se você que está nos ouvindo tem carregado o fardo pesado da culpa ou da cobrança religiosa, queremos fazer um convite muito especial e calmo, sem nenhuma pressão. A obra de Cristo na cruz foi plenamente consumada, o véu se rasgou e o acesso ao Pai está totalmente aberto para você hoje."
+      }
+    ]
   },
   {
     "lessonNumber": 19,
@@ -2960,7 +3272,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Como saber que o Selo de Deus é a presença viva do Espírito Santo em você traz segurança e paz diante de ensinamentos baseados no medo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_07.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, confesso que esse tema gera muitas dúvidas nas pessoas. Muita gente já ficou aflita ouvindo teorias complicadas, dizendo que o selo de Deus seria um dia específico do calendário ou uma marca física misteriosa no futuro. Mas afinal, o que a Bíblia diz de forma clara sobre o que é o Selo de Deus na Nova Aliança?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Efésios 1, versículos 13 e 14: Em quem também vós, depois que ouvistes a palavra da verdade, o evangelho da vossa salvação; e tendo nele também crido, fostes selados com o Santo Espírito da promessa; o qual é o penhor da nossa herança, para redenção da sua possessão, para louvor da sua glória. É impossível ser mais direto do que isso! O Selo de Deus na Nova Aliança não é um dia da semana nem uma observância cerimonial — é uma Pessoa bendita: o próprio Espírito Santo! Na antiguidade, o selo do rei era colocado em documentos e cartas para marcar propriedade exclusiva, autenticidade e proteção segura. Quando cremos no Evangelho, Deus nos marca com o Seu próprio Espírito!"
+      },
+      {
+        "question": "Isso traz uma paz tão grande ao coração, Pedro! Mas me explica uma coisa: quando é que nós recebemos esse selo? É preciso passar por provas severas ou esperar por uma experiência futura distante para ser selado?",
+        "answer": "Que bom que você perguntou isso, Lívia. Vamos olhar o que diz o apóstolo Paulo em outra passagem muito clara. Abra a sua Bíblia em 2 Coríntios, capítulo 1, versículo 22. Lívia, faz a leitura desse versículo pra gente, por favor. Com certeza. Diz assim em 2 Coríntios 1, versículo 22: O qual também nos selou e nos deu o penhor do Espírito em nosso coração. Veja que maravilhoso: nós recebemos o selo no momento em que ouvimos e cremos na Palavra da verdade, o evangelho da nossa salvação. O Espírito Santo é dado como um 'penhor' — que significa garantia, sinal ou arras de que Deus cumprirá inteiramente a nossa herança eterna. Não precisamos viver na ansiedade ou no medo de não sermos aceitos; quem crê em Jesus já é marcado e garantido por Deus."
+      },
+      {
+        "question": "Essa garantia muda completamente a nossa maneira de viver o dia a dia, né? Mas como esse selo do Espírito Santo impacta a nossa conduta prática e a nossa segurança espiritual?",
+        "answer": "Impacta profundamente, Lívia. Vamos ler o que diz Efésios, capítulo 4, versículo 30. Abra aí no seu aplicativo ou na sua Bíblia. Lívia, lê esse versículo pra gente, por favor. Diz assim em Efésios 4, versículo 30: E não entristeçais o Espírito Santo de Deus, no qual estais selados para o dia da redenção. Olha que tremendo! Nós fomos selados para o dia da redenção. Isso significa que o Espírito Santo habita no crente como uma marca perpétua de que pertencemos a Cristo até o dia final. Sabendo que somos habitação de Deus e que pertencemos a Ele por amor, somos chamados a viver de maneira santa, honrando a Presença dEle em nós, sem entristecer Aquele que nos garantiu a salvação. Exatamente, Lívia! E a nossa aplicação prática de hoje é bem simples e profunda: tire um momento do seu dia para agradecer ao Espírito Santo por habitar em você como o verdadeiro Selo de propriedade e garantia do amor fiel de Deus. E se você chegou até aqui compreendendo que a obra de Cristo foi plenamente consumada na cruz, que o véu rasgou e que o acesso ao Pai está completamente aberto... saiba que não existe nenhum impedimento nem etapa pendente entre você e Deus hoje."
+      }
+    ]
   },
   {
     "lessonNumber": 20,
@@ -3107,7 +3434,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Qual aspecto do fruto do Espírito (amor, alegria, paz, paciência, bondade, mansidão...) você mais deseja ver florescendo nesta fase da sua vida?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_08.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, para começar nossa aula de hoje, quero te fazer uma pergunta bem sincera. Muita gente tenta viver o cristianismo na base da força de vontade, tentando cumprir uma lista interminável de regras para se sentir aceito por Deus. Mas qual é a real diferença entre tentar fabricar santidade por fora e a verdadeira transformação que a Bíblia propõe?",
+        "answer": "Essa pergunta toca no coração de todo o nosso estudo, Lívia! Tentar mudar a vida apenas por cobrança externa é como colar frutas de plástico numa árvore seca com fita adesiva: fica artificial e não tem vida. Vamos ver o que a Palavra diz sobre a verdadeira transformação. Abra a Bíblia em Gálatas, capítulo 5, e leia os versículos 16 a 18 para a gente. Estou com Gálatas 5 aberto aqui nos versículos 16 a 18. Diz assim: Digo, porém: Andai em Espírito e não satisfareis a concupiscência da carne. Porque a carne cobiça contra o Espírito, e o Espírito contra a carne; e estes opõem-se um ao outro; para que não façais o que quereis. Mas, se sois guiados pelo Espírito, não estais sob a lei. Que maravilha! Note bem: o apóstolo Paulo não diz para nos esforçarmos mais para cumprir o código de leis minuciosamente, mas diz para \"andar em Espírito\". Quando a nossa vida está enraizada em Cristo, somos guiados de dentro para fora, superando o regime pesado de regras e culpa."
+      },
+      {
+        "question": "Isso tira um peso enorme dos ombros de quem tenta agradar a Deus achando que nunca é bom o suficiente! Mas Pedro, quando a Bíblia fala desse resultado prático na vida de quem anda com Deus, como ela descreve o que brota dessa união?",
+        "answer": "A resposta é belíssima e transborda vida. Vamos continuar na mesma carta, ainda em Gálatas, capítulo 5, mas agora nos versículos 22 e 23. Lívia, faz a leitura para nós, por favor. Claro! Gálatas 5, versículos 22 e 23 dizem: Mas o fruto do Espírito é: amor, alegria, paz, longanimidade, benignidade, bondade, fidelidade, mansidão, domínio próprio. Contra estas coisas não há lei. Veja que fascinante: o texto chama isso de \"fruto\" do Espírito, e não de \"esforço\" da carne. Fruto nasce naturalmente de uma árvore que está ligada à seiva viva! É o próprio caráter de Jesus florescendo em nós, de forma orgânica. E repare no final do versículo: \"Contra estas coisas não há lei\". A lei condena o erro exterior, mas o Espírito transforma a nossa essência."
+      },
+      {
+        "question": "Isso é transformador. Em vez de vivermos atemorizados com medo de errar e sofrer castigos, existe uma outra dinâmica para a nossa relação com o Pai, não é?",
+        "answer": "Diz assim em Romanos 8, versículos 14 a 16: Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus. Porque não recebestes o espírito de escravidão, para estarem outra vez em temor, mas recebestes o Espírito de adoção, pela qual clamamos: Aba, Pai. O mesmo Espírito testifica com o nosso espírito que somos filhos de Deus. Aleluia! Nós não temos um espírito de escravidão para viver atemorizados debaixo de chicotes espirituais. Nós recebemos o Espírito de adoção. Deus é o nosso Pai amoroso que nos guia de perto, sarando nossas feridas e nos dando um novo coração. Perfeito, Lívia. E se você que está nos ouvindo hoje sente o desejo de entregar sua vida a esse Pai maravilhoso, lembre-se: a obra de Cristo na cruz foi plenamente consumada, o véu se rasgou e o acesso ao Pai está totalmente aberto para você. Não existe nenhum impedimento nem nenhuma etapa pendente para você ser salvo hoje. A Bíblia nos convida com muito amor em Marcos 16, versículos 15 e 16... Se você crê de todo o coração nessa boa notícia e deseja dar esse passo de fé através do batismo, não espere mais. Toque agora mesmo no botão logo abaixo do seu Guia de Estudos para buscar uma igreja próxima de você no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral direto. Estamos orando por você, e esperamos te ver muito em breve na Casa do Pai. Um forte abraço e até a próxima aula!"
+      }
+    ]
   },
   {
     "lessonNumber": 21,
@@ -3251,7 +3593,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Ao concluir o Bloco 3, o que significa para você viver hoje como embaixador da paz e da graça de Cristo onde você estuda, trabalha e convive?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16)."
+    "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_09.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, muita gente carrega o peso do passado, de erros e escolhas que parecem definir quem elas são para sempre. Mas a Bíblia traz uma promessa impressionante de recomeço. Afinal, o que significa de fato ter uma nova identidade em Cristo?",
+        "answer": "Com certeza. Diz assim em 2 Coríntios 5, versículos 17 a 20: Assim que, se alguém está em Cristo, nova criatura é; as coisas velhas já passaram; eis que tudo se fez novo. E tudo isto provém de Deus, que nos reconciliou consigo mesmo por Jesus Cristo, e nos deu o ministério da reconciliação; isto é, Deus estava em Cristo reconciliando consigo o mundo, não lhes imputando os seus pecados; e pôs em nós a palavra da reconciliação. De sorte que somos embaixadores em nome de Cristo, como se Deus por nós toscasse. Rogamo-vos, pois, em nome de Cristo, que sejais reconciliados com Deus. Que texto glorioso! O nosso passado não define mais o nosso futuro. Em Cristo, nós nos tornamos novas criaturas, perdoados e adotados. E mais do que isso: recebemos o chamado para ser embaixadores da reconciliação, levando paz e esperança para um mundo que precisa desesperadamente conhecer o amor do Pai."
+      },
+      {
+        "question": "É incrível pensar que Deus confia essa missão a nós. Mas às vezes as pessoas acham que a vida com Deus se resume a regras rígidas, proibições e listas de o que pode ou não pode comer e fazer. Como a Bíblia define a essência do Reino de Deus?",
+        "answer": "Vamos direto ao ponto que esclarece qualquer confusão sobre o que é religião e o que é o Reino de Deus. Abra em Romanos, capítulo 14, versículo 17. Lívia, por favor, faça a leitura para nós. O texto de Romanos 14:17 diz assim: Porque o reino de Deus não é comida nem bebida, mas justiça, e paz, e alegria no Espírito Santo. Que alívio para o nosso coração! O Reino de Deus não é sobre tabus alimentares, rituais vazios ou pesos impostos por homens. É sobre justiça, paz e uma alegria profunda gerada pelo Espírito Santo em nós. É uma vida guiada pelo amor e pela comunhão viva com o nosso Criador."
+      },
+      {
+        "question": "Essa liberdade e alegria no Espírito também transformam a nossa forma de lidar com os recursos materiais, não é, Pedro? Muitas vezes as pessoas sentem medo ou culpa quando se fala em contribuição financeira na igreja. Como a Nova Aliança nos ensina a ser generosos?",
+        "answer": "Com certeza. Está escrito em 2 Coríntios 9, versículos 6 a 8: E digo isto: Que o que semeia pouco, pouco também ceifará; e o que semeia em abundância, em abundância ceifará. Cada um contribua segundo tiver proposto no coração, não com tristeza ou por necessidade; porque Deus ama a quem dá com alegria. E Deus é poderoso para fazer abundar em vós toda a graça, a fim de que, tendo sempre, em tudo, toda a suficiência, abundeis para toda a boa obra. Veja que maravilhoso: na Nova Aliança, a generosidade nasce da gratidão espontânea no coração, e nunca de obrigação legalista, medo ou chantagem espiritual. Deus ama quem dá com alegria! Quando entendemos o quanto fomos perdoados e abençoados por Jesus, dar o nosso tempo, nossos dons e nossos recursos se torna um privilégio e uma expressão natural do amor de Deus fluindo através de nós."
+      }
+    ]
   },
   {
     "lessonNumber": 22,
@@ -3399,7 +3756,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que mais atrai seu coração na visão bíblica da Igreja como uma família acolhedora que proclama a luz de Cristo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_10.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, quando a gente olha para a história da Igreja no Novo Testamento, percebe que ela não nasceu de acordos políticos, estratégias humanas ou grandes construções de pedra. Ela nasceu de um transbordamento espiritual. Como tudo isso começou no dia do Pentecostes?",
+        "answer": "Essa pergunta toca no coração do nosso primeiro pilar, Lívia. Vamos abrir juntos o livro de Atos dos Apóstolos, capítulo 1, versículo 8, para entender a promessa que antecedeu esse grande momento. Lívia, faz a leitura na íntegra para a gente, por favor. Com certeza. Diz assim em Atos 1, versículo 8: Mas recebereis poder, ao descer sobre vós o Espírito Santo, e sereis minhas testemunhas, tanto em Jerusalém como em toda a Judeia e Samaria, e até aos confins da terra. Veja que impressionante! Antes de subir aos céus, Jesus não deu aos discípulos um manual de marketing ou uma lista de regras de autopreservação. Ele prometeu o Espírito Santo. A missão da Igreja não flui da força humana, mas do poder de Deus transformando vidas por dentro."
+      },
+      {
+        "question": "E isso aconteceu de forma muito poderosa logo depois, não foi? Quando o Espírito desce em Atos capítulo 2, a multidão ouve a mensagem e faz uma pergunta crucial: 'Que faremos?'. Como a Palavra responde a essa busca urgente?",
+        "answer": "Exatamente, Lívia. Vamos ler o desdobramento desse momento histórico em Atos, capítulo 2, versículos 37 a 41. Abra aí na sua Bíblia enquanto a Lívia lê com calma para nós."
+      },
+      {
+        "question": "O texto diz assim em Atos 2, versículos 37 a 41: Ouvindo eles isto, compungiram-se em seu coração e perguntaram a Pedro e aos demais apóstolos: Que faremos, homens irmãos? E Pedro lhes disse: Arrependei-vos, e cada um de vós seja batizado em nome de Jesus Cristo, para perdão dos pecados; e recebereis o dom do Espírito Santo. Porque a promessa vos pertence a vós, a vossos filhos, e a todos os que estão longe, a tantos quantos Deus nosso Senhor chamar. E com muitas outras palavras lhes testificava e exortava, dizendo: Salvai-vos desta geração perversa. De sorte que foram batizados os que deram crédito à sua palavra; e naquele dia agregaram-se quase três almas mil.",
+        "answer": "Olha que beleza e que acolhimento imediato nas Boas Notícias! Quem creu na mensagem da graça foi recebido, transformado e batizado com alegria naquele mesmo dia. A Igreja primitiva não era um clube exclusivo, mas uma família viva e aberta para todos que desejavam caminhar com o Rei."
+      },
+      {
+        "question": "Isso me traz uma paz enorme, porque mostra que ninguém fica de fora do amor de Deus. Mas Pedro, quem exatamente compõe essa Igreja hoje? Existe algum tipo de privilégio ou hierarquia especial para ter acesso a Deus?",
+        "answer": "Nenhum privilégio humano exclusivo, Lívia! O apóstolo Pedro explica muito bem a nossa identidade em Cristo. Vamos ler juntos a nossa última referência de hoje, lá em 1 Pedro, capítulo 2, versículo 9. Lívia, por favor, lê esse versículo na íntegra. Com todo o prazer. O texto de 1 Pedro 2, versículo 9 diz: Vós, porém, sois raça eleita, sacerdócio real, nação santa, povo de propriedade exclusiva de Deus, a fim de proclamardes as virtudes daquele que vos chamou das trevas para a sua maravilhosa luz. Amém! Cada discípulo que entrega a vida a Cristo pertence a essa família real e tem acesso direto ao Pai. Nós não precisamos de intermediários humanos; fomos chamados para proclamar a luz da Graça onde quer que estejamos. Perfeito, Lívia. E se você que está nos ouvindo sente o toque do Espírito Santo chamando seu coração para fazer parte dessa família espiritual, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está de braços abertos para te receber em esperança e alegria."
+      }
+    ]
   },
   {
     "lessonNumber": 23,
@@ -3543,7 +3919,30 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Existe algum receio ou mito que até hoje impediu você de dar o passo do batismo? Como os relatos de Atos 8 e 10 falam ao seu coração?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_12.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, eu quero começar fazendo uma pergunta que mexe com muita gente. Às vezes, as pessoas acham que para dar o passo do batismo é preciso primeiro alcançar uma perfeição inalcançável ou passar por um processo cheio de regras criadas pelos homens. Mas o que a Bíblia realmente diz sobre as exigências para o batismo? Como Jesus resumiu esse convite?",
+        "answer": "Essa pergunta toca no coração da graça de Deus, Lívia! Vamos ver o que o próprio Jesus ordenou aos Seus discípulos antes de subir aos céus. Abra a sua Bíblia em Marcos, capítulo 16, versículos 15 e 16. Lívia, por favor, lê pra gente na íntegra e com calma."
+      },
+      {
+        "question": "Isso tira um peso enorme dos ombros da gente, Pedro! Mas confesso que surge outra dúvida: e quando alguém deseja muito ser batizado, será que alguém pode barrar essa pessoa exigindo um tempo de espera ou condições especiais? Como a Bíblia retrata a urgência e a liberdade desse passo na igreja primitiva?",
+        "answer": "Para responder a isso, vamos viajar para o livro de Atos dos Apóstolos, no capítulo 8, versículos 35 a 38. Lívia, faz a leitura desse episódio lindo entre Filipe e o eunuco etíope."
+      },
+      {
+        "question": "Com certeza. Diz assim em Atos 8, versículos 35 a 38: Então Filipe, abrindo a boca e começando nesta escritura, lhe anunciou a Jesus. E, indo eles caminhos abaixo, chegaram a uma água, e disse o eunuco: Eis aqui água; que impede que seja eu batizado? E disse Filipe: É lícito se creres de todo o coração. E, respondendo ele, disse: Creio que Jesus Cristo é o Filho de Deus. E mandou parar o carro, e desceram ambos à água, tanto Filipe como o eunuco, e o batizou.",
+        "answer": "Olha que resposta fantástica! O eunuco pergunta: 'Eis aqui água; que impede que seja eu batizado?' E a única condição exigida por Filipe foi: 'Se creres de todo o coração'. Não houve meses de espera, não houve barreiras burocráticas. A fé sincera encontrou portas abertas na água do batismo."
+      },
+      {
+        "question": "Essa história é emocionante demais! Mas alguém poderia pensar: 'Ah, mas isso aconteceu com um eunuco estrangeiro e solitário. Será que essa regra vale para todo mundo, inclusive para pessoas de culturas ou origens diferentes?' Como o apóstolo Pedro lidou com essa questão mais tarde?",
+        "answer": "Essa é uma excelente observação, Lívia. Vamos abrir em Atos, capítulo 10, versículos 44 a 48. Vamos ver como Deus tratou a casa de Cornélio. Pode ler pra gente, por favor?"
+      },
+      {
+        "question": "Com certeza. O texto diz em Atos 10, versículos 44 a 48: E, dizendo Pedro ainda estas palavras, caiu o Espírito Santo sobre todos os ouvintes a palavra. E os fiéis que eram da circuncisão, todos quantos tinham vindo com Pedro, maravilharam-se de que o dom do Espírito Santo se derramasse também sobre os gentios. Porque os ouviam falar línguas, e magnificar a Deus. Respondeu então Pedro: Pode alguém porventura recusar a água, para que não sejam batizados estes que, assim como nós, receberam também o Espírito Santo? E mandou que fossem batizados em nome do Senhor. Então rogaram-lhe que ficasse com eles por alguns dias.",
+        "answer": "Perceba que o próprio Espírito Santo testificou! Nenhuma tradição humana, nenhum preconceito e nenhuma barreira cultural podem recusar a água do batismo àqueles que receberam a graça de Deus. As portas do Reino estão abertas para todos, sem exceção e sem impedimentos."
+      }
+    ]
   },
   {
     "lessonNumber": 24,
@@ -3694,7 +4093,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "O que você gostaria de deixar definitivamente sepultado para trás ao caminhar na novidade de vida que Jesus oferece?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_14.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, a nossa aula de hoje fala sobre um assunto lindíssimo e muito transformador: o batismo. Mas muitas pessoas se perguntam qual é o significado real desse mergulho nas águas. O que a Bíblia realmente quer nos ensinar através desse ato?",
+        "answer": "Essa é uma dúvida excelente, Lívia. O batismo não é apenas um ritual vazio, mas uma encenação viva do Evangelho. Vamos abrir a Palavra em Romanos, capítulo 6, versículos 1 a 4. Lívia, faz a leitura na íntegra pra gente com calma."
+      },
+      {
+        "question": "Estou com o texto aberto aqui. Diz assim em Romanos 6, versículos 1 a 4: Que diremos pois? Permaneceremos no pecado, para que a graça abunde? De modo nenhum. Nós, que já morremos para o pecado, como viveremos ainda nele? Ou não sabeis que todos quantos fostes batizados em Jesus Cristo fostes batizados na sua morte? De sorte que fomos sepultados com ele pelo batismo na morte; para que, como Cristo foi ressuscitado dentre os mortos pela glória do Pai, assim também andemos nós em novidade de vida.",
+        "answer": "Veja que forte! O mergulho nas águas representa o encerramento da velha identidade marcada pela culpa e pelo domínio do pecado. Quando descemos às águas, estamos simbolicamente sepultando o nosso passado. Fomos sepultados com Cristo na morte."
+      },
+      {
+        "question": "Isso tira um peso enorme dos ombros, Pedro! Mas e depois que a pessoa é submersa na água? O que acontece quando ela se levanta?",
+        "answer": "A resposta está logo adiante, no mesmo capítulo de Romanos, versículos 5 a 8. Abra aí na sua Bíblia, ou no app 1Convite, enquanto a Lívia lê para nós. Lendo Romanos 6, versículos 5 a 8: Porque, se fomos plantados juntamente com ele na semelhança da sua morte, também o seremos na da sua ressurreição; Sabendo isto, que o nosso velho homem foi com ele crucificado, para que o corpo do pecado seja desfeito, a fim de que não sirvamos mais ao pecado. Porque quem está morto está justificado do pecado. Ora, se já morremos com Cristo, cremos que também com ele viveremos. Aleluia! Levantar das águas proclama que a mesma vida ressurreta de Cristo agora pulsa em nós. É como um funeral alegre da velha vida de condenação. O nosso velho homem foi crucificado para que não sejamos mais escravos do pecado."
+      },
+      {
+        "question": "Lindo demais! Mas alguém pode se perguntar: será que o poder está na água em si, ou em algum mérito nosso ao entrar nela?",
+        "answer": "Com certeza não é a água física que tem mágica, Lívia. Vamos ver como o apóstolo Paulo explica isso lá em Colossenses, capítulo 2, versículos 11 e 12. Lívia, por favor, leia esse texto para os nossos ouvintes. Diz assim em Colossenses 2, versículos 11 e 12: No qual também fostes circuncidados com a circuncisão não feita por mãos no despojamento do corpo dos pecados da carne, a circuncisão de Cristo; Sepultados juntamente com ele no batismo, no qual também fostes ressuscitados mediante a fé no poder de Deus, que o ressuscitou dentre os mortos. Amém! A união com Cristo acontece mediante a fé no poder de Deus. Não é sobre o que nós fazemos por nossa própria força, mas sobre a obra poderosa de Deus operando na fé de quem se entrega a Jesus. Por isso, em Romanos 6:11, Paulo conclui dizendo para nos considerarmos mortos para o pecado e vivos para Deus em Cristo Jesus. Exatamente, Lívia! E para encerrar este estudo com muito tato e respeito, queremos dizer a você que nos ouve: não existe nenhum impedimento entre você e Deus hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. A Bíblia nos convida a dar esse passo com liberdade e amor. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16: Se o seu coração foi tocado pelo Espírito Santo e você deseja dar esse passo público de fé e recomeço nas águas do batismo, não espere mais. Toque no botão logo abaixo do Guia de Estudos para buscar uma igreja próxima de você no mapa, ver a distância até a Igreja Marco Zero e pegar o contato pastoral. Que Deus abençoe grandemente a sua decisão de caminhar em novidade de vida!"
+      }
+    ]
   },
   {
     "lessonNumber": 25,
@@ -3838,7 +4256,22 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Como a certeza de Romanos 8:1 e João 5:24 muda a sua paz emocional e a alegria de servir a Deus todos os dias?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_01.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, confesso que essa aula toca fundo no meu coração. Muita gente passa anos vivendo numa verdadeira montanha-russa espiritual: num dia acham que estão salvos, mas no dia seguinte, ao tropeçarem ou errarem, sentem que perderam tudo e que Deus está zangado. Afinal, a salvação depende do nosso desempenho diário ou existe uma segurança real que vem de Deus?",
+        "answer": "Essa é a grande angústia de tantos cristãos sinceros que ainda não entenderam a graça, Lívia! Mas a Bíblia tira todo esse peso dos nossos ombros. Vamos abrir juntos no Evangelho de João, capítulo 5, versículo 24. Lívia, faz a leitura desse texto pra gente, por favor. Com certeza. Diz assim em João 5, versículo 24: Quem ouve a minha palavra e crê naquele que me enviou tem a vida eterna, não entra em juízo, mas passou da morte para a vida. Note bem o tempo verbal que Jesus usa, Lívia: tem a vida eterna, não entra em juízo, mas já passou da morte para a vida. Não é algo que vai acontecer lá no futuro distante se a gente se esforçar bastante; é uma realidade presente! Quem crê de verdade já cruzou a fronteira da morte para a vida eterna."
+      },
+      {
+        "question": "Isso traz um alívio indescritível para a alma! Mas aí vem outra dúvida comum: e se a pessoa fraquejar ou o inimigo tentar nos afastar? Será que existe o risco de escaparmos das mãos de Deus?",
+        "answer": "Essa pergunta nos leva direto ao coração do Bom Pastor. Abra com a gente em João, capítulo 10, versículos 27 a 29. Lívia, lê pra gente ouvir essa promessa maravilhosa. Abrindo aqui em João 10, versículos 27 a 29: As minhas ovelhas ouvem a minha voz; eu as conheço, e elas me seguem. Eu lhes dou a vida eterna; jamais perecerão, e ninguém as arrebatará da minha mão. Meu Pai, que the deu, é maior do que todos; e ninguém pode arrebatar-las das mãos de meu Pai. Preste muita atenção nisso: Jesus diz que as ovelhas jamais perecerão e que ninguém pode arrebatá-las da mão dEle nem da mão do Pai. Você não está segurando a Deus com dedos cansados e trêmulos — é Deus quem segura você com mãos eternas e invencíveis!"
+      },
+      {
+        "question": "Glória a Deus por essa segurança! E para fechar com chave de ouro, o apóstolo Paulo fala com tanta firmeza sobre isso lá em Romanos. Como o apóstolo resume essa nossa posição em Cristo?",
+        "answer": "Vamos direto à fonte da carta aos Romanos, no capítulo 8, versículos 1 e 2, e depois pulando para os versículos 38 e 39. Lívia, por favor, leia esses textos na íntegra para o nosso ouvinte. Lendo Romanos 8, versículos 1 e 2: Agora, pois, já nenhuma condenação há para os que estão em Cristo Jesus, que não andam segundo a carne, mas segundo o Espírito. Porque a lei do Espírito da vida, em Cristo Jesus, me livrou da lei do pecado e da morte. E agora, lendo os versículos 38 e 39 do mesmo capítulo 8: Porque estou bem certo de que nem a morte, nem a vida, nem os anjos, nem os principados, nem as potestades, nem o presente, nem o futuro, nem a altura, nem a profundidade, nem qualquer outra criatura poderá nos separar do amor de Deus, que está em Cristo Jesus nosso Senhor. Que declaração gloriosa! Nenhuma condenação, nenhuma força criada, nenhum passado de erros, absolutamente nada neste mundo pode nos separar do amor de Deus em Cristo Jesus. Respire fundo e descanse nessa certeza maravilhosa hoje."
+      }
+    ]
   },
   {
     "lessonNumber": 26,
@@ -3986,7 +4419,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Quando você pensa na volta de Jesus hoje, sente mais temor ou alegria? Como Tito 2:13 renova a sua esperança?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_02.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, confesso que essa aula mexe muito comigo. Infelizmente, muita gente cresceu ouvindo falar da volta de Jesus em um tom de terror e pânico, como se Ele fosse um fiscal severo pronto para nos pegar no erro, quase fazendo a gente desejar que Ele demorasse mais um pouco. Mas a Bíblia diz algo totalmente diferente, não diz?",
+        "answer": "Estou com a Bíblia aberta aqui. Diz assim em Tito 2, versículos 11 a 14: Porque a graça de Deus se há manifestado, trazendo salvação a todos os homens, ensinando-nos que, negando a impiedade e as concupiscências mundanas, vivamos neste presente século sóbria, e justa, e piamente, aguardando a bem-aventurada esperança e o aparecimento da glória do nosso grande Deus e Salvador Jesus Cristo; o qual se deu a si mesmo por nós, para nos remir de toda a iniquidade, e purificar para si um povo seu especial, zeloso de boas obras. Veja que lindo, Lívia! O apóstolo Paulo não chama a volta de Jesus de um dia de pavor, mas de a \"bendita esperança\". A mesma graça que nos salvou no passado e nos transforma no presente é a que nos faz olhar para o horizonte com um sorriso no rosto, aguardando a manifestação da glória do nosso Salvador."
+      },
+      {
+        "question": "Isso muda completamente a nossa perspectiva de vida, Pedro. Mas e quanto à saudade que sentimos daqueles que já partiram crendo em Jesus? A volta de Deus traz alguma resposta consoladora para essa dor?",
+        "answer": "Traz o consolo mais profundo que o ser humano poderia receber. Vamos abrir em 1 Tessalonicenses, capítulo 4, versículos 13 a 18. Lívia, por favor, faça a leitura para os nossos ouvintes. Com certeza. Diz assim em 1 Tessalonicenses 4, versículos 13 a 18: Não queremos, porém, irmãos, que sejais ignorantes quanto aos que já dormem, para que não vos entristeçais, como os demais, que não têm esperança. Porque, se cremos que Jesus morreu e ressuscitou, assim também aos que em Jesus dormem Deus os tornará a trazer com ele. Dizemo-vos, pois, isto pela palavra do Senhor: que nós, os que andarmos vivos para a vinda do Senhor, não precederemos os que dormem. Porque o mesmo Senhor descerá do céu com alarido, e com voz de arcanjo, e com a trombeta de Deus; e os que morreram em Cristo ressuscitarão primeiro. Depois nós, os que andarmos vivos, seremos arrebatados juntamente com eles nas nuvens, a encontrar o reencontro com o Senhor nos ares, e assim estaremos sempre com o Senhor. Consolai-vos, pois, uns aos outros com estas palavras. Glória a Deus por essas palavras! Perceba, ouvinte: o apóstolo Paulo termina dizendo \"Consolai-vos, pois, uns aos outros com estas palavras!\". A promessa da ressurreição e do reencontro eterno com Jesus e com nossos entes queridos que partiram na fé não é para causar medo, mas para encher o nosso coração de um consolo que o mundo inteiro não pode tirar."
+      },
+      {
+        "question": "Isso é maravilhoso! Mas, às vezes, na nossa mente humana, podemos nos perguntar: será que o Jesus que vai voltar é o mesmo Jesus amoroso dos Evangelhos, ou será que Ele mudou?",
+        "answer": "Essa pergunta toca fundo no coração de quem tem dúvidas sobre o caráter de Deus. Vamos ler o que diz em Atos, capítulo 1, versículo 11. Lívia, lê pra gente."
+      },
+      {
+        "question": "Diz assim em Atos 1, versículo 11: Os quais lhes disseram: Homens galileus, por que estais olhando para o céu? Esse Jesus, que dentre vós foi recebido em cima no céu, há de vir assim como o vistes ir para o céu.",
+        "answer": "Amém! É exatamente o mesmo Jesus! O mesmo que abraçava as crianças, que curava os enfermos, que perdoava a mulher infortunada e que deu a Sua vida na cruz por amor a nós. Quem está em Cristo não espera um juiz desconhecido e irado, mas o Noivo, o Salvador, o Irmão mais velho que vem buscar a Sua família para morar com Ele para sempre. Perfeito, Lívia. E por causa dessa certeza gloriosa, a Igreja primitiva encerrava suas orações dizendo com profunda paz e alegria: \"Maranata — Ora, vem, Senhor Jesus!\". Essa mesma esperança serena é a que Deus quer colocar hoje no seu coração, trocando todo e qualquer temor do futuro pela confiança no Seu amor eterno."
+      }
+    ]
   },
   {
     "lessonNumber": 27,
@@ -4137,7 +4589,26 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Que consolo traz ao seu coração saber que a morte e o mal terão um fim definitivo no triunfo de Jesus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16)."
+    "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
+    "bannerImage": "/images/ide/aula_03.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, quando olhamos ao nosso redor e vemos tanta injustiça, dor, violência e despedidas neste mundo, é inevitável que o nosso coração clame e pergunte: será que o mal vai vencer para sempre? A história caminha para o caos ou existe uma esperança segura?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em 1 Coríntios 15, versículo 26: O último inimigo a ser destruído é a morte. Que declaração poderosa! A morte não foi criada por Deus para durar para sempre; ela entrou por causa do pecado, mas Cristo já venceu a morte na cruz e na Sua ressurreição, e o decreto final de Deus é que esse inimigo será totalmente aniquilado."
+      },
+      {
+        "question": "Pedro, isso significa então que o mal tem data de validade? Como a Bíblia descreve a forma como Deus vai lidar com toda a injustiça e opressão que feriram o mundo por tanto tempo?",
+        "answer": "Com certeza tem data de validade! Vamos continuar no mesmo capítulo de 1 Coríntios 15, agora lendo os versículos 54 a 57. Lívia, por favor, faça a leitura."
+      },
+      {
+        "question": "Diz assim em 1 Coríntios 15, versículos 54 a 57: E, quando este corpo corruptível se revestir da incorruptibilidade, e este corpo mortal se revestir da imortalidade, então se cumprirá a palavra que está escrita: Tragada foi a morte pela vitória. Onde está, ó morte, o teu aguilhão? Onde está, ó inferno, a tua vitória? Ora, o aguilhão da morte é o pecado, e a força do pecado é a lei. Mas graças a Deus, que nos dá a vitória por intermédio de nosso Senhor Jesus Cristo.",
+        "answer": "Louvado seja Deus! A justiça final de Deus não é um ato de crueldade arbitrária, mas a excelente notícia de que o mal, a opressão e a dor têm prazo de validade e nunca mais voltarão a ferir a criação de Deus."
+      },
+      {
+        "question": "E quanto àquele momento solene do julgamento final? Como nós podemos ter certeza de que estaremos seguros diante de Deus naquele dia?",
+        "answer": "Essa é a parte mais consoladora para todo aquele que confia em Jesus. Vamos abrir a Bíblia no livro de Apocalipse, capítulo 20, versículos 11 a 15. Lívia, leia pra gente na íntegra. Com certeza. Apocalipse 20, versículos 11 a 15 diz assim: E vi um grande trono branco, e o que estava assentado sobre ele, de cuja presença fugiu a terra e o céu; e não se achou lugar para eles. E vi os mortos, grandes e pequenos, que estavam diante de Deus, e abriram-se os livros; e abriu-se outro livro, que é o do livro da vida. E os mortos foram julgados pelas coisas que estavam escritas nos livros, segundo as suas obras. E deu o mar os mortos que nele havia; e a morte e o inferno deram os mortos que neles havia; e foram julgados cada um segundo as suas obras. E a morte e o inferno foram lançados no lago de fogo. Esta é a segunda morte. E Aquele que não foi achado escrito no livro da vida foi lançado no lago de fogo. Amém! Veja que detalhe cheio de paz para os salvos: o Livro da Vida do Cordeiro. Quem creu em Jesus, entregou a vida a Ele e foi transformado pela Sua graça tem o seu nome inscrito de forma irrevogável nesse livro. A justiça de Deus protege e acolhe os Seus filhos. Perfeito, Lívia. E o passo prático para hoje é: agradeça a Jesus porque nenhuma dor, injustiça ou luto desta terra terá a última palavra — a vitória final pertence a Ele. E se você sente no coração o desejo de entregar sua vida a esse Rei que venceu a morte, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está voltando para buscar Seus filhos amados com alegria e paz. A Bíblia nos convida de forma muito clara em Marcos, capítulo 16, versículos 15 e 16. Vamos ler juntos na íntegra: Amém. Se você crê de todo o coração, o batismo é o passo simples, livre e público de aliança com Jesus. Convidamos você a tocar agora mesmo no botão abaixo do seu Guia de Estudos para buscar uma igreja próxima de você no mapa, verificar a distância até a Igreja Marco Zero e pegar o contato pastoral. Que Deus abençoe grandemente a sua vida, e até a nossa próxima aula!"
+      }
+    ]
   },
   {
     "lessonNumber": 28,
@@ -4301,6 +4772,25 @@ export const IDE_LESSONS = [
     ],
     "reflectionPrompt": "Ao completar os 28 estudos de Gênesis ao Apocalipse, como você resume hoje o que Jesus significa para a sua Identidade, o seu Destino e a sua Eternidade?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
-    "appealBody": "Você percorreu toda a história da Graça de Gênesis ao Apocalipse! Não existe nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam. Creia de todo o coração e dê o passo público do batismo (Marcos 16:15–16), mergulhando nessa nova vida eterna!"
+    "appealBody": "Você percorreu toda a história da Graça de Gênesis ao Apocalipse! Não existe nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam. Creia de todo o coração e dê o passo público do batismo (Marcos 16:15–16), mergulhando nessa nova vida eterna!",
+    "bannerImage": "/images/ide/aula_04.jpg",
+    "questionsAndAnswers": [
+      {
+        "question": "Pedro, chegamos ao final do nosso Guia de Estudos e é impossível não lembrar de onde viemos. Na Aula 1, vimos o Éden perfeito onde Deus habitava com o homem. E agora, como a Bíblia conclui a história da humanidade? O que nos aguarda no final de tudo?",
+        "answer": "Estou com o texto aberto aqui. Diz assim em Apocalipse 21, versículos 1 a 3: E vi um novo céu e uma nova terra. Porque já o primeiro céu e a primeira terra passaram, e o mar já não existe. E eu, João, vi a santa cidade, a nova Jerusalém, que descia do céu de Deus, adereçada como uma noiva ataviada para o seu marido. E ouvi uma grande voz do céu, que dizia: Eis o tabernáculo de Deus com os homens, pois com eles habitará, e eles serão o seu povo, e o mesmo Deus estará com eles, e será o seu Deus. Olha que promessa maravilhosa! O propósito original do Éden se cumpre em plena eternidade. Deus não apenas visita o Seu povo; Ele habita para sempre conosco. A separação causada pelo pecado foi completamente destruída pela cruz de Cristo."
+      },
+      {
+        "question": "Isso me emociona muito, Pedro, porque hoje nós vivemos em um mundo cheio de perdas, luto e lágrimas. A Bíblia nos diz o que vai acontecer com todo esse sofrimento?",
+        "answer": "Sim, e a resposta é de uma ternura indescritível! Vamos ler o versículo 4 do mesmo capítulo 21 de Apocalipse. Lívia, por favor. Amém! O próprio Pai enxugará com Suas próprias mãos cada lágrima dos nossos olhos. A morte, o luto e a dor pertencem para sempre ao passado. As primeiras coisas passaram, e uma nova realidade de vida eterna e alegria inefundível começa."
+      },
+      {
+        "question": "Pedro, e sobre o governo deste mundo e o domínio de Jesus? Como o Apocalipse descreve o estabelecimento definitivo do Seu Reino?",
+        "answer": "Vamos ver o cântico triunfante registrado em Apocalipse, capítulo 11, versículo 15. Abra com a gente e acompanhe a leitura. Diz assim em Apocalipse 11:15: E o sétimo anjo tocou a sua trombeta, e houve no céu grandes vozes, que diziam: Os reinos do mundo vieram a ser de nosso Senhor e do seu Cristo, e ele reinará para todo o sempre. Aleluia! Todo sistema de opressão, injustiça e pecado deste mundo dec会の, e o Reino do nosso Senhor e do Seu Cristo se estabelece para sempre. Ele é o Rei que reina por toda a eternidade."
+      },
+      {
+        "question": "Para fecharmos este estudo com chave de ouro, o que mais a Palavra nos revela sobre a nossa comunhão com Deus na Nova Jerusalém?",
+        "answer": "Vamos ler em Apocalipse, capítulo 22, versículos 3 a 5. Essa é a cena mais linda que poderíamos imaginar. Veremos a face do nosso Rei face a face, sem nenhuma cortina, sem nenhuma culpa e sem nenhuma noite. Essa é a sua Identidade como filho amado, o seu Destino caminhando em graça com Cristo, e a sua Eternidade habitando para sempre com Ele. Você percorreu toda a história da Graça de Gênesis ao Apocalipse! E ao concluir esta aula, o seu Certificado IDE do aplicativo 1Convite está liberado para você celebrar. Não existe nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam para nos dar acesso a essa vida eterna."
+      }
+    ]
   }
 ];

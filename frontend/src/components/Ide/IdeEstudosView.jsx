@@ -7,7 +7,7 @@ import ideStudioImg from '../../assets/ide/ide-podcast-studio.jpg';
 const MARCO_ZERO = {
   id: 'marco_zero_iasd_parque_claudia',
   name: 'IASD Parque Cláudia (Marco Zero)',
-  denominationOrNote: 'Marco Zero do Projeto 1Convite / I.D.E. • Comunidade Cristã',
+  denominationOrNote: 'Marco Zero do Projeto 1Convite / IDE • Comunidade Cristã',
   address: 'Parque Cláudia — Zona Sul de São Paulo, SP',
   lat: -23.7042,
   lon: -46.7628,
@@ -118,7 +118,6 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
   const [selectedBlock, setSelectedBlock] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeLessonNum, setActiveLessonNum] = useState(null);
-  const [showScript, setShowScript] = useState(true);
 
   // Podcast Audio Player state
   const audioRef = useRef(null);
@@ -128,7 +127,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
   const [duration, setDuration] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
 
-  // Baptism / GPS Locator state
+  // Baptism / GPS Locator state (aba separada)
   const [geoLoading, setGeoLoading] = useState(false);
   const [geoError, setGeoError] = useState('');
   const [userCoords, setUserCoords] = useState(null);
@@ -160,8 +159,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
   }, [playbackSpeed]);
 
   const completedCount = useMemo(
-    () =>
-      IDE_LESSONS.filter((l) => progressMap[l.lessonNumber]?.status === 'concluida').length,
+    () => IDE_LESSONS.filter((l) => progressMap[l.lessonNumber]?.status === 'concluida').length,
     [progressMap]
   );
 
@@ -290,40 +288,203 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
 
   const handlePrintLesson = (lesson) => {
     const notes = progressMap[lesson.lessonNumber]?.reflectionText || '';
-    const win = window.open('', '_blank', 'width=820,height=920');
+    const qaList = Array.isArray(lesson.questionsAndAnswers) ? lesson.questionsAndAnswers : [];
+    const bannerSrc = lesson.bannerImage ? `${window.location.origin}${lesson.bannerImage}` : '';
+    const logoSrc = ideLogo;
+
+    const win = window.open('', '_blank', 'width=900,height=1040');
     if (!win) return;
     win.document.write(`
-      <html>
+      <!doctype html>
+      <html lang="pt-BR">
         <head>
-          <title>I.D.E. Boas Notícias • Aula ${lesson.lessonNumber}</title>
+          <meta charset="utf-8" />
+          <title>Guia de Estudos IDE Boas Notícias • Aula ${lesson.lessonNumber}</title>
           <style>
-            body { font-family: Georgia, serif; padding: 32px; color: #111827; line-height: 1.6; max-width: 760px; margin: 0 auto; }
-            h1 { color: #92400e; margin-bottom: 4px; }
-            .sub { color: #4b5563; font-size: 14px; margin-bottom: 20px; }
-            .box { background: #fef3c7; border-left: 4px solid #d97706; padding: 12px 16px; margin: 16px 0; }
-            h2 { color: #1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px; margin-top: 24px; }
+            @page { size: A4; margin: 16mm 15mm; }
+            * { box-sizing: border-box; }
+            body {
+              font-family: Georgia, 'Times New Roman', serif;
+              color: #111827;
+              background: #ffffff;
+              line-height: 1.65;
+              font-size: 12.5pt;
+              margin: 0;
+              padding: 0;
+            }
+            .doc-wrap { max-width: 100%; margin: 0 auto; }
+            .doc-brand {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              border-bottom: 2px solid #d97706;
+              padding-bottom: 10px;
+              margin-bottom: 14px;
+            }
+            .doc-brand img { height: 48px; border-radius: 8px; }
+            .doc-brand-meta { text-align: right; font-family: Arial, sans-serif; font-size: 10pt; color: #4b5563; }
+            .doc-hero-img {
+              width: 100%;
+              height: 210px;
+              object-fit: cover;
+              border-radius: 12px;
+              margin-bottom: 16px;
+              border: 1px solid #e5e7eb;
+            }
+            .block-kicker {
+              font-family: Arial, sans-serif;
+              font-size: 9.5pt;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              color: #b45309;
+              margin-bottom: 4px;
+            }
+            h1 {
+              font-size: 20pt;
+              color: #111827;
+              margin: 0 0 8px;
+              line-height: 1.25;
+            }
+            .summary { font-size: 11.5pt; color: #374151; margin: 0 0 12px; }
+            .refs {
+              font-family: Arial, sans-serif;
+              font-size: 10.5pt;
+              background: #fffbeb;
+              border: 1px solid #fcd34d;
+              padding: 9px 13px;
+              border-radius: 8px;
+              margin-bottom: 18px;
+            }
+            h2 {
+              font-family: Arial, sans-serif;
+              font-size: 13pt;
+              color: #92400e;
+              border-bottom: 1px solid #e5e7eb;
+              padding-bottom: 5px;
+              margin: 22px 0 12px;
+              break-after: avoid;
+            }
+            .list-item {
+              margin-bottom: 13px;
+              padding: 11px 14px;
+              background: #f9fafb;
+              border: 1px solid #e5e7eb;
+              border-radius: 8px;
+              break-inside: avoid;
+            }
+            .list-item strong { display: block; margin-bottom: 4px; color: #111827; }
+            .qa-item {
+              margin-bottom: 14px;
+              padding: 12px 15px;
+              border: 1px solid #e5e7eb;
+              border-left: 4px solid #b91c1c;
+              border-radius: 8px;
+              background: #fff;
+              break-inside: avoid;
+            }
+            .qa-q {
+              font-weight: 700;
+              color: #111827;
+              margin-bottom: 6px;
+            }
+            .qa-a {
+              color: #b91c1c;
+              font-weight: 600;
+              margin: 0;
+            }
+            .verse-box {
+              background: #fffbeb;
+              border-left: 4px solid #d97706;
+              padding: 10px 14px;
+              margin-bottom: 10px;
+              border-radius: 0 8px 8px 0;
+              break-inside: avoid;
+            }
+            .notes-box {
+              border: 1.5px dashed #9ca3af;
+              border-radius: 10px;
+              padding: 14px;
+              min-height: 115px;
+              background: #fcfcfd;
+              break-inside: avoid;
+            }
+            .appeal-box {
+              margin-top: 20px;
+              background: #fef3c7;
+              border: 1.5px solid #d97706;
+              border-radius: 10px;
+              padding: 14px 16px;
+              break-inside: avoid;
+            }
           </style>
         </head>
         <body>
-          <h1>I.D.E. Boas Notícias — Aula ${lesson.lessonNumber}</h1>
-          <div class="sub">${lesson.blockTitle}</div>
-          <h2>${lesson.title}</h2>
-          <p><strong>Textos Bíblicos:</strong> ${lesson.bibleReferences.join(' • ')}</p>
-          <p>${lesson.overview}</p>
-          <h2>Pilares do Estudo</h2>
-          ${lesson.pillars.map((p) => `<p><strong>${p.title}:</strong> ${p.body}</p>`).join('')}
-          <h2>Versículos para Meditação</h2>
-          ${lesson.meditationVerses.map((v) => `<div class="box">“${v.text}”<br/><strong>— ${v.reference}</strong></div>`).join('')}
-          <h2>Passo Prático</h2>
-          <p>${lesson.practicalStep}</p>
-          <h2>Minhas Anotações</h2>
-          <p>${notes ? notes.replace(/\n/g, '<br/>') : '____________________________________________________'}</p>
-          <div class="box"><strong>Apelo:</strong> ${lesson.appealHeadline}<br/>${lesson.appealBody}</div>
+          <div class="doc-wrap">
+            <div class="doc-brand">
+              <img src="${logoSrc}" alt="IDE Boas Notícias" />
+              <div class="doc-brand-meta">
+                <strong>Guia de Estudos Oficial • 1Convite</strong><br/>
+                Aula ${lesson.lessonNumber} de ${IDE_LESSONS.length}
+              </div>
+            </div>
+
+            ${bannerSrc ? `<img src="${bannerSrc}" alt="${lesson.title}" class="doc-hero-img" />` : ''}
+
+            <div class="block-kicker">Bloco ${lesson.blockNumber} • ${lesson.blockTitle}</div>
+            <h1>${lesson.title}</h1>
+            <p class="summary">${lesson.summary}</p>
+            <div class="refs"><strong>Textos Bíblicos para Leitura:</strong> ${lesson.bibleReferences.join(' • ')}</div>
+
+            <h2>1. Visão Geral do Estudo</h2>
+            <p>${lesson.overview}</p>
+
+            <h2>2. Pilares da Palavra</h2>
+            ${lesson.pillars
+              .map(
+                (p, idx) =>
+                  `<div class="list-item"><strong>${idx + 1}. ${p.title}</strong><span>${p.body}</span></div>`
+              )
+              .join('')}
+
+            <h2>3. Perguntas & Respostas do Estudo</h2>
+            ${qaList
+              .map(
+                (qa, idx) =>
+                  `<div class="qa-item"><div class="qa-q">Pergunta ${idx + 1}: ${qa.question}</div><p class="qa-a">Resposta: ${qa.answer}</p></div>`
+              )
+              .join('')}
+
+            <h2>4. Versículos para Meditação</h2>
+            ${lesson.meditationVerses
+              .map(
+                (v) =>
+                  `<div class="verse-box">“${v.text}”<br/><strong>— ${v.reference}</strong></div>`
+              )
+              .join('')}
+
+            <h2>5. Passo Prático</h2>
+            <div class="list-item">${lesson.practicalStep}</div>
+
+            <h2>6. Minhas Anotações Pessoais</h2>
+            <p style="font-size:10.5pt;color:#4b5563;margin-top:0;"><em>${lesson.reflectionPrompt}</em></p>
+            <div class="notes-box">${
+              notes
+                ? notes.replace(/\n/g, '<br/>')
+                : '<br/><br/><br/><br/>'
+            }</div>
+
+            <div class="appeal-box">
+              <strong style="color:#92400e;">Chamado de Fé & Batismo (Marcos 16:15–16):</strong><br/>
+              <strong>${lesson.appealHeadline}</strong><br/>
+              <span>${lesson.appealBody}</span>
+            </div>
+          </div>
         </body>
       </html>
     `);
     win.document.close();
-    win.print();
+    setTimeout(() => win.print(), 300);
   };
 
   // ── TELA DE DETALHE DA AULA ─────────────────────────────────────────────
@@ -331,6 +492,9 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
     const p = progressMap[activeLesson.lessonNumber] || {};
     const selectedQuiz = Array.isArray(p.selectedQuizAnswers) ? p.selectedQuizAnswers : [-1, -1, -1];
     const isCompleted = p.status === 'concluida';
+    const qaList = Array.isArray(activeLesson.questionsAndAnswers)
+      ? activeLesson.questionsAndAnswers
+      : [];
 
     return (
       <div className="ide-container">
@@ -343,8 +507,22 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           </span>
         </div>
 
+        {/* Imagem Horizontal Temática no Topo do Estudo */}
+        <div className="ide-lesson-hero-image-wrap">
+          <img
+            src={activeLesson.bannerImage || ideStudioImg}
+            alt={activeLesson.title}
+            className="ide-lesson-hero-image"
+            onError={(e) => {
+              e.currentTarget.src = ideStudioImg;
+            }}
+          />
+        </div>
+
         <div className="ide-lesson-header">
-          <span className="ide-block-tag">Bloco {activeLesson.blockNumber} • {activeLesson.blockTitle}</span>
+          <span className="ide-block-tag">
+            Bloco {activeLesson.blockNumber} • {activeLesson.blockTitle}
+          </span>
           <h1>{activeLesson.title}</h1>
           <p>{activeLesson.summary}</p>
           <div className="ide-refs-row">
@@ -359,16 +537,16 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           </div>
         </div>
 
-        {/* Player de Podcast com Pedro & Lívia */}
+        {/* Player de Podcast com Pedro & Lívia (sem roteiro escrito) */}
         <section className="ide-podcast-card">
           <div className="ide-studio-banner">
-            <img src={ideStudioImg} alt="Podcast I.D.E. Boas Notícias — Lívia e Pedro" className="ide-studio-img" />
+            <img src={ideStudioImg} alt="Podcast IDE Boas Notícias — Lívia e Pedro" className="ide-studio-img" />
             <div className="ide-studio-overlay">
               <div className="ide-hosts-badges">
-                <span className="ide-host-pill">🎙️ Lívia • Conexões Práticas & Graça</span>
-                <span className="ide-host-pill">🎙️ Pedro • Guia Histórico & Teológico</span>
+                <span className="ide-host-pill">🎙️ Lívia • Perguntas & Leitura</span>
+                <span className="ide-host-pill">🎙️ Pedro • Instrutor Bíblico</span>
               </div>
-              <h3>Podcast I.D.E. — Episódio {activeLesson.lessonNumber}</h3>
+              <h3>Podcast IDE Boas Notícias — Episódio {activeLesson.lessonNumber}</h3>
             </div>
           </div>
 
@@ -431,58 +609,54 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
             </div>
           ) : (
             <div className="ide-audio-pending">
-              <span>🎧 Áudio de estúdio (Pedro & Lívia) preparado para publicação</span>
-              <small>Enquanto os MP3s de estúdio são gerados, acompanhe o diálogo completo abaixo.</small>
+              <span>🎧 Episódio {activeLesson.lessonNumber} em preparação final de áudio</span>
+              <small>Acompanhe todo o Guia de Estudos completo logo abaixo e baixe o PDF.</small>
             </div>
           )}
 
           <div className="ide-script-toggle-row">
-            <button type="button" className="ide-script-toggle" onClick={() => setShowScript((v) => !v)}>
-              {showScript ? 'Ocultar Roteiro do Episódio ▲' : 'Ler Roteiro Completo (Pedro & Lívia) ▼'}
-            </button>
+            <span className="ide-guide-tip">
+              📖 Pegue sua Bíblia física (ou abra no app) e faça suas anotações abaixo.
+            </span>
             <button type="button" className="ide-pdf-btn" onClick={() => handlePrintLesson(activeLesson)}>
-              📄 Baixar / Imprimir Guia
+              📄 Baixar Guia em PDF
             </button>
           </div>
-
-          {showScript && (
-            <div className="ide-script-box">
-              <div className="ide-dialogue-line is-welcome">
-                <strong>Pedro & Lívia (Boas-vindas):</strong>
-                <p>
-                  “Seja bem-vindo ao I.D.E. Boas Notícias! Pegue sua Bíblia física (ou abra aqui no App 1Convite) e tenha em mãos seu caderno e caneta — ou use o campo de anotações logo abaixo no Guia de Estudos para registrar tudo o que Deus falar ao seu coração hoje.”
-                </p>
-              </div>
-              {activeLesson.podcastScript.map((line, idx) => (
-                <div
-                  key={idx}
-                  className={`ide-dialogue-line ${line.speaker === 'Pedro' ? 'is-pedro' : 'is-livia'}`}
-                >
-                  <strong>{line.speaker}:</strong>
-                  <p>{line.text}</p>
-                </div>
-              ))}
-            </div>
-          )}
         </section>
 
-        {/* Guia de Estudo */}
+        {/* Guia de Estudo em Lista Única Vertical */}
         <section className="ide-study-section">
-          <h2>Visão Geral do Estudo</h2>
+          <h2>1. Visão Geral do Estudo</h2>
           <p className="ide-overview-text">{activeLesson.overview}</p>
 
-          <h3>Pilares da Palavra</h3>
-          <div className="ide-pillars-grid">
+          <h2>2. Pilares da Palavra</h2>
+          <div className="ide-pillars-list">
             {activeLesson.pillars.map((pil, i) => (
-              <div key={i} className="ide-pillar-card">
-                <span className="ide-pillar-num">{i + 1}</span>
-                <h4>{pil.title}</h4>
+              <div key={i} className="ide-pillar-item">
+                <div className="ide-pillar-head">
+                  <span className="ide-pillar-num">{i + 1}</span>
+                  <h4>{pil.title}</h4>
+                </div>
                 <p>{pil.body}</p>
               </div>
             ))}
           </div>
 
-          <h3>Versículos para Meditação</h3>
+          <h2>3. Perguntas & Respostas do Estudo</h2>
+          <div className="ide-qa-list">
+            {qaList.map((qa, idx) => (
+              <div key={idx} className="ide-qa-item">
+                <p className="ide-qa-question">
+                  <strong>Pergunta {idx + 1}:</strong> {qa.question}
+                </p>
+                <p className="ide-qa-answer">
+                  <strong>Resposta:</strong> {qa.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <h2>4. Versículos para Meditação</h2>
           <div className="ide-verses-list">
             {activeLesson.meditationVerses.map((v, i) => (
               <blockquote key={i} className="ide-verse-quote">
@@ -492,8 +666,8 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
             ))}
           </div>
 
+          <h2>5. Passo Prático</h2>
           <div className="ide-practical-box">
-            <h4>Passo Prático de Hoje</h4>
             <p>{activeLesson.practicalStep}</p>
           </div>
         </section>
@@ -558,23 +732,12 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           })}
         </section>
 
-        {/* Apelo ao Batismo + Conclusão */}
+        {/* Apelo ao Batismo (sem GPS/mapa aqui — GPS fica na aba separada) */}
         <section className="ide-appeal-card">
           <span className="ide-appeal-badge">Decisão & Batismo • Marcos 16:15–16</span>
           <h3>{activeLesson.appealHeadline}</h3>
           <p>{activeLesson.appealBody}</p>
           <div className="ide-appeal-actions">
-            <button
-              type="button"
-              className="ide-btn-gold"
-              onClick={() => {
-                setActiveLessonNum(null);
-                setSubTab('baptism');
-                handleLocateChurches();
-              }}
-            >
-              📍 Buscar Igreja & Batismo Perto de Mim →
-            </button>
             <button
               type="button"
               className={`ide-btn-complete ${isCompleted ? 'is-done' : ''}`}
@@ -586,13 +749,20 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
             >
               {isCompleted ? '✓ Aula Concluída' : 'Marcar Aula como Concluída'}
             </button>
+            <button
+              type="button"
+              className="ide-pdf-btn"
+              onClick={() => handlePrintLesson(activeLesson)}
+            >
+              📄 Baixar Guia em PDF
+            </button>
           </div>
         </section>
       </div>
     );
   }
 
-  // ── TELA PRINCIPAL DO MÓDULO I.D.E. ─────────────────────────────────────
+  // ── TELA PRINCIPAL DO MÓDULO IDE ────────────────────────────────────────
   return (
     <div className="ide-container">
       <div className="ide-top-bar">
@@ -606,12 +776,12 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
         </span>
       </div>
 
-      {/* Hero I.D.E. Boas Notícias */}
+      {/* Hero IDE Boas Notícias */}
       <section className="ide-hero-banner">
         <div className="ide-hero-left">
-          <img src={ideLogo} alt="I.D.E. Boas Notícias" className="ide-hero-logo" />
+          <img src={ideLogo} alt="IDE Boas Notícias" className="ide-hero-logo" />
           <p className="ide-hero-desc">
-            Estudo bíblico completo de <strong>Gênesis ao Apocalipse em 28 aulas</strong> com Podcast em dupla (<strong>Pedro & Lívia</strong>), Guia de Anotações, Quiz e Localizador de Batismo.
+            Estudo bíblico completo de <strong>Gênesis ao Apocalipse em 28 aulas</strong> com Podcast em dupla (<strong>Pedro & Lívia</strong>), Guia de Estudos em PDF, Anotações, Quiz e Certificado.
           </p>
           <div className="ide-progress-bar-bg">
             <div
@@ -621,7 +791,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           </div>
         </div>
         <div className="ide-hero-right">
-          <img src={ideStudioImg} alt="Pedro e Lívia no Podcast I.D.E." className="ide-hero-studio" />
+          <img src={ideStudioImg} alt="Pedro e Lívia no Podcast IDE" className="ide-hero-studio" />
         </div>
       </section>
 
@@ -686,6 +856,14 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
+                  {lesson.bannerImage && (
+                    <img
+                      src={lesson.bannerImage}
+                      alt={lesson.title}
+                      className="ide-lesson-card-thumb"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="ide-lesson-card-top">
                     <span className="ide-num-badge">Aula {lesson.lessonNumber}</span>
                     <span className={`ide-status-tag ${st}`}>
@@ -732,7 +910,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
         </div>
       )}
 
-      {/* ABA 3: IGREJAS & BATISMO (GPS + MAPA + MARCO ZERO) */}
+      {/* ABA 3: IGREJAS & BATISMO (ABA SEPARADA DEDICADA) */}
       {subTab === 'baptism' && (
         <div className="ide-baptism-wrap">
           <div className="ide-baptism-hero">
@@ -817,16 +995,16 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
       {subTab === 'certificate' && (
         <div className="ide-cert-wrap">
           <div className="ide-cert-card">
-            <img src={ideLogo} alt="I.D.E. Boas Notícias" className="ide-cert-logo" />
+            <img src={ideLogo} alt="IDE Boas Notícias" className="ide-cert-logo" />
             <span className="ide-cert-kicker">CERTIFICADO DE JORNADA BÍBLICA</span>
             <h2>{userName || 'Membro 1Convite'}</h2>
             <p>
               {completedCount === IDE_LESSONS.length
-                ? 'Concluiu com êxito todas as 28 aulas do curso I.D.E. — Boas Notícias (de Gênesis ao Apocalipse), compreendendo Identidade, Destino e Eternidade em Cristo Jesus.'
+                ? 'Concluiu com êxito todas as 28 aulas do curso IDE — Boas Notícias (de Gênesis ao Apocalipse), compreendendo Identidade, Destino e Eternidade em Cristo Jesus.'
                 : `Você já concluiu ${completedCount} de ${IDE_LESSONS.length} aulas. Conclua toda a trilha para selar o seu certificado oficial!`}
             </p>
             <div className="ide-cert-footer">
-              <span>1Convite • I.D.E. Boas Notícias</span>
+              <span>1Convite • IDE Boas Notícias</span>
               <span>Progresso: {Math.round((completedCount / IDE_LESSONS.length) * 100)}%</span>
             </div>
             {completedCount > 0 && (

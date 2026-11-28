@@ -1,5 +1,8 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   IDE BOAS NOTÍCIAS — TEMA ESCURO (PADRÃO) & MODO CLARO AUTOMÁTICO
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .ide-container {
-  max-width: 1080px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 20px 16px 48px;
   color: #f4f4f5;
@@ -157,7 +160,7 @@
   background: #111521;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   color: #f4f4f5;
   cursor: pointer;
   display: flex;
@@ -173,6 +176,14 @@
 
 .ide-lesson-card.is-done {
   border-color: rgba(16, 185, 129, 0.4);
+}
+
+.ide-lesson-card-thumb {
+  width: 100%;
+  height: 132px;
+  object-fit: cover;
+  border-radius: 11px;
+  margin-bottom: 2px;
 }
 
 .ide-lesson-card-top {
@@ -227,6 +238,22 @@
   font-size: 0.74rem;
   color: #71717a;
   font-weight: 600;
+}
+
+/* Imagem Horizontal no Topo do Estudo */
+.ide-lesson-hero-image-wrap {
+  width: 100%;
+  margin-bottom: 16px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.ide-lesson-hero-image {
+  width: 100%;
+  max-height: 310px;
+  object-fit: cover;
+  display: block;
 }
 
 /* Detalhe da Aula */
@@ -291,7 +318,7 @@
 
 .ide-studio-img {
   width: 100%;
-  max-height: 300px;
+  max-height: 280px;
   object-fit: cover;
   display: block;
 }
@@ -301,6 +328,7 @@
   inset: auto 0 0 0;
   padding: 18px 20px;
   background: linear-gradient(180deg, transparent 0%, rgba(7, 10, 16, 0.94) 100%);
+  color: #ffffff;
 }
 
 .ide-hosts-badges {
@@ -323,6 +351,7 @@
 .ide-studio-overlay h3 {
   margin: 0;
   font-size: 1.1rem;
+  color: #ffffff;
 }
 
 .ide-player-controls {
@@ -421,100 +450,82 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   gap: 10px;
   padding: 12px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.ide-script-toggle,
+.ide-guide-tip {
+  font-size: 0.82rem;
+  color: #d4d4d8;
+}
+
 .ide-pdf-btn {
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
-  color: #e4e4e7;
-  font-size: 0.8rem;
-  font-weight: 600;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  background: rgba(212, 175, 55, 0.14);
+  color: #fde68a;
+  font-size: 0.82rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.ide-script-box {
-  padding: 16px 20px;
-  max-height: 420px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.ide-dialogue-line {
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 3px solid #71717a;
-}
-
-.ide-dialogue-line.is-welcome {
-  border-left-color: #fbbf24;
-  background: rgba(212, 175, 55, 0.08);
-}
-
-.ide-dialogue-line.is-pedro {
-  border-left-color: #38bdf8;
-}
-
-.ide-dialogue-line.is-livia {
-  border-left-color: #f472b6;
-}
-
-.ide-dialogue-line strong {
-  display: block;
-  font-size: 0.78rem;
-  margin-bottom: 4px;
-  color: #fde68a;
-}
-
-.ide-dialogue-line p {
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: #e4e4e7;
-}
-
+/* Guia de Estudos em Lista Única Vertical */
 .ide-study-section,
 .ide-notes-section,
 .ide-quiz-section {
   background: #111521;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  padding: 22px;
+  padding: 24px;
   margin-bottom: 18px;
+}
+
+.ide-study-section h2 {
+  font-size: 1.15rem;
+  color: #fbbf24;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 6px;
+  margin: 22px 0 12px;
+}
+
+.ide-study-section h2:first-child {
+  margin-top: 0;
 }
 
 .ide-overview-text {
-  color: #d4d4d8;
-  line-height: 1.6;
+  color: #e4e4e7;
+  line-height: 1.65;
+  font-size: 0.95rem;
 }
 
-.ide-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+.ide-pillars-list {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
-.ide-pillar-card {
+.ide-pillar-item {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  padding: 14px;
+  padding: 14px 16px;
+}
+
+.ide-pillar-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
 .ide-pillar-num {
   display: inline-flex;
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
@@ -522,19 +533,48 @@
   color: #fbbf24;
   font-size: 0.76rem;
   font-weight: 800;
-  margin-bottom: 6px;
 }
 
-.ide-pillar-card h4 {
-  margin: 0 0 6px;
-  font-size: 0.94rem;
-}
-
-.ide-pillar-card p {
+.ide-pillar-item h4 {
   margin: 0;
-  font-size: 0.82rem;
-  color: #a1a1aa;
-  line-height: 1.45;
+  font-size: 0.96rem;
+}
+
+.ide-pillar-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #d4d4d8;
+  line-height: 1.55;
+}
+
+/* Perguntas e Respostas em Vermelho */
+.ide-qa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ide-qa-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.ide-qa-question {
+  margin: 0 0 8px;
+  font-size: 0.94rem;
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+.ide-qa-answer {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #f87171;
+  line-height: 1.58;
+  font-weight: 500;
 }
 
 .ide-verse-quote {
@@ -551,23 +591,22 @@
 }
 
 .ide-verse-quote cite {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: #fbbf24;
   font-style: normal;
   font-weight: 700;
 }
 
 .ide-practical-box {
-  margin-top: 14px;
   padding: 14px 16px;
   border-radius: 12px;
   background: rgba(16, 185, 129, 0.09);
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.ide-practical-box h4 {
-  margin: 0 0 6px;
-  color: #34d399;
+.ide-practical-box p {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .ide-notes-prompt {
@@ -613,7 +652,7 @@
   background: rgba(255, 255, 255, 0.04);
   color: #e4e4e7;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
 }
 
 .ide-quiz-opt.is-correct {
@@ -630,7 +669,7 @@
 
 .ide-quiz-feedback {
   margin-top: 8px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: #d4d4d8;
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.04);
@@ -858,6 +897,179 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.82rem;
   color: #a1a1aa;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MODO CLARO GLOBAL (body.light-mode / :root:not(.dark-mode))
+   ═══════════════════════════════════════════════════════════════════════════════ */
+body.light-mode .ide-container,
+:root:not(.dark-mode) .ide-container {
+  color: #111827;
+}
+
+body.light-mode .ide-back-btn,
+:root:not(.dark-mode) .ide-back-btn {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+body.light-mode .ide-hero-banner,
+:root:not(.dark-mode) .ide-hero-banner {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border-color: #f59e0b;
+}
+
+body.light-mode .ide-hero-desc,
+:root:not(.dark-mode) .ide-hero-desc {
+  color: #374151;
+}
+
+body.light-mode .ide-subtabs button,
+:root:not(.dark-mode) .ide-subtabs button {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #4b5563;
+}
+
+body.light-mode .ide-subtabs button.active,
+:root:not(.dark-mode) .ide-subtabs button.active {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+body.light-mode .ide-search-input,
+:root:not(.dark-mode) .ide-search-input {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+body.light-mode .ide-block-chips button,
+:root:not(.dark-mode) .ide-block-chips button {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+body.light-mode .ide-block-chips button.active,
+:root:not(.dark-mode) .ide-block-chips button.active {
+  background: #fef3c7;
+  border-color: #d97706;
+  color: #92400e;
+}
+
+body.light-mode .ide-lesson-card,
+body.light-mode .ide-lesson-header,
+body.light-mode .ide-study-section,
+body.light-mode .ide-notes-section,
+body.light-mode .ide-quiz-section,
+body.light-mode .ide-journal-card,
+body.light-mode .ide-baptism-hero,
+body.light-mode .ide-church-card,
+body.light-mode .ide-map-panel,
+body.light-mode .ide-cert-card,
+:root:not(.dark-mode) .ide-lesson-card,
+:root:not(.dark-mode) .ide-lesson-header,
+:root:not(.dark-mode) .ide-study-section,
+:root:not(.dark-mode) .ide-notes-section,
+:root:not(.dark-mode) .ide-quiz-section,
+:root:not(.dark-mode) .ide-journal-card,
+:root:not(.dark-mode) .ide-baptism-hero,
+:root:not(.dark-mode) .ide-church-card,
+:root:not(.dark-mode) .ide-map-panel,
+:root:not(.dark-mode) .ide-cert-card {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  color: #111827;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+}
+
+body.light-mode .ide-podcast-card,
+:root:not(.dark-mode) .ide-podcast-card {
+  background: #ffffff;
+  border-color: #f59e0b;
+}
+
+body.light-mode .ide-ctrl-btn,
+body.light-mode .ide-speed-btn,
+body.light-mode .ide-ref-chip,
+:root:not(.dark-mode) .ide-ctrl-btn,
+:root:not(.dark-mode) .ide-speed-btn,
+:root:not(.dark-mode) .ide-ref-chip {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #1f2937;
+}
+
+body.light-mode .ide-guide-tip,
+body.light-mode .ide-overview-text,
+body.light-mode .ide-pillar-item p,
+body.light-mode .ide-lesson-card p,
+body.light-mode .ide-church-card p,
+:root:not(.dark-mode) .ide-guide-tip,
+:root:not(.dark-mode) .ide-overview-text,
+:root:not(.dark-mode) .ide-pillar-item p,
+:root:not(.dark-mode) .ide-lesson-card p,
+:root:not(.dark-mode) .ide-church-card p {
+  color: #374151;
+}
+
+body.light-mode .ide-pdf-btn,
+:root:not(.dark-mode) .ide-pdf-btn {
+  background: #fef3c7;
+  border-color: #d97706;
+  color: #92400e;
+}
+
+body.light-mode .ide-study-section h2,
+:root:not(.dark-mode) .ide-study-section h2 {
+  color: #b45309;
+  border-bottom-color: #e5e7eb;
+}
+
+body.light-mode .ide-pillar-item,
+body.light-mode .ide-qa-item,
+:root:not(.dark-mode) .ide-pillar-item,
+:root:not(.dark-mode) .ide-qa-item {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+body.light-mode .ide-qa-item,
+:root:not(.dark-mode) .ide-qa-item {
+  border-left-color: #dc2626;
+}
+
+body.light-mode .ide-qa-question,
+:root:not(.dark-mode) .ide-qa-question {
+  color: #111827;
+}
+
+body.light-mode .ide-qa-answer,
+:root:not(.dark-mode) .ide-qa-answer {
+  color: #b91c1c;
+}
+
+body.light-mode .ide-notes-textarea,
+:root:not(.dark-mode) .ide-notes-textarea {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+body.light-mode .ide-quiz-opt,
+:root:not(.dark-mode) .ide-quiz-opt {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+body.light-mode .ide-quiz-feedback,
+:root:not(.dark-mode) .ide-quiz-feedback {
+  background: #f3f4f6;
+  color: #1f2937;
 }
 
 @media (max-width: 820px) {
