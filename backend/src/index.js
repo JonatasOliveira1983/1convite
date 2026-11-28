@@ -3659,69 +3659,91 @@ app.get('/api/v1/igrejas/proximas', async (req, res) => {
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
       return res.json({
         success: false,
-        message: 'Não foi possível localizar esse endereço ou CEP. Tente informar cidade e estado ou usar o GPS.',
+        message:
+          cepRaw.length === 8
+            ? `CEP ${cepRaw.slice(0, 5)}-${cepRaw.slice(5)} não encontrado nos Correios. Confira os dígitos ou digite sua Cidade/Bairro.`
+            : 'Não foi possível localizar esse endereço. Digite um CEP válido, Cidade/Bairro ou use o GPS.',
         marcoZero: MARCO_ZERO_CHURCH,
       });
     }
 
     const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${radiusKm}`;
     const cached = churchCache.get(cacheKey);
-    let rawChurches;
+    let rawChurches = [];
 
     if (cached && Date.now() - cached.ts < 15 * 60 * 1000) {
       rawChurches = cached.data;
     } else {
       const radiusMeters = radiusKm * 1000;
-      const overpassQuery = `[out:json][timeout:14];(node["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon});way["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon}););out center 45;`;
-      const overResp = await fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        body: overpassQuery,
-      });
-      const overData = await overResp.json();
-      const elements = Array.isArray(overData?.elements) ? overData.elements : [];
-      rawChurches = elements
-        .map((el, idx) => {
-          const cLat = el.lat ?? el.center?.lat;
-          const cLon = el.lon ?? el.center?.lon;
-          if (cLat == null || cLon == null) return null;
-          const tags = el.tags || {};
-          const name = tags.name || 'Comunidade Cristã Local';
-          const denom = String(tags.denomination || '').toLowerCase();
-          const nameLower = name.toLowerCase();
-          const isAdventist =
-            denom.includes('adventist') ||
-            nameLower.includes('adventista') ||
-            nameLower.includes('iasd');
-          const addrParts = [
-            tags['addr:street'],
-            tags['addr:housenumber'],
-            tags['addr:suburb'],
-            tags['addr:city'],
-          ].filter(Boolean);
-          const address = addrParts.length ? addrParts.join(', ') : 'Endereço aproximado no mapa';
-          return {
-            id: `osm_${el.id || idx}`,
-            name,
-            denominationOrNote: isAdventist
-              ? 'Igreja Adventista do Sétimo Dia'
-              : tags.denomination
-                ? `Comunidade Cristã • ${tags.denomination}`
-                : 'Igreja Cristã Local',
-            address,
-            lat: cLat,
-            lon: cLon,
-            nextBaptismInfo: isAdventist
-              ? 'Agendamento batismal aberto • Consulte a secretaria local'
-              : 'Consulte a secretaria local sobre o próximo batismo',
-            pastoralContact:
-              tags.phone || tags['contact:phone'] || tags.website || 'Contato presencial no endereço',
-            isMarcoZero: false,
-            isAdventist,
-          };
-        })
-        .filter(Boolean);
-
-      churchCache.set(cacheKey, { ts: Date.now(), data: rawChurches });
+      const overpassQuery = `[out:json][timeout:12];(node["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon});way["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon}););out center 45;`;
+      const mirrors = [
+        'https://overpass-api.de/api/interpreter',
+        'https://overpass.kumi.systems/api/interpreter',
+      ];
+      for (const mirrorUrl of mirrors) {
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 10000);
+          const overResp = await fetch(mirrorUrl, {
+            method: 'POST',
+            body: overpassQuery,
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          if (!overResp.ok) continue;
+          const ct = String(overResp.headers.get('content-type') || '');
+          if (!ct.includes('json')) continue;
+          const overData = await overResp.json();
+          const elements = Array.isArray(overData?.elements) ? overData.elements : [];
+          rawChurches = elements
+            .map((el, idx) => {
+              const cLat = el.lat ?? el.center?.lat;
+              const cLon = el.lon ?? el.center?.lon;
+              if (cLat == null || cLon == null) return null;
+              const tags = el.tags || {};
+              const name = tags.name || 'Comunidade Cristã Local';
+              const denom = String(tags.denomination || '').toLowerCase();
+              const nameLower = name.toLowerCase();
+              const isAdventist =
+                denom.includes('adventist') ||
+                nameLower.includes('adventista') ||
+                nameLower.includes('iasd');
+              const addrParts = [
+                tags['addr:street'],
+                tags['addr:housenumber'],
+                tags['addr:suburb'],
+                tags['addr:city'],
+              ].filter(Boolean);
+              const address = addrParts.length ? addrParts.join(', ') : 'Endereço aproximado no mapa';
+              return {
+                id: `osm_${el.id || idx}`,
+                name,
+                denominationOrNote: isAdventist
+                  ? 'Igreja Adventista do Sétimo Dia'
+                  : tags.denomination
+                    ? `Comunidade Cristã • ${tags.denomination}`
+                    : 'Igreja Cristã Local',
+                address,
+                lat: cLat,
+                lon: cLon,
+                nextBaptismInfo: isAdventist
+                  ? 'Agendamento batismal aberto • Consulte a secretaria local'
+                  : 'Consulte a secretaria local sobre o próximo batismo',
+                pastoralContact:
+                  tags.phone || tags['contact:phone'] || tags.website || 'Contato presencial no endereço',
+                isMarcoZero: false,
+                isAdventist,
+              };
+            })
+            .filter(Boolean);
+          if (rawChurches.length > 0) {
+            churchCache.set(cacheKey, { ts: Date.now(), data: rawChurches });
+            break;
+          }
+        } catch (overErr) {
+          console.warn('[OVERPASS WARN]', mirrorUrl, overErr.message);
+        }
+      }
     }
 
     const marcoZeroWithDist = {
