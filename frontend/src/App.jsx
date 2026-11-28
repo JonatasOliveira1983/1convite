@@ -1223,6 +1223,9 @@ function App() {
 
   // Bíblia
   const [bibleViewMode, setBibleViewMode] = useState('reading');
+  const [bibleBookFilter, setBibleBookFilter] = useState('');
+  const [bibleTestamentTab, setBibleTestamentTab] = useState('all');
+  const [bibleShowVersePicker, setBibleShowVersePicker] = useState(false);
   const [bibleBooks, setBibleBooks] = useState([]);
   const [bibleSelectedBook, setBibleSelectedBook] = useState({ livro_abrev: 'gn', livro_nome: 'Gênesis' });
   const [bibleChaptersCount, setBibleChaptersCount] = useState(50);
@@ -3490,9 +3493,21 @@ Em nome de Jesus, Amém.`;
                 <button
                   className="bible-select-btn"
                   onClick={() => setBibleViewMode(bibleViewMode === 'select-book' ? 'reading' : 'select-book')}
-                  style={{ border: 'none', background: 'transparent', padding: 0, fontSize: '1.05rem', fontWeight: '700', color: 'var(--text-primary)', cursor: 'pointer' }}
+                  style={{
+                    border: '1px solid rgba(249, 115, 22, 0.35)',
+                    background: 'rgba(249, 115, 22, 0.12)',
+                    padding: '6px 14px',
+                    borderRadius: '999px',
+                    fontSize: '0.95rem',
+                    fontWeight: '700',
+                    color: 'var(--text-primary)',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
                 >
-                  <span>{bibleSelectedBook.livro_nome} {bibleSelectedChapter} ▼</span>
+                  <span>📖 {bibleSelectedBook.livro_nome} {bibleSelectedChapter} ▾</span>
                 </button>
               ) : (
                 <h2 style={{ fontSize: '1.1rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)', textAlign: 'center' }}>
@@ -3654,80 +3669,144 @@ Em nome de Jesus, Amém.`;
         const ntPercent = ntStats.total > 0 ? Math.round((ntStats.read / ntStats.total) * 100) : 0;
         const totalPercent = (atStats.total + ntStats.total) > 0 ? Math.round(((atStats.read + ntStats.read) / (atStats.total + ntStats.total)) * 100) : 0;
 
+        const normBookStr = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        const qNorm = normBookStr(bibleBookFilter.trim());
+        const filteredAt = (bibleTestamentTab === 'all' || bibleTestamentTab === 'at')
+          ? atBooks.filter((bk) => !qNorm || normBookStr(bk.livro_nome).includes(qNorm) || normBookStr(bk.livro_abrev).includes(qNorm))
+          : [];
+        const filteredNt = (bibleTestamentTab === 'all' || bibleTestamentTab === 'nt')
+          ? ntBooks.filter((bk) => !qNorm || normBookStr(bk.livro_nome).includes(qNorm) || normBookStr(bk.livro_abrev).includes(qNorm))
+          : [];
+
         return (
           <div className="bible-modal-overlay">
             <div className="bible-modal-header">
-              <h3 style={{ margin: 0, fontSize: '1.05rem' }}>Selecione o Livro</h3>
+              <h3 style={{ margin: 0, fontSize: '1.05rem' }}>Escolha o Livro</h3>
               <button className="btn-secondary" style={{ padding: '6px 14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setBibleViewMode('reading')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div className="bible-modal-content">
-
-              {/* Painel Resumo Global */}
-              <div style={{ margin: '0 0 16px 0', padding: '14px 16px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Progresso Total da Bíblia</span>
-                  <span style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--orange)' }}>{totalPercent}%</span>
-                </div>
-                <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '99px', overflow: 'hidden', marginBottom: '12px' }}>
-                  <div style={{ height: '100%', width: `${totalPercent}%`, background: 'linear-gradient(90deg, var(--orange), #f97316)', borderRadius: '99px', transition: 'width 0.5s ease' }} />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                  <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
-                    <div style={{ fontSize: '1rem', fontWeight: '700', color: '#f59e0b' }}>{atPercent}%</div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Antigo Testamento</div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{atStats.read}/{atStats.total} capítulos</div>
-                  </div>
-                  <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
-                    <div style={{ fontSize: '1rem', fontWeight: '700', color: '#3b82f6' }}>{ntPercent}%</div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Novo Testamento</div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{ntStats.read}/{ntStats.total} capítulos</div>
-                  </div>
+              {/* Busca Rápida de Livro + Filtro AT / NT para uso no culto */}
+              <div style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg-primary)', padding: '4px 0 12px' }}>
+                <input
+                  type="search"
+                  placeholder="🔍 Digite o livro (ex: João, Salmos, Apocalipse)..."
+                  value={bibleBookFilter}
+                  onChange={(e) => setBibleBookFilter(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '11px 14px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(249, 115, 22, 0.35)',
+                    background: 'var(--bg-secondary, rgba(255,255,255,0.06))',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.92rem',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+                  {[
+                    { id: 'all', label: 'Todos (66)' },
+                    { id: 'at', label: 'Antigo (39)' },
+                    { id: 'nt', label: 'Novo (27)' }
+                  ].map((tb) => (
+                    <button
+                      key={tb.id}
+                      type="button"
+                      onClick={() => setBibleTestamentTab(tb.id)}
+                      style={{
+                        padding: '8px 6px',
+                        borderRadius: '10px',
+                        border: bibleTestamentTab === tb.id ? '1.5px solid var(--orange)' : '1px solid rgba(148,163,184,0.25)',
+                        background: bibleTestamentTab === tb.id ? 'rgba(249,115,22,0.16)' : 'transparent',
+                        color: bibleTestamentTab === tb.id ? 'var(--orange)' : 'var(--text-secondary)',
+                        fontWeight: '700',
+                        fontSize: '0.78rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {tb.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div className="bible-testament-title">Antigo Testamento</div>
-              {atBooks.map((bk, idx) => {
-                const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
-                const prog = calcBookProgress(bk.livro_abrev, total);
-                const isDone = prog.percent === 100;
-                return (
-                  <div key={idx} style={{ padding: '10px 14px', marginBottom: '2px', cursor: 'pointer', borderRadius: '10px', background: isDone ? 'rgba(34,197,94,0.08)' : 'transparent', border: isDone ? '1px solid rgba(34,197,94,0.2)' : '1px solid transparent', transition: 'all 0.2s' }}
-                    onClick={() => { setBibleSelectedBook(bk); setBibleViewMode('select-chapter'); }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                      <span style={{ fontSize: '0.92rem', fontWeight: isDone ? '700' : '500', color: isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
-                        <span style={{ fontSize: '0.72rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
-                      </div>
+              {/* Painel Resumo Global */}
+              {!qNorm && bibleTestamentTab === 'all' && (
+                <div style={{ margin: '0 0 16px 0', padding: '14px 16px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Progresso Total da Bíblia</span>
+                    <span style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--orange)' }}>{totalPercent}%</span>
+                  </div>
+                  <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '99px', overflow: 'hidden', marginBottom: '12px' }}>
+                    <div style={{ height: '100%', width: `${totalPercent}%`, background: 'linear-gradient(90deg, var(--orange), #f97316)', borderRadius: '99px', transition: 'width 0.5s ease' }} />
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
+                      <div style={{ fontSize: '1rem', fontWeight: '700', color: '#f59e0b' }}>{atPercent}%</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Antigo Testamento</div>
+                      <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{atStats.read}/{atStats.total} capítulos</div>
                     </div>
-                    <div style={{ height: '3px', background: 'rgba(255,255,255,0.07)', borderRadius: '99px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : 'var(--orange)', borderRadius: '99px', transition: 'width 0.4s ease' }} />
+                    <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
+                      <div style={{ fontSize: '1rem', fontWeight: '700', color: '#3b82f6' }}>{ntPercent}%</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Novo Testamento</div>
+                      <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{ntStats.read}/{ntStats.total} capítulos</div>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              )}
 
-              <div className="bible-testament-title" style={{ marginTop: '8px' }}>Novo Testamento</div>
-              {ntBooks.map((bk, idx) => {
-                const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
-                const prog = calcBookProgress(bk.livro_abrev, total);
-                const isDone = prog.percent === 100;
-                return (
-                  <div key={idx} style={{ padding: '10px 14px', marginBottom: '2px', cursor: 'pointer', borderRadius: '10px', background: isDone ? 'rgba(34,197,94,0.08)' : 'transparent', border: isDone ? '1px solid rgba(34,197,94,0.2)' : '1px solid transparent', transition: 'all 0.2s' }}
-                    onClick={() => { setBibleSelectedBook(bk); setBibleViewMode('select-chapter'); }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                      <span style={{ fontSize: '0.92rem', fontWeight: isDone ? '700' : '500', color: isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
-                        <span style={{ fontSize: '0.72rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
-                      </div>
-                    </div>
-                    <div style={{ height: '3px', background: 'rgba(255,255,255,0.07)', borderRadius: '99px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : '#3b82f6', borderRadius: '99px', transition: 'width 0.4s ease' }} />
-                    </div>
+              {filteredAt.length > 0 && (
+                <>
+                  <div className="bible-testament-title">Antigo Testamento</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '8px', marginBottom: '14px' }}>
+                    {filteredAt.map((bk, idx) => {
+                      const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
+                      const prog = calcBookProgress(bk.livro_abrev, total);
+                      const isDone = prog.percent === 100;
+                      const isCurrent = bibleSelectedBook.livro_abrev === bk.livro_abrev;
+                      return (
+                        <div key={idx} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.06)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(148,163,184,0.14)', transition: 'all 0.2s' }}
+                          onClick={() => { setBibleSelectedBook(bk); setBibleBookFilter(''); setBibleViewMode('select-chapter'); }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
+                          </div>
+                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.18)', borderRadius: '99px', overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : 'var(--orange)', borderRadius: '99px' }} />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
+                </>
+              )}
+
+              {filteredNt.length > 0 && (
+                <>
+                  <div className="bible-testament-title" style={{ marginTop: '4px' }}>Novo Testamento</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '8px' }}>
+                    {filteredNt.map((bk, idx) => {
+                      const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
+                      const prog = calcBookProgress(bk.livro_abrev, total);
+                      const isDone = prog.percent === 100;
+                      const isCurrent = bibleSelectedBook.livro_abrev === bk.livro_abrev;
+                      return (
+                        <div key={idx} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.06)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(148,163,184,0.14)', transition: 'all 0.2s' }}
+                          onClick={() => { setBibleSelectedBook(bk); setBibleBookFilter(''); setBibleViewMode('select-chapter'); }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
+                          </div>
+                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.18)', borderRadius: '99px', overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : '#3b82f6', borderRadius: '99px' }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         );
@@ -5993,6 +6072,79 @@ Em nome de Jesus, Amém.`;
                 <div className="hero-title">{bibleSelectedBook.livro_nome}</div>
                 <div className="hero-sub">Capítulo {bibleSelectedChapter}</div>
 
+                {/* Barra Rápida de Navegação para Celular (Livro / Capítulo / Versículo) */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
+                  <button
+                    type="button"
+                    disabled={bibleSelectedChapter <= 1}
+                    onClick={() => { setBibleShowVersePicker(false); setBibleSelectedChapter(Math.max(1, bibleSelectedChapter - 1)); }}
+                    title="Capítulo anterior"
+                    style={{ padding: '7px 12px', borderRadius: '999px', background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter <= 1 ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter <= 1 ? 0.45 : 1 }}
+                  >
+                    ◀
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setBibleShowVersePicker(false); setBibleViewMode('select-book'); }}
+                    style={{ padding: '7px 14px', borderRadius: '999px', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    📖 Livro
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setBibleShowVersePicker(false); setBibleViewMode('select-chapter'); }}
+                    style={{ padding: '7px 14px', borderRadius: '999px', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    📑 Cap. {bibleSelectedChapter}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBibleShowVersePicker((prev) => !prev)}
+                    style={{ padding: '7px 14px', borderRadius: '999px', background: bibleShowVersePicker ? '#f59e0b' : 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)', color: bibleShowVersePicker ? '#111827' : '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    🔢 Versículo
+                  </button>
+                  <button
+                    type="button"
+                    disabled={bibleSelectedChapter >= bibleChaptersCount}
+                    onClick={() => { setBibleShowVersePicker(false); setBibleSelectedChapter(Math.min(bibleChaptersCount, bibleSelectedChapter + 1)); }}
+                    title="Próximo capítulo"
+                    style={{ padding: '7px 12px', borderRadius: '999px', background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter >= bibleChaptersCount ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter >= bibleChaptersCount ? 0.45 : 1 }}
+                  >
+                    ▶
+                  </button>
+                </div>
+
+                {bibleShowVersePicker && bibleVerses.length > 0 && (
+                  <div style={{ marginTop: '12px', padding: '12px', borderRadius: '14px', background: 'rgba(15, 23, 42, 0.88)', border: '1px solid rgba(255,255,255,0.2)', maxHeight: '210px', overflowY: 'auto' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Ir para o versículo ({bibleVerses.length}):
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(44px, 1fr))', gap: '6px' }}>
+                      {bibleVerses.map((v) => {
+                        const isSelected = bibleSelectedVerse?.id === v.id || bibleSelectedVerse?.versiculo === v.versiculo;
+                        return (
+                          <button
+                            key={v.id || v.versiculo}
+                            type="button"
+                            onClick={() => {
+                              setBibleSelectedVerse(v);
+                              setBibleShowVersePicker(false);
+                              setTimeout(() => {
+                                const el = document.getElementById(`bible-verse-${v.versiculo}`);
+                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                              }, 60);
+                            }}
+                            style={{ padding: '8px 4px', borderRadius: '8px', background: isSelected ? '#f59e0b' : 'rgba(255,255,255,0.12)', color: isSelected ? '#111827' : '#fff', border: '1px solid rgba(255,255,255,0.18)', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                          >
+                            {v.versiculo}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* Player de Áudio Integrado na Paisagem */}
                 {bibleShowAudioPlayer && bibleAudioUrl && (
                   <div
@@ -6165,6 +6317,7 @@ Em nome de Jesus, Amém.`;
                       return (
                         <div
                           key={v.id || v.versiculo}
+                          id={`bible-verse-${v.versiculo}`}
                           className={`bible-verse-row${(bibleSelectedVerse?.id === v.id || bibleSelectedVerse?.versiculo === v.versiculo) ? ' selected' : ''}`}
                           onClick={() => setBibleSelectedVerse((bibleSelectedVerse?.id === v.id || bibleSelectedVerse?.versiculo === v.versiculo) ? null : v)}
                           style={{
