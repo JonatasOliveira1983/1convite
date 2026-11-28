@@ -507,37 +507,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           </span>
         </div>
 
-        {/* Imagem Horizontal Temática no Topo do Estudo */}
-        <div className="ide-lesson-hero-image-wrap">
-          <img
-            src={activeLesson.bannerImage || ideStudioImg}
-            alt={activeLesson.title}
-            className="ide-lesson-hero-image"
-            onError={(e) => {
-              e.currentTarget.src = ideStudioImg;
-            }}
-          />
-        </div>
-
-        <div className="ide-lesson-header">
-          <span className="ide-block-tag">
-            Bloco {activeLesson.blockNumber} • {activeLesson.blockTitle}
-          </span>
-          <h1>{activeLesson.title}</h1>
-          <p>{activeLesson.summary}</p>
-          <div className="ide-refs-row">
-            {activeLesson.bibleReferences.map((ref) => (
-              <span key={ref} className="ide-ref-chip">{ref}</span>
-            ))}
-            {onOpenBible && (
-              <button type="button" className="ide-open-bible-btn" onClick={onOpenBible}>
-                📖 Abrir Bíblia no 1Convite
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Player de Podcast com Pedro & Lívia (sem roteiro escrito) */}
+        {/* Player de Podcast com Pedro & Lívia sempre no topo */}
         <section className="ide-podcast-card">
           <div className="ide-studio-banner">
             <img src={ideStudioImg} alt="Podcast IDE Boas Notícias — Lívia e Pedro" className="ide-studio-img" />
@@ -623,6 +593,36 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
             </button>
           </div>
         </section>
+
+        {/* Imagem Horizontal Temática do Estudo do Dia (logo abaixo do Podcast) */}
+        <div className="ide-lesson-hero-image-wrap">
+          <img
+            src={activeLesson.bannerImage || ideStudioImg}
+            alt={activeLesson.title}
+            className="ide-lesson-hero-image"
+            onError={(e) => {
+              e.currentTarget.src = ideStudioImg;
+            }}
+          />
+        </div>
+
+        <div className="ide-lesson-header">
+          <span className="ide-block-tag">
+            Bloco {activeLesson.blockNumber} • {activeLesson.blockTitle}
+          </span>
+          <h1>{activeLesson.title}</h1>
+          <p>{activeLesson.summary}</p>
+          <div className="ide-refs-row">
+            {activeLesson.bibleReferences.map((ref) => (
+              <span key={ref} className="ide-ref-chip">{ref}</span>
+            ))}
+            {onOpenBible && (
+              <button type="button" className="ide-open-bible-btn" onClick={onOpenBible}>
+                📖 Abrir Bíblia no 1Convite
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Guia de Estudo em Lista Única Vertical */}
         <section className="ide-study-section">
