@@ -779,9 +779,41 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
       {/* Hero IDE Boas Notícias */}
       <section className="ide-hero-banner">
         <div className="ide-hero-left">
-          <img src={ideLogo} alt="IDE Boas Notícias" className="ide-hero-logo" />
+          <div className="ide-hero-brand-row">
+            <img src={ideLogo} alt="IDE Boas Notícias" className="ide-hero-logo" />
+            <div className="ide-hero-title-group">
+              <span className="ide-podcast-tag">🎙️ PODCAST • 28 EPISÓDIOS</span>
+              <h1 className="ide-hero-title">IDE Boas Notícias</h1>
+              <span className="ide-hero-verse">“Ide e pregai o evangelho a toda criatura” (Mc 16:15)</span>
+            </div>
+          </div>
+
+          <div className="ide-acronym-row">
+            <div className="ide-acronym-pill">
+              <strong>I</strong>
+              <div>
+                <span>Identidade</span>
+                <small>Filhos à imagem de Deus</small>
+              </div>
+            </div>
+            <div className="ide-acronym-pill">
+              <strong>D</strong>
+              <div>
+                <span>Destino</span>
+                <small>Propósito pela graça</small>
+              </div>
+            </div>
+            <div className="ide-acronym-pill">
+              <strong>E</strong>
+              <div>
+                <span>Eternidade</span>
+                <small>O Reino que não terá fim</small>
+              </div>
+            </div>
+          </div>
+
           <p className="ide-hero-desc">
-            Estudo bíblico completo de <strong>Gênesis ao Apocalipse em 28 aulas</strong> com Podcast em dupla (<strong>Pedro & Lívia</strong>), Guia de Estudos em PDF, Anotações, Quiz e Certificado.
+            Estudo bíblico completo de <strong>Gênesis ao Apocalipse</strong> com <strong>Pedro & Lívia</strong>, Guia de Estudos em PDF, Anotações, Quiz e Certificado.
           </p>
           <div className="ide-progress-bar-bg">
             <div
