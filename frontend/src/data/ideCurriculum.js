@@ -1,5 +1,5 @@
 // Gerado a partir de i.d.e.-estudos (Block1Lessons..Block4Lessons)
-// Apresentadores do Podcast: Pedro (Guia Histórico e Teológico) & Lívia (Conexões Práticas e Graça)
+// Apresentadores do Podcast IDE Boas Notícias: Pedro (Instrutor) & Lívia (Perguntas e Leitura)
 
 export const IDE_BLOCKS = [
   {
@@ -58,83 +58,95 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Seja muito bem-vindo ao I.D.E. — Boas Notícias. Eu sou o seu guia nesta jornada de Gênesis ao Apocalipse, e hoje nós começamos a primeira de vinte e oito aulas feitas para você estudar a Bíblia sem pressa, sem medo e com total clareza."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje começamos a Aula 1: O Reino Original — O Rei, o Jardim e a Imagem de Deus."
       },
       {
         "speaker": "Lívia",
-        "text": "É uma alegria enorme abrir essa série com você. Muita gente abre a Bíblia achando que vai encontrar um manual frio de regras, uma lista de cobranças ou um livro feito para apontar o dedo para os nossos erros. Mas quando a gente volta lá para a primeira página, descobre uma história completamente diferente."
+        "text": "É uma alegria enorme receber você! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, já começo com uma pergunta que muita gente tem: quando alguém abre a Bíblia pela primeira vez, muitas vezes acha que vai encontrar um livro frio, cheio de regras e cobranças. Mas afinal, como tudo começou? O que existia antes de qualquer mandamento?"
       },
       {
         "speaker": "Pedro",
-        "text": "Exatamente. A Bíblia não começa no capítulo 3 de Gênesis, onde entra o pecado. Ela começa no capítulo 1. Antes de existir qualquer mandamento escrito em tábuas de pedra, antes de existir qualquer templo feito por mãos humanas ou qualquer lista de obrigações religiosas, existia um Rei, um Reino perfeito e um relacionamento de amor face a face."
+        "text": "Essa é a melhor pergunta para começar, Lívia! Vamos deixar a própria Palavra responder. Abra com a gente lá no primeiro livro da Bíblia: Gênesis, capítulo 1, versículos 1 a 3. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E olha como o texto de Gênesis 1 abre a cortina da história: \"No princípio, criou Deus os céus e a terra.\" E logo no versículo 2, a gente vê o Espírito de Deus se movendo sobre as águas, trazendo ordem, vida e plenitude onde antes havia vazio."
+        "text": "Estou com o texto aberto aqui. Diz assim em Gênesis 1, versículos 1 a 3: No princípio criou Deus os céus e a terra. E a terra era sem forma e vazia; e havia trevas sobre a face do abismo; e o Espírito de Deus se movia sobre a face das águas. E disse Deus: Haja luz; e houve luz."
       },
       {
         "speaker": "Pedro",
-        "text": "Isso mostra algo poderoso logo de cara: Deus não cria o universo negociando com ninguém nem exigindo sacrifícios. Ele cria por transbordamento de amor e governa pela Sua Palavra. E o Novo Testamento, lá em Colossenses capítulo 1, versículo 16, tira qualquer dúvida sobre quem era essa Palavra criadora: todas as coisas foram criadas por meio de Jesus e para Ele. O Reino sempre esteve nas mãos do Filho."
+        "text": "Olha que lindo! Antes de existir qualquer mandamento escrito em tábuas de pedra ou qualquer templo feito por mãos humanas, já existia um Rei amoroso trazendo luz, ordem e vida onde antes havia vazio. Deus não criou o universo negociando com ninguém; Ele criou por amor e governa pela Sua Palavra."
       },
       {
         "speaker": "Lívia",
-        "text": "Quer dizer que Jesus não é um \"plano B\" que surgiu só no Novo Testamento porque a humanidade deu errado?"
+        "text": "Isso já muda tudo! Agora vem a minha segunda pergunta: onde Jesus entra nessa história? Ele foi um plano B que Deus inventou depois que a humanidade pecou, ou Ele já estava lá desde a criação?"
       },
       {
         "speaker": "Pedro",
-        "text": "De jeito nenhum! Jesus é o Rei Criador desde o primeiro segundo da criação. E quando Deus prepara o Jardim do Éden, no capítulo 2 de Gênesis, Ele não está montando apenas um parque bonito. Na linguagem de toda a Bíblia, o Éden funciona como o primeiro santuário da terra — o ponto de encontro onde o Céu e a Terra se tocavam."
+        "text": "Vamos ver a resposta direto nas Escrituras! Quem está com o caderno na mão já anota essa referência: Colossenses, capítulo 1, versículos 15 a 17. Lívia, lê esse texto na íntegra para quem está nos ouvindo."
       },
       {
         "speaker": "Lívia",
-        "text": "E ali não tinha cortina separando, não tinha ritual complexo de purificação, não tinha intermediário humano. Deus caminhava livremente com o ser humano na viração do dia. A presença de Deus era natural, acessível e constante."
+        "text": "Vamos lá, Colossenses 1, do 15 ao 17: O qual é imagem do Deus invisível, o primogênito de toda a criação; porque nele foram criadas todas as coisas que há nos céus e na terra, visíveis e invisíveis, sejam tronos, sejam dominações, sejam principados, sejam potestades. Tudo foi criado por ele e para ele. E ele é antes de todas as coisas, e todas as coisas subsistem por ele."
       },
       {
         "speaker": "Pedro",
-        "text": "E é dentro desse ambiente de intimidade que Deus faz a Sua obra-prima: Ele cria o ser humano à Sua imagem e semelhança. Repare no peso disso. Deus não criou empregados assustados tentando ganhar aprovação para não serem demitidos. Ele criou filhos e representantes reais para governar, cuidar e expandir a beleza do Éden por toda a terra."
+        "text": "Ficou cristalino, né? Todas as coisas foram criadas por meio de Jesus e para Ele. Jesus nunca foi um plano de emergência! Ele é o Rei Criador desde o primeiro segundo da história."
       },
       {
         "speaker": "Lívia",
-        "text": "Isso muda tudo na forma como a gente enxerga o nosso valor. A nossa identidade original não nasce do que a gente faz para Deus, mas de quem Deus nos fez ser: imagem e semelhança d'Ele. O cuidado com a criação era parceria e alegria com o Pai, nunca um fardo para tentar comprar o favor divino."
+        "text": "Incrível, Pedro! E quanto a nós? Por que Deus criou o ser humano, e qual era a nossa verdadeira identidade lá no Jardim do Éden?"
       },
       {
         "speaker": "Pedro",
-        "text": "Agora presta atenção em um detalhe de Gênesis capítulo 2, versículos 2 e 3, que muita gente lê rápido e perde a beleza da Graça escondida ali: no sétimo dia, Deus descansou de toda a obra que havia feito. Deus descansou porque estava cansado?"
+        "text": "Vamos voltar lá para Gênesis, capítulo 1, agora nos versículos 26 e 27. Lê na íntegra pra gente, Lívia."
       },
       {
         "speaker": "Lívia",
-        "text": "Claro que não! O Deus Todo-Poderoso não se cansa. Ele descansou porque a obra estava terminada, perfeita e consumada."
+        "text": "Gênesis 1, versículos 26 e 27 diz assim: E disse Deus: Façamos o homem à nossa imagem, conforme a nossa semelhança; e domine sobre os peixes do mar, e sobre as aves dos céus, e sobre o gado, e sobre toda a terra, e sobre todo o réptil que se move sobre a terra. E criou Deus o homem à sua imagem; à imagem de Deus o criou; homem e mulher os criou."
       },
       {
         "speaker": "Pedro",
-        "text": "Agora faça as contas com a gente: Adão e Eva foram criados no sexto dia. O sétimo dia foi o primeiro dia inteiro de existência deles na terra. Percebe o que isso significa? Eles não trabalharam seis dias para \"merecer\" descansar no sétimo. O primeiro dia completo da vida humana começou dentro do descanso de Deus!"
+        "text": "Preste atenção nisso, você que está nos ouvindo: Deus não criou empregados assustados tentando ganhar aprovação para não serem demitidos. Ele criou filhos à Sua imagem e semelhança, para caminhar com Ele no Jardim sem medo, sem cortinas e sem barreiras."
       },
       {
         "speaker": "Lívia",
-        "text": "Uau... Eles entraram direto no descanso de uma obra que Deus já havia finalizado!"
+        "text": "Que alívio saber disso! Agora a minha quarta pergunta: lá em Gênesis 2 diz que Deus descansou no sétimo dia. Por que Ele descansou? O Deus Todo-Poderoso ficou cansado?"
       },
       {
         "speaker": "Pedro",
-        "text": "Essa é a primeira grande sombra da Graça na Bíblia. Primeiro Deus termina a obra inteira; depois o ser humano apenas entra e desfruta daquilo que já está pronto. Lá na frente, o livro de Hebreus, no capítulo 4, vai mostrar que esse descanso original apontava profeticamente para Jesus: quando cremos na obra consumada de Cristo na cruz, nós paramos de tentar nos salvar pelo nosso próprio esforço religioso e entramos no verdadeiro descanso de Deus."
+        "text": "Vamos ler juntos o texto exato para não restar dúvida! Gênesis, capítulo 2, versículos 2 e 3. Pode ler na íntegra, Lívia."
       },
       {
         "speaker": "Lívia",
-        "text": "Que começo extraordinário! Você foi criado para viver nessa intimidade, nessa identidade de filho e nesse descanso da obra pronta de Deus."
+        "text": "Lendo Gênesis 2, versículos 2 e 3: E havendo Deus acabado no dia sétimo a obra que fizera, descansou no sétimo dia de toda a sua obra, que tinha feito. E abençoou Deus o dia sétimo, e o santificou; porque nele descansou de toda a sua obra que Deus criara e fizera."
       },
       {
         "speaker": "Pedro",
-        "text": "E se hoje você olha para a sua vida e sente que está longe demais desse jardim original — carregando culpas, medos ou a sensação de que precisa \"se consertar\" primeiro antes de procurar a Deus — ouça esta boa notícia com atenção: o Rei que criou você nunca desistiu de habitar com você."
+        "text": "Deus não descansou por cansaço — Ele descansou porque a obra estava terminada e perfeita! E faça as contas com a gente: Adão e Eva foram criados no sexto dia. O sétimo dia foi o primeiro dia completo de vida deles na terra. Ou seja, eles não trabalharam seis dias para merecer descansar no sétimo — o primeiro dia inteiro da vida humana começou dentro do descanso de uma obra que Deus já havia finalizado!"
       },
       {
         "speaker": "Lívia",
-        "text": "Não existe nenhum impedimento, nenhuma lista de pré-requisitos e nenhuma barreira entre você e a salvação hoje. O que Jesus fez por você basta. Tudo o que Ele pede é que você creia de todo o coração e dê o passo público da fé através do batismo, mergulhando na nova vida que Ele já conquistou."
+        "text": "Uau, Pedro! Então a minha quinta pergunta é: esse descanso lá do Éden aponta para o que Jesus fez por nós na cruz hoje?"
       },
       {
         "speaker": "Pedro",
-        "text": "Aqui no aplicativo I.D.E., se o seu coração ardeu hoje e você quer dar esse passo de fé, você pode tocar no botão de decisão logo abaixo desta aula para encontrar uma igreja cristã perto de você — de qualquer comunidade cristã que professe Jesus como o Salvador do mundo e Rei de um Reino Eterno — e conferir as próximas datas de batismo."
+        "text": "Exatamente! E dessa vez eu mesmo vou ler na íntegra a confirmação do Novo Testamento lá em Hebreus, capítulo 4, versículos 9 e 10. Acompanhe na sua Bíblia: Portanto, resta ainda um repouso para o povo de Deus. Porque aquele que entrou no seu repouso, ele próprio repousou de suas obras, como Deus das suas. Quando você crê na obra consumada de Jesus, você para de tentar se salvar pelo seu próprio esforço e entra no verdadeiro descanso de Deus."
       },
       {
         "speaker": "Lívia",
-        "text": "Faça também as perguntas de reflexão da Aula 1, baixe o seu guia em PDF e, no seu tempo, sem pressa, nos vemos na Aula 2, onde vamos entender o que aconteceu quando o trono foi usurpado e como Deus respondeu com a primeira grande promessa do Salvador. Até lá!"
+        "text": "Vamos fazer um resumo rápido do que anotamos e aprendemos hoje: primeiro, Jesus é o Rei Criador desde o princípio; segundo, o Éden era um lugar de comunhão livre com Deus; terceiro, fomos feitos filhos à imagem de Deus; e quarto, entramos no descanso de uma obra que Deus já concluiu por graça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "E antes de encerrarmos este primeiro estudo, queremos conversar com você com muita calma, carinho e respeito. Talvez hoje você sinta que está longe de Deus ou que precisa primeiro se consertar sozinho para depois procurá-Lo. Mas ouça o que Jesus mesmo disse em Marcos, capítulo 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado. O que impede você hoje de crer de todo o coração e dar esse passo de fé através do batismo?"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Não precisa de pressa nem de peso, apenas de um coração sincero diante de Jesus. Se você deseja conhecer uma comunidade cristã para conversar, tirar dúvidas ou agendar seu batismo, logo abaixo deste Guia de Estudos no aplicativo 1Convite você pode tocar no botão para buscar uma igreja próxima pela sua localização. Ele abre o mapa com o endereço, mostra a distância até a Igreja Marco Zero e disponibiliza o contato pastoral para você falar se desejar. Faça suas anotações, responda ao Quiz da Aula 1 e nos encontramos no próximo episódio!"
       }
     ],
     "overview": "A história bíblica não começa com a culpa humana nem com uma lista de exigências legais; ela começa com a graça da criação, com o governo amoroso de Deus e com o Seu desejo de habitar diretamente com a humanidade. Compreender o princípio revela a nossa verdadeira Identidade (filhos feitos à imagem de Deus), o nosso Destino (reinar em comunhão com Cristo) e o propósito da Eternidade (o Reino que não terá fim).",
@@ -218,35 +230,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 2 do I.D.E. — Boas Notícias. Na primeira aula contemplamos o Jardim perfeito. Hoje olhamos de frente para o capítulo 3 de Gênesis: como a desconfiança entrou e como Deus reagiu imediatamente com Graça."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. É uma alegria enorme caminhar com você por este Guia de Estudos. Hoje nós chegamos à Aula 2: A Usurpação do Trono e a Primeira Promessa do Salvador."
       },
       {
         "speaker": "Lívia",
-        "text": "Repare na estratégia da serpente: ela não começou atacando uma regra isolada; ela plantou dúvida sobre o caráter bom de Deus. Fez o ser humano achar que Deus estava escondendo algo bom dele."
+        "text": "Que bom ter você com a gente hoje! Antes de abrirmos a Palavra, aquele convite bem prático: pegue a sua Bíblia física ou abra na aba da Bíblia aqui no aplicativo 1Convite. Tenha também seu caderno e caneta por perto, ou use o campo de anotações logo abaixo do nosso estudo para registrar tudo o que o Senhor ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, na Aula 1 nós vimos a beleza do Jardim e o plano original de Deus. Mas quando a gente abre o capítulo 3 de Gênesis, parece que tudo desaba. Como a desconfiança entrou no coração humano e por que a serpente atacou justamente a confiança deles em Deus?"
       },
       {
         "speaker": "Pedro",
-        "text": "Quando Adão e Eva comeram do fruto, eles tentaram usurpar o trono e definir o bem e o mal por conta própria. E qual foi o efeito imediato? Medo, vergonha e a corrida para se esconder atrás de folhas de figueira."
+        "text": "Excelente pergunta, Lívia. A serpente não começou atacando uma regra ou um mandamento isolado; ela atacou o caráter de Deus, fazendo o ser humano acreditar que o Criador estava escondendo algo bom deles. Vamos ler isso na Bíblia? Abra com a gente em Gênesis, capítulo 3, versículos 1 a 6. Lívia, lê para a gente na íntegra."
       },
       {
         "speaker": "Lívia",
-        "text": "Folhas de figueira são o retrato mais antigo do esforço religioso humano! A gente tenta costurar a própria aparência para disfarçar a culpa, mas isso nunca devolve a paz."
+        "text": "Estou com o texto aberto aqui. Diz assim em Gênesis 3, versículos 1 a 6: Ora, a serpente era mais sutil que todos os animais do campo que o Senhor Deus tinha feito. E esta disse à mulher: É assim que Deus disse: Não comereis de toda a árvore do jardim? E disse a mulher à serpente: Do fruto das árvores do jardim comeremos, mas do fruto da árvore que está no meio do jardim, disse Deus: Não comereis dele, nele não tocareis, para que não morrais. Então a serpente disse à mulher: Certamente não morreis. Porque Deus sabe que no dia em que dele comerdes se abrirão os vós olhos, e sereis como Deus, conhecendo o bem e o mal. E viu a mulher que aquela árvore era boa para se comer, e agradável aos olhos, e árvore desejável para dar entendimento; tomou do seu fruto, e comeu, e deu também a seu marido, e ele comeu com ela."
       },
       {
         "speaker": "Pedro",
-        "text": "E é aí que acontece algo comovente: não é o homem quem sai procurando Deus; é Deus quem caminha no jardim perguntando \"Onde estás?\". E antes mesmo de expulsá-los do jardim, em Gênesis 3:15, Deus pronuncia o primeiro anúncio do Evangelho."
+        "text": "Veja que forte, Lívia. A raiz do pecado nunca foi apenas comer um fruto; foi a troca da confiança na bondade de Deus pelo desejo de autonomia. Eles tentaram usurpar o trono e definir o bem e o mal por conta própria, achando que seriam mais felizes distantes do governo do Pai."
       },
       {
         "speaker": "Lívia",
-        "text": "A promessa de que o Descendente da mulher esmagaria a cabeça da serpente! Antes de existir qualquer mandamento escrito em pedra ou qualquer templo, Deus já havia decretado a vitória de Jesus."
+        "text": "E o resultado disso foi imediato, né? Medo, vergonha e aquela tentativa desesperada de se esconder. Mas Lívia, me explica: o que significam aquelas folhas de figueira que eles usaram logo depois?"
       },
       {
         "speaker": "Pedro",
-        "text": "E logo no versículo 21, Deus tira as folhas frágeis que eles costuraram e os veste com túnicas de pele — um símbolo silencioso de que um inocente derramaria sangue para cobrir nossa vergonha. Romanos 5:19 fecha essa ponte: pela obediência de um só, Jesus, muitos são feitos justos."
+        "text": "As folhas de figueira são o retrato mais antigo do esforço religioso humano! A gente tenta costurar a própria aparência, disfarçar a culpa e esconder os próprios erros com a nossa força. Mas a Bíblia nos mostra que isso nunca devolve a verdadeira paz. Vamos ler Gênesis 3, versículos 7 a 11 e também o versículo 21. Lívia, faz a leitura para a gente."
       },
       {
         "speaker": "Lívia",
-        "text": "Você não precisa mais se esconder atrás de desculpas ou aparências. O Salvador prometido lá no Éden já venceu. Basta crer de todo o coração e responder ao chamado do batismo!"
+        "text": "Com certeza. Diz assim em Gênesis 3:7-11 e 21: Então foram abertos os olhos de ambos, e conheceram que estavam nus; e coseram folhas de figueira, e fizeram para si cinturas. E ouviram a voz do Senhor Deus, que passeava no jardim pela viração do dia; e escondeu-se Adão e sua mulher da presença do Senhor Deus, entre as árvores do jardim. E chamou o Senhor Deus a Adão, e disse-lhe: Onde estás? E ele disse: Ouvi a tua voz no jardim, e temi, porque estava nu, e me escondi. E Deus disse: Quem te mostrou que estavas nu? Comeste tu da árvore de que te ordenei que não comesses? ... E fez o Senhor Deus a Adão e à sua mulher túnicas de pele, e os vestiu."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Preste muita atenção nisso: não foi o ser humano que saiu procurando Deus; foi Deus quem veio ao encontro do homem perdido, perguntando 'Onde estás?'. E mais do que isso: Deus substituiu as folhas frágeis que eles costuraram por túnicas de pele. Isso aponta para o fato de que um inocente precisava derramar sangue para cobrir a vergonha humana."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é lindo demais! E logo depois disso, Deus faz a primeira grande promessa da Bíblia, antes mesmo de qualquer lei ou templo. Pedro, lê para a gente o versículo 15 de Gênesis 3."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos lá. Gênesis 3, versículo 15 diz assim na Palavra de Deus: Porei inimizade entre ti e a mulher, entre a tua descendência e o seu descendente. Este te ferirá a cabeça, e tu lhe ferirás o calcanhar. Esse é o chamado Protoevangelho, a primeira promessa do Salvador! Antes que qualquer sentença final feche o jardim, Deus decreta que o Descendente da mulher esmagaria a cabeça da serpente. A vitória de Cristo já estava decretada desde a fundação da história!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso me traz uma paz tão grande... Mas como isso se conecta com a nossa vida hoje? Como o Novo Testamento explica essa troca do Primeiro Adão para o Último Adão?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Para fechar esse raciocínio com chave de ouro, vamos abrir em Romanos, capítulo 5, versículo 19. Lívia, lê esse texto precioso para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Romanos 5:19: Porque, como, pela desobediência de um só homem, muitos se tornaram pecadores, assim também, por meio da obediência de um só, muitos se tornarão justos."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Onde abundou o pecado pela queda de Adão, superabundou a graça pela obediência perfeita de Jesus Cristo, o nosso Salvador. Você não precisa mais se esconder atrás de desculpas, de aparências ou de folhas de figueira religiosas. O Salvador prometido lá no Éden já venceu na cruz por você."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o que aprendemos hoje: a queda humana começou quando trocamos a confiança na bondade de Deus pela autonomia e pela culpa. Tentamos nos cobrir com nossos próprios esforços, mas foi Deus quem veio nos buscar e providenciou vestes de justiça através da promessa do Descendente vencedor, Jesus Cristo!"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "E se hoje o Espírito Santo falou ao seu coração, saiba que não existe nenhum impedimento entre você e Deus. O sacrifício de Jesus já basta. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que o Pai pede é que você creia de todo o coração e responda ao amor d'Ele através do batismo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos convida em Marcos 16:15 e 16 com estas palavras de Jesus: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado. Se você deseja dar esse passo de fé e entregar sua vida a Jesus publicamente, toque agora mesmo no botão logo abaixo do Guia de Estudos. Ali você poderá encontrar uma igreja próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que Deus abençoe ricamente a sua vida e até a nossa próxima aula no IDE Boas Notícias!"
       }
     ],
     "overview": "Gênesis 3 explica a raiz da dor humana — a ruptura da confiança no Rei Criador — mas revela principalmente a iniciativa imediata da graça de Deus. Antes de qualquer esforço humano, o Pai busca o filho perdido, promete o Descendente vencedor (Gênesis 3:15) e providencia vestes de justiça.",
@@ -331,27 +387,91 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Olá! Estamos na Aula 3 do I.D.E. — Boas Notícias. Hoje vamos olhar para o céu estrelado com Abraão e descobrir uma das verdades mais libertadoras de toda a Escritura."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje avançamos para a Aula 3: Justiça pela Fé Antes da Lei: Abraão, o Pai da Fé."
       },
       {
         "speaker": "Lívia",
-        "text": "Muita gente imagina que no Antigo Testamento as pessoas eram salvas cumprindo a Lei, e só no Novo Testamento veio a fé. Mas Paulo desmonta essa ideia usando justamente Abraão!"
+        "text": "É uma alegria enorme estar com você em mais um estudo! Antes de começarmos, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que essa aula mexe muito comigo. Muita gente cresceu ouvindo que, no Antigo Testamento, as pessoas precisavam cumprir regras pesadas e carregar um fardo enorme para serem aceitas por Deus, e que a graça só apareceu no Novo Testamento. Mas afinal, como Abraão foi aceito por Deus séculos antes de existir a Lei de Moisés?"
       },
       {
         "speaker": "Pedro",
-        "text": "Veja a cronologia: Abraão viveu mais de quatrocentos anos antes de Moisés receber os Dez Mandamentos no Sinai. E lá em Gênesis 15:6 está escrito: \"Abraão creu no Senhor, e isso lhe foi imputado para justiça.\""
+        "text": "Essa pergunta é fantástica, Lívia, e desmonta um dos maiores mitos religiosos da história! Vamos direto ao início da história de Abraão lá no Antigo Testamento. Abra com a gente em Gênesis, capítulo 12, versículos 1 a 3. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Sem tábuas de pedra, sem templo, sem circuncisão ainda! Abraão simplesmente confiou na promessa de um Deus fiel, e Deus o declarou justo gratuitamente."
+        "text": "Estou com o texto aberto aqui. Diz assim em Gênesis 12, versículos 1 a 3: Ora, o Senhor disse a Abrão: Sai da tua terra, e da tua parentescos, e da casa de teu pai, para a terra que eu te mostrarei. E eu far-te-ei um grande povo, e abençoar-te-ei e engrandecerei o teu nome; e tu serás uma bênção. E abençoarei os que te abençoarão, e amaldiçoarei os que te amaldiçoarão; e em ti serão benditas todas as famílias da terra."
       },
       {
         "speaker": "Pedro",
-        "text": "Em Romanos 4, Paulo usa a linguagem contábil: quem trabalha recebe salário como obrigação; mas quem crê recebe justiça como presente — graça pura. E Gálatas 3:8 diz que Deus já anunciava o Evangelho a Abraão quando prometeu abençoar todas as famílias da terra nele."
+        "text": "Preste muita atenção nisso, você que nos ouve: antes mesmo de qualquer mandamento gravado em tábuas de pedra, Deus já estava operando pela promessa e pela graça. Deus chama Abraão para sair do seu conforto não porque ele era perfeito ou tinha cumprido uma lista de rituais, mas porque Ele desejava abençoar todas as famílias da terra através de uma aliança de amor."
       },
       {
         "speaker": "Lívia",
-        "text": "Isso significa que a família da fé sempre foi aberta a todos os povos. Se você crê em Jesus hoje, você é herdeiro da mesma promessa feita a Abraão — sem precisar carregar fardos legais para provar seu valor."
+        "text": "Mas Pedro, como a Bíblia define exatamente o momento em que Abraão foi considerado justo diante de Deus? Qual foi o critério usado?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos ver isso em Gênesis, capítulo 15, versículos 1 a 6. Abra a Bíblia e acompanhe com a gente. Lívia, por favor, faça a leitura desse texto maravilhoso."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Gênesis 15, versículos 1 a 6: Depois destas coisas veio a palavra do Senhor a Abrão em visão, dizendo: Não temas, Abrão, eu sou o teu escudo, o teu galardão sobremaneira grande. Então disse Abrão: Senhor Deus, que me hás de dar, pois ando sem filhos, e o mordomo da minha casa é o damasceno Eliezer? Disse mais Abrão: Eis que não me tens dado sementes, e eis que um nascido na minha casa será o meu herdeiro. E eis que veio a palavra do Senhor a ele, dizendo: Este não será o teu herdeiro; mas aquele que houver de sair das tuas entranhas, esse será o teu herdeiro. Então o levou fora, e disse: Olha agora para os céus, e conta as estrelas, se as podes contar. E disse-lhe: Assim será a tua semente. E creu ele no Senhor, e isso foi-lhe imputado para justiça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que profundidade! Abraão olhou para o céu estrelado, viu a própria fraqueza humana e a velhice, mas creu na promessa de Deus. E a Bíblia diz que isso lhe foi imputado — ou seja, creditado — para justiça. Deus declara justo quem confia n'Ele, e não quem tenta pagar uma dívida espiritual por esforço próprio."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é libertador demais! Mas tem gente que ainda pode pensar: 'Ah, mas isso era exclusivo de Abraão'. O Novo Testamento confirma essa mesma regra para nós hoje?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Confirma totalmente! O apóstolo Paulo explica isso de forma brilhante lá em Romanos, capítulo 4, versículos 1 a 5. Lívia, lê esse trecho para nós, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Romanos 4, versículos 1 a 5 diz: Que diremos, pois, ter alcançado Abraão, nosso pai segundo a carne? Porque, se Abraão foi justificado pelas obras, tem de que se gloriar, mas não perante Deus. Pois que diz a Escrituras? Creu Abraão a Deus, e isso lhe foi imputado por justiça. Ora, ao que trabalha não se lhe conta a dívida como dádiva, mas como dívida. Mas, ao que não trabalha, mas crê naquele que justifica o ímpio, a sua fé lhe é imputada por justiça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veja a clareza da linguagem contábil de Paulo: quem trabalha recebe salário como obrigação devida; mas quem crê recebe justiça como presente gratuito de Deus. A salvação nunca foi um prêmio para os que se acham bons o bastante, mas um presente para quem confia na obra de Cristo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Para fecharmos esse entendimento na Bíblia, como Gálatas resume a nossa posição nessa mesma família da fé?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos abrir em Gálatas, capítulo 3, versículos 6 a 9. Lívia, faça a leitura final de hoje para selar essa verdade no nosso coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Gálatas 3, versículos 6 a 9: Assim como Abraão creu em Deus, e isso lhe foi atribuído para justiça. Sabei, pois, que os da fé é que são filhos de Abraão. Ora, tendo a Escritura previsto que Deus havia de justificar os gentios pela fé, anunciou primeiro o evangelho a Abraão, dizendo: Todas as nações serão benditas em ti. De sorte que os da fé são benditos com o crente Abraão."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que maravilha! Resumindo o que aprendemos hoje: séculos antes de existir qualquer código de leis escritas em pedra no Monte Sinai, Deus já havia estabelecido que a reconciliação e a justiça são obtidas unicamente pela fé. Abraão não foi justificado por rituais ou méritos humanos, mas por confiar na promessa de Deus. E a boa notícia é que essa mesma promessa alcança você hoje: se você crê em Jesus, você é herdeiro dessa graça imerecida, sem precisar carregar fardos legais para provar o seu valor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E se o seu coração foi alcançado por essa verdade libertadora hoje, queremos fazer um convite muito especial e respeitoso. Não existe nenhum impedimento entre você e Deus neste exato momento. O sacrifício e a obra de Jesus já bastam. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que Deus pede é que você creia de todo o coração e dê o passo da fé através do batismo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A própria Palavra de Deus nos orienta sobre isso em Marcos, capítulo 16, versículos 15 e 16, onde Jesus diz: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado. O batismo nas águas é o mergulho público nessa nova vida de fé e graça, declarando que você pertence a Cristo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Se você deseja dar esse passo e firmar sua aliança com Deus, toque agora mesmo no botão abaixo do Guia de Estudos. Ali você poderá buscar uma igreja cristã próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com alguém que vai te acolher com muito amor."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Muito obrigado por estudar a Palavra com a gente neste episódio do IDE Boas Notícias. Que o Deus de Abraão abençoe ricamente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Séculos antes do Monte Sinai, Deus estabelece o padrão eterno de como o ser humano é reconciliado com Ele: pela fé na Sua promessa. Abraão não conquistou justiça por desempenho ritual; ele creu no Senhor e recebeu justiça como dádiva.",
@@ -431,27 +551,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 4 do I.D.E. — Boas Notícias! Hoje vamos testemunhar uma das cenas mais impressionantes do Antigo Testamento: a ratificação da aliança em Gênesis 15."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje entramos na Aula 4: A Aliança de Promessa vs. A Aliança de Esforço."
       },
       {
         "speaker": "Lívia",
-        "text": "Naquele tempo, quando duas partes faziam um acordo solene, elas passavam juntas pelo meio dos animais partidos, dizendo: \"Se eu quebrar o acordo, aconteça isso comigo.\" Mas em Gênesis 15 acontece algo inesperado!"
+        "text": "Que bom ter você conosco para este estudo profundo! Antes de começarmos, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também em mãos um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que essa aula mexe muito comigo. Muitas vezes a gente cresce achando que precisa conquistar o amor de Deus todos os dias pelo nosso próprio esforço. Como a Bíblia explica essa diferença entre a promessa de Deus e a tentativa humana de merecer a salvação?"
       },
       {
         "speaker": "Pedro",
-        "text": "Deus faz cair um sono profundo sobre Abraão. E enquanto Abraão dorme, apenas uma tocha de fogo — simbolizando o próprio Deus — passa entre os pedaços. Deus assumiu sozinho os dois lados da aliança!"
+        "text": "Essa é a pergunta central da nossa aula, Lívia! Vamos ver como Deus selou uma aliança incondicional lá no Antigo Testamento. Abra com a gente em Gênesis, capítulo 15, versículos 17 a 18. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Que imagem linda da cruz! Deus estava dizendo: \"Abraão, se você falhar, Eu mesmo pagarei o preço da quebra da aliança.\" Essa é a aliança de promessa incondicional."
+        "text": "Estou com o texto aberto aqui. Diz assim em Gênesis 15, versículos 17 a 18: E poente-se o sol, houve trevas; e eis um forno fumegante e uma tocha de fogo que passou por entre aqueles pedaços. Naquele mesmo dia fez o SENHOR aliança com Abrão, dizendo: À tua descendência tenho dado esta terra, desde o rio do Egito até ao grande rio Eufrates."
       },
       {
         "speaker": "Pedro",
-        "text": "Em Gálatas 3 e 4, Paulo alerta os cristãos para não trocarem essa liberdade pela aliança de esforço humano. A Lei que veio 430 anos depois não pode anular a promessa que Deus já havia garantido."
+        "text": "Olha que cena impressionantes, Lívia! Naquele tempo, quando duas pessoas faziam um acordo solene, elas caminhavam juntas entre os pedaços de animais, assumindo a culpa caso quebrassem o pacto. Mas aqui, quem passa pelo fogo é apenas Deus, enquanto Abraão dorme profundamente. Deus assumiu sozinho a responsabilidade pela aliança. Ele estava dizendo: 'Se a aliança for quebrada, Eu pagarei o preço.' Essa é a graça pura!"
       },
       {
         "speaker": "Lívia",
-        "text": "Viver sob esforço gera ansiedade constante: \"Será que eu fiz o suficiente?\" Viver sob a promessa gera paz e filhos livres. Hoje você pode descansar na aliança que Jesus selou com o próprio sangue."
+        "text": "Nossa, isso é maravilhoso! Deus não colocou o peso nas costas de Abraão. Mas e quanto à Lei de Moisés que veio séculos depois? As pessoas não precisavam cumprir a Lei para serem salvas? Como o apóstolo Paulo explica isso no Novo Testamento?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Paulo traz uma clareza incrível sobre isso. Vamos abrir a nossa Bíblia em Gálatas, capítulo 3, versículos 15 a 17. Lívia, lê esse texto para nós por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Diz assim em Gálatas 3, versículos 15 a 17: Irmãos, como homem falo; se a aliança é de um homem, ninguém a anula ou a derroga, senão que confirmada. Ora, as promessas foram feitas a Abraão e à sua posteridade. Não diz: E às posteridades, como de muitos, mas como de um: E à tua posteridade, que é Cristo. Mas digo isto: Que uma aliança já anteriormente confirmada por Deus, a lei, que veio quatrocentos e trinta anos depois, não a pode ab-rogar, de forma que venha a desfazer a promessa."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! A Lei dada no Sinai 430 anos depois nunca teve a função de ser um meio de salvação por esforço humano, mas sim de nos mostrar a nossa necessidade de um Salvador. A promessa feita a Abraão — que se cumpre em Cristo — permanece firme e inabalável."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso tira um peso imenso dos nossos ombros. E como nós, que cremos hoje, devemos nos ver diante de Deus? Somos escravos cumprindo ordens ou filhos vivendo uma herança?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é a chave para a verdadeira liberdade espiritual. Vamos ler a resposta em Gálatas, capítulo 4, versículos 28 e 31. Lívia, faz a leitura para a gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Gálatas 4, versículos 28 e 31: Mas nós, irmãos, à imitação de Isaque, somos filhos da promessa. De maneira que, irmãos, não somos filhos da escrava, mas da livre."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Glória a Deus! Quem tenta se salvar pelo próprio esforço vive como escravo do medo, sempre ansioso pensando se fez o suficiente. Mas quem descansa na obra de Cristo vive como filho legítimo, livre e amado. O Pai já garantiu a nossa herança!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que estudo libertador! Resumindo o que aprendemos hoje, vimos que a nossa salvação não depende da nossa força ou de cumprir uma lista interminável de regras, mas da aliança incondicional que Deus mesmo garantiu por nós em Cristo. Não somos escravos de um sistema de esforço, mas filhos livres da promessa."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E se hoje você tem sentido o peso da culpa ou o cansaço de tentar se provar digno diante de Deus, lembre-se da tocha de fogo passando entre os pedaços em Gênesis 15. Jesus já pagou o preço total. Não existe nenhum impedimento entre você e Deus neste exato momento."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O sacrifício de Jesus na cruz já basta por completo. Você não precisa se consertar primeiro, nem esperar estar perfeito para se achegar a Ele. Tudo o que o Senhor pede é que você creia de todo o coração e entregue sua vida a Ele. A própria Bíblia nos convida a isso em Marcos 16, versículos 15 e 16. Vamos ler juntos:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém. O batismo é a expressão pública da nossa fé nessa aliança de amor, onde sepultamos a velha vida de esforço e ressuscitamos para uma nova vida de liberdade como filhos de Deus. Se você deseja dar esse passo de fé, toque no botão logo abaixo do seu Guia de Estudos para encontrar uma igreja próxima de você no mapa, ver a distância até a Igreja Marco Zero e pegar o contato direto de um pastor. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula no IDE Boas Notícias!"
       }
     ],
     "overview": "Em Gênesis 15, Deus ratifica uma aliança unilateral enquanto Abraão dorme, assumindo sobre Si a garantia da promessa. Gálatas 3 e 4 contrastam essa vida de filhos da promessa com a escravidão espiritual de tentar merecer Deus pelo próprio esforço.",
@@ -532,27 +704,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Chegamos à Aula 5 do I.D.E. — Boas Notícias. Hoje vamos à noite da libertação no Egito, em Êxodo capítulo 12, onde Deus desenha o retrato mais vívido do Evangelho no Antigo Testamento."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 5: O Cordeiro da Páscoa e a Redenção pelo Sangue."
       },
       {
         "speaker": "Lívia",
-        "text": "Repare bem na ordem dos fatos: Israel era escravo no Egito e não tinha nenhuma condição de se libertar sozinho. E Deus não entregou os Dez Mandamentos no Egito dizendo \"cumpram isso para eu libertar vocês\"!"
+        "text": "Que alegria ter você conosco em mais este encontro! Antes de mergulharmos no estudo, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também um caderno e uma caneta por perto, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, hoje vamos falar sobre a grande noite da libertação no Egito. Muitas pessoas acham que Deus salva as pessoas porque elas cumprem regras ou alcançam um padrão de perfeição. Mas como a Páscoa original de Êxodo 12 nos revela a verdadeira ordem da salvação e da graça?"
       },
       {
         "speaker": "Pedro",
-        "text": "Exatamente! A libertação veio primeiro, inteiramente pela graça do sangue de um cordeiro sem defeito aplicado nos umbrais da porta. E ouça o que Deus disse em Êxodo 12:13: \"Quando eu vir o sangue, passarei por cima de vós.\""
+        "text": "Essa pergunta toca no coração do Evangelho, Lívia! Vamos abrir a Bíblia em Êxodo, capítulo 12, versículos 1 a 7. Lê na íntegra pra gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "Ele não disse: \"Quando eu ver o quão espirituais vocês estão lá dentro de casa.\" A segurança da família não dependia da coragem ou do nível de perfeição de quem estava atrás da porta, mas do sangue do cordeiro sobre a porta!"
+        "text": "Com certeza. Diz assim em Êxodo 12, versículos 1 a 7: E falou o Senhor a Moisés e a Arão na terra do Egito, dizendo: Este mesmo mês vos será o princípio dos meses; este vos será o primeiro dos meses do ano. Falai a toda a congregação de Israel, dizendo: A aos dez deste mês tomasse cada um para si um cordeiro, segundo as casas dos pais, um cordeiro para cada família. Mas, se a família for pequena para um cordeiro, então ele e seu vizinho próximo dele o tomarão conforme o número das almas; cada um conforme ao seu comer, fareis a conta conforme ao cordeiro. O cordeiro será sem mácula, um macho de um ano, o cual podereis tomar das ovelhas ou das cabras. E o vereis até ao décimo quarto dia deste mês, e todo o ajuntamento da congregação de Israel o sacrificará à tarde. E tomarão do sangue, e o pô-lo-ão em ambos os umbrais e na verga da porta, nas casas em que o comerem."
       },
       {
         "speaker": "Pedro",
-        "text": "Séculos depois, quando João Batista olhou para Jesus chegando às margens do Jordão, ele exclamou em João 1:29: \"Eis o Cordeiro de Deus, que tira o pecado do mundo!\" E Paulo completa em 1 Coríntios 5:7: \"Cristo, nossa Páscoa, foi sacrificado por nós.\""
+        "text": "Que forte! Repare bem na ordem dos fatos: Israel era escravo no Egito e não tinha nenhuma condição de se libertar sozinho. E Deus não entregou os Dez Mandamentos no Egito dizendo 'cumpram isso para eu libertar vocês'. A libertação veio primeiro, inteiramente pela graça do sacrifício de um cordeiro sem defeito."
       },
       {
         "speaker": "Lívia",
-        "text": "Nossa libertação do pecado já foi paga pelo sangue precioso de Jesus. Quando cremos n'Ele, estamos seguros sob o Cordeiro e livres para caminhar em novidade de vida."
+        "text": "Isso é transformador. Mas Pedro, o que realmente garantia que a família estaria segura lá dentro daquela casa? Era a bondade deles, o comportamento ou a coragem?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos ler o que o próprio Deus declarou logo em seguida em Êxodo 12, versículos 12 e 13. Lívia, faz a leitura para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Êxodo 12, versículos 12 e 13: E eu passarei pela terra do Egito esta noite, e feriré todo primogênito na terra do Egito, desde os homens até aos animais; e farei juízos sobre todos os deuses do Egito. Eu sou o Senhor. E sangue vos será por sinal nas casas em que estiverdes; quando eu vir o sangue, passarei por cima de vós, e não haverá entre vós praga de mortandade, quando eu ferir a terra do Egito."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Note que Deus não disse: 'Quando eu ver o quão espirituais vocês estão lá dentro'. A segurança da família não dependia do nível de perfeição ou do mérito de quem estava atrás da porta, mas exclusivamente do sangue do cordeiro aplicado sobre a porta! Nossa paz diante de Deus repousa na suficiência da obra de Cristo, e não em nossas próprias forças."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso tira um peso enorme dos nossos ombros. Mas como sabemos que esse cordeiro do Egito apontava diretamente para Jesus? Onde na Bíblia essa conexão fica clara?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Ela resplandece em todo o Novo Testamento! Vamos abrir em João, capítulo 1, versículo 29, e também em 1 Coríntios, capítulo 5, versículo 7. Lívia, pode ler esses dois textos para a gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com toda a alegria. João 1:29 diz: No dia seguinte João viu a Jesus, que vinha a ele, e disse: Eis o Cordeiro de Deus, que tira o pecado do mundo! E 1 Coríntios 5:7 afirma: Alimpai-vos, pois, do fermento velho, para que sejais uma nova massa, assim como estais sem fermento. Porque Cristo, nossa Páscoa, foi sacrificado por nós."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Séculos depois daquela noite no Egito, quando João Batista apontou para Jesus às margens do Jordão, ele revelou a realidade eterna: Jesus é o Cordeiro sem defeito que remove o pecado do mundo uma vez por todas. Nossa libertação já foi paga pelo sangue precioso de Cristo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Então, resumindo o que aprendemos hoje na Aula 5: Deus nos resgata e nos liberta por Sua graça antes de qualquer exigência; a nossa segurança espiritual está firmada unicamente no sangue do Cordeiro; e Jesus é a nossa Páscoa definitiva, o sacrifício perfeito que nos garante perdão e vida eterna."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E por causa dessa obra maravilhosa, não existe nenhum impedimento entre você e Deus hoje. Você não precisa se consertar primeiro, cumprir uma lista de exigências ou esperar estar perfeito para se achegar a Ele. Tudo o que o Pai pede é que você creia de todo o coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos convida a dar esse passo de fé de maneira muito clara. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16, na íntegra."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém. O batismo nas águas é o testemunho público de que você confia plenamente no Cordeiro e está nascendo para uma nova vida. Se o seu coração deseja dar esse passo de obediência e fé, toque no botão logo abaixo do seu Guia de Estudos. Você poderá encontrar uma igreja fiel mais próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que o Senhor abençoe ricamente a sua decisão hoje!"
       }
     ],
     "overview": "A Páscoa de Êxodo 12 revela o princípio central da redenção bíblica: Deus liberta primeiro pela graça do Cordeiro substituto. O que garantiu a proteção de cada casa não foi o mérito de seus moradores, mas o sangue aplicado na porta — sombra direta de Jesus, o Cordeiro de Deus.",
@@ -632,27 +856,71 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Seja bem-vindo à Aula 6 do I.D.E. — Boas Notícias. Hoje vamos responder a uma pergunta que gera confusão há séculos: afinal, por que Deus deu a Lei no Monte Sinai?"
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 6: O Papel da Lei no Sinai: Um Tutor Até Cristo."
       },
       {
         "speaker": "Lívia",
-        "text": "Essa pergunta é essencial! Se a promessa já existia em Abraão e a redenção veio pelo Cordeiro, para que serviram os Dez Mandamentos escritos em pedra?"
+        "text": "É uma alegria enorme estudar com você! Antes de começarmos, vamos ao nosso momento prático: pegue a sua Bíblia física para acompanhar cada texto detalhadamente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também um caderno e uma caneta por perto, ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar as verdades que Deus ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, muita gente confunde o propósito dos Dez Mandamentos. Afinal, se Deus deu a Lei no Monte Sinai, por que tantas pessoas pensam erroneamente que ela era um caminho para conquistar a salvação através do próprio esforço?"
       },
       {
         "speaker": "Pedro",
-        "text": "A própria Bíblia responde com total clareza em Romanos 3:20 e Gálatas 3:19–25. A Lei nunca foi dada como escada para o homem subir até o céu! Pelo contrário: \"pela lei vem o pleno conhecimento do pecado.\""
+        "text": "Essa dúvida é muito comum, Lívia, e a Bíblia é cristalina sobre isso. Vamos abrir juntos a Palavra de Deus em Romanos, capítulo 3, versículos 19 e 20. Lívia, faz a leitura na íntegra pra gente, com bastante calma."
       },
       {
         "speaker": "Lívia",
-        "text": "É como um espelho ou um exame de raio-X! O espelho mostra a sujeira no rosto, mas você não lava o rosto com o espelho. O raio-X revela a fratura, mas quem cura é o Médico."
+        "text": "Estou com o texto aberto aqui. Diz assim em Romanos 3, versículos 19 e 20: Ora, nós sabemos que tudo o que a lei diz, aos que estão debaixo da lei o diz, para que toda boca seja fechada e todo o mundo seja culpável perante Deus. Por isso nenhuma carne será justificada diante dele pelas obras da lei, porque pela lei vem o pleno conhecimento do pecado."
       },
       {
         "speaker": "Pedro",
-        "text": "Excelente comparação! Paulo usa em Gálatas 3:24 a imagem do \"aio\" ou \"tutor\" — aquele responsável que conduzia a criança pela mão até chegar à presença do Mestre. A Lei revelou a santidade de Deus, expôs nossa total incapacidade de nos salvar por obras e nos conduziu diretamente aos braços de Cristo!"
+        "text": "Que forte e libertador! A Lei nunca foi dada como um trampolim para o homem subir ao céu por mérito próprio. Pelo contrário: ela silencia qualquer tentativa de autojustificação humana. A função da Lei nunca foi salvar, mas sim nos dar o pleno conhecimento do pecado."
       },
       {
         "speaker": "Lívia",
-        "text": "E veja o versículo 25 de Gálatas 3: \"Mas, tendo vindo a fé, já não permanecemos subordinados ao aio.\" Quando a Lei cumpre seu papel de nos levar a Jesus, deixamos o medo da condenação para viver livres na fé!"
+        "text": "Isso me lembra muito a ilustração do espelho ou de um raio-X, não é, Pedro? O espelho mostra a mancha no rosto, mas ele não tem o poder de lavar a sujeira!"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente isso, Lívia! A Lei funciona como esse espelho santo que reflete a perfeição de Deus e expõe a nossa profunda incapacidade. Mas se a Lei faz esse papel de diagnóstico, como ela se conecta com a graça? Para onde ela nos aponta?"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia responde isso de forma maravilhosa lá no Novo Testamento. Vamos abrir em Gálatas, capítulo 3, versículos 24 e 25. Lívia lê na íntegra para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Diz assim em Gálatas 3, versículos 24 e 25: De maneira que a lei nos serviu de aio para nos conduzir a Cristo, a fim de que fôssemos justificados por fé. Mas, tendo vindo a fé, já não permanecemos subordinados ao aio."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa palavra \"aio\" ou \"tutor\" no original grego descreve aquele guia responsável por conduzir a criança com segurança pela mão até a casa do Mestre. A Lei teve exatamente esse papel pedagógico e histórico: nos pegar pela mão, mostrar que estávamos perdidos sem Deus, e nos conduzir diretamente para os braços de Cristo, para que fôssemos justificados exclusivamente pela fé."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso traz um alívio imenso para a alma! Significa que eu não preciso carregar o peso insuportável de tentar cumprir uma lista interminável de regras para ser aceita por Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com toda certeza, Lívia. Resumindo o que aprendemos hoje: a Lei do Sinai revelou a santidade absoluta de Deus, serviu como espelho que expõe a nossa condição humana e funcionou como um tutor provisório cujo único objetivo era nos entregar, salvos e redimidos, nas mãos de Jesus Cristo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E para aplicarmos isso hoje, fica o convite prático: agradeça a Deus porque você não precisa escalar o Monte Sinai para conquistar a aceitação dEle — o próprio Jesus desceu até nós para cumprir toda a justiça em nosso favor."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém. E se você sente que hoje não existe nenhum impedimento entre você e Deus, saiba que o sacrifício de Jesus já é suficiente. Você não precisa esperar estar perfeito para se achegar a Ele. A Bíblia nos convida a crer e dar o passo da fé através do batismo. Vamos ler juntos o que diz Marcos 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que promessa linda e consoladora. Se você deseja responder a esse amor com fé e testemunhar essa nova vida, toque agora mesmo no botão logo abaixo do seu Guia de Estudos. Ali você poderá buscar uma igreja cristã próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar e agendar o seu batismo. Deus abençoe grandemente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Os Dez Mandamentos no Sinai revelaram a santidade absoluta de Deus e cumpriram uma função histórica e pedagógica: servir como espelho que expõe nossa incapacidade de auto-salvação e como tutor que conduz a humanidade diretamente até Jesus Cristo.",
@@ -732,27 +1000,87 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Chegamos ao encerramento do Bloco 1 — Aula 7 do I.D.E. — Boas Notícias! Hoje vamos entrar no Tabernáculo no deserto e descobrir como cada peça ali apontava como uma seta luminosa para Jesus."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à nossa Aula 7: O Tabernáculo no Deserto — Sombras do Verdadeiro Santuário, encerrando com chave de ouro o nosso primeiro bloco de estudos!"
       },
       {
         "speaker": "Lívia",
-        "text": "Em Êxodo 25:8 Deus diz algo muito afetuoso: \"E me farão um santuário, para que eu possa habitar no meio deles.\" É o mesmo desejo do Jardim do Éden voltando à cena!"
+        "text": "É uma alegria imensa estar com você para fechar este ciclo! Antes de começarmos, quero te fazer aquele convite prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Separe também o seu caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, quando a gente estuda o Antigo Testamento e lê sobre o tabernáculo no deserto, com tantas cortinas, móveis e regras de sacrifício, parece um mundo muito distante da nossa realidade hoje. Qual era o verdadeiro propósito de Deus ao mandar construir aquela tenda no meio do deserto?"
       },
       {
         "speaker": "Pedro",
-        "text": "Sim! Mas repare na diferença: por causa do pecado, havia cortinas, um véu espesso e sacrifícios diários de animais que nunca podiam terminar. A carta aos Hebreus, nos capítulos 8 e 9, chama todo aquele sistema de \"figura\" e \"sombra\"."
+        "text": "Essa pergunta toca no coração do próprio evangelho, Lívia! Deus não queria apenas um lugar de rituais; Ele queria comunhão. Vamos abrir a Bíblia lá no livro de Êxodo, capítulo 25, versículos 8 e 9. Lívia, por favor, lê esse texto na íntegra para a gente."
       },
       {
         "speaker": "Lívia",
-        "text": "Cada mobília falava de Jesus: o altar de sacrifício apontava para a cruz; a pia de água para a purificação; o pão da proposição para Jesus, o Pão da Vida; o candelabro para a Luz do Mundo; e o incenso para Sua intercessão!"
+        "text": "Com certeza. Diz assim em Êxodo 25, versículos 8 e 9: E me farão um santuário, para que eu possa habitar no meio deles. Conforme a tudo o que eu te mostrar para modelo do tabernáculo, e para modelo de todos os seus móveis, assim o fareis."
       },
       {
         "speaker": "Pedro",
-        "text": "Mas Hebreus 9:8–12 deixa um ponto cristalino: enquanto o primeiro tabernáculo estava de pé com seus rituais repetitivos, o caminho direto ao Pai ainda não estava plenamente manifestado. Tudo aquilo era temporário até o tempo da reforma — a vinda de Cristo!"
+        "text": "Olha que lindo e profundo! Esse desejo de Deus de habitar no meio do Seu povo é o mesmo desejo lá do Jardim do Éden, que foi interrompido pelo pecado, mas que nunca deixou o coração do Criador. E séculos mais tarde, esse mesmo tabernáculo ganha carne e osso quando Jesus vem habitar entre nós, como nos diz João 1:14: 'O Verbo se fez carne, e habitou entre nós'."
       },
       {
         "speaker": "Lívia",
-        "text": "Quando Jesus veio, Ele não trouxe mais sombras; Ele trouxe a realidade! Hoje você não precisa mais ficar do lado de fora de uma cortina. Em Jesus, Deus habita com você e em você."
+        "text": "Nossa, que conexão linda! Mas Pedro, as pessoas olham para os móveis daquele tabernáculo — como o altar de bronze, a pia de água, o candelabro, a mesa dos pães... cada detalhe tinha um significado específico, não tinha?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com certeza absoluta. Cada peça era como uma seta luminosa apontando diretamente para a pessoa e a obra de Jesus. O altar de sacrifício apontava para a cruz onde Jesus se entregou por nós; a pia de água, para a purificação; o pão, para Cristo como o Pão da Vida; o candelabro, para a Luz do Mundo; e o incenso, para a intercessão perfeita do nosso Sumo Sacerdote."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Mas por que tudo aquilo era tão cheio de regras, véus e barreiras se Deus nos ama tanto? Como a Bíblia explica essa transição entre o tabernáculo antigo e a obra definitiva de Cristo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Para entendermos isso perfeitamente, precisamos abrir a carta aos Hebreus. Vamos ler em Hebreus, capítulo 8, versículos 1 a 3. Lívia, faz a leitura para nós, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto de Hebreus 8, versículos 1 a 3 diz assim: Ora, a suma do que temos dito é que temos um sumo sacerdote tal, que está assentado nos céus à destra do trono da Majestade, ministro do santuário e do verdadeiro tabernáculo, o qual o Senhor fundou, e não o homem. Porque todo o sumo sacerdote é constituído para oferecer dons e sacrifícios; pelo que era necessário que este também tivesse alguma coisa que oferecer."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! Veja que o texto nos mostra que todo aquele sistema terreno era apenas uma cópia, uma sombra pedagógica e temporária. Os sacrifícios de animais tinham que ser repetidos todos os dias porque nenhum deles podia realmente transformar a consciência humana de forma definitiva."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E é aí que entra a grande diferença que a carta aos Hebreus vai mostrar nos capítulos seguintes, não é, Pedro? Como Jesus muda essa história para sempre?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia! Vamos ler a continuação dessa obra maravilhosa lá em Hebreus, capítulo 9, versículos 11 e 12. Lívia, lê esse texto para encerrarmos nossas leituras bíblicas de hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Hebreus 9, versículos 11 e 12: Mas Cristo, vindo como sumo sacerdote dos bens futuros, por maior e mais perfeito tabernáculo, não feito por mãos, isto é, não desta criação, nem por sangue de bodes e bezerros, mas por seu próprio sangue, entrou uma vez por todas no santuário, havendo obtido eterna redenção."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Glória a Deus! Quando Jesus entregou a Sua vida na cruz, aquele véu espesso do templo que separava o povo da presença de Deus rasgou-se de alto a baixo, de lés a lés. Hoje, em Cristo, você não precisa mais ficar do lado de fora de uma cortina ou depender de sacrifícios repetitivos. Deus habita com você e em você!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo tudo o que aprendemos hoje na Aula 7: vimos que o tabernáculo no deserto revelava o grande desejo de Deus de habitar no meio do Seu povo; que cada peça daquela tenda apontava profeticamente para Cristo; e que todo aquele sistema de sombras e rituais temporários foi substituído pela realidade eterna e perfeita conquistada por Jesus na cruz."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que verdade transformadora para fechar este primeiro bloco! E preste muita atenção agora: não existe absolutamente nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam por completo. Você não precisa tentar se consertar primeiro, cumprir uma longa lista de exigências ou esperar estar perfeito para se achegar a Ele."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Tudo o que o Senhor nos convida a fazer é crer de todo o coração e responder ao Seu amor. Como o próprio Jesus nos ensinou em Marcos, capítulo 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "O batismo nas águas é o passo público de quem entendeu que as sombras passaram e que agora vive a realidade da comunhão com o Pai. Se você deseja dar esse passo de fé, toque agora mesmo no botão logo abaixo deste Guia de Estudos. Você poderá ver a igreja mais próxima de você no mapa interativo, conferir a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "O tabernáculo no deserto expressava o desejo de Deus de habitar com Seu povo, mas seus rituais repetitivos e o véu de separação eram sombras pedagógicas e temporárias (Hebreus 8–9) apontando para a realidade plena que Jesus inaugura.",
@@ -832,27 +1160,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo ao Bloco 2 do I.D.E. — Boas Notícias! Na Aula 8 mergulhamos na promessa do trono eterno feita ao rei Davi em 2 Samuel 7."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje entramos no nosso Bloco 2 com a Aula 8: A Aliança com Davi e a Promessa do Trono Eterno."
       },
       {
         "speaker": "Lívia",
-        "text": "É curioso como Davi quis construir uma casa de cedro para Deus, mas Deus inverte tudo e diz: \"Eu é que vou edificar uma casa para você, e o trono do seu descendente será firme para sempre!\""
+        "text": "É uma alegria enorme ter você com a gente em mais um encontro! Antes de começarmos o estudo de hoje, pegue a sua Bíblia física ou abra na aba da Bíblia aqui no aplicativo 1Convite. Tenha também por perto o seu caderno, caneta ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, avançando na história bíblica, nós chegamos ao rei Davi. É muito curioso ver que Davi tinha um desejo nobre de construir uma casa — um templo — para Deus. Mas a resposta de Deus foi completamente inesperada. Por que Deus recusou a oferta de Davi de construir um templo e o que Ele propôs em troca?"
       },
       {
         "speaker": "Pedro",
-        "text": "Sempre a mesma lógica da Graça! Não é o ser humano construindo algo para impressionar a Deus, mas Deus construindo um Reino eterno para abençoar a humanidade. Nenhum rei terreno vive para sempre — nem Davi, nem Salomão."
+        "text": "Essa pergunta toca no coração da graça, Lívia! Davi queria fazer algo impressionante para Deus, mas Deus inverte a lógica humana. Vamos abrir a Palavra em 2 Samuel, capítulo 7, versículos 12 a 16. Lívia, por favor, lê esse texto na íntegra para nós."
       },
       {
         "speaker": "Lívia",
-        "text": "Então quando o anjo Gabriel aparece para Maria em Lucas 1:32–33 e diz que o Senhor dará a Jesus o trono de Davi e que do Seu Reino não haverá fim, o quebra-cabeça se fecha!"
+        "text": "Com certeza. Diz assim em 2 Samuel 7, versículos 12 a 16: Quando os teus dias forem completos, e andares com teus pais, então levantarei depois de ti a tua semente, que sairá das tuas entranhas, e estabelecerei o seu reino. Este edificará uma casa ao meu nome, e eu estabelecerei o trono do seu reino para sempre. Eu lhe serei por pai, e ele me será por filho; e, se cometer iniquidade, o castigarei com varas de homens, e com chagas dos filhos dos homens. Mas a minha benignidade não se apartará dele, assim como a tirei de Saul, a quem tirei de diante de ti. Porém a tua casa e o teu reino serão firmados para sempre diante de ti; teu trono será estabelecido para sempre."
       },
       {
         "speaker": "Pedro",
-        "text": "Exatamente! Jesus é o Rei Ungido do Salmo 2 e o herdeiro eterno de 2 Samuel 7. O governo d'Ele não é instável, corruptível nem passageiro."
+        "text": "Amém! Veja que lindo: antes que Davi pudesse construir qualquer coisa para Deus, o Senhor prometeu edificar uma linhagem e um reino eterno. Isso nos ensina que a iniciativa da salvação e do governo espiritual pertence inteiramente a Deus. Não é o ser humano construindo um império para impressionar o Criador, mas Deus construindo um Reino eterno para acolher a humanidade."
       },
       {
         "speaker": "Lívia",
-        "text": "Descansar sob o reinado de Jesus significa saber que a nossa história está nas mãos de um Rei bom cujo trono nunca será derrubado."
+        "text": "Isso tira um peso enorme dos nossos ombros, porque tentamos tanto construir nossa própria segurança. Mas Pedro, os reis terrenos passam, as dinastias caem e todos os impérios humanos desabam com o tempo. Como essa promessa de um trono eterno se sustenta diante da fragilidade da história humana?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é uma excelente reflexão, Lívia. Nenhum rei humano pôde durar para sempre. Por isso, essa promessa aponta muito além de Salomão ou dos descendentes de Davi na carne; ela aponta para o Messias. Vamos ler o Salmo 2, versículos 6 a 8. Lívia, pode fazer a leitura."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz o Salmo 2, versículos 6 a 8: Eu, porém, ungi o meu Rei sobre o meu santo monte de Sião. Proclamarei o decreto: O Senhor me disse: Tu és meu Filho, eu hoje te gerei. Pede-me, e eu te darei os gentios por herança, e os confins da terra por tua possessão."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aqui temos o retrato do Rei ungido por Deus. Os reis da terra se rebelam contra o Senhor e contra o seu Ungido, mas o decreto divino é irrevogável: Deus estabeleceu o seu Rei em Sião. O trono prometido a Davi não dependia da força política de Israel, mas da fidelidade inabalável do Deus Todo-Poderoso."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E como esse quebra-cabeça profético se fecha de vez? Onde a Bíblia mostra o cumprimento exato dessa promessa feita a Davi?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Ele se fecha de maneira gloriosa no Novo Testamento, quando o anjo Gabriel anuncia o nascimento dAquele que mudaria a história para sempre. Vamos abrir em Lucas, capítulo 1, versículos 32 e 33. Lívia, leia para nós por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto de Lucas 1, versículos 32 e 33 diz assim: Este será grande, e será chamado Filho do Altíssimo; e o Senhor Deus lhe dará o trono de Davi, seu pai; E reinará para sempre sobre a casa de Jacó, e o seu reinado não terá fim."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Jesus é o cumprimento literal da Aliança Davídica. Ele é o Descendente de Davi, o Filho do Altíssimo, cujo reinado não terá fim. O governo de Jesus não é instável, corruptível nem passageiro. Descansar sob o reinado de Cristo significa saber que a nossa vida, a nossa história e o nosso futuro estão nas mãos de um Rei bom, cujo trono jamais será derrubado, independentemente das crises deste mundo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Hoje aprendemos que Deus não precisa de construções humanas para reinar, mas Ele mesmo estabelece a Sua casa e o Seu Reino eterno através de Jesus Cristo, o herdeiro legítimo do trono de Davi. Entregar as áreas incertas do nosso futuro ao senhorio de Jesus é a decisão mais segura que podemos tomar."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Amém. E se você sente no coração o desejo de alinhar a sua vida a esse Reino que jamais terá fim, saiba que não existe nenhum impedimento ou requisito humano mantendo você afastado de Deus hoje. O Rei eterno já inaugurou a Nova Aliança por meio de Jesus. Vamos ler juntos o que a Palavra nos convida a fazer em Marcos 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com muito respeito, amor e sem nenhuma pressão, queremos convidar você a dar esse passo de fé, crendo de todo o coração e respondendo ao amor do nosso Salvador através do batismo. Para isso, basta tocar no botão logo abaixo deste Guia de Estudos para encontrar uma igreja fiel mais próxima de você no mapa, verificar a distância até a Igreja Marco Zero e obter o contato direto da liderança pastoral. Que Deus abençoe ricamente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Em 2 Samuel 7, Deus promete a Davi um Descendente cujo trono e Reino permanecerão para sempre. Essa promessa atravessa os Salmos e se cumpre literalmente em Jesus Cristo (Lucas 1:32–33), o Rei eterno.",
@@ -932,27 +1308,71 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Olá! Bem-vindo à Aula 9 do I.D.E. — Boas Notícias. Hoje vamos ouvir o recado sincero dos salmistas e profetas sobre o que realmente alegra o coração de Deus."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 9: O Verdadeiro Adorador — Coração Quebrantado Acima de Rituais."
       },
       {
         "speaker": "Lívia",
-        "text": "É surpreendente ler Isaías capítulo 1 e ouvir Deus dizendo que estava cansado de festas solenes, incenso e sacrifícios vazios! Como assim? Não foi o próprio Deus quem instituiu o culto?"
+        "text": "Que alegria ter você conosco em mais este passo da nossa jornada! Como sempre fazemos, queremos te convidar a pegar a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Separe também o seu caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que essa aula mexe muito comigo. Às vezes, a gente cresce achando que religião é um conjunto de regras, aparências e cultos mecânicos para agradar a Deus. Mas os profetas e os salmistas trazem uma visão completamente diferente, não é? Afinal, o que Deus realmente espera de nós quando nos aproximamos Dele?"
       },
       {
         "speaker": "Pedro",
-        "text": "Foi sim — mas nunca como um teatro mecânico para compensar um coração duro ou injusto! Em Salmo 51:17, depois de falhar gravemente, Davi descobre a verdade: \"Sacrifícios agradáveis a Deus são o espírito quebrantado; coração compungido e contrito não o desprezarás.\""
+        "text": "Essa pergunta é cirúrgica, Lívia! Vamos direto às Escrituras para ver o que Deus pensa sobre isso. Abra a sua Bíblia no livro do profeta Isaías, capítulo 1, versículos 11 a 13 e o versículo 17. Lívia, lê esse texto pra gente na íntegra, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "E Miqueias 6:8 resume a espiritualidade autêntica com beleza de tirar o fôlego: praticar a justiça, amar a misericórdia e andar humildemente com o teu Deus."
+        "text": "Com certeza. Diz assim em Isaías 1, versículos 11 a 13 e o 17: De que me serve a mim a multidão dos vossos sacrifícios?, diz o Senhor. Estou fartos dos holocaustos de carneiros e da gordura de animais cevados; e não me agrado do sangue de novilhos, nem de cordeiros, nem de bodes. Quando vós comeis perante a minha face, quem requereu isto de vós, que trelásseis pelos meus átrios? Não continueis a trazer ofertas vãs; o incenso é para mim abominação, e as luas novas, e os sábados, e a convocação das assembleias; não posso suportar iniquidade, nem a assembleia solua. (...) Aprendei a fazei o bem; andai em juízo, atendei ao oprimido; fazei justiça ao órfão, tratai da causa das viúvas."
       },
       {
         "speaker": "Pedro",
-        "text": "Deus não procura atores religiosos que cumprem um checklist externo enquanto vivem cheios de medo ou orgulho. Ele procura filhos verdadeiros, transparentes, transformados por dentro pela graça."
+        "text": "Olha que impressionante, Lívia! Deus diz que está farto de rituais vazios, de cultos mecânicos e de uma religiosidade de fachada. Por quê? Porque o povo cumpria uma rotina religiosa exterior, mas continuava oprimindo os outros, vivendo na injustiça e com o coração distante de Deus. Deus nunca quis um teatro religioso; Ele quer justiça, misericórdia e amor verdadeiro ao próximo."
       },
       {
         "speaker": "Lívia",
-        "text": "Que alívio saber que podemos chegar diante de Deus exatamente como somos — com sinceridade de coração — e ser acolhidos pelo Pai."
+        "text": "Isso tira um peso enorme dos nossos ombros, mas também nos confronta profundamente. Porque nos mostra que Deus não quer atores religiosos cumprindo um checklist, mas filhos verdadeiros. E quando alguém cai, peca ou percebe que errou feio, como deve se aproximar de Deus? O que o rei Davi descobriu sobre isso?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Davi aprendeu isso da maneira mais dolorosa, após pecar gravemente. Vamos abrir juntos no Salmo 51, versículos 16 e 17. Lívia, lê esse texto com calma para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim no Salmo 51, versículos 16 e 17: Porque não te deleitas em sacrifícios, senão eu os daria; tu não te comprazes em holocaustos. Os sacrifícios para Deus são o espírito quebrantado; a um coração quebrantado e contrito não desprezarás, ó Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que promessa linda e consoladora! Davi entendeu que Deus não aceita suborno espiritual com sacrifícios mecânicos. O que comove o coração de Deus é um espírito quebrantado, um coração humilde e arrependido. Deus acolhe aquele que chega sem máscaras, reconhecendo sua fraqueza e confiando unicamente na Sua misericórdia."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é transformador. Mas então, como traduzir essa espiritualidade sincera para o nosso dia a dia? O que Deus realmente pede de nós na prática?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "O profeta Miqueias resume isso com uma beleza de tirar o fôlego. Vamos abrir em Miqueias, capítulo 6, versículos 6 a 8. Lívia, faz a leitura pra gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Miqueias 6, versículos 6 a 8: Com que me apresentarei ao Senhor e me inclinarei perante o Deus alto? Apresentar-me-ei com holocaustos, com bezerros de um ano? Agradar-se-á o Senhor de milhares de carneiros, ou de dez milhares de ribeiros de azeite? Dar-lhe-ei o meu primogênito pela minha transgressão, o fruto do meu corpo pelo pecado da minha alma? Ele te declarou, ó homem, o que é bom; e que é o que o Senhor pede de ti, senão que pratiques a justiça, e ames a misericórdia, e andes humildemente com o teu Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Praticar a justiça, amar a misericórdia e andar humildemente com o nosso Deus. Essa é a essência da verdadeira adoração! Não é sobre rituais complicados, mas sobre uma vida transformada que transborda amor genuíno e comunhão diária com o Pai."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Hoje aprendemos que Deus nunca buscou sacrifícios mecânicos ou aparências vazias, mas deseja um coração quebrantado, sincero e transformado. A verdadeira adoração se manifesta na justiça, na misericórdia e na humildade de andar com Ele todos os dias."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E para fechar o nosso encontro de hoje, queremos te fazer um convite muito especial. Não existe nenhum impedimento entre você e Deus neste exato momento. Não há barreira ou requisito humano que te impeça de se entregar a Jesus. O Rei eterno já inaugurou a Nova Aliança para você. Como diz o próprio Jesus em Marcos 16, versículos 15 e 16: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Se o seu coração creu nessa mensagem e deseja dar esse passo de fé e aliança através do batismo, saiba que você não está sozinho. Toque no botão logo abaixo do Guia de Estudos para buscar uma igreja próxima de você no mapa, veja a distância até a Igreja Marco Zero e pegue o contato pastoral para conversar e agendar o seu batismo. Nós te esperamos na próxima aula!"
       }
     ],
     "overview": "Os profetas e o Salmo 51 desmascaram a religiosidade performática. Deus nunca se agradou de rituais mecânicos desconectados do amor; Ele acolhe um coração sincero e quebrantado que caminha em humildade, justiça e misericórdia.",
@@ -1032,27 +1452,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 10 do I.D.E. — Boas Notícias. Hoje entramos em terreno sagrado: o capítulo 53 de Isaías, escrito cerca de setecentos anos antes do nascimento de Jesus."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 10: O Servo Sofredor que Carrega a Nossa Culpa."
       },
       {
         "speaker": "Lívia",
-        "text": "Quando lemos Isaías 53, parece que o profeta estava em pé ao lado da cruz! \"Ele foi traspassado pelas nossas transgressões e moído pelas nossas iniquidades; o castigo que nos traz a paz estava sobre ele.\""
+        "text": "Que alegria ter você conosco em mais este encontro! Como sempre fazemos, queremos te fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra na nossa aba de leitura aqui no aplicativo 1Convite. Separe também o seu caderno e uma caneta, ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, hoje entramos em um terreno absolutamente profundo e emocionante da Palavra. Séculos antes de Jesus nascer em Belém, os profetas já descreviam detalhadamente o Seu sofrimento. Minha primeira pergunta é: por que o Messias, o Rei que veio para reinar, precisou sofrer e ser tratado como um criminoso? Como o Antigo Testamento já antecipava isso?"
       },
       {
         "speaker": "Pedro",
-        "text": "Essa é a grande troca do Evangelho! Em 2 Coríntios 5:21, Paulo traduz Isaías 53 em uma única frase inesquecível: aquele que não conheceu pecado, Deus o fez pecado por nós, para que nele fôssemos feitos justiça de Deus."
+        "text": "Essa pergunta toca no coração do Evangelho, Lívia! Vamos direto à Palavra de Deus para ver essa revelação impressionante. Abra a Bíblia com a gente no livro do profeta Isaías, capítulo 53, vamos ler os versículos 4 a 6. Lívia, por favor, faça a leitura na íntegra para nós."
       },
       {
         "speaker": "Lívia",
-        "text": "Ou seja, o Rei prometido a Davi não venceu esmagando os pecadores — Ele venceu carregando a nossa culpa no próprio corpo lá no madeiro, como lembra 1 Pedro 2:24!"
+        "text": "Com certeza. Diz assim em Isaías 53, versículos 4 a 6: Verdadeiramente ele levou sobre si as nossas enfermidades, e as nossas dores levou sobre si; e nós o reputamos por aflito, ferido de Deus, e oprimido. Mas ele foi traspassado pelas nossas transgressões, e moído pelas nossas iniquidades; o castigo que nos traz a paz estava sobre ele, e pelas suas pisaduras fomos sarados. Todos nós andávamos desgarrados como ovelhas; cada um se desviava pelo seu caminho; e o Senhor fez cair sobre ele a iniquidade de todos nós."
       },
       {
         "speaker": "Pedro",
-        "text": "E repare no efeito disso: o castigo que nos traz a PAZ estava sobre Ele. Se o castigo já caiu plenamente sobre Jesus, não sobrou nenhuma gota de condenação esperando por quem está n'Ele."
+        "text": "Veja que retrato extraordinário! Escrito cerca de setecentos anos antes da cruz, o profeta Isaías descreve o sacrifício de Jesus com tanta precisão que parece um relato ocular de alguém em pé ao lado do Calvário. Jesus não sofreu por culpa própria; Ele levou voluntariamente as nossas transgressões. O castigo que cabia a nós caiu inteiramente sobre Ele para que pudéssemos ter paz."
       },
       {
         "speaker": "Lívia",
-        "text": "Que amor absurdo! Receba essa paz hoje. Nada separa você desse Salvador que se entregou voluntariamente no seu lugar."
+        "text": "É de tirar o fôlego ver a perfeição desse plano. Mas Pedro, como o Novo Testamento explica essa troca? Como entender na prática o que aconteceu naquele madeiro entre a nossa culpa e a justiça de Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "O apóstolo Paulo resume isso de forma magistral, Lívia. Vamos abrir em 2 Coríntios, capítulo 5, versículo 21. Lívia, lê esse versículo maravilhoso pra gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em 2 Coríntios 5:21: Àquele que não conheceu pecado, o fez pecado por nós; para que, nele, fôssemos feitos justiça de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é a grande troca do Evangelho! Aquele que era perfeitamente puro e sem mancha assumiu o nosso lugar como se Ele fosse o culpado, para que nós — que éramos os culpados — fôssemos vestidos com a justiça perfeita de Cristo. Deus não ignorou o nosso pecado, Ele o julgou totalmente sobre o Seu próprio Filho para que pudesse nos perdoar com inteira justiça."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é transformador demais. Mas confesso que às vezes a gente carrega um peso de culpa tão grande pelo que fez no passado, que acha que Jesus pode ter perdoado os outros, mas não a nós. Como a Bíblia confirma que as nossas culpas foram realmente levadas por Ele?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Para responder a essa angústia que muitos de nós sentimos, vamos ler 1 Pedro, capítulo 2, versículo 24. Lívia, por favor, leia esse texto para encorajar quem está nos ouvindo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. 1 Pedro 2:24 diz: Levando ele mesmo os nossos pecados em seu corpo sobre o madeiro, para que, mortos para os pecados, pudéssemos viver para a justiça; e pelas suas feridas fostes sarados."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! Repare bem: Jesus levou os nossos pecados no Seu próprio corpo sobre o madeiro. Se o castigo já foi pago integralmente por Ele, não sobrou nenhuma gota de condenação esperando por quem está em Cristo Jesus. O peso da sua culpa já foi cancelado na cruz. Você pode descansar nessa graça hoje!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que palavra consoladora! Resumindo o que aprendemos hoje, Pedro: vimos que Jesus foi o Servo Sofredor predito por Isaías, que assumiu voluntariamente a nossa culpa na cruz para nos dar paz, cumprindo a grande troca onde nós recebemos a Sua justiça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E por causa desse amor tão grande e dessa obra completa na cruz, chegamos ao momento mais especial da nossa jornada. Preste muita atenção no que o nosso Senhor Jesus ordenou em Marcos 16:15 e 16. Lívia, leia para nós, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Não existe nenhum impedimento entre você e Deus neste exato momento. O sacrifício de Cristo foi perfeito, definitivo e suficiente. Se você crê de todo o coração nessa boa notícia, o passo natural dessa fé é o batismo nas águas, selando sua Nova Aliança com o Rei. Para te ajudar a dar esse passo com toda tranquilidade e segurança, toque no botão logo abaixo do nosso Guia de Estudos. Você poderá ver as igrejas mais próximas no mapa, calcular a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que o Senhor abençoe grandemente a sua decisão. Um forte abraço e até a nossa próxima aula do IDE Boas Notícias!"
       }
     ],
     "overview": "Isaías 53 antecipa com riqueza profética o sacrifício substitutivo do Messias. O Rei Eterno escolheu tornar-Se o Servo Sofredor, levando sobre Si nossas culpas e dores para nos oferecer reconciliação completa e paz com Deus.",
@@ -1132,27 +1600,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 11 do I.D.E. — Boas Notícias! Hoje abrimos o livro de Daniel e contemplamos a visão majestosa do Reino que jamais será destruído."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 11: O Filho do Homem e o Reino que Não Será Destruído."
       },
       {
         "speaker": "Lívia",
-        "text": "Em Daniel 2, os impérios humanos parecem gigantescos, mas todos desabam diante de uma Pedra cortada sem auxílio de mãos humanas — o Reino de Deus que permanece para sempre!"
+        "text": "Que alegria caminhar com você até aqui! Antes de mergulharmos no estudo, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, vivemos em um mundo onde governos, economias e impérios humanos parecem fortes, mas mudam o tempo todo e geram tanta incerteza. Como a Bíblia retrata a fragilidade desses reinos em contraste com o plano de Deus?"
       },
       {
         "speaker": "Pedro",
-        "text": "E no capítulo 7, versículos 13 e 14, Daniel vê alguém \"como o Filho do Homem\" vindo com as nuvens do céu até o Ancião de Dias, recebendo domínio, glória e um Reino eterno servido por todos os povos e nações."
+        "text": "Essa pergunta toca no coração da história humana, Lívia. Vamos abrir a Palavra no Antigo Testamento, no livro do profeta Daniel, capítulo 2, versículo 44. Lívia, lê na íntegra pra gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "Você sabia que \"Filho do Homem\" era o título favorito que Jesus usava para falar de Si mesmo nos Evangelhos?"
+        "text": "Com certeza. Diz assim em Daniel 2, versículo 44: Mas, nos dias desses reis, o Deus dos céus suscitará um reino que não será jamais destruído; e este reino não passará a outro povo; esmiuçará e consumirá todos estes reinos, e ele subsistirá para sempre."
       },
       {
         "speaker": "Pedro",
-        "text": "Sim! E diante do Sinédrio, em Marcos 14:62, Jesus afirma abertamente que Ele é esse Filho do Homem assentado à direita do Todo-Poderoso. Ele une humanidade real e autoridade divina absoluta."
+        "text": "Olha que promessa consoladora! Todos os poderes humanos são passageiros, mas Deus estabeleceu um Reino indestrutível. Ele não depende das crises da terra para continuar reinando."
       },
       {
         "speaker": "Lívia",
-        "text": "Quando pertencemos a Jesus, fazemos parte de um Reino que não depende de eleições, fronteiras nem impérios passageiros. É um Reino eterno e indestrutível!"
+        "text": "Daniel também teve visões incríveis sobre a figura que receberia esse domínio eterno, não foi, Pedro? Como o profeta descreve esse Ser celestial e humano ao mesmo tempo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia. Vamos avançar para Daniel, capítulo 7, versículos 13 e 14. Leia esses versículos com calma para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto diz o seguinte em Daniel 7, versículos 13 e 14: Eu estava olhando nas minhas visões da noite, e eis que vinha com as nuvens do céu um como o filho do homem; e dirigiu-se ao ancião de dias, e o fizeram chegar até ele. E foi-lhe dado domínio, e glória, e o reino, para que os povos, nações e homens de todas alínguas o servissem; o seu domínio é domínio eterno, que não passarão, e o seu reino não será destruído."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veja que majestade! Daniel contempla alguém que vem com as nuvens e recebe adoração e domínio universal. E o mais fascinante é que essa expressão, 'Filho do Homem', era o título favorito que Jesus escolhia usar para Si mesmo nos Evangelhos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso me traz muita curiosidade, Pedro. Quando Jesus esteve na terra como homem, Ele realmente assumiu diante das autoridades que Ele era esse Rei profetizado por Daniel?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Sim, Ele assumiu com toda a clareza, e isso custou a Sua condenação perante o tribunal humano. Vamos abrir o Novo Testamento, no Evangelho de Marcos, capítulo 14, versículo 62. Lívia, lê essa passagem forte para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto diz em Marcos 14, versículo 62: E Jesus disse-lhe: Eu o sou, e vereis o Filho do homem assentado à direita do todo-poderoso, e vindo com as nuvens do céu."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Diante do Sinédrio, Jesus não hesitou. Ele uniu perfeitamente a profecia antiga de Daniel à Sua própria pessoa: Ele é o Rei divino e humano que governa sobre todas as nações. Quando cremos Nele, nós já fazemos parte de um Reino que jamais será destruído, não importa o que aconteça ao nosso redor!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que estudo maravilhoso! Resumindo o que aprendemos hoje: vimos que todos os reinos humanos são transitórios e passageiros, mas Deus estabeleceu um Reino eterno. Esse Reino foi entregue ao Filho do Homem — título que o próprio Jesus assumiu com total autoridade, garantindo que a nossa cidadania está segura para sempre Nele."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E para aplicarmos isso hoje, lembre-se sempre da nossa dica prática: sempre que as notícias do mundo parecerem assustadoras ou incertas, ore lembrando de Daniel 7:14. O domínio eterno pertence ao Filho do Homem, e Ele cuida de você."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Queremos agora fazer um convite muito especial e respeitoso. Não existe nenhum impedimento ou requisito humano entre você e o amor de Deus hoje. O Rei eterno prometido pelos profetas já inaugurou a Sua Nova Aliança. Se o seu coração deseja entregar a vida a esse Rei, a Bíblia nos convida a dar esse passo através do batismo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Como está escrito lá em Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você sente o desejo de selar sua aliança com Jesus pelas águas do batismo, saiba que você não está sozinho nessa caminhada. Toque no botão logo abaixo do Guia de Estudos para buscar uma igreja próxima de você no mapa, veja a distância até a Igreja Marco Zero e pegue o contato pastoral para conversar com um líder. Que Deus abençoe grandemente a sua vida, e até a nossa próxima aula no IDE Boas Notícias!"
       }
     ],
     "overview": "As visões de Daniel 2 e 7 revelam que todos os reinos humanos são transitórios, mas Deus estabelece um Reino eterno entregue ao \"Filho do Homem\". Jesus assume diretamente esse título (Marcos 14:62) como o Rei divino e humano de todas as nações.",
@@ -1231,27 +1751,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 12 do I.D.E. — Boas Notícias! Hoje chegamos a uma das promessas mais decisivas de toda a Bíblia: o anúncio da Nova Aliança em Jeremias 31 e Ezequiel 36."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 12: A Promessa da Nova Aliança: Escrita no Coração, Não em Pedra."
       },
       {
         "speaker": "Lívia",
-        "text": "Na Antiga Aliança, os mandamentos estavam gravados em tábuas de pedra, do lado de fora. E mesmo sendo bons, eles não tinham poder para transformar o coração humano por dentro."
+        "text": "Que alegria continuar essa jornada com você! Antes de abrirmos a Bíblia, aquele convite indispensável: pegue a sua Bíblia física ou abra o aplicativo 1Convite para acompanhar cada texto conosco. Tenha também seu caderno e caneta prontos, ou utilize o campo de anotações logo abaixo do Guia de Estudos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, a nossa aula de hoje toca em uma das promessas mais profundas e consoladoras de toda a Escritura. Muitas pessoas tentam se aproximar de Deus na base da força de vontade e acabam frustradas. Como funcionava a aliança antiga e por que Deus prometeu algo totalmente diferente?"
       },
       {
         "speaker": "Pedro",
-        "text": "Por isso Deus anuncia em Jeremias 31:31–34 algo radicalmente novo: uma aliança \"não conforme a aliança que fiz com seus pais\". Agora, Deus promete gravar Sua vontade na mente e no coração, perdoar a iniquidade e nunca mais se lembrar dos pecados!"
+        "text": "Essa pergunta é fantástica, Lívia, porque revela o limite dos nossos próprios esforços. Vamos ver o que os profetas anunciaram. Abra a Bíblia com a gente no Antigo Testamento, no livro do profeta Jeremias, capítulo 31, versículos 31 e 32. Lívia, faz a leitura na íntegra pra gente."
       },
       {
         "speaker": "Lívia",
-        "text": "E Ezequiel 36:26–27 explica como Deus realiza esse milagre: \"Dar-vos-ei coração novo e porei dentro de vós espírito novo; tirarei da vossa carne o coração de pedra e vos darei coração de carne. Porei dentro de vós o meu Espírito!\""
+        "text": "Lendo aqui em Jeremias 31, versículos 31 e 32: Eis que os dias vêm, diz o Senhor, em que farei uma nova aliança com a casa de Israel e com a casa de Judá. Não conforme a aliança que fiz com seus pais, no dia em que os tomei pela mão, para os tirar da terra do Egito; porquanto eles invalidaram a minha aliança, malgrado eu os haver desposado, diz o Senhor."
       },
       {
         "speaker": "Pedro",
-        "text": "Repare nos verbos: \"Eu darei\", \"Eu tirarei\", \"Eu porei\", \"Eu perdoarei\". A transformação verdadeira não é pressão externa de fora para dentro; é a presença do Espírito Santo operando de dentro para fora!"
+        "text": "Veja só! A aliança antiga, feita no monte Sinai, tinha mandamentos perfeitos e santos, mas as tábuas estavam escritas em pedra, do lado de fora do ser humano. O coração humano era rebelde e frágil, incapaz de cumprir por si mesmo. Por isso, Deus anunciava um plano muito superior: uma Nova Aliança baseada em transformação interior, e não apenas em leis externas."
       },
       {
         "speaker": "Lívia",
-        "text": "E o mais lindo: essa Nova Aliança já foi inaugurada pelo sangue de Jesus. Você pode receber hoje um coração novo e o perdão completo de Deus."
+        "text": "Isso traz um alívio imenso para quem carrega culpa no peito. Mas afinal, como Deus prometeu que essa Nova Aliança funcionaria na prática dentro de nós? Onde isso fica claro nos textos de Jeremias?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Deus mesmo detalha esse plano maravilhoso logo a seguir. Vamos continuar em Jeremias 31, mas agora nos versículos 33 e 34. Lívia, por favor, leia para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim a Palavra de Deus em Jeremias 31, versículos 33 e 34: Mas esta é a aliança que farei com a casa de Israel depois daqueles dias, diz o Senhor: Porei a minha lei no seu interior, e a escreverei no seu coração; e eu serei o seu Deus e eles serão o meu povo. E não ensinarão mais cada um a seu próximo, nem cada um a seu irmão, dizendo: Conhece ao Senhor; porque todos me conhecerão, desde o menor até ao maior deles, diz o Senhor; porque lhes perdoarei a sua maldade, e nunca mais me lembrarei dos seus pecados."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que promessa extraordinária! Deus não apenas diz que vai nos perdoar de forma completa e definitiva — a ponto de prometer que nunca mais se lembrará dos nossos pecados —, mas Ele mesmo escreve a Sua lei no nosso coração. A obediência deixa de ser um peso esmagador de regras e passa a ser uma resposta natural de amor ao Rei que nos salvou."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "É lindo demais ver que o perdão e a mudança vêm de Deus! Mas como o profeta Ezequiel complementa isso? De que maneira Deus realiza esse milagre de nos dar um coração novo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "O profeta Ezequiel explica exatamente os bastidores desse milagre divino. Vamos abrir em Ezequiel, capítulo 36, versículos 25 a 27. Lívia, lê esse texto para o nosso coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Ezequiel 36, versículos 25 a 27 diz assim: Então espalharei água pura sobre vós, e ficareis purificados; de todas as vossas imundícias e de todos os vossos ídolos vos purificarei. E dar-vos-ei um coração novo, e porei dentro de vós um espírito novo; e tirarei da vossa carne o coração de pedra, e vos darei um coração de carne. E porei dentro de vós o meu Espírito, e farei que andem nos meus estatutos, e guardem os meus juízos, e os façam."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Preste muita atenção nos verbos que Deus usa: \"Eu espalharei\", \"Eu purificarei\", \"Eu darei\", \"Eu tirarei\", \"Eu porei\", \"Eu farei\". A transformação verdadeira na vida cristã não é uma conquista humana obtida na marra, mas sim a habitação do próprio Espírito Santo operando de dentro para fora. Deus retira o coração duro, egoísta e insensible como a pedra, e coloca em nós um coração maleável, cheio de vida, guiado pelo Seu Espírito."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso muda completamente a nossa visão sobre a vida com Deus. Resumindo a nossa aula de hoje, aprendemos que a Nova Aliança anunciada por Jeremias e Ezequiel não depende da nossa força humana falha. Ela nos oferece perdão total e definitivo dos pecados e traz o próprio Espírito Santo para habitar dentro de nós, gerando um coração novo e transformado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E a grande notícia é que essa Nova Aliança já foi inaugurada pelo sangue precioso de Jesus na cruz. Por isso, se você tem tentado mudar sua vida apenas na base da força de vontade, faça hoje mesmo a oração prática sugerida no Guia: \"Senhor, renova o meu coração pela ação do Teu Espírito.\""
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Querido ouvinte, não existe nenhum impedimento entre você e Deus hoje. Não há barreiras ou exigências humanas que possam te afastar do amor do Pai. O Rei eterno já abriu o caminho por meio da Nova Aliança. E a própria Bíblia nos convida a selar essa entrega de todo o coração. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lendo Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com toda a calma, respeito e carinho, convidamos você a dar esse passo de fé. Se você crê de todo o coração nessa Nova Aliança e deseja que o Espírito Santo transforme a sua vida por completo, toque no botão logo abaixo do seu Guia de Estudos. Ali você poderá encontrar uma igreja cristã próxima no mapa, ver a distância até a Igreja Marco Zero e ter acesso direto ao contato pastoral para dar o seu passo rumo ao batismo. Um forte abraço, que Deus abençoe grandemente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Os profetas Jeremias e Ezequiel anunciaram que Deus inauguraria uma Nova Aliança superior à do Sinai: baseada em perdão definitivo, um coração transformado e a habitação interior do Espírito Santo.",
@@ -1330,27 +1902,83 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 13 do I.D.E. — Boas Notícias! Na aula anterior vimos a promessa da Nova Aliança; hoje o Novo Testamento mostra com franqueza que a Antiga Aliança cumpriu seu tempo e deu lugar à Nova."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 13: A Substituição da Antiga Aliança pela Nova."
       },
       {
         "speaker": "Lívia",
-        "text": "Em 2 Coríntios 3, Paulo é muito claro: ele chama o ministério gravado com letras em pedras de algo que teve uma glória passageira, mas que foi superado pelo ministério muito mais glorioso do Espírito!"
+        "text": "É uma alegria imensa estar com você em mais um estudo! Antes de abrirmos a Palavra, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, na aula passada conversamos sobre a promessa da Nova Aliança. Mas confesso que, para muita gente, surge uma dúvida sincera: por que a Antiga Aliança precisou ser substituída? Afinal, ela não veio de Deus?"
       },
       {
         "speaker": "Pedro",
-        "text": "E Hebreus 8:13 não deixa margem para dúvida: \"Quando ele diz Nova, torna antiquada a primeira.\" Não ficamos com um pé na Antiga Aliança e outro na Nova; entramos inteiros na superioridade da Nova Aliança em Cristo!"
+        "text": "Sim, Lívia, a Antiga Aliança veio de Deus e teve o seu propósito no tempo certo. Mas ela apontava para algo muito maior que viria em Jesus. Para entendermos essa transição gloriosa, vamos abrir a Bíblia em 2 Coríntios, capítulo 3, versículos 3 a 8. Lívia, faz a leitura para a gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Isso explica por que \"a letra mata, mas o Espírito vivifica\" (2 Coríntios 3:6). Uma regra externa pode apontar o erro, mas só o Espírito Santo gera vida, alegria e liberdade verdadeira."
+        "text": "Com certeza. Diz assim em 2 Coríntios 3, versículos 3 a 8: Sendo já manifestos que vós sois a carta de Cristo, ministrada por nós, escrita não com tinta, mas com o Espírito do Deus vivo, não em tábuas de pedra, mas nas tábuas de carne do coração. E a mesma confiança temos que por Cristo temos acesso a Deus; não que sejamos capazes, por nós mesmos, de pensar alguma coisa como de nós mesmos; mas a nossa capacidade vem de Deus, o qual nos habilitou para sermos ministros de uma nova aliança, não da letra, mas do espírito; porque a letra mata, mas o espírito vivifica. E, se o ministério da morte, gravado com letras em pedras, veio em glória, de maneira que os filhos de Israel não podiam olhar firmemente para a face de Moisés, por causa da glória do seu rosto, a qual era passageira, como não será de muito maior glória o ministério do Espírito?"
       },
       {
         "speaker": "Pedro",
-        "text": "Quando vivemos na Nova Aliança, não somos movidos por culpa ou medo de falhar na auditoria da letra, mas contemplamos a glória de Jesus e somos transformados à Sua imagem."
+        "text": "Veja que forte essa comparação do apóstolo Paulo! O ministério gravado em pedras — a Lei escrita — trazia um fardo de culpa e morte porque o ser humano caído não conseguia cumpri-la por si mesmo. Mas o ministério do Espírito traz vida, capacitação e transformação de dentro para fora."
       },
       {
         "speaker": "Lívia",
-        "text": "Que liberdade extraordinária! A Nova Aliança é muito mais gloriosa, estável e cheia de vida."
+        "text": "Isso muda completamente a nossa visão, Pedro! Mas me diga uma coisa: quando lemos sobre o ministério do Espírito, isso quer dizer que a Nova Aliança é apenas uma adaptação da antiga ou ela é algo totalmente superior e novo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Ela é infinitamente superior, Lívia. E o livro de Hebreus explica isso com muita clareza. Vamos abrir em Hebreus, capítulo 8, versículos 6 a 9. Lívia, por favor, leia esses versículos para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lendo aqui em Hebreus 8, versículos 6 a 9: Mas agora alcançou ele ministério tanto mais excelente, quanto é mediador de uma melhor aliança, que está testamentada em melhores promessas. Porque, se aquela primeira fora irrepreensível, nunca se teria buscado lugar para a segunda. Porque, reprovando-os, lhes diz: Eis que virão dias, diz o Senhor, em que com a casa de Israel e com a casa de Judá estarei uma nova aliança. Não conforme a aliança que fiz com seus padres no dia em que os tomei pelas mãos, para os tirar da terra do Egito; como eles não permaneceram naquela aliança, eu para eles não abri meus olhos, diz o Senhor."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! A primeira aliança encontrou falha no povo porque o homem precisava de um socorro externo que mudasse o seu interior. Jesus veio como o Mediador de uma aliança superior, baseada em promessas melhores e firmada no sacrifício perfeito da cruz."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E para fecharmos a leitura dessa parte, como o autor aos Hebreus resume o fim da antiga e a chegada dessa nova aliança? Continua no mesmo capítulo, né?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia. Vamos ler o desfecho desse capítulo em Hebreus 8, versículos 10 a 13. Pode ler, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Hebreus 8, versículos 10 a 13: Porque esta é a aliança que farei com a casa de Israel depois daqueles dias, diz o Senhor: Porei as minhas leis no seu entendimento, ande na sua mente as escreverei; e eu lhes serei por Deus, e eles me serão por povo; e não ensinará cada um a seu próximo, nem cada um ao seu irmão, dizendo: Conhece ao Senhor; porque todos me conhecerão, desde o menor até ao maior deles. Porque serei misericordioso para com suas iniquidades, e de seus pecados e transgressões já não me lembrarei mais. Quando ele diz Nova, torna antiquada a primeira. Ora, o que se torna antiquado e envelhece está perto de desvanecer-se."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que texto maravilhoso! A Antiga Aliança cumpriu o seu tempo e desvaneceu, dando lugar a uma aliança onde o perdão é pleno, o conhecimento de Deus é pessoal e a lei de Deus é gravada pelo Espírito em nossos corações. Nós não ficamos com um pé na Antiga Aliança e outro na Nova; entramos inteiros na liberdade e na suficiência da graça em Cristo!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Essa liberdade é indescritível! Para resumir o que aprendemos hoje, vimos que a Antiga Aliança, com suas letras em pedra, tinha uma glória passageira e apontava o erro, mas não podia gerar vida. Já a Nova Aliança, mediada por Jesus, traz o Espírito Santo para nos transformar de dentro para fora, dando-nos perdão completo e liberdade real."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E sabendo disso, chegamos ao momento mais precioso do nosso encontro. Queremos conversar com você que tem acompanhado estas aulas com o coração aberto. Talvez você tenha carregado durante anos o peso de tentar alcançar a aprovação de Deus por esforço próprio, vivendo debaixo de regras e culpas. Mas hoje o Senhor te convida a viver a Nova Aliança."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Não existe nenhum impedimento entre você e Deus hoje. Nenhuma falha do passado pode anular a graça que Ele derrama sobre a sua vida neste exato momento. O Rei eterno já inaugurou a Nova Aliança, e tudo o que Ele pede é que você creia de todo o coração."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Como nos ensina o Evangelho de Marcos, capítulo 16, versículos 15 e 16, que diz assim na íntegra: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Se você deseja dar esse passo de fé, entregar sua vida a Jesus e ser batizado para testemunhar essa Nova Aliança, toque agora mesmo no botão logo abaixo deste Guia de Estudos. Ali você poderá encontrar uma igreja cristã bem próxima de você no mapa, ver a distância exata até a Igreja Marco Zero e obter o contato de um pastor para caminhar com você nessa decisão."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que o Espírito Santo conduza os seus passos. Um forte abraço, que Deus abençoe a sua vida ricamente, e até a nossa próxima aula no podcast IDE Boas Notícias!"
       }
     ],
     "overview": "Tanto 2 Coríntios 3 quanto Hebreus 8 ensinam que o ministério da Antiga Aliança, gravado em pedra, foi superado pelo ministério infinitamente mais glorioso do Espírito Santo na Nova Aliança em Cristo.",
@@ -1430,27 +2058,95 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Chegamos ao final do Bloco 2 — Aula 14 do I.D.E. — Boas Notícias! Toda a espera dos profetas deságua neste momento histórico: \"Vindo, porém, a plenitude do tempo, Deus enviou seu Filho\" (Gálatas 4:4)."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 14: O Tempo Cumprido: O Rei Jesus Chegou."
       },
       {
         "speaker": "Lívia",
-        "text": "E quais foram as primeiras palavras públicas de Jesus em Marcos 1:15? \"O tempo está cumprido, e o reino de Deus está próximo; arrependei-vos e crede no evangelho!\""
+        "text": "É uma alegria enorme caminhar com você até aqui! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, toda a espera dos profetas ao longo dos séculos parece desaguar exatamente neste momento da história. Muita gente se pergunta por que Deus demorou tanto para enviar o Messias. Como a Bíblia explica o momento exato em que Jesus veio ao mundo?"
       },
       {
         "speaker": "Pedro",
-        "text": "Repare na palavra \"evangelho\": significa literalmente BOAS NOTÍCIAS! E na sinagoga de Nazaré, em Lucas 4, Jesus lê Isaías e anuncia que o Espírito está sobre Ele para dar boas notícias aos pobres, proclamar libertação aos cativos e anunciar o ano aceitável do Senhor — e declara: \"Hoje se cumpriu esta Escritura!\""
+        "text": "Essa é uma pergunta fundamental, Lívia! Deus nunca se atrasa. Vamos abrir a Palavra em Gálatas, capítulo 4, versículos 4 a 5. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E olha o resultado final descrito em Gálatas 4:6–7: porque somos filhos, Deus enviou aos nossos corações o Espírito de Seu Filho, que clama \"Aba, Pai!\". Não somos mais escravos — somos filhos e herdeiros!"
+        "text": "Estou com o texto aberto aqui. Diz assim em Gálatas 4, versículos 4 a 5: Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei, para remir os que estavam debaixo da lei, para que recebêssemos a adoção de filhos."
       },
       {
         "speaker": "Pedro",
-        "text": "O Rei chegou não com chicotes ou condenação, mas com cura, perdão, abraço e liberdade. E esse mesmo Rei chama você hoje pelo nome."
+        "text": "Olha que profundidade! Na plenitude do tempo — ou seja, no momento exato e perfeito planejado por Deus — Jesus veio. Ele não veio por acaso, mas para resgatar os que estavam sob a condenação da Lei e nos dar algo extraordinário: a adoção de filhos."
       },
       {
         "speaker": "Lívia",
-        "text": "No Bloco 3 vamos acompanhar o ministério consumado de Cristo, a cruz, o véu rasgado e a vida no Espírito. Se o seu coração já reconheceu o Rei Jesus hoje, dê o passo da fé!"
+        "text": "E quando Jesus finalmente inicia o Seu ministério público, quais foram as primeiras palavras dEle? O que significava esse anúncio do Reino?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos conferir em Marcos, capítulo 1, versículos 14 a 15. Lívia, por favor, faça a leitura desse texto para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto de Marcos 1, versículos 14 e 15 diz o seguinte: E, depois que João foi entregue à prisão, veio Jesus para a Galileia, pregando o evangelho do reino de Deus, e dizendo: O tempo está cumprido, e o reino de Deus está próximo; arrependei-vos e crede no evangelho."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Repare bem na palavra 'evangelho', Lívia: significa literalmente Boas Notícias! O Rei chegou não com um chicote ou com condenação, mas anunciando que o governo de Deus está próximo. E o convite é simples: arrepender-se e crer nessas Boas Notícias."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, eu acho impressionante como Jesus aplicava isso na prática do dia a dia. Tem um texto em Lucas que mostra exatamente qual era a missão dEle ao entrar na sinagoga. Como foi isso?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos ler juntos em Lucas, capítulo 4, versículos 18 a 21. Lívia, lê na íntegra esse momento marcante."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Lucas 4, versículos 18 a 21: O Espírito do Senhor é sobre mim, pois que me ungiu para evangelizar os pobres. Enviou-me a curar os quebrantados de coração, a pregar liberdade aos cativos, e restauração da vista aos cegos, a pôr em liberdade os oprimidos, a anunciar o ano aceitável do Senhor. E, cerrando o livro, e tornando a dá-o ao ministro, assentou-se; e os olhos de todos na sinagoga estavam fitos nele. Então começou a dizer-lhes: Hoje se cumpriu esta Escritura em vossos ouvidos."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Jesus assumiu publicamente que Ele é o cumprimento de todas as promessas! Ele veio para libertar cativos, curar os quebrantados e inaugurar o ano da graça de Deus. E tem mais: por causa disso, a nossa identidade com Deus mudou completamente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Como assim, Pedro? Como fica a nossa relação com Deus agora que o Rei chegou?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos terminar a leitura daquele texto de Gálatas que começamos há pouco, nos versículos 6 e 7. Lívia, lê pra gente por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Claro! Gálatas 4, versículos 6 a 7 diz: E, porque sois filhos, Deus enviou aos vossos corações o Espírito de seu Filho, que clama: Aba, Pai. Assim que já não és servo, senão filho; e, se és filho, também herdeiro de Deus por Cristo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Isso é transformador! Nós não somos mais escravos distantes ou servos amedrontados. Pelo Espírito de Cristo em nós, podemos chamar a Deus de 'Aba, Pai' — numa relação de profunda intimidade, amor e filiação."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo tudo o que aprendemos hoje: na plenitude do tempo, Jesus inaugurou o Reino de Deus anunciando Boas Notícias, libertando os oprimidos e restaurando a nossa filiação para que possamos chamar a Deus de Pai."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E se o seu coração reconheceu o Rei Jesus hoje, não existe nenhum impedimento entre você e Deus. Não há nenhuma barreira humana te separando dEle. O Rei eterno já inaugurou a Nova Aliança por amor a você."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A Bíblia nos convida a dar passos concretos de fé. Vamos ler o que diz o Evangelho de Marcos, capítulo 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você crê de todo o coração que Jesus é o seu Rei e Salvador, o batismo é o passo natural de quem deseja selar essa aliança e nascer para uma nova vida. E para te ajudar a dar esse passo com toda tranquilidade, toque agora no botão logo abaixo do Guia de Estudos. Ali você pode buscar uma igreja próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder. Que Deus abençoe a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Na plenitude do tempo, Jesus inaugura o Reino de Deus anunciando as Boas Notícias, libertando oprimidos e restaurando nossa filiação como filhos e herdeiros que chamam a Deus de \"Aba, Pai\".",
@@ -1530,27 +2226,83 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo ao Bloco 3 do I.D.E. — Boas Notícias! Na Aula 15 vamos esclarecer um texto muito citado: Mateus 5:17 junto com Romanos 10:4."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 15: Cristo, o Cumprimento e o Fim da Lei para Justiça."
       },
       {
         "speaker": "Lívia",
-        "text": "Jesus disse: \"Não vim para revogar a lei ou os profetas; não vim para revogar, vim para cumprir.\" E Paulo escreve em Romanos 10:4: \"Porque o fim da lei é Cristo, para justiça de todo aquele que crê.\""
+        "text": "É uma alegria imensa estar com você em mais um estudo! Antes de começarmos, quero te fazer o convite de sempre: pegue a sua Bíblia física para acompanhar cada texto com a gente, ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também um caderno e uma caneta por perto, ou use o campo de anotações logo abaixo do Guia de Estudos para guardar no coração o que o Senhor nos ensinar hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, eu confesso que muitas pessoas se confundem com essa questão da Lei de Moisés na Bíblia. Alguns acham que Jesus veio apagar tudo, enquanto outros acham que ainda precisamos cumprir rituais antigos para alcançar o favor de Deus. Afinal de contas, qual foi o verdadeiro propósito da vinda de Jesus em relação à Lei?"
       },
       {
         "speaker": "Pedro",
-        "text": "A palavra grega para \"fim\" ali é \"telos\", que significa tanto o alvo/propósito final quanto o término. Jesus não jogou a Lei fora desprezando a justiça de Deus — Ele a cumpriu perfeitamente em nossa carne e levou até o fim toda a sua exigência em nosso favor!"
+        "text": "Essa é uma dúvida clássica e muito importante, Lívia! Vamos direto à Palavra para ver o que o próprio Jesus disse sobre isso. Abra a sua Bíblia em Mateus, capítulo 5, versículos 17 a 20. Lívia, por favor, lê esse texto bem calmamente pra gente."
       },
       {
         "speaker": "Lívia",
-        "text": "Então quem crê em Jesus não precisa mais tentar usar a Lei como caminho para ficar justo diante de Deus, porque Cristo já é a nossa justiça!"
+        "text": "Com certeza. Diz assim em Mateus 5, versículos 17 a 20: Não cuideis que vim destruir a lei ou os profetas: não vim ab-rogar, mas cumprir. Porque em verdade vos digo que, até que o céu e a terra passem, nem um jota ou um til passará da lei, sem que tudo seja cumprido. Qualquer, pois, que violar um destes mandamentos, por menor que seja, e assim ensinar aos homens, será o chamado o menor no reino dos céus; aquele, porém, que os cumprir e ensinar será chamado grande no reino dos céus. Porque vos digo que, se a vossa justiça não for maior do que a dos escribas e fariseus, de modo nenhum entrareis no reino dos céus."
       },
       {
         "speaker": "Pedro",
-        "text": "E isso nos leva a viver de qualquer jeito? De forma alguma! Romanos 13:8–10 mostra que o amor é o cumprimento da lei. Quem ama a Deus e ao próximo pelo Espírito vive muito acima de uma lista fria de proibições."
+        "text": "Veja que forte! Jesus não veio ignorar a santidade de Deus ou jogar a Lei no lixo. Ele veio fazer o que nós jamais conseguiríamos: cumprir integralmente a Lei em nosso lugar. A exigência da justiça divina era perfeita, e Jesus viveu essa perfeição por nós. Mas aí surge uma segunda pergunta muito comum: se Jesus cumpriu tudo, o que acontece então com a nossa busca por justiça?"
       },
       {
         "speaker": "Lívia",
-        "text": "Cristo é o alvo alcançado! Nele encontramos justiça completa e um coração capacitado para amar de verdade."
+        "text": "Essa pergunta mexe muito com a gente, porque a gente vive tentando provar o próprio valor. Vamos ver o que o apóstolo Paulo escreveu sobre isso? Pedro, qual versículo nos ajuda a entender esse ponto?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos lá para a carta aos Romanos, capítulo 10, versículo 4. Lívia, lê esse versículo pra gente na íntegra."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Romanos 10, versículo 4: Porque o fim da lei é Cristo, para justiça de todo aquele que crê."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que versículo precioso! A palavra original usada ali para fim é telos, que significa tanto o alvo e o propósito final quanto o término. Jesus é o alvo alcançado! Isso significa que Ele encerrou a nossa tentativa infrutífera de tentar conquistar a salvação pelas próprias forças ou pelo cumprimento mecânico de regras. Quem crê em Jesus recebe a justiça dEle de presente. Mas Lívia, alguém pode pensar: 'Se eu já tenho a justiça de Cristo de graça, agora posso viver de qualquer jeito?'"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Exatamente! Essa é a grande objeção que surge na mente de quem ainda não entendeu a graça. Como a Bíblia responde a essa preocupação sobre a nossa conduta prática?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos abrir a mesma carta aos Romanos, agora no capítulo 13, versículos 8 a 10. Lívia, faz a leitura desse texto pra gente, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Romanos 13, versículos 8 a 10 diz: a ninguém aquiziteis coisa alguma, a não ser o amor com que vos ameis uns aos outros; porque quem ama aos outros cumpriu a lei. Com efeito: Não cometerás adultério, não matarás, não furtarás, não darás falso testemunho, não cobiçarás, e se há algum outro mandamento, tudo nesta palavra se resume: Amarás o teu próximo como a ti mesmo. O amor não maltrata o próximo. De sorte que o cumprimento da lei é o amor."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que maravilhoso! A vida nova em Cristo não anula a moral de Deus, ela a eleva ao seu patamar mais alto. Quem tem o Espírito Santo não obedece a Deus por medo de castigo ou para ganhar pontos, mas porque foi transformado pelo amor e agora ama genuinamente ao próximo. O amor transborda como fruto natural da presença de Deus em nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que estudo libertador! Resumindo o que aprendemos hoje: Jesus cumpriu perfeitamente toda a exigência da Lei em nosso lugar, tornando-Se o alvo e o término da tentativa humana de ganhar a salvação por esforço próprio. E mais do que isso: ao crermos nEle, recebemos a Sua justiça e somos capacitados pelo Espírito a viver uma vida transformada, cujo grande resumo é o amor sincero a Deus e ao próximo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E se você acompanhou este estudo até aqui, queremos conversar com muito carinho com o seu coração. A Bíblia nos mostra que a obra de Cristo na cruz foi absolutamente completa e consumada. O véu se rasgou e o acesso ao Pai está inteiramente aberto para você. Não existe nenhum impedimento e nenhuma etapa pendente para você ser aceito por Deus hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso mesmo. Se você crê de todo o coração nessa boa notícia, a própria Palavra de Deus nos convida a dar o passo da aliança e do batismo. Vamos ler juntos o que o próprio Jesus nos ordenou em Marcos 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "\"E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado.\" (Marcos 16:15-16)"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você sente esse chamado do Espírito para entregar sua vida a Cristo através do batismo, não espere mais. Sem nenhuma pressão, no seu tempo e com muita paz no coração, toque no botão logo abaixo do seu Guia de Estudos. Ali você poderá encontrar uma igreja cristã bem próxima de você no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral para conversar com um líder."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Deus abençoe grandemente a sua vida, continue firme nos estudos, e nós te esperamos na próxima aula do podcast IDE Boas Notícias!"
       }
     ],
     "overview": "Jesus não ignorou a santidade de Deus; Ele cumpriu integralmente a Lei em nosso lugar (Mateus 5:17) e tornou-Se o termo e propósito final da Lei para justiça de todo aquele que crê (Romanos 10:4), inaugurando a ética superior do amor no Espírito.",
@@ -1630,27 +2382,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 16 do I.D.E. — Boas Notícias! Hoje paramos diante da palavra mais poderosa já pronunciada na história humana: \"Está consumado!\" — Tetelestai!"
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 16: Está Consumado: A Cruz, o Véu Rasgado e a Graça Plena."
       },
       {
         "speaker": "Lívia",
-        "text": "Na língua grega da época de Jesus, \"Tetelestai\" era o carimbo colocado sobre uma nota de dívida quando ela era 100% paga! Nada restante, saldo zerado!"
+        "text": "É uma alegria imensa caminhar com você até aqui! Como sempre fazemos, queremos te dar um convite prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também um caderno e uma caneta por perto, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que o Espírito Santo falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, hoje vamos falar de um dos momentos mais profundos e definitivos de toda a história humana. Para quem muitas vezes carrega um peso enorme de culpa ou sente que precisa fazer algo mais para alcançar o perdão de Deus, o que aconteceu de fato no momento derradeiro da crucificação?"
       },
       {
         "speaker": "Pedro",
-        "text": "E olha o que aconteceu no instante exato em que Jesus bradou isso (Mateus 27:51): o véu grosso do templo rasgou-se de alto a baixo! De cima para baixo — foi o próprio Pai quem rasgou a barreira para abrir acesso direto à Sua presença!"
+        "text": "Essa pergunta toca no coração do evangelho, Lívia! Vamos ver o que as Escrituras registram sobre as últimas palavras de Jesus na cruz. Abra com a gente em João, capítulo 19, versículo 30. Lívia, faz a leitura na íntegra pra gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "E Colossenses 2:14 completa esse quadro maravilhoso: Deus cancelou o escrito de dívida que era contra nós, removendo-o inteiramente e encravando-o na cruz!"
+        "text": "Com certeza. Diz assim em João 19, versículo 30: Quando, pois, Jesus tomou o vinagre, disse: Está consumado! E, inclinando a cabeça, rendeu o espírito."
       },
       {
         "speaker": "Pedro",
-        "text": "Percebe o peso disso? Se a dívida foi pregada na cruz e a obra foi consumada, ninguém pode cobrar de novo uma conta que Jesus já pagou até o último centavo."
+        "text": "Que palavra tremenda: 'Está consumado!' Na língua grega original, essa palavra é 'Tetelestai', que era o termo exato carimbado em documentos de dívida quando um débito era integralmente quitado. Não sobrou absolutamente nada para pagarmos; o saldo foi zerado por completo na cruz."
       },
       {
         "speaker": "Lívia",
-        "text": "A cruz não foi um começo incompleto — foi uma obra terminada! Hoje o véu está rasgado e o Pai convida você a entrar com confiança e paz."
+        "text": "E Pedro, eu fico imaginando o impacto imediato desse sacrifício na terra. O que aconteceu no templo exatamente no instante em que Jesus entregou o espírito?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos conferir a resposta na Bíblia! Abra com a gente em Mateus, capítulo 27, versículos 50 e 51. Lívia, lê esse texto com calma para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto de Mateus 27, versículos 50 e 51, diz assim: E Jesus, clamando outra vez com grande voz, rendeu o espírito. E eis que o véu do templo se rasgou em dois, de alto a baixo; e tremeu a terra, e fenderam-se as rochas."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Note um detalhe lindíssimo que o texto nos mostra: o véu do templo não se rasgou de baixo para cima, por mãos humanas, mas de alto a baixo, pelas mãos do próprio Deus. Era o Pai dizendo que a separação havia acabado e que o caminho para a Sua presença estava totalmente aberto para todo aquele que crê."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso me traz uma paz indescritível! Mas, para não restar nenhuma dúvida sobre a nossa situação diante de Deus, o que aconteceu com as nossas culpas e acusações passadas?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A Bíblia nos dá uma resposta gloriosa sobre isso. Vamos abrir em Colossenses, capítulo 2, versículos 13 a 15. Lívia, lê na íntegra para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Colossenses 2, versículos 13 a 15: E a vós, quando éreis mortos nos delitos e na incircuncisão da vossa carne, os vivificou juntamente com ele, perdoando-vos todas as transgressões, apagando o escrito de dívida que era contra nós, o qual nos era prejudicial, e o tirou do meio, cravo-o na cruz; e, despojando os principados e potestades, os expôs publicamente e deles triunfou em si mesmo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Toda a nossa cédula de dívida, que nos acusava e nos afastava de Deus, foi inteiramente removida e encravada na cruz. A obra de Cristo foi completa, perfeita e definitiva. Não existe saldo devedor nem condenação para quem está em Cristo Jesus."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo tudo o que estudamos hoje: aprendemos que Jesus declarou 'Tetelestai' — pago por completo —, que o véu do templo foi rasgado pelo próprio Deus de alto a baixo, abrindo acesso direto à Sua presença, e que a nossa cédula de dívida foi cancelada e pregada na cruz, garantindo perdão total e paz eterna."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E com o acesso completamente aberto e a dívida totalmente paga, queremos fazer um convite muito especial e respeitoso a você que tem acompanhado estas aulas. Não há mais nenhum impedimento entre você e o Pai. A salvação é um presente gratuito consumado na cruz por amor a ti."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos ensina em Marcos 16, versículos 15 e 16: 'E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado.' Se você deseja selar essa aliança com Jesus e dar o passo do batismo, toque agora mesmo no botão logo abaixo do Guia de Estudos."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Através desse botão, você poderá encontrar uma igreja fiel mais próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato direto do pastor para conversar e agendar o seu batismo. Que a graça e a certeza da obra consumada de Cristo estejam com você hoje e para sempre. Um grande abraço e até a próxima aula do IDE Boas Notícias!"
       }
     ],
     "overview": "Na cruz, Jesus declarou \"Está consumado\" (Tetelestai — pago por completo). No mesmo momento, o véu do templo rasgou-se de alto a baixo e a cédula de dívida contra nós foi cancelada (Colossenses 2:14), garantindo acesso pleno e direto ao Pai.",
@@ -1729,27 +2529,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 17 do I.D.E. — Boas Notícias! Hoje abrimos Hebreus capítulos 9 e 10 para olhar o que Jesus fez imediatamente após a Sua ascensão ao céu."
+        "text": "Seja muito bem-vindo à Aula 17 do podcast IDE Boas Notícias! Eu sou o Pedro, e estou aqui com a alegria de sempre ao lado da Lívia. O nome IDE lembra o chamado urgente de Jesus para que a mensagem da graça alcance cada coração. Hoje vamos estudar a Aula 17: O Sumo Sacerdote no Santuário Celestial — Obra Completa, Sem \"Exame Tardio\"."
       },
       {
         "speaker": "Lívia",
-        "text": "No antigo tabernáculo, os sacerdotes nunca podiam se sentar! Nem havia cadeira lá dentro, porque o trabalho deles jamais acabava — sacrifício após sacrifício, ano após ano."
+        "text": "É uma bênção enorme estar com você em mais este estudo! Como sempre fazemos, pegue a sua Bíblia física ou abra na aba da Bíblia aqui no app 1Convite. Tenha também em mãos um caderno e uma caneta, ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar à sua vida."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, para começarmos nossa conversa de hoje, eu me lembro de como o sistema do santuário terrestre no Antigo Testamento era intenso: sangue correndo, animais sendo sacrificados o tempo todo e os sacerdotes em pé, trabalhando dia após dia sem parar. Mas qual é a grande diferença quando olhamos para Jesus no santuário celestial?"
       },
       {
         "speaker": "Pedro",
-        "text": "Agora olha o contraste arrebatador de Hebreus 10:12: \"Jesus, porém, tendo oferecido, para sempre, um único sacrifício pelos pecados, assentou-se à destra de Deus!\" Ele se ASSENTOU porque a obra de expiação estava pronta!"
+        "text": "Essa pergunta toca no coração do evangelho, Lívia! No antigo tabernáculo, realmente não havia cadeiras para os sacerdotes porque o trabalho deles jamais terminava. Mas vamos abrir a Palavra em Hebreus, capítulo 9, versículos 11 a 14. Lívia, faz a leitura para a gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E Hebreus 9:12 e 24 mostram que Cristo entrou diretamente no verdadeiro Santo dos Santos — no próprio céu, na presença de Deus — uma vez por todas, já na Sua ascensão, tendo obtido eterna redenção!"
+        "text": "Com certeza. Diz assim em Hebreus 9, versículos 11 a 14: Mas, vindo Cristo, o sumo sacerdote dos bens futuros, por um maior e mais perfeito tabernáculo, não feito por mãos, isto é, não desta criação, nem por sangue de bodes e bezerros, mas por seu próprio sangue, entrou uma vez por todas no santuário, havendo obtido uma eterna redenção. Porque, se o sangue dos touros e bodes e a cinza duma novilha esparzida sobre os imundos os santifica, quanto à purificação da carne, quanto mais o sangue de Cristo, que, pelo Espírito eterno, se ofereceu a si mesmo imaculado a Deus, purificará a vossa consciência das obras mortas, para servirdes ao Deus vivo?"
       },
       {
         "speaker": "Pedro",
-        "text": "Isso liberta o coração de qualquer pavor de uma \"segunda etapa de expiação\" ou de um \"exame investigativo tardio\" pairando sobre os salvos para decidir se o sacrifício da cruz foi suficiente. Hebreus 10:14 crava a certeza: \"Com uma única oferta, aperfeiçoou para sempre quantos estão sendo santificados.\""
+        "text": "Veja que extraordinário, ouvinte! Jesus não precisou entrar repetidas vezes como os antigos sacerdotes. Ele entrou no próprio céu, diante de Deus, uma vez por todas, com o Seu próprio sangue, e nos garantiu uma redenção que é eterna. Não há sacrifício pendente, nem sacrifício repetido."
       },
       {
         "speaker": "Lívia",
-        "text": "E quando Ele voltar (Hebreus 9:28), não será para lidar de novo com o pecado, mas para trazer salvação plena aos que o aguardam! Que paz profunda saber que nosso Sumo Sacerdote já se assentou vitorioso!"
+        "text": "Isso é maravilhoso, Pedro! Mas confesso que, por causa de doutrinas que muitos ouviram a vida toda, existe um medo latente: o de que haja uma segunda etapa de juízo ou uma auditoria tardia lá no céu para ver se o sangue de Cristo realmente foi suficiente. A Bíblia apoia esse medo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Nenhum pouco, Lívia! Pelo contrário, a Palavra destrói qualquer pavor desse tipo. Vamos ler o que diz logo adiante, no mesmo capítulo 9 de Hebreus, agora nos versículos 24 a 28. Lívia, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lendo aqui em Hebreus 9:24 a 28: Porque Cristo não entrou num santuário feito por mãos, figura do verdadeiro, senão no mesmo céu, para agora comparecer por nós perante a face de Deus; nem tampouco para se oferecer muitas vezes, como o sumo sacerdote cada ano entra no santuário com sangue alheio; de outra maneira, anteriormente era necessário que ele andasse padecendo muitas vezes desde a fundação do mundo. Mas agora na consumação dos séculos uma vez se manifestou, para aniquilar o pecado pelo sacrifício de si mesmo. E, como aos homens está ordenado morrerem uma vez, depois disso o juízo, assim também Cristo, oferecendo-se uma vez para tirar os pecados de muitos, aparecerá segunda vez, sem pecado, aos que o esperam para a salvação."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! Repare bem: Ele comparece por nós perante a face de Deus. Quando Cristo voltar, não será para lidar com o pecado de novo, como se a cruz tivesse falhado ou deixado pontas soltas, mas para trazer salvação plena aos que O aguardam com confiança e alegria."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Glória a Deus por essa clareza! E para fecharmos o argumento de forma definitiva, aquela história de que Jesus teve que esperar séculos para se sentar ou que ainda há trabalho de expiação incompleto... como o texto de Hebreus desfaz isso na prática?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos direto ao ponto alto do nosso estudo, Lívia. Abra a Bíblia em Hebreus, capítulo 10, versículos 11 a 18. Leia com bastante atenção para o nosso ouvinte."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Hebreus 10, versículos 11 a 18: E assim cada sacerdote的确... perdão, vou reler o versículo 11: E assim cada sacerdote aparece cada dia ministrando e oferecendo muitas vezes os mesmos sacrifícios, que nunca podem tirar os pecados; mas este, havendo oferecido para sempre um único sacrifício pelos pecados, assentou-se à destra de Deus, da(&(*...*)) da orla, esperando até que os seus inimigos sejam postos por escabelo de seus pés. Porque, com uma única oferta, aperfeiçoou para sempre os que são santificados. E também o Espírito Santo nos testifica disso, porque depois de haver dito: Este é o pacto que farei com eles depois daqueles dias, diz o Senhor: Porei as minhas leis em seus corações, e as escreverei em seus entendimentos; acrescenta: E aos seus pecados e iniquidades não me lembrarei mais. Ora, onde há remissão destes, não há mais oblação pelo pecado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Ele SE ASSENTOU! A cadeira no santuário celestial existe porque a obra foi completamente consumada. Onde há remissão definitiva dos pecados, não existe mais oferta pendente, nem julgamento investigativo sobre os salvos. Nosso Sumo Sacerdote está à destra do Pai intercedendo por nós como um Advogado amoroso, e não como um auditor severo querendo reprovar os Seus filhos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que descanso profundo para a alma! Saber que fomos aperfeiçoados para sempre pela única oferta de Cristo muda completamente a nossa maneira de andar com Deus. Resumindo a nossa aula de hoje, aprendemos que Jesus entrou uma vez por todas no santuário celestial com o Seu próprio sangue, obteve eterna redenção, e assentou-Se à direita de Deus porque a nossa expiação está perfeitamente concluída, sem nenhuma pendência ou exame tardio."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente isso, Lívia. E por causa dessa obra perfeita, não existe nenhum impedimento entre você e Deus hoje. O véu se rasgou de alto a baixo, e o acesso ao Pai está totalmente aberto. Se você deseja entregar sua vida a Ele e caminhar nessa certeza, queremos fazer um convite muito especial. Vamos ler o que diz o Evangelho de Marcos, capítulo 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Marcos 16:15-16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com todo o respeito e amor, sem nenhuma pressão, dizemos a você: creia de todo o coração nessa obra perfeita de Cristo. Se você sente o chamado para dar esse passo de fé através do batismo, toque agora mesmo no botão logo abaixo do Guia de Estudos. Você poderá encontrar uma igreja cristã bem próxima de sua casa no mapa, verificar a distância até a Igreja Marco Zero e pegar diretamente o contato pastoral para conversar e agendar o seu batismo. Deus abençoe ricamente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Hebreus 9 e 10 demonstram que Jesus entrou diretamente no santuário celestial uma só vez com o Seu próprio sangue, obteve eterna redenção e assentou-Se à direita de Deus — encerrando definitivamente a expiação, sem segunda etapa pendente ou auditoria tardia sobre os que creem.",
@@ -1829,27 +2677,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 18 do I.D.E. — Boas Notícias! Lembra da Aula 1, quando vimos o descanso de Deus no sétimo dia da criação? Hoje chegamos ao cumprimento pleno daquela sombra!"
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 18: O Verdadeiro Descanso: Sombra vs. Realidade em Cristo."
       },
       {
         "speaker": "Lívia",
-        "text": "Em Colossenses 2:16–17, Paulo fala com clareza cristalina: \"Ninguém, pois, vos julgue por causa de comida e bebida, ou dia de festa, ou lua nova, ou sábados, porque tudo isso tem sido sombra das coisas que haviam de vir; porém o corpo é de Cristo.\""
+        "text": "Que alegria ter você conosco em mais um passo firme na Palavra. Antes de darmos início ao estudo de hoje, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente, ou abra diretamente aqui no aplicativo 1Convite. Tenha também em mãos um caderno e uma caneta, ou utilize o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, lá no comecinho da nossa jornada, na criação, vimos o descanso de Deus no sétimo dia. Mas hoje o tema nos leva a um entendimento ainda mais profundo. Por que tantas pessoas na época apostólica continuavam presas a regras de dias, festas e calendários religiosos, sem conseguir experimentar uma paz verdadeira?"
       },
       {
         "speaker": "Pedro",
-        "text": "A sombra sempre aponta para a Pessoa real! Quando a Pessoa chega, você não abraça a sombra no chão — você abraça a Pessoa! E quem é o verdadeiro descanso? Ouça o convite do próprio Jesus em Mateus 11:28: \"Vinde a mim todos os que estais cansados e sobrecarregados, e eu vos aliviarei... e achareis descanso para a vossa alma.\""
+        "text": "Essa pergunta é fantástica, Lívia, porque toca no coração do legalismo versus a graça. As pessoas olhavam para a sombra e esqueciam da Pessoa! Vamos abrir a Palavra em Colossenses, capítulo 2, versículos 16 e 17. Lívia, faz a leitura na íntegra para a gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "E Hebreus capítulo 4 explica como entramos hoje nesse descanso de Deus: não marcando um ponto no calendário por medo, mas crendo em Jesus! \"Nós, porém, que cremos, entramos no descanso\" (Hebreus 4:3)."
+        "text": "Com certeza. Diz assim em Colossenses 2, versículos 16 e 17: Ninguém, pois, vos julgue por causa de comida e bebida, ou dia de festa, ou lua nova, ou sábados, porque tudo isso tem sido sombra das coisas que haviam de vir; porém o corpo é de Cristo."
       },
       {
         "speaker": "Pedro",
-        "text": "Versículo 10 resume tudo: quem entra no descanso de Cristo repousa das suas próprias obras — para de tentar comprar salvação por performance religiosa!"
+        "text": "Veja que revelação libertadora! Festas, luas novas e dias cerimoniais eram apenas a sombra projetada no chão. E quando a pessoa real entra na sala — que é Cristo —, você não fica abraçando a sombra no chão, você abraça a Pessoa! O foco do evangelho não é um calendário litúrgico, mas o próprio Jesus."
       },
       {
         "speaker": "Lívia",
-        "text": "Que descanso real! Um descanso que não dura apenas 24 horas por semana, mas envolve todos os dias da sua vida nos braços de Jesus."
+        "text": "Isso tira um peso enorme dos ombros da gente, Pedro. Mas então, qual é exatamente esse descanso que Jesus nos oferece? Onde encontramos esse repouso para a alma de quem está cansado de tentar se esforçar para merecer o favor de Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "O próprio Mestre responde com uma ternura incomparável. Vamos ler em Mateus, capítulo 11, versículos 28 a 30. Lívia, lê esse texto precioso."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto sagrado de Mateus 11, versículos 28 a 30, nos diz: Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei. Tomai sobre vós o meu jugo e aprendei de mim, porque sou manso e humilde de coração; e achareis descanso para a vossa alma. Porque o meu jugo é suave, e o meu fardo é leve."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! O descanso de Deus não é um dia da semana que você cumpre por medo de punição; o descanso de Deus é uma Pessoa! Jesus nos chama a estar com Ele, a confiar Nele. Quando tentamos nos salvar por meio de esforço próprio, performance religiosa ou rituais, ficamos exaustos. Mas em Jesus encontramos alívio completo para a alma."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso me leva a outra dúvida importante: como nós entramos, de fato, nesse descanso nos dias de hoje? O que a Bíblia nos ensina sobre cessar as nossas próprias obras para viver essa graça?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos direto à carta aos Hebreus, capítulo 4, versículos 3 e depois o versículo 10. Lívia, por favor, leia para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Hebreus 4, versículos 3 e 10: Nós, porém, que cremos, entramos no descanso, assim como disse: Como jurei na minha ira: Não entrarão no meu descanso; embora as obras estivessem consumadas desde a fundação do mundo. (...) Porque quem entrou no descanso de Deus, também ele mesmo repousou das suas obras, assim como Deus das suas."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que maravilha! Entramos no descanso de Deus pela fé, crendo na obra perfeita que Cristo já realizou por nós na cruz. Quando entendemos isso, nós repousamos das nossas próprias obras de autojustificação. Paramos de tentar comprar o amor de Deus com o nosso suor, porque a salvação é um presente consumado por Jesus."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o nosso encontro de hoje, aprendemos que todas as ordenanças e dias cerimoniais eram apenas sombras que apontavam para Cristo. A realidade e o verdadeiro descanso da nossa alma estão exclusivamente na Pessoa de Jesus, onde cessamos todo o esforço de nos salvar por mérito próprio e vivemos pela fé na Sua graça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E se você que está nos ouvindo tem carregado o fardo pesado da culpa ou da cobrança religiosa, queremos fazer um convite muito especial e calmo, sem nenhuma pressão. A obra de Cristo na cruz foi plenamente consumada, o véu se rasgou e o acesso ao Pai está totalmente aberto para você hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos diz em Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo e pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado. Se você crê de todo o coração nessa mensagem de amor e deseja dar esse passo de obediência e aliança, não há nenhum impedimento entre você e Deus neste exato momento."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Para dar esse próximo passo, basta tocar no botão logo abaixo do seu Guia de Estudos. Ali você poderá buscar uma igreja fiel e acolhedora próxima de você no mapa, ver a distância exata até a nossa Igreja Marco Zero e pegar o contato pastoral para conversar e agendar o seu batismo. Que o Senhor abençoe grandemente a sua vida, e até a nossa próxima aula no IDE Boas Notícias!"
       }
     ],
     "overview": "As datas cerimoniais e o descanso antigo eram sombras proféticas cuja realidade plena é a Pessoa de Cristo (Colossenses 2:16–17). Em Jesus encontramos o verdadeiro repouso da alma (Mateus 11:28–30; Hebreus 4:3–10), cessando o esforço de tentar merecer salvação.",
@@ -1929,27 +2825,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 19 do I.D.E. — Boas Notícias! Hoje vamos abrir o Novo Testamento para deixar a própria Bíblia definir o que é o Selo de Deus na Nova Aliança."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 19: O Selo de Deus: O Espírito Santo na Nova Aliança."
       },
       {
         "speaker": "Lívia",
-        "text": "Muita gente já ficou aflita ouvindo teorias complicadas dizendo que o selo de Deus seria um dia específico do calendário ou uma marca futura misteriosa. Mas o que diz Efésios 1:13?"
+        "text": "É uma alegria enorme receber você! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que esse tema gera muitas dúvidas nas pessoas. Muita gente já ficou aflita ouvindo teorias complicadas, dizendo que o selo de Deus seria um dia específico do calendário ou uma marca física misteriosa no futuro. Mas afinal, o que a Bíblia diz de forma clara sobre o que é o Selo de Deus na Nova Aliança?"
       },
       {
         "speaker": "Pedro",
-        "text": "Leia conosco com total clareza: \"Em quem também vós, depois que ouvistes a palavra da verdade, o evangelho da vossa salvação, tendo nele também crido, fostes selados com o Santo Espírito da promessa!\""
+        "text": "Essa pergunta é fundamental, Lívia! Vamos deixar a Palavra de Deus falar por si mesma. Abra com a gente lá no Novo Testamento, na carta aos Efésios, capítulo 1, versículos 13 e 14. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "É impossível ser mais direto do que isso! O Selo de Deus na Nova Aliança não é um dia da semana — é uma Pessoa: o próprio Espírito Santo!"
+        "text": "Estou com o texto aberto aqui. Diz assim em Efésios 1, versículos 13 e 14: Em quem também vós, depois que ouvistes a palavra da verdade, o evangelho da vossa salvação; e tendo nele também crido, fostes selados com o Santo Espírito da promessa; o qual é o penhor da nossa herança, para redenção da sua possessão, para louvor da sua glória."
       },
       {
         "speaker": "Pedro",
-        "text": "E olha Efésios 4:30 e 2 Coríntios 1:22: Deus nos selou e pôs em nosso coração o Espírito como garantia (penhor) da nossa herança até o dia da redenção! Na antiguidade, o selo real marcava propriedade, autenticidade e proteção segura."
+        "text": "É impossível ser mais direto do que isso! O Selo de Deus na Nova Aliança não é um dia da semana nem uma observância cerimonial — é uma Pessoa bendita: o próprio Espírito Santo! Na antiguidade, o selo do rei era colocado em documentos e cartas para marcar propriedade exclusiva, autenticidade e proteção segura. Quando cremos no Evangelho, Deus nos marca com o Seu próprio Espírito!"
       },
       {
         "speaker": "Lívia",
-        "text": "Se você creu no Evangelho de Jesus, você já pertence ao Rei e é selado pelo Espírito Santo! Não viva no medo de perder um sinal externo — viva na alegria de quem carrega o Espírito vivo de Deus!"
+        "text": "Isso traz uma paz tão grande ao coração, Pedro! Mas me explica uma coisa: quando é que nós recebemos esse selo? É preciso passar por provas severas ou esperar por uma experiência futura distante para ser selado?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que bom que você perguntou isso, Lívia. Vamos olhar o que diz o apóstolo Paulo em outra passagem muito clara. Abra a sua Bíblia em 2 Coríntios, capítulo 1, versículo 22. Lívia, faz a leitura desse versículo pra gente, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Diz assim em 2 Coríntios 1, versículo 22: O qual também nos selou e nos deu o penhor do Espírito em nosso coração."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veja que maravilhoso: nós recebemos o selo no momento em que ouvimos e cremos na Palavra da verdade, o evangelho da nossa salvação. O Espírito Santo é dado como um 'penhor' — que significa garantia, sinal ou arras de que Deus cumprirá inteiramente a nossa herança eterna. Não precisamos viver na ansiedade ou no medo de não sermos aceitos; quem crê em Jesus já é marcado e garantido por Deus."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Essa garantia muda completamente a nossa maneira de viver o dia a dia, né? Mas como esse selo do Espírito Santo impacta a nossa conduta prática e a nossa segurança espiritual?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Impacta profundamente, Lívia. Vamos ler o que diz Efésios, capítulo 4, versículo 30. Abra aí no seu aplicativo ou na sua Bíblia. Lívia, lê esse versículo pra gente, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Efésios 4, versículo 30: E não entristeçais o Espírito Santo de Deus, no qual estais selados para o dia da redenção."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que tremendo! Nós fomos selados para o dia da redenção. Isso significa que o Espírito Santo habita no crente como uma marca perpétua de que pertencemos a Cristo até o dia final. Sabendo que somos habitação de Deus e que pertencemos a Ele por amor, somos chamados a viver de maneira santa, honrando a Presença dEle em nós, sem entristecer Aquele que nos garantiu a salvação."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o que aprendemos hoje: o Selo de Deus na Nova Aliança não é um dia da semana, mas a Pessoa bendita do Espírito Santo habitando em nós. Ele é a marca de propriedade de Deus, o penhor da nossa herança eterna e a garantia de que pertencemos ao Rei para sempre."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia! E a nossa aplicação prática de hoje é bem simples e profunda: tire um momento do seu dia para agradecer ao Espírito Santo por habitar em você como o verdadeiro Selo de propriedade e garantia do amor fiel de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "E se você chegou até aqui compreendendo que a obra de Cristo foi plenamente consumada na cruz, que o véu rasgou e que o acesso ao Pai está completamente aberto... saiba que não existe nenhum impedimento nem etapa pendente entre você e Deus hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos convida com muito carinho e clareza em Marcos 16, versículos 15 e 16. Vamos ler juntos: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você crê de todo o coração nessa mensagem de amor e deseja selar sua aliança com Jesus através do batismo, nós queremos te ajudar a dar esse passo precioso. Basta tocar no botão logo abaixo do Guia de Estudos para buscar uma igreja cristã fiel mais próxima de você no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral com todo o suporte necessário. Um grande abraço, que Deus abençoe a sua vida, e até a próxima aula do IDE Boas Notícias!"
       }
     ],
     "overview": "A Escritura define expressamente o Selo de Deus na Nova Aliança: não é um dia da semana nem uma observância cerimonial, mas a Pessoa do Espírito Santo, dado como marca de propriedade e garantia da nossa herança eterna no momento em que cremos no Evangelho.",
@@ -2028,27 +2976,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 20 do I.D.E. — Boas Notícias! Hoje vamos descobrir como funciona na prática a vida cristã guiada pelo Espírito em Gálatas 5 e Romanos 8."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 20: Andar no Espírito: O Fruto Que Substitui a Cobrança Externa."
       },
       {
         "speaker": "Lívia",
-        "text": "Sabe qual é a diferença entre uma árvore de plástico cheia de frutas coladas com fita adesiva e uma árvore viva com raízes na água?"
+        "text": "Que alegria caminhar com você até aqui! Antes de mergulharmos no estudo de hoje, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, para começar nossa aula de hoje, quero te fazer uma pergunta bem sincera. Muita gente tenta viver o cristianismo na base da força de vontade, tentando cumprir uma lista interminável de regras para se sentir aceito por Deus. Mas qual é a real diferença entre tentar fabricar santidade por fora e a verdadeira transformação que a Bíblia propõe?"
       },
       {
         "speaker": "Pedro",
-        "text": "Na árvore viva, o fruto nasce naturalmente da seiva interior! É exatamente isso que Paulo chama em Gálatas 5:22–23 de \"fruto do Espírito\": amor, alegria, paz, longanimidade, benignidade, bondade, fidelidade, mansidão e domínio próprio."
+        "text": "Essa pergunta toca no coração de todo o nosso estudo, Lívia! Tentar mudar a vida apenas por cobrança externa é como colar frutas de plástico numa árvore seca com fita adesiva: fica artificial e não tem vida. Vamos ver o que a Palavra diz sobre a verdadeira transformação. Abra a Bíblia em Gálatas, capítulo 5, e leia os versículos 16 a 18 para a gente."
       },
       {
         "speaker": "Lívia",
-        "text": "E olha o detalhe de Gálatas 5:18: \"Mas, se sois guiados pelo Espírito, não estais sob a lei.\" E versículo 23 completa: \"Contra estas coisas não há lei!\""
+        "text": "Estou com Gálatas 5 aberto aqui nos versículos 16 a 18. Diz assim: Digo, porém: Andai em Espírito e não satisfareis a concupiscência da carne. Porque a carne cobiça contra o Espírito, e o Espírito contra a carne; e estes opõem-se um ao outro; para que não façais o que quereis. Mas, se sois guiados pelo Espírito, não estais sob a lei."
       },
       {
         "speaker": "Pedro",
-        "text": "A cobrança externa tenta colar comportamento bom por fora enquanto o coração continua cansado. Já andar no Espírito transforma os nossos desejos por dentro, porque Romanos 8:14 declara: \"Todos os que são guiados pelo Espírito de Deus são filhos de Deus.\""
+        "text": "Que maravilha! Note bem: o apóstolo Paulo não diz para nos esforçarmos mais para cumprir o código de leis minuciosamente, mas diz para \"andar em Espírito\". Quando a nossa vida está enraizada em Cristo, somos guiados de dentro para fora, superando o regime pesado de regras e culpa."
       },
       {
         "speaker": "Lívia",
-        "text": "Não tente fabricar santidade na força do medo. Caminhe em comunhão com o Espírito Santo e deixe o caráter de Jesus florescer naturalmente em você."
+        "text": "Isso tira um peso enorme dos ombros de quem tenta agradar a Deus achando que nunca é bom o suficiente! Mas Pedro, quando a Bíblia fala desse resultado prático na vida de quem anda com Deus, como ela descreve o que brota dessa união?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A resposta é belíssima e transborda vida. Vamos continuar na mesma carta, ainda em Gálatas, capítulo 5, mas agora nos versículos 22 e 23. Lívia, faz a leitura para nós, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Claro! Gálatas 5, versículos 22 e 23 dizem: Mas o fruto do Espírito é: amor, alegria, paz, longanimidade, benignidade, bondade, fidelidade, mansidão, domínio próprio. Contra estas coisas não há lei."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veja que fascinante: o texto chama isso de \"fruto\" do Espírito, e não de \"esforço\" da carne. Fruto nasce naturalmente de uma árvore que está ligada à seiva viva! É o próprio caráter de Jesus florescendo em nós, de forma orgânica. E repare no final do versículo: \"Contra estas coisas não há lei\". A lei condena o erro exterior, mas o Espírito transforma a nossa essência."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é transformador. Em vez de vivermos atemorizados com medo de errar e sofrer castigos, existe uma outra dinâmica para a nossa relação com o Pai, não é?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com certeza absoluta. Vamos dar mais um passo e abrir agora na carta aos Romanos, capítulo 8, versículos 14 a 16. Lívia, lê esse texto precioso para a gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Romanos 8, versículos 14 a 16: Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus. Porque não recebestes o espírito de escravidão, para estarem outra vez em temor, mas recebestes o Espírito de adoção, pela qual clamamos: Aba, Pai. O mesmo Espírito testifica com o nosso espírito que somos filhos de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Nós não temos um espírito de escravidão para viver atemorizados debaixo de chicotes espirituais. Nós recebemos o Espírito de adoção. Deus é o nosso Pai amoroso que nos guia de perto, sarando nossas feridas e nos dando um novo coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que verdade libertadora! Resumindo o nosso estudo de hoje, aprendemos que a vida cristã autêntica não é mantida por vigilância legalista ou cobrança externa, mas pela condução diária do Espírito Santo. É Ele quem produz em nós o fruto orgânico do caráter de Cristo, substituindo o medo pelo doce relacionamento de filhos amados."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E se você que está nos ouvindo hoje sente o desejo de entregar sua vida a esse Pai maravilhoso, lembre-se: a obra de Cristo na cruz foi plenamente consumada, o véu se rasgou e o acesso ao Pai está totalmente aberto para você. Não existe nenhum impedimento nem nenhuma etapa pendente para você ser salvo hoje. A Bíblia nos convida com muito amor em Marcos 16, versículos 15 e 16..."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "...onde Jesus diz: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você crê de todo o coração nessa boa notícia e deseja dar esse passo de fé através do batismo, não espere mais. Toque agora mesmo no botão logo abaixo do seu Guia de Estudos para buscar uma igreja próxima de você no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral direto. Estamos orando por você, e esperamos te ver muito em breve na Casa do Pai. Um forte abraço e até a próxima aula!"
       }
     ],
     "overview": "A vida cristã autêntica não é produzida por vigilância legalista, mas pela condução do Espírito Santo (Gálatas 5:16–25; Romanos 8:1–17), que gera o fruto orgânico do caráter de Cristo de dentro para fora.",
@@ -2128,27 +3124,71 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Chegamos ao encerramento do Bloco 3 — Aula 21 do I.D.E. — Boas Notícias! Hoje celebramos quem somos em Cristo e como o Reino se manifesta no nosso estilo de vida."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 21: A Nova Identidade: Filhos, Embaixadores e Generosidade Livre."
       },
       {
         "speaker": "Lívia",
-        "text": "2 Coríntios 5:17 abre com um anúncio de recomeço total: \"Se alguém está em Cristo, é nova criatura; as coisas antigas já passaram; eis que se fizeram novas.\" E o versículo 20 nos dá uma missão nobre: somos embaixadores em nome de Cristo!"
+        "text": "Que alegria caminhar com você até aqui! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, muita gente carrega o peso do passado, de erros e escolhas que parecem definir quem elas são para sempre. Mas a Bíblia traz uma promessa impressionante de recomeço. Afinal, o que significa de fato ter uma nova identidade em Cristo?"
       },
       {
         "speaker": "Pedro",
-        "text": "E qual é a atmosfera desse Reino? Romanos 14:17 define com simplicidade: \"Porque o reino de Deus não é comida nem bebida, mas justiça, e paz, e alegria no Espírito Santo.\" Não gira em torno de tabus alimentares ou listas de proibições, mas da beleza de uma vida reconciliada!"
+        "text": "Essa pergunta toca no coração do evangelho, Lívia! Vamos ver como a Palavra de Deus descreve essa transformação radical. Abra a sua Bíblia em 2 Coríntios, capítulo 5, versículos 17 a 20. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E isso alcança até a maneira como lidamos com dinheiro e generosidade! Veja 2 Coríntios 9:7: na Nova Aliança, cada um contribua \"segundo tiver proposto no coração, não com tristeza ou por necessidade; porque Deus ama a quem dá com alegria\"!"
+        "text": "Com certeza. Diz assim em 2 Coríntios 5, versículos 17 a 20: Assim que, se alguém está em Cristo, nova criatura é; as coisas velhas já passaram; eis que tudo se fez novo. E tudo isto provém de Deus, que nos reconciliou consigo mesmo por Jesus Cristo, e nos deu o ministério da reconciliação; isto é, Deus estava em Cristo reconciliando consigo o mundo, não lhes imputando os seus pecados; e pôs em nós a palavra da reconciliação. De sorte que somos embaixadores em nome de Cristo, como se Deus por nós toscasse. Rogamo-vos, pois, em nome de Cristo, que sejais reconciliados com Deus."
       },
       {
         "speaker": "Pedro",
-        "text": "Sem chantagem espiritual, sem medo de maldição, sem obrigação legalista! Quem entendeu a graça generosa de Jesus transborda generosidade livre para abençoar pessoas e espalhar as Boas Notícias."
+        "text": "Que texto glorioso! O nosso passado não define mais o nosso futuro. Em Cristo, nós nos tornamos novas criaturas, perdoados e adotados. E mais do que isso: recebemos o chamado para ser embaixadores da reconciliação, levando paz e esperança para um mundo que precisa desesperadamente conhecer o amor do Pai."
       },
       {
         "speaker": "Lívia",
-        "text": "Você é nova criatura, filho amado e embaixador da reconciliação. No Bloco 4 vamos viver a alegria da Igreja, o passo livre do batismo e a esperança da eternidade!"
+        "text": "É incrível pensar que Deus confia essa missão a nós. Mas às vezes as pessoas acham que a vida com Deus se resume a regras rígidas, proibições e listas de o que pode ou não pode comer e fazer. Como a Bíblia define a essência do Reino de Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos direto ao ponto que esclarece qualquer confusão sobre o que é religião e o que é o Reino de Deus. Abra em Romanos, capítulo 14, versículo 17. Lívia, por favor, faça a leitura para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto de Romanos 14:17 diz assim: Porque o reino de Deus não é comida nem bebida, mas justiça, e paz, e alegria no Espírito Santo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que alívio para o nosso coração! O Reino de Deus não é sobre tabus alimentares, rituais vazios ou pesos impostos por homens. É sobre justiça, paz e uma alegria profunda gerada pelo Espírito Santo em nós. É uma vida guiada pelo amor e pela comunhão viva com o nosso Criador."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Essa liberdade e alegria no Espírito também transformam a nossa forma de lidar com os recursos materiais, não é, Pedro? Muitas vezes as pessoas sentem medo ou culpa quando se fala em contribuição financeira na igreja. Como a Nova Aliança nos ensina a ser generosos?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é uma das marcas mais belas de quem entendeu a graça. Vamos ler em 2 Coríntios, capítulo 9, versículos 6 a 8. Lívia, lê esse texto precioso com calma para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Está escrito em 2 Coríntios 9, versículos 6 a 8: E digo isto: Que o que semeia pouco, pouco também ceifará; e o que semeia em abundância, em abundância ceifará. Cada um contribua segundo tiver proposto no coração, não com tristeza ou por necessidade; porque Deus ama a quem dá com alegria. E Deus é poderoso para fazer abundar em vós toda a graça, a fim de que, tendo sempre, em tudo, toda a suficiência, abundeis para toda a boa obra."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veja que maravilhoso: na Nova Aliança, a generosidade nasce da gratidão espontânea no coração, e nunca de obrigação legalista, medo ou chantagem espiritual. Deus ama quem dá com alegria! Quando entendemos o quanto fomos perdoados e abençoados por Jesus, dar o nosso tempo, nossos dons e nossos recursos se torna um privilégio e uma expressão natural do amor de Deus fluindo através de nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o nosso encontro de hoje, vimos que em Cristo somos recriados como novas criaturas e chamados a ser embaixadores da Sua paz. O Reino de Deus não se baseia em regras humanas, mas em justiça, paz e alegria no Espírito Santo. E essa transformação nos liberta para viver uma generosidade alegre e espontânea, refletindo a graça generosa do nosso Pai."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E se você acompanhou todas estas lições e percebeu que não existe nenhum impedimento entre você e Deus hoje, saiba que a obra de Cristo foi plenamente consumada na cruz. O acesso ao Pai está completamente aberto. A Bíblia nos convida em Marcos 16, versículos 15 e 16: 'E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado'."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Se o seu coração deseja dar esse passo de fé, sem pressa e com muita paz, toque no botão logo abaixo deste Guia de Estudos. Você poderá encontrar uma igreja parceira bem próxima no mapa, ver a distância até a Igreja Marco Zero e pegar diretamente o contato pastoral para conversar e agendar o seu batismo. Que o Senhor abençoe ricamente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "Em Cristo somos novas criaturas e embaixadores da reconciliação (2 Coríntios 5:17–20). O Reino de Deus consiste em justiça, paz e alegria no Espírito Santo (Romanos 14:17), refletido inclusive em uma generosidade livre e alegre, jamais coagida por medo ou legalismo (2 Coríntios 9:7).",
@@ -2228,27 +3268,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo ao Bloco 4 do I.D.E. — Boas Notícias! Na Aula 22 testemunhamos o Pentecostes em Atos capítulo 2: o nascimento vibrante da Igreja impulsionada pelo Espírito Santo."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. Entramos agora no quarto e último bloco da nossa jornada, celebrando a Aula 22: O Espírito Santo e o Nascimento da Igreja do Reino. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura."
       },
       {
         "speaker": "Lívia",
-        "text": "Antes da ascensão, Jesus não disse: \"Construam paredes para se proteger do mundo.\" Ele disse em Atos 1:8: \"Recebereis poder ao descer sobre vós o Espírito Santo, e sereis minhas testemunhas até aos confins da terra!\""
+        "text": "Que alegria caminhar com você até aqui! Antes de mergulharmos no estudo de hoje, fazemos aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou abra a Bíblia direto aqui no aplicativo 1Convite. Tenha também um caderno e uma caneta por perto, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, quando a gente olha para a história da Igreja no Novo Testamento, percebe que ela não nasceu de acordos políticos, estratégias humanas ou grandes construções de pedra. Ela nasceu de um transbordamento espiritual. Como tudo isso começou no dia do Pentecostes?"
       },
       {
         "speaker": "Pedro",
-        "text": "Quando o Espírito desce em Atos 2, pessoas de todas as nações ouvem as maravilhas de Deus na própria língua. E quando a multidão pergunta \"Que faremos?\", Pedro responde com simplicidade: arrependam-se, sejam batizados em nome de Jesus e receberão o dom do Espírito! Quase três mil pessoas se batizam no mesmo dia!"
+        "text": "Essa pergunta toca no coração do nosso primeiro pilar, Lívia. Vamos abrir juntos o livro de Atos dos Apóstolos, capítulo 1, versículo 8, para entender a promessa que antecedeu esse grande momento. Lívia, faz a leitura na íntegra para a gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "E 1 Pedro 2:9 descreve a beleza desse povo: não é um prédio de tijolos, mas pessoas vivas — \"geração eleita, sacerdócio real, nação santa\" — chamadas para proclamar as virtudes d'Aquele que nos trouxe das trevas para a Sua maravilhosa luz!"
+        "text": "Com certeza. Diz assim em Atos 1, versículo 8: Mas recebereis poder, ao descer sobre vós o Espírito Santo, e sereis minhas testemunhas, tanto em Jerusalém como em toda a Judeia e Samaria, e até aos confins da terra."
       },
       {
         "speaker": "Pedro",
-        "text": "A Igreja do Reino existe para acolher, amar, partir o pão em comunhão e espalhar Boas Notícias sem exclusivismo nem barreiras."
+        "text": "Veja que impressionante! Antes de subir aos céus, Jesus não deu aos discípulos um manual de marketing ou uma lista de regras de autopreservação. Ele prometeu o Espírito Santo. A missão da Igreja não flui da força humana, mas do poder de Deus transformando vidas por dentro."
       },
       {
         "speaker": "Lívia",
-        "text": "Você não precisa caminhar sozinho! Cristo formou uma família espiritual para celebrar a graça junto com você."
+        "text": "E isso aconteceu de forma muito poderosa logo depois, não foi? Quando o Espírito desce em Atos capítulo 2, a multidão ouve a mensagem e faz uma pergunta crucial: 'Que faremos?'. Como a Palavra responde a essa busca urgente?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia. Vamos ler o desdobramento desse momento histórico em Atos, capítulo 2, versículos 37 a 41. Abra aí na sua Bíblia enquanto a Lívia lê com calma para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto diz assim em Atos 2, versículos 37 a 41: Ouvindo eles isto, compungiram-se em seu coração e perguntaram a Pedro e aos demais apóstolos: Que faremos, homens irmãos? E Pedro lhes disse: Arrependei-vos, e cada um de vós seja batizado em nome de Jesus Cristo, para perdão dos pecados; e recebereis o dom do Espírito Santo. Porque a promessa vos pertence a vós, a vossos filhos, e a todos os que estão longe, a tantos quantos Deus nosso Senhor chamar. E com muitas outras palavras lhes testificava e exortava, dizendo: Salvai-vos desta geração perversa. De sorte que foram batizados os que deram crédito à sua palavra; e naquele dia agregaram-se quase três almas mil."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que beleza e que acolhimento imediato nas Boas Notícias! Quem creu na mensagem da graça foi recebido, transformado e batizado com alegria naquele mesmo dia. A Igreja primitiva não era um clube exclusivo, mas uma família viva e aberta para todos que desejavam caminhar com o Rei."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso me traz uma paz enorme, porque mostra que ninguém fica de fora do amor de Deus. Mas Pedro, quem exatamente compõe essa Igreja hoje? Existe algum tipo de privilégio ou hierarquia especial para ter acesso a Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Nenhum privilégio humano exclusivo, Lívia! O apóstolo Pedro explica muito bem a nossa identidade em Cristo. Vamos ler juntos a nossa última referência de hoje, lá em 1 Pedro, capítulo 2, versículo 9. Lívia, por favor, lê esse versículo na íntegra."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com todo o prazer. O texto de 1 Pedro 2, versículo 9 diz: Vós, porém, sois raça eleita, sacerdócio real, nação santa, povo de propriedade exclusiva de Deus, a fim de proclamardes as virtudes daquele que vos chamou das trevas para a sua maravilhosa luz."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! Cada discípulo que entrega a vida a Cristo pertence a essa família real e tem acesso direto ao Pai. Nós não precisamos de intermediários humanos; fomos chamados para proclamar a luz da Graça onde quer que estejamos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o que aprendemos hoje: o Espírito Santo capacitou a Igreja no Pentecostes para ser testemunha viva das Boas Notícias, formando um povo unido, acolhedor e sacerdotal em Cristo, onde todos têm acesso direto ao Pai pela graça."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E se você que está nos ouvindo sente o toque do Espírito Santo chamando seu coração para fazer parte dessa família espiritual, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está de braços abertos para te receber em esperança e alegria."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Conforme lemos em Marcos 16, versículos 15 e 16: 'E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado.'"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você deseja dar esse passo simples, livre e público do batismo, não caminhe sozinho. Toque agora mesmo no botão abaixo do seu Guia de Estudos para buscar uma igreja cristã acolhedora próxima de você no mapa. Veja a distância até a Igreja Marco Zero, confira o contato pastoral e dê esse passo maravilhoso rumo à sua nova vida em Cristo. Um forte abraço, que Deus abençoe grandemente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "No Pentecostes, o Espírito Santo capacita a Igreja como testemunha das Boas Notícias para todas as nações (Atos 1:8; 2:1–41). A Igreja é a família viva formada por todos os que pertencem a Cristo — um sacerdócio real que proclama Sua luz (1 Pedro 2:9).",
@@ -2328,27 +3416,71 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 23 do I.D.E. — Boas Notícias! Hoje tocamos no coração prático do nosso chamado: o passo simples, livre e imediato do batismo cristão."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 23: Crer e Ser Batizado: Sem Impedimentos, Sem Barreiras."
       },
       {
         "speaker": "Lívia",
-        "text": "Eu amo a história de Filipe e o eunuco etíope em Atos capítulo 8! Filipe lhe anunciou Jesus partindo justamente de Isaías 53. Assim que chegaram a um lugar com água, o etíope perguntou: \"Eis aqui água; que impede que seja eu batizado?\""
+        "text": "Que alegria enorme estar com você em mais um estudo! Antes de abrirmos a Palavra, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, eu quero começar fazendo uma pergunta que mexe com muita gente. Às vezes, as pessoas acham que para dar o passo do batismo é preciso primeiro alcançar uma perfeição inalcançável ou passar por um processo cheio de regras criadas pelos homens. Mas o que a Bíblia realmente diz sobre as exigências para o batismo? Como Jesus resumiu esse convite?"
       },
       {
         "speaker": "Pedro",
-        "text": "E qual foi a única condição apresentada na Escritura? Crer de todo o coração que Jesus Cristo é o Filho de Deus! Não houve meses de burocracia, não houve lista de exigências inventadas por homens, não houve barreira de perfeição prévia."
+        "text": "Essa pergunta toca no coração da graça de Deus, Lívia! Vamos ver o que o próprio Jesus ordenou aos Seus discípulos antes de subir aos céus. Abra a sua Bíblia em Marcos, capítulo 16, versículos 15 e 16. Lívia, por favor, lê pra gente na íntegra e com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E na casa de Cornélio, em Atos 10:47, Pedro faz a mesma pergunta cheia de graça: \"Porventura, pode alguém recusar a água, para que não sejam batizados estes que, assim como nós, receberam o Espírito Santo?\""
+        "text": "Estou com o texto aberto aqui. Diz assim em Marcos 16, versículos 15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
       },
       {
         "speaker": "Pedro",
-        "text": "Jesus resumiu o convite de forma cristalina em Marcos 16:15–16: \"Ide por todo o mundo e pregai o evangelho a toda criatura. Quem crer e for batizado será salvo.\" O batismo não compra a salvação — ele é o abraço público e livre de quem creu na graça!"
+        "text": "Veja que clareza maravilhosa! Jesus não colocou nenhuma burocracia humana, nenhuma lista infindable de pré-requisitos morais ou exames complexos. O convite é direto: quem crer e for batizado. O batismo é a resposta simples, sincera e pública daquele que recebeu a graça e decidiu caminhar com o Rei."
       },
       {
         "speaker": "Lívia",
-        "text": "Se você crê de todo o coração em Jesus, não há nenhum impedimento! Aqui mesmo no app você pode tocar no botão abaixo e encontrar uma igreja cristã perto de você para dar esse passo."
+        "text": "Isso tira um peso enorme dos ombros da gente, Pedro! Mas confesso que surge outra dúvida: e quando alguém deseja muito ser batizado, será que alguém pode barrar essa pessoa exigindo um tempo de espera ou condições especiais? Como a Bíblia retrata a urgência e a liberdade desse passo na igreja primitiva?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Para responder a isso, vamos viajar para o livro de Atos dos Apóstolos, no capítulo 8, versículos 35 a 38. Lívia, faz a leitura desse episódio lindo entre Filipe e o eunuco etíope."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Diz assim em Atos 8, versículos 35 a 38: Então Filipe, abrindo a boca e começando nesta escritura, lhe anunciou a Jesus. E, indo eles caminhos abaixo, chegaram a uma água, e disse o eunuco: Eis aqui água; que impede que seja eu batizado? E disse Filipe: É lícito se creres de todo o coração. E, respondendo ele, disse: Creio que Jesus Cristo é o Filho de Deus. E mandou parar o carro, e desceram ambos à água, tanto Filipe como o eunuco, e o batizou."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Olha que resposta fantástica! O eunuco pergunta: 'Eis aqui água; que impede que seja eu batizado?' E a única condição exigida por Filipe foi: 'Se creres de todo o coração'. Não houve meses de espera, não houve barreiras burocráticas. A fé sincera encontrou portas abertas na água do batismo."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Essa história é emocionante demais! Mas alguém poderia pensar: 'Ah, mas isso aconteceu com um eunuco estrangeiro e solitário. Será que essa regra vale para todo mundo, inclusive para pessoas de culturas ou origens diferentes?' Como o apóstolo Pedro lidou com essa questão mais tarde?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é uma excelente observação, Lívia. Vamos abrir em Atos, capítulo 10, versículos 44 a 48. Vamos ver como Deus tratou a casa de Cornélio. Pode ler pra gente, por favor?"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. O texto diz em Atos 10, versículos 44 a 48: E, dizendo Pedro ainda estas palavras, caiu o Espírito Santo sobre todos os ouvintes a palavra. E os fiéis que eram da circuncisão, todos quantos tinham vindo com Pedro, maravilharam-se de que o dom do Espírito Santo se derramasse também sobre os gentios. Porque os ouviam falar línguas, e magnificar a Deus. Respondeu então Pedro: Pode alguém porventura recusar a água, para que não sejam batizados estes que, assim como nós, receberam também o Espírito Santo? E mandou que fossem batizados em nome do Senhor. Então rogaram-lhe que ficasse com eles por alguns dias."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perceba que o próprio Espírito Santo testificou! Nenhuma tradição humana, nenhum preconceito e nenhuma barreira cultural podem recusar a água do batismo àqueles que receberam a graça de Deus. As portas do Reino estão abertas para todos, sem exceção e sem impedimentos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo tudo o que estudamos hoje, aprendemos que o batismo cristão não é um clube exclusivo cheio de regras burocráticas inventadas pelos homens, mas sim a resposta pública, simples, imediata e livre de quem creu de todo o coração em Jesus Cristo como seu Salvador e Rei."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia. E se você que está nos ouvindo agora sente o chamado de Deus no coração, saiba que não existe nenhum impedimento entre você e Ele hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Como diz a Palavra em Marcos 16:16: 'Quem crer e for batizado será salvo.' Se você crê de todo o coração, convidamos você a dar esse passo de fé, livre e público."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Para te ajudar a dar esse passo prático, preparamos algo muito especial. Basta tocar no botão logo abaixo do Guia de Estudos para abrir o nosso localizador de igrejas no mapa. Lá você poderá ver a distância até a Igreja Marco Zero, encontrar uma congregação cristã fiel bem pertinho de você e pegar o contato pastoral para conversar sobre o seu batismo. Nós esperamos você na próxima aula!"
       }
     ],
     "overview": "No Novo Testamento, o batismo é a resposta simples, imediata e pública de quem crê em Jesus (Marcos 16:15–16; Atos 8:35–38; 10:44–48). Deus não impõe barreiras burocráticas nem exige perfeição humana prévia: basta crer de todo o coração e ser batizado.",
@@ -2427,27 +3559,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 24 do I.D.E. — Boas Notícias! Na aula passada vimos a liberdade do batismo; hoje Romanos 6 e Colossenses 2 nos mostram a beleza simbólica de mergulhar nas águas."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 24: Sepultados e Ressuscitados com Cristo."
       },
       {
         "speaker": "Lívia",
-        "text": "Quando descemos às águas do batismo, estamos encenando o próprio Evangelho! É como um funeral alegre da velha vida de culpa e condenação — fomos sepultados com Cristo na morte!"
+        "text": "É uma alegria enorme ter você conosco! Antes de entrarmos no estudo, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, a nossa aula de hoje fala sobre um assunto lindíssimo e muito transformador: o batismo. Mas muitas pessoas se perguntam qual é o significado real desse mergulho nas águas. O que a Bíblia realmente quer nos ensinar através desse ato?"
       },
       {
         "speaker": "Pedro",
-        "text": "E ao sairmos das águas, celebramos a ressurreição! Romanos 6:4 diz: \"Assim como Cristo foi ressuscitado dentre os mortos pela glória do Pai, assim também andemos nós em novidade de vida.\""
+        "text": "Essa é uma dúvida excelente, Lívia. O batismo não é apenas um ritual vazio, mas uma encenação viva do Evangelho. Vamos abrir a Palavra em Romanos, capítulo 6, versículos 1 a 4. Lívia, faz a leitura na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Colossenses 2:12 mostra que essa união com Cristo acontece \"mediante a fé no poder de Deus que o ressuscitou\". Não é a água física que tem mágica, mas o poder de Deus operando na fé de quem se une a Jesus!"
+        "text": "Estou com o texto aberto aqui. Diz assim em Romanos 6, versículos 1 a 4: Que diremos pois? Permaneceremos no pecado, para que a graça abunde? De modo nenhum. Nós, que já morremos para o pecado, como viveremos ainda nele? Ou não sabeis que todos quantos fostes batizados em Jesus Cristo fostes batizados na sua morte? De sorte que fomos sepultados com ele pelo batismo na morte; para que, como Cristo foi ressuscitado dentre os mortos pela glória do Pai, assim também andemos nós em novidade de vida."
       },
       {
         "speaker": "Pedro",
-        "text": "Por isso Paulo conclui em Romanos 6:11: considere-se morto para o domínio do pecado e vivo para Deus em Cristo Jesus! Seu velho passado ficou sepultado para trás."
+        "text": "Veja que forte! O mergulho nas águas representa o encerramento da velha identidade marcada pela culpa e pelo domínio do pecado. Quando descemos às águas, estamos simbolicamente sepultando o nosso passado. Fomos sepultados com Cristo na morte."
       },
       {
         "speaker": "Lívia",
-        "text": "Que marco inesquecível de recomeço! Nas águas do batismo você declara ao céu e à terra: \"Minha história agora está unida à ressurreição de Jesus!\""
+        "text": "Isso tira um peso enorme dos ombros, Pedro! Mas e depois que a pessoa é submersa na água? O que acontece quando ela se levanta?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A resposta está logo adiante, no mesmo capítulo de Romanos, versículos 5 a 8. Abra aí na sua Bíblia, ou no app 1Convite, enquanto a Lívia lê para nós."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lendo Romanos 6, versículos 5 a 8: Porque, se fomos plantados juntamente com ele na semelhança da sua morte, também o seremos na da sua ressurreição; Sabendo isto, que o nosso velho homem foi com ele crucificado, para que o corpo do pecado seja desfeito, a fim de que não sirvamos mais ao pecado. Porque quem está morto está justificado do pecado. Ora, se já morremos com Cristo, cremos que também com ele viveremos."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Levantar das águas proclama que a mesma vida ressurreta de Cristo agora pulsa em nós. É como um funeral alegre da velha vida de condenação. O nosso velho homem foi crucificado para que não sejamos mais escravos do pecado."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lindo demais! Mas alguém pode se perguntar: será que o poder está na água em si, ou em algum mérito nosso ao entrar nela?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com certeza não é a água física que tem mágica, Lívia. Vamos ver como o apóstolo Paulo explica isso lá em Colossenses, capítulo 2, versículos 11 e 12. Lívia, por favor, leia esse texto para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Colossenses 2, versículos 11 e 12: No qual também fostes circuncidados com a circuncisão não feita por mãos no despojamento do corpo dos pecados da carne, a circuncisão de Cristo; Sepultados juntamente com ele no batismo, no qual também fostes ressuscitados mediante a fé no poder de Deus, que o ressuscitou dentre os mortos."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! A união com Cristo acontece mediante a fé no poder de Deus. Não é sobre o que nós fazemos por nossa própria força, mas sobre a obra poderosa de Deus operando na fé de quem se entrega a Jesus. Por isso, em Romanos 6:11, Paulo conclui dizendo para nos considerarmos mortos para o pecado e vivos para Deus em Cristo Jesus."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que verdade libertadora! O nosso passado ficou totalmente sepultado para trás. Resumindo o que aprendemos hoje: o batismo é o símbolo profundo da nossa união com a morte e ressurreição de Jesus, onde deixamos para trás a velha vida de condenação e nascemos para caminhar em novidade de vida pela fé no poder de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Exatamente, Lívia! E para encerrar este estudo com muito tato e respeito, queremos dizer a você que nos ouve: não existe nenhum impedimento entre você e Deus hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "A Bíblia nos convida a dar esse passo com liberdade e amor. Vamos ler juntos o que diz em Marcos, capítulo 16, versículos 15 e 16:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se o seu coração foi tocado pelo Espírito Santo e você deseja dar esse passo público de fé e recomeço nas águas do batismo, não espere mais. Toque no botão logo abaixo do Guia de Estudos para buscar uma igreja próxima de você no mapa, ver a distância até a Igreja Marco Zero e pegar o contato pastoral. Que Deus abençoe grandemente a sua decisão de caminhar em novidade de vida!"
       }
     ],
     "overview": "O batismo simboliza nossa união vital com a morte e a ressurreição de Jesus (Romanos 6:1–11; Colossenses 2:12). Nas águas sepultamos o domínio da velha vida de condenação e nos levantamos pela fé para caminhar em novidade de vida.",
@@ -2527,27 +3711,71 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 25 do I.D.E. — Boas Notícias! Hoje abrimos o capítulo mais reconfortante de toda a Bíblia: Romanos 8, junto com as palavras de segurança do próprio Jesus no Evangelho de João."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 25: Nenhuma Condenação: Segurança e Permanência no Amor de Deus."
       },
       {
         "speaker": "Lívia",
-        "text": "Muita gente passa anos vivendo na montanha-russa da insegurança: \"Hoje acho que estou salvo; amanhã tropecei, acho que perdi tudo.\" Mas ouça o que Jesus garantiu em João 5:24!"
+        "text": "Que alegria ter você conosco em mais um estudo! Antes de abrirmos a Palavra, queremos fazer aquele convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Senhor falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que essa aula toca fundo no meu coração. Muita gente passa anos vivendo numa verdadeira montanha-russa espiritual: num dia acham que estão salvos, mas no dia seguinte, ao tropeçarem ou errarem, sentem que perderam tudo e que Deus está zangado. Afinal, a salvação depende do nosso desempenho diário ou existe uma segurança real que vem de Deus?"
       },
       {
         "speaker": "Pedro",
-        "text": "\"Quem ouve a minha palavra e crê naquele que me enviou tem a vida eterna, não entra em juízo, mas PASSOU da morte para a vida.\" Tempo verbal presente e perfeito: já tem, já passou!"
+        "text": "Essa é a grande angústia de tantos cristãos sinceros que ainda não entenderam a graça, Lívia! Mas a Bíblia tira todo esse peso dos nossos ombros. Vamos abrir juntos no Evangelho de João, capítulo 5, versículo 24. Lívia, faz a leitura desse texto pra gente, por favor."
       },
       {
         "speaker": "Lívia",
-        "text": "E em João 10:28–29 o Bom Pastor diz: \"Eu lhes dou a vida eterna; jamais perecerão, e ninguém as arrebatará da minha mão.\" Estamos seguros nas mãos do Filho e do Pai!"
+        "text": "Com certeza. Diz assim em João 5, versículo 24: Quem ouve a minha palavra e crê naquele que me enviou tem a vida eterna, não entra em juízo, mas passou da morte para a vida."
       },
       {
         "speaker": "Pedro",
-        "text": "Por isso Romanos 8 começa declarando \"nenhuma condenação há para os que estão em Cristo Jesus\" e termina cantando vitória: nem morte, nem vida, nem presente, nem futuro, nem qualquer criatura poderá nos separar do amor de Deus em Cristo!"
+        "text": "Note bem o tempo verbal que Jesus usa, Lívia: tem a vida eterna, não entra em juízo, mas já passou da morte para a vida. Não é algo que vai acontecer lá no futuro distante se a gente se esforçar bastante; é uma realidade presente! Quem crê de verdade já cruzou a fronteira da morte para a vida eterna."
       },
       {
         "speaker": "Lívia",
-        "text": "Respire fundo e descanse nessa certeza! Você não está segurando Deus com dedos cansados — é Deus quem segura você com mãos eternas."
+        "text": "Isso traz um alívio indescritível para a alma! Mas aí vem outra dúvida comum: e se a pessoa fraquejar ou o inimigo tentar nos afastar? Será que existe o risco de escaparmos das mãos de Deus?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa pergunta nos leva direto ao coração do Bom Pastor. Abra com a gente em João, capítulo 10, versículos 27 a 29. Lívia, lê pra gente ouvir essa promessa maravilhosa."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Abrindo aqui em João 10, versículos 27 a 29: As minhas ovelhas ouvem a minha voz; eu as conheço, e elas me seguem. Eu lhes dou a vida eterna; jamais perecerão, e ninguém as arrebatará da minha mão. Meu Pai, que the deu, é maior do que todos; e ninguém pode arrebatar-las das mãos de meu Pai."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Preste muita atenção nisso: Jesus diz que as ovelhas jamais perecerão e que ninguém pode arrebatá-las da mão dEle nem da mão do Pai. Você não está segurando a Deus com dedos cansados e trêmulos — é Deus quem segura você com mãos eternas e invencíveis!"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Glória a Deus por essa segurança! E para fechar com chave de ouro, o apóstolo Paulo fala com tanta firmeza sobre isso lá em Romanos. Como o apóstolo resume essa nossa posição em Cristo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos direto à fonte da carta aos Romanos, no capítulo 8, versículos 1 e 2, e depois pulando para os versículos 38 e 39. Lívia, por favor, leia esses textos na íntegra para o nosso ouvinte."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Lendo Romanos 8, versículos 1 e 2: Agora, pois, já nenhuma condenação há para os que estão em Cristo Jesus, que não andam segundo a carne, mas segundo o Espírito. Porque a lei do Espírito da vida, em Cristo Jesus, me livrou da lei do pecado e da morte. E agora, lendo os versículos 38 e 39 do mesmo capítulo 8: Porque estou bem certo de que nem a morte, nem a vida, nem os anjos, nem os principados, nem as potestades, nem o presente, nem o futuro, nem a altura, nem a profundidade, nem qualquer outra criatura poderá nos separar do amor de Deus, que está em Cristo Jesus nosso Senhor."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Que declaração gloriosa! Nenhuma condenação, nenhuma força criada, nenhum passado de erros, absolutamente nada neste mundo pode nos separar do amor de Deus em Cristo Jesus. Respire fundo e descanse nessa certeza maravilhosa hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Resumindo o que aprendemos hoje: a salvação em Cristo nos traz paz real e segurança presente. Nós já passamos da morte para a vida, estamos seguros e protegidos nas mãos do Bom Pastor, e vivemos sob a garantia eterna de que nada neste universo é capaz de nos separar do amor de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! E se você tem sentido essa paz invadir o seu coração, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está de braços abertos para receber Seus filhos em plena alegria e esperança. Se você deseja dar o passo simples, livre, consciente e público do batismo, conforme Jesus nos ensinou em Marcos 16:15 e 16 — onde Ele diz: 'Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo' —, nós queremos te ajudar nessa jornada."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso mesmo. Se o seu coração deseja selar esse pacto de amor com o Senhor nas águas do batismo, basta tocar no botão logo abaixo do seu Guia de Estudos. Ali você poderá encontrar uma igreja cristã bem próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar diretamente o contato pastoral para conversar com um líder. Que o Senhor abençoe grandemente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "A salvação em Cristo traz paz real e segurança presente. Quem crê já passou da morte para a vida (João 5:24), está protegido nas mãos do Bom Pastor (João 10:28–29) e vive sob a garantia eterna de que nada nos separará do amor de Deus (Romanos 8:1, 38–39).",
@@ -2627,27 +3855,75 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 26 do I.D.E. — Boas Notícias! Hoje olhamos para o horizonte com os olhos brilhando: a promessa da volta gloriosa do Rei Jesus."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 26: A Volta Gloriosa do Rei: Esperança, Não Pavor."
       },
       {
         "speaker": "Lívia",
-        "text": "Infelizmente, muita gente cresceu ouvindo falar da volta de Jesus em tom de terror e pânico, quase querendo que Ele demorasse mais um pouco! Mas na Bíblia é exatamente o oposto!"
+        "text": "Que alegria imensa ter você conosco em mais este encontro! Antes de começarmos o nosso estudo, aquele convite bem prático de sempre: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar tudo o que o Espírito Santo ministrar ao seu coração hoje."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, confesso que essa aula mexe muito comigo. Infelizmente, muita gente cresceu ouvindo falar da volta de Jesus em um tom de terror e pânico, como se Ele fosse um fiscal severo pronto para nos pegar no erro, quase fazendo a gente desejar que Ele demorasse mais um pouco. Mas a Bíblia diz algo totalmente diferente, não diz?"
       },
       {
         "speaker": "Pedro",
-        "text": "Olhe como Tito 2:13 chama a segunda vinda de Cristo: \"a bendita esperança\"! E em 1 Tessalonicenses 4:18, depois de descrever o encontro glorioso com Jesus e a ressurreição dos que partiram em Cristo, Paulo diz: \"Consolai-vos, pois, uns aos outros com estas palavras!\""
+        "text": "Exatamente isso, Lívia! Na Bíblia, a volta de Jesus é motivo de profunda alegria e expectativa para os que crêem. Vamos ver como a Palavra de Deus define isso lá no Novo Testamento. Abra com a gente em Tito, capítulo 2, versículos 11 a 14. Lívia, lê esse texto precioso pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Palavras de consolo, não de pavor! Em Atos 1:11, os anjos asseguram que esse mesmo Jesus amoroso que subiu aos céus voltará do mesmo modo, visivelmente, para buscar Sua família."
+        "text": "Estou com a Bíblia aberta aqui. Diz assim em Tito 2, versículos 11 a 14: Porque a graça de Deus se há manifestado, trazendo salvação a todos os homens, ensinando-nos que, negando a impiedade e as concupiscências mundanas, vivamos neste presente século sóbria, e justa, e piamente, aguardando a bem-aventurada esperança e o aparecimento da glória do nosso grande Deus e Salvador Jesus Cristo; o qual se deu a si mesmo por nós, para nos remir de toda a iniquidade, e purificar para si um povo seu especial, zeloso de boas obras."
       },
       {
         "speaker": "Pedro",
-        "text": "Quem está em Cristo não espera um juiz desconhecido e irado — espera o Noivo, o Salvador, o Irmão mais velho que deu a vida por nós!"
+        "text": "Veja que lindo, Lívia! O apóstolo Paulo não chama a volta de Jesus de um dia de pavor, mas de a \"bendita esperança\". A mesma graça que nos salvou no passado e nos transforma no presente é a que nos faz olhar para o horizonte com um sorriso no rosto, aguardando a manifestação da glória do nosso Salvador."
       },
       {
         "speaker": "Lívia",
-        "text": "A Igreja primitiva terminava suas orações dizendo \"Maranata — Ora, vem, Senhor Jesus!\". Essa mesma esperança serena e alegre é sua hoje."
+        "text": "Isso muda completamente a nossa perspectiva de vida, Pedro. Mas e quanto à saudade que sentimos daqueles que já partiram crendo em Jesus? A volta de Deus traz alguma resposta consoladora para essa dor?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Traz o consolo mais profundo que o ser humano poderia receber. Vamos abrir em 1 Tessalonicenses, capítulo 4, versículos 13 a 18. Lívia, por favor, faça a leitura para os nossos ouvintes."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Diz assim em 1 Tessalonicenses 4, versículos 13 a 18: Não queremos, porém, irmãos, que sejais ignorantes quanto aos que já dormem, para que não vos entristeçais, como os demais, que não têm esperança. Porque, se cremos que Jesus morreu e ressuscitou, assim também aos que em Jesus dormem Deus os tornará a trazer com ele. Dizemo-vos, pois, isto pela palavra do Senhor: que nós, os que andarmos vivos para a vinda do Senhor, não precederemos os que dormem. Porque o mesmo Senhor descerá do céu com alarido, e com voz de arcanjo, e com a trombeta de Deus; e os que morreram em Cristo ressuscitarão primeiro. Depois nós, os que andarmos vivos, seremos arrebatados juntamente com eles nas nuvens, a encontrar o reencontro com o Senhor nos ares, e assim estaremos sempre com o Senhor. Consolai-vos, pois, uns aos outros com estas palavras."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Glória a Deus por essas palavras! Perceba, ouvinte: o apóstolo Paulo termina dizendo \"Consolai-vos, pois, uns aos outros com estas palavras!\". A promessa da ressurreição e do reencontro eterno com Jesus e com nossos entes queridos que partiram na fé não é para causar medo, mas para encher o nosso coração de um consolo que o mundo inteiro não pode tirar."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Isso é maravilhoso! Mas, às vezes, na nossa mente humana, podemos nos perguntar: será que o Jesus que vai voltar é o mesmo Jesus amoroso dos Evangelhos, ou será que Ele mudou?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa pergunta toca fundo no coração de quem tem dúvidas sobre o caráter de Deus. Vamos ler o que diz em Atos, capítulo 1, versículo 11. Lívia, lê pra gente."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Atos 1, versículo 11: Os quais lhes disseram: Homens galileus, por que estais olhando para o céu? Esse Jesus, que dentre vós foi recebido em cima no céu, há de vir assim como o vistes ir para o céu."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! É exatamente o mesmo Jesus! O mesmo que abraçava as crianças, que curava os enfermos, que perdoava a mulher infortunada e que deu a Sua vida na cruz por amor a nós. Quem está em Cristo não espera um juiz desconhecido e irado, mas o Noivo, o Salvador, o Irmão mais velho que vem buscar a Sua família para morar com Ele para sempre."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que verdade consoladora! Resumindo o que aprendemos hoje, Pedro: a segunda vinda de Jesus não é um evento a ser temido com pavor pela Igreja, mas a \"bendita esperança\" que traz consolo para a dor, certeza para a alma e alegria indescritível para o nosso futuro."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E por causa dessa certeza gloriosa, a Igreja primitiva encerrava suas orações dizendo com profunda paz e alegria: \"Maranata — Ora, vem, Senhor Jesus!\". Essa mesma esperança serena é a que Deus quer colocar hoje no seu coração, trocando todo e qualquer temor do futuro pela confiança no Seu amor eterno."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E se você sente no coração o desejo de pertencer a essa família e aguardar o Rei com o coração em paz, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está voltando para buscar Seus filhos amados. Se você crê de todo o coração, pode dar o passo simples, livre e público do batismo, conforme o próprio Jesus nos ensinou."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "A Bíblia diz em Marcos 16:15 e 16: \"E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado.\" Se você deseja dar esse passo de fé e aliança com o seu Salvador, toque agora mesmo no botão logo abaixo no seu Guia de Estudos para buscar uma igreja próxima no mapa, ver a distância exata até a Igreja Marco Zero e pegar o contato pastoral. Nós aguardamos você na próxima aula. Um grande abraço e que o Senhor abençoe ricamente a sua vida!"
       }
     ],
     "overview": "A segunda vinda de Jesus é a \"bendita esperança\" da Igreja (Tito 2:13), motivo de consolo mútuo e alegria (1 Tessalonicenses 4:13–18), jamais de pânico ou dúvida sobre a salvação de quem pertence a Cristo.",
@@ -2726,27 +4002,79 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Bem-vindo à Aula 27 do I.D.E. — Boas Notícias! Estamos quase completando nossa travessia de Gênesis ao Apocalipse. Hoje olhamos para o triunfo definitivo de Cristo sobre todo o mal e sobre a própria morte."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à Aula 27: A Justiça Final de Deus e o Fim Definitivo do Mal."
       },
       {
         "speaker": "Lívia",
-        "text": "Quando vemos tanta injustiça, dor e despedidas neste mundo, o coração humano clama: \"Será que o mal vai vencer para sempre?\""
+        "text": "É uma alegria enorme receber você para este momento! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, quando olhamos ao nosso redor e vemos tanta injustiça, dor, violência e despedidas neste mundo, é inevitável que o nosso coração clame e pergunte: será que o mal vai vencer para sempre? A história caminha para o caos ou existe uma esperança segura?"
       },
       {
         "speaker": "Pedro",
-        "text": "E a resposta retumbante de 1 Coríntios 15:26 e 54 é NÃO! \"O último inimigo a ser destruído é a morte... Tragada foi a morte pela vitória!\" Cristo esmagou a cabeça da serpente na cruz e na ressurreição, e no final dos tempos Ele encerrará de vez a história do mal."
+        "text": "Essa é uma das perguntas mais profundas que podemos fazer, Lívia. E a resposta da Palavra de Deus é maravilhosa e cheia de alento. Vamos abrir a Bíblia em 1 Coríntios, capítulo 15, versículo 26. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "E no julgamento final de Apocalipse 20:11–15, há um detalhe cheio de paz para os salvos: o Livro da Vida! Quem creu em Jesus tem seu nome escrito no Livro da Vida do Cordeiro!"
+        "text": "Estou com o texto aberto aqui. Diz assim em 1 Coríntios 15, versículo 26: O último inimigo a ser destruído é a morte."
       },
       {
         "speaker": "Pedro",
-        "text": "A justiça final de Deus não é crueldade — é a boa notícia de que o mal, a opressão e a morte têm prazo de validade, e nunca mais voltarão a ferir a criação."
+        "text": "Que declaração poderosa! A morte não foi criada por Deus para durar para sempre; ela entrou por causa do pecado, mas Cristo já venceu a morte na cruz e na Sua ressurreição, e o decreto final de Deus é que esse inimigo será totalmente aniquilado."
       },
       {
         "speaker": "Lívia",
-        "text": "Graças a Deus, que nos dá a vitória por intermédio de nosso Senhor Jesus Cristo! Prepare o coração: na Aula 28 entraremos na eternidade dos Novos Céus e Nova Terra."
+        "text": "Pedro, isso significa então que o mal tem data de validade? Como a Bíblia descreve a forma como Deus vai lidar com toda a injustiça e opressão que feriram o mundo por tanto tempo?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Com certeza tem data de validade! Vamos continuar no mesmo capítulo de 1 Coríntios 15, agora lendo os versículos 54 a 57. Lívia, por favor, faça a leitura."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em 1 Coríntios 15, versículos 54 a 57: E, quando este corpo corruptível se revestir da incorruptibilidade, e este corpo mortal se revestir da imortalidade, então se cumprirá a palavra que está escrita: Tragada foi a morte pela vitória. Onde está, ó morte, o teu aguilhão? Onde está, ó inferno, a tua vitória? Ora, o aguilhão da morte é o pecado, e a força do pecado é a lei. Mas graças a Deus, que nos dá a vitória por intermédio de nosso Senhor Jesus Cristo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Louvado seja Deus! A justiça final de Deus não é um ato de crueldade arbitrária, mas a excelente notícia de que o mal, a opressão e a dor têm prazo de validade e nunca mais voltarão a ferir a criação de Deus."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E quanto àquele momento solene do julgamento final? Como nós podemos ter certeza de que estaremos seguros diante de Deus naquele dia?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Essa é a parte mais consoladora para todo aquele que confia em Jesus. Vamos abrir a Bíblia no livro de Apocalipse, capítulo 20, versículos 11 a 15. Lívia, leia pra gente na íntegra."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Com certeza. Apocalipse 20, versículos 11 a 15 diz assim: E vi um grande trono branco, e o que estava assentado sobre ele, de cuja presença fugiu a terra e o céu; e não se achou lugar para eles. E vi os mortos, grandes e pequenos, que estavam diante de Deus, e abriram-se os livros; e abriu-se outro livro, que é o do livro da vida. E os mortos foram julgados pelas coisas que estavam escritas nos livros, segundo as suas obras. E deu o mar os mortos que nele havia; e a morte e o inferno deram os mortos que neles havia; e foram julgados cada um segundo as suas obras. E a morte e o inferno foram lançados no lago de fogo. Esta é a segunda morte. E Aquele que não foi achado escrito no livro da vida foi lançado no lago de fogo."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! Veja que detalhe cheio de paz para os salvos: o Livro da Vida do Cordeiro. Quem creu em Jesus, entregou a vida a Ele e foi transformado pela Sua graça tem o seu nome inscrito de forma irrevogável nesse livro. A justiça de Deus protege e acolhe os Seus filhos."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que estudo libertador e consolador! Resumindo o que aprendemos hoje: a história deste mundo não caminha para o caos ou para o triunfo definitivo da injustiça. Jesus Cristo já garantiu a vitória sobre a morte, o mal tem data de validade, e todos os que creem Nele têm seus nomes guardados no Livro da Vida do Cordeiro, esperando a justiça perfeita e amorosa de Deus."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Perfeito, Lívia. E o passo prático para hoje é: agradeça a Jesus porque nenhuma dor, injustiça ou luto desta terra terá a última palavra — a vitória final pertence a Ele."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E se você sente no coração o desejo de entregar sua vida a esse Rei que venceu a morte, saiba que não existe nenhum impedimento entre você e Deus hoje. O Rei está voltando para buscar Seus filhos amados com alegria e paz. A Bíblia nos convida de forma muito clara em Marcos, capítulo 16, versículos 15 e 16. Vamos ler juntos na íntegra:"
+      },
+      {
+        "speaker": "Lívia",
+        "text": "E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém. Se você crê de todo o coração, o batismo é o passo simples, livre e público de aliança com Jesus. Convidamos você a tocar agora mesmo no botão abaixo do seu Guia de Estudos para buscar uma igreja próxima de você no mapa, verificar a distância até a Igreja Marco Zero e pegar o contato pastoral. Que Deus abençoe grandemente a sua vida, e até a nossa próxima aula!"
       }
     ],
     "overview": "A história não caminha para o caos, mas para a vitória definitiva de Cristo sobre o mal, a injustiça e a morte (1 Coríntios 15:24–57; Apocalipse 20:11–15). Para os que têm o nome no Livro da Vida do Cordeiro, a justiça final de Deus é a garantia eterna de paz.",
@@ -2826,27 +4154,91 @@ export const IDE_LESSONS = [
     "podcastScript": [
       {
         "speaker": "Pedro",
-        "text": "Chegamos juntos à Aula 28 — a grande consumação do I.D.E. — Boas Notícias! De Gênesis 1 a Apocalipse 22, o círculo de amor de Deus se fecha de maneira gloriosa."
+        "text": "Seja muito bem-vindo ao podcast IDE Boas Notícias! Eu sou o Pedro, e aqui ao meu lado está a Lívia. O nome IDE vem diretamente da ordem amorosa de Jesus: Ide e pregai o evangelho a toda criatura. Hoje chegamos à nossa Aula 28: Novos Céus, Nova Terra e o Reino Eterno."
       },
       {
         "speaker": "Lívia",
-        "text": "Lembra da Aula 1, quando vimos o Éden como o lugar onde o Céu e a Terra se tocavam e Deus habitava com a humanidade? Agora ouça Apocalipse 21:3: \"Eis o tabernáculo de Deus com os homens. Deus habitará com eles!\""
+        "text": "Que alegria imensa celebrar a conclusão de toda esta jornada com você! Antes de entrarmos no estudo, queremos fazer um convite bem prático: pegue a sua Bíblia física para acompanhar cada texto com a gente — ou, se preferir, abra a Bíblia direto aqui no aplicativo 1Convite. Separe também um caderno e uma caneta, ou use o campo de anotações logo abaixo do Guia de Estudos para registrar o que Deus falar ao seu coração."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, chegamos ao final do nosso Guia de Estudos e é impossível não lembrar de onde viemos. Na Aula 1, vimos o Éden perfeito onde Deus habitava com o homem. E agora, como a Bíblia conclui a história da humanidade? O que nos aguarda no final de tudo?"
       },
       {
         "speaker": "Pedro",
-        "text": "E olha a ternura do versículo 4: o próprio Deus lhes enxugará dos olhos toda lágrima! A morte já não existirá, já não haverá luto, nem pranto, nem dor, porque as primeiras coisas passaram!"
+        "text": "É a pergunta mais gloriosa de toda a Escritura, Lívia! O círculo do amor de Deus se fecha de maneira perfeita. Vamos abrir juntos a Palavra de Deus em Apocalipse, capítulo 21, versículos 1 a 3. Lívia, lê na íntegra pra gente com calma."
       },
       {
         "speaker": "Lívia",
-        "text": "Em Apocalipse 22, a árvore da vida volta a florescer junto ao rio cristalino que sai do trono de Deus e do Cordeiro, e finalmente veremos a face do nosso Rei sem nenhuma cortina, sem nenhuma culpa, sem nenhuma noite!"
+        "text": "Estou com o texto aberto aqui. Diz assim em Apocalipse 21, versículos 1 a 3: E vi um novo céu e uma nova terra. Porque já o primeiro céu e a primeira terra passaram, e o mar já não existe. E eu, João, vi a santa cidade, a nova Jerusalém, que descia do céu de Deus, adereçada como uma noiva ataviada para o seu marido. E ouvi uma grande voz do céu, que dizia: Eis o tabernáculo de Deus com os homens, pois com eles habitará, e eles serão o seu povo, e o mesmo Deus estará com eles, e será o seu Deus."
       },
       {
         "speaker": "Pedro",
-        "text": "E ouça o cântico de Apocalipse 11:15: \"O reino do mundo se tornou de nosso Senhor e do seu Cristo, e ele reinará pelos séculos dos séculos!\" Essa é a sua Identidade (filho amado), o seu Destino (caminhar em graça com Cristo) e a sua Eternidade (habitar para sempre com o Rei)!"
+        "text": "Olha que promessa maravilhosa! O propósito original do Éden se cumpre em plena eternidade. Deus não apenas visita o Seu povo; Ele habita para sempre conosco. A separação causada pelo pecado foi completamente destruída pela cruz de Cristo."
       },
       {
         "speaker": "Lívia",
-        "text": "Parabéns por concluir esta jornada de 28 estudos! Se você ainda não deu o passo público do batismo, hoje é o dia perfeito para celebrar essa nova vida. E ao concluir esta aula, o seu Certificado I.D.E. — 1Convite estará liberado!"
+        "text": "Isso me emociona muito, Pedro, porque hoje nós vivemos em um mundo cheio de perdas, luto e lágrimas. A Bíblia nos diz o que vai acontecer com todo esse sofrimento?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Sim, e a resposta é de uma ternura indescritível! Vamos ler o versículo 4 do mesmo capítulo 21 de Apocalipse. Lívia, por favor."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto diz em Apocalipse 21:4: E Deus toscará de seus olhos toda lágrima; e a morte não será mais, nem pranto, nem clamor, nem dor haverá mais; porque já as primeiras coisas são passadas."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Amém! O próprio Pai enxugará com Suas próprias mãos cada lágrima dos nossos olhos. A morte, o luto e a dor pertencem para sempre ao passado. As primeiras coisas passaram, e uma nova realidade de vida eterna e alegria inefundível começa."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Pedro, e sobre o governo deste mundo e o domínio de Jesus? Como o Apocalipse descreve o estabelecimento definitivo do Seu Reino?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos ver o cântico triunfante registrado em Apocalipse, capítulo 11, versículo 15. Abra com a gente e acompanhe a leitura."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Diz assim em Apocalipse 11:15: E o sétimo anjo tocou a sua trombeta, e houve no céu grandes vozes, que diziam: Os reinos do mundo vieram a ser de nosso Senhor e do seu Cristo, e ele reinará para todo o sempre."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Aleluia! Todo sistema de opressão, injustiça e pecado deste mundo dec会の, e o Reino do nosso Senhor e do Seu Cristo se estabelece para sempre. Ele é o Rei que reina por toda a eternidade."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Para fecharmos este estudo com chave de ouro, o que mais a Palavra nos revela sobre a nossa comunhão com Deus na Nova Jerusalém?"
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Vamos ler em Apocalipse, capítulo 22, versículos 3 a 5. Essa é a cena mais linda que poderíamos imaginar."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "O texto sagrado diz em Apocalipse 22:3 a 5: E ali nunca mais haverá maldição alguma; e nela estará o trono de Deus e do Cordeiro, e os seus servos o servirão. E verão a sua face; e a sua testa estará o seu nome. E não haverá ali noite, e não precisarão de lâmpada nem de luz do sol, porque o Senhor Deus os alumiará; e reinarão para todo o sempre."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Veremos a face do nosso Rei face a face, sem nenhuma cortina, sem nenhuma culpa e sem nenhuma noite. Essa é a sua Identidade como filho amado, o seu Destino caminhando em graça com Cristo, e a sua Eternidade habitando para sempre com Ele."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Que jornada extraordinária! Hoje aprendemos que a história humana não termina em caos, mas na consumação gloriosa do Reino de Deus, onde Ele habita para sempre conosco, enxugando todas as lágrimas e nos recebendo em Novos Céus e Nova Terra."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Você percorreu toda a história da Graça de Gênesis ao Apocalipse! E ao concluir esta aula, o seu Certificado IDE do aplicativo 1Convite está liberado para você celebrar. Não existe nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam para nos dar acesso a essa vida eterna."
+      },
+      {
+        "speaker": "Lívia",
+        "text": "Se você crê de todo o coração e deseja dar esse passo público de fé, Jesus nos deixou um lindo mandamento. Como diz em Marcos 16:15 e 16: E disse-lhes: Ide por todo o mundo, pregai o evangelho a toda criatura. Quem crer e for batizado será salvo; mas quem não crer será condenado."
+      },
+      {
+        "speaker": "Pedro",
+        "text": "Se você sente o toque do Espírito Santo para descer às águas do batismo e selar essa nova aliança, faça isso com paz e alegria no coração. Para te ajudar a dar esse passo prático, toque agora mesmo no botão abaixo do seu Guia de Estudos para buscar uma igreja próxima no mapa, ver a distância até a Igreja Marco Zero e pegar o contato pastoral direto. Muito obrigado por caminhar conosco no IDE Boas Notícias, e que o Senhor abençoe ricamente a sua nova vida em Cristo!"
       }
     ],
     "overview": "Apocalipse 21 e 22 coroam toda a história bíblica: Deus restaura plenamente o Reino original em Novos Céus e Nova Terra, habita para sempre com Seus filhos, enxuga toda lágrima e nos recebe face a face em um Reino eterno que jamais terá fim.",
