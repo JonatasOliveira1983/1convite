@@ -7720,11 +7720,16 @@ Em nome de Jesus, Amém.`;
                   </span>
                 </span>
 
-                {isAdminMode && (
+                {(isAdminMode || adminAuthService.isCurrentSessionAdmin() || (profileEmail || '').trim().toLowerCase() === 'jonatasprojetos2013@gmail.com') && (
                   <div style={{ marginTop: '14px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', position: 'relative', zIndex: 3 }}>
                     <button
                       type="button"
-                      onClick={() => setShowAdminPanel(true)}
+                      onClick={() => {
+                        setIsAdminMode(true);
+                        setShowAdminPanel(false);
+                        setActiveTab('admin-panel');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       style={{
                         background: 'rgba(15, 23, 42, 0.9)',
                         border: '1.5px solid #F59E0B',
