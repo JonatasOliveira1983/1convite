@@ -1874,9 +1874,16 @@ app.get('/api/v1/biblia/audio/:abrev/:capitulo', async (req, res) => {
     const protocol = isLocal ? 'http' : 'https';
     const backendUrl = `${protocol}://${host}`;
 
-    // 1. Fonte primária: beblia.bible
+    // 1. Fonte primária: beblia.bible (com fallback automático para LibriVox)
     let searchAbrev = abrev.toLowerCase();
     if (ABREV_MAP[searchAbrev]) searchAbrev = ABREV_MAP[searchAbrev];
+
+    const livro = getLibrivoxInfo(abrev);
+    const librivoxFilePath = (livro && capNumero >= 1 && capNumero <= livro.chapters)
+      ? getLibrivoxFilePath(livro.prefix, capNumero)
+      : null;
+    const librivoxUrl = librivoxFilePath ? `https://archive.org/download/${livro.id}/${librivoxFilePath}` : null;
+    const librivoxProxy = librivoxFilePath ? `${backendUrl}/api/v1/biblia/audio-stream-librivox/${livro.id}/${librivoxFilePath}` : null;
 
     let index = FALLBACK_ORDENADOS.indexOf(searchAbrev);
     if (index !== -1) {
@@ -1887,20 +1894,18 @@ app.get('/api/v1/biblia/audio/:abrev/:capitulo', async (req, res) => {
       return res.json({
         url: audioUrl,
         proxy: `${backendUrl}/api/v1/biblia/audio-stream/${bookName}/${capPad}.mp3`,
+        fallbackUrl: librivoxUrl,
+        fallbackProxy: librivoxProxy,
         source: 'primary',
         license: 'Verificar licença da fonte',
       });
     }
 
     // 2. Fallback: LibriVox/Internet Archive
-    const livro = getLibrivoxInfo(abrev);
-    if (livro && capNumero >= 1 && capNumero <= livro.chapters) {
-      const filePath = getLibrivoxFilePath(livro.prefix, capNumero);
-      const archiveUrl = `https://archive.org/download/${livro.id}/${filePath}`;
-
+    if (librivoxUrl) {
       return res.json({
-        url: archiveUrl,
-        proxy: `${backendUrl}/api/v1/biblia/audio-stream-librivox/${livro.id}/${filePath}`,
+        url: librivoxUrl,
+        proxy: librivoxProxy,
         source: 'librivox',
         license: 'Public Domain (LibriVox)',
       });
@@ -1912,55 +1917,83 @@ app.get('/api/v1/biblia/audio/:abrev/:capitulo', async (req, res) => {
   }
 });
 
+function streamHttpsWithRedirects(targetUrl, req, res, onFail, maxRedirects = 5) {
+  const parsed = new URL(targetUrl);
+  const headers = {};
+  if (req.headers.range) headers.Range = req.headers.range;
+
+  const request = https.get({
+    hostname: parsed.hostname,
+    port: parsed.port || 443,
+    path: parsed.pathname + parsed.search,
+    headers,
+    timeout: 5000,
+  }, (upstreamRes) => {
+    const status = upstreamRes.statusCode || 500;
+    if ([301, 302, 303, 307, 308].includes(status) && upstreamRes.headers.location && maxRedirects > 0) {
+      upstreamRes.resume();
+      const nextUrl = new URL(upstreamRes.headers.location, targetUrl).toString();
+      return streamHttpsWithRedirects(nextUrl, req, res, onFail, maxRedirects - 1);
+    }
+    if (status < 200 || status >= 300) {
+      upstreamRes.resume();
+      return onFail(new Error(`HTTP ${status}`));
+    }
+    res.status(status);
+    res.set('Content-Type', upstreamRes.headers['content-type'] || 'audio/mpeg');
+    res.set('Accept-Ranges', 'bytes');
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Cache-Control', 'public, max-age=86400');
+    if (upstreamRes.headers['content-length']) {
+      res.set('Content-Length', upstreamRes.headers['content-length']);
+    }
+    if (upstreamRes.headers['content-range']) {
+      res.set('Content-Range', upstreamRes.headers['content-range']);
+    }
+    upstreamRes.pipe(res);
+  });
+
+  request.on('timeout', () => {
+    request.destroy(new Error('Timeout upstream'));
+  });
+  request.on('error', (err) => {
+    onFail(err);
+  });
+}
+
 // Proxy de streaming — LibriVox/Internet Archive
 app.get('/api/v1/biblia/audio-stream-librivox/:itemId/:fileName', (req, res) => {
-  try {
-    const { itemId, fileName } = req.params;
-    const upstream = `https://archive.org/download/${itemId}/${fileName}`;
-    
-    https.get(upstream, (upstreamRes) => {
-      if (upstreamRes.statusCode !== 200) {
-        return res.status(upstreamRes.statusCode).json({ error: 'Áudio não encontrado no LibriVox' });
-      }
-      res.set('Content-Type', 'audio/mpeg');
-      res.set('Accept-Ranges', 'bytes');
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Cache-Control', 'public, max-age=86400');
-      if (upstreamRes.headers['content-length']) {
-        res.set('Content-Length', upstreamRes.headers['content-length']);
-      }
-      upstreamRes.pipe(res);
-    }).on('error', (err) => {
+  const { itemId, fileName } = req.params;
+  const upstream = `https://archive.org/download/${itemId}/${fileName}`;
+  streamHttpsWithRedirects(upstream, req, res, (err) => {
+    if (!res.headersSent) {
       res.status(502).json({ error: 'Falha ao buscar áudio do LibriVox: ' + err.message });
-    });
-  } catch (err) {
-    res.status(502).json({ error: 'Falha ao buscar áudio do LibriVox: ' + err.message });
-  }
+    }
+  });
 });
 
-// Proxy de streaming — fallback (beblia.bible)
+// Proxy de streaming — beblia.bible com fallback automático para LibriVox
 app.get('/api/v1/biblia/audio-stream/:book/:chapter.mp3', (req, res) => {
-  try {
-    const { book, chapter } = req.params;
-    const upstream = `https://beblia.bible:81/BibleAudio/portuguese/${book}/${chapter}.mp3`;
-    
-    https.get(upstream, (upstreamRes) => {
-      if (upstreamRes.statusCode !== 200) {
-        return res.status(upstreamRes.statusCode).json({ error: 'Audio not found upstream' });
-      }
-      res.set('Content-Type', 'audio/mpeg');
-      res.set('Accept-Ranges', 'bytes');
-      res.set('Access-Control-Allow-Origin', '*');
-      if (upstreamRes.headers['content-length']) {
-        res.set('Content-Length', upstreamRes.headers['content-length']);
-      }
-      upstreamRes.pipe(res);
-    }).on('error', (err) => {
-      res.status(502).json({ error: 'Falha ao buscar áudio upstream: ' + err.message });
-    });
-  } catch (err) {
-    res.status(502).json({ error: 'Falha ao buscar áudio upstream: ' + err.message });
-  }
+  const { book, chapter } = req.params;
+  const upstream = `https://beblia.bible:81/BibleAudio/portuguese/${book}/${chapter}.mp3`;
+  streamHttpsWithRedirects(upstream, req, res, () => {
+    const idx = FALLBACK_BOOKS.indexOf(book.toLowerCase());
+    const abrev = idx !== -1 ? FALLBACK_ORDENADOS[idx] : null;
+    const livro = abrev ? getLibrivoxInfo(abrev) : null;
+    const capNum = parseInt(chapter, 10);
+    if (livro && capNum >= 1 && capNum <= livro.chapters) {
+      const filePath = getLibrivoxFilePath(livro.prefix, capNum);
+      const librivoxUpstream = `https://archive.org/download/${livro.id}/${filePath}`;
+      return streamHttpsWithRedirects(librivoxUpstream, req, res, (err2) => {
+        if (!res.headersSent) {
+          res.status(502).json({ error: 'Falha ao buscar áudio upstream: ' + err2.message });
+        }
+      });
+    }
+    if (!res.headersSent) {
+      res.status(502).json({ error: 'Falha ao buscar áudio upstream' });
+    }
+  });
 });
 
 const DEFAULT_DIC_MAP = {

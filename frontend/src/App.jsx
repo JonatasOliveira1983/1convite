@@ -3507,7 +3507,9 @@ Em nome de Jesus, Amém.`;
                     gap: '6px'
                   }}
                 >
-                  <span>📖 {bibleSelectedBook.livro_nome} {bibleSelectedChapter} ▾</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  <span>{bibleSelectedBook.livro_nome} {bibleSelectedChapter}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
               ) : (
                 <h2 style={{ fontSize: '1.1rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)', textAlign: 'center' }}>
@@ -3687,23 +3689,25 @@ Em nome de Jesus, Amém.`;
             <div className="bible-modal-content">
               {/* Busca Rápida de Livro + Filtro AT / NT para uso no culto */}
               <div style={{ position: 'sticky', top: '-12px', zIndex: 5, background: 'var(--bg-primary)', margin: '-12px -16px 14px', padding: '12px 16px', borderBottom: '1px solid rgba(148,163,184,0.14)' }}>
-                <input
-                  type="search"
-                  placeholder="🔍 Digite o livro (ex: João, Salmos, Apocalipse)..."
-                  value={bibleBookFilter}
-                  onChange={(e) => setBibleBookFilter(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(249, 115, 22, 0.35)',
-                    background: 'rgba(148, 163, 184, 0.08)',
-                    color: 'var(--text-primary)',
-                    fontSize: '0.92rem',
-                    marginBottom: '10px',
-                    boxSizing: 'border-box'
-                  }}
-                />
+                <div style={{ position: 'relative', marginBottom: '10px' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: '13px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input
+                    type="search"
+                    placeholder="Digite o livro (ex: João, Salmos, Apocalipse)..."
+                    value={bibleBookFilter}
+                    onChange={(e) => setBibleBookFilter(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '11px 14px 11px 38px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(249, 115, 22, 0.35)',
+                      background: 'rgba(148, 163, 184, 0.08)',
+                      color: 'var(--text-primary)',
+                      fontSize: '0.92rem',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                   {[
                     { id: 'all', label: 'Todos (66)' },
@@ -6074,45 +6078,50 @@ Em nome de Jesus, Amém.`;
                 <div className="hero-sub">Capítulo {bibleSelectedChapter}</div>
 
                 {/* Barra Rápida de Navegação para Celular (Livro / Capítulo / Versículo) */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '14px' }}>
                   <button
                     type="button"
                     disabled={bibleSelectedChapter <= 1}
                     onClick={() => { setBibleShowVersePicker(false); setBibleSelectedChapter(Math.max(1, bibleSelectedChapter - 1)); }}
                     title="Capítulo anterior"
-                    style={{ padding: '7px 12px', borderRadius: '999px', background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter <= 1 ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter <= 1 ? 0.45 : 1 }}
+                    aria-label="Capítulo anterior"
+                    style={{ padding: '8px 12px', borderRadius: '999px', background: 'rgba(15,23,42,0.58)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter <= 1 ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter <= 1 ? 0.45 : 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                   >
-                    ◀
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                   </button>
                   <button
                     type="button"
                     onClick={() => { setBibleShowVersePicker(false); setBibleViewMode('select-book'); }}
-                    style={{ padding: '7px 14px', borderRadius: '999px', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                    style={{ padding: '8px 14px', borderRadius: '999px', background: 'rgba(15,23,42,0.58)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
-                    📖 Livro
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Livro</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => { setBibleShowVersePicker(false); setBibleViewMode('select-chapter'); }}
-                    style={{ padding: '7px 14px', borderRadius: '999px', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                    style={{ padding: '8px 14px', borderRadius: '999px', background: 'rgba(15,23,42,0.58)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.32)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
-                    📑 Cap. {bibleSelectedChapter}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Cap. {bibleSelectedChapter}</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setBibleShowVersePicker((prev) => !prev)}
-                    style={{ padding: '7px 14px', borderRadius: '999px', background: bibleShowVersePicker ? '#f59e0b' : 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)', color: bibleShowVersePicker ? '#111827' : '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+                    style={{ padding: '8px 14px', borderRadius: '999px', background: bibleShowVersePicker ? '#f59e0b' : 'rgba(15,23,42,0.58)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.35)', color: bibleShowVersePicker ? '#111827' : '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
-                    🔢 Versículo
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+                    <span>Versículo</span>
                   </button>
                   <button
                     type="button"
                     disabled={bibleSelectedChapter >= bibleChaptersCount}
                     onClick={() => { setBibleShowVersePicker(false); setBibleSelectedChapter(Math.min(bibleChaptersCount, bibleSelectedChapter + 1)); }}
                     title="Próximo capítulo"
-                    style={{ padding: '7px 12px', borderRadius: '999px', background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter >= bibleChaptersCount ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter >= bibleChaptersCount ? 0.45 : 1 }}
+                    aria-label="Próximo capítulo"
+                    style={{ padding: '8px 12px', borderRadius: '999px', background: 'rgba(15,23,42,0.58)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: bibleSelectedChapter >= bibleChaptersCount ? 'not-allowed' : 'pointer', opacity: bibleSelectedChapter >= bibleChaptersCount ? 0.45 : 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                   >
-                    ▶
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                   </button>
                 </div>
 
