@@ -3686,7 +3686,7 @@ Em nome de Jesus, Amém.`;
             </div>
             <div className="bible-modal-content">
               {/* Busca Rápida de Livro + Filtro AT / NT para uso no culto */}
-              <div style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg-primary)', padding: '4px 0 12px' }}>
+              <div style={{ position: 'sticky', top: '-12px', zIndex: 5, background: 'var(--bg-primary)', margin: '-12px -16px 14px', padding: '12px 16px', borderBottom: '1px solid rgba(148,163,184,0.14)' }}>
                 <input
                   type="search"
                   placeholder="🔍 Digite o livro (ex: João, Salmos, Apocalipse)..."
@@ -3697,14 +3697,14 @@ Em nome de Jesus, Amém.`;
                     padding: '11px 14px',
                     borderRadius: '12px',
                     border: '1px solid rgba(249, 115, 22, 0.35)',
-                    background: 'var(--bg-secondary, rgba(255,255,255,0.06))',
+                    background: 'rgba(148, 163, 184, 0.08)',
                     color: 'var(--text-primary)',
                     fontSize: '0.92rem',
                     marginBottom: '10px',
                     boxSizing: 'border-box'
                   }}
                 />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                   {[
                     { id: 'all', label: 'Todos (66)' },
                     { id: 'at', label: 'Antigo (39)' },
@@ -3715,10 +3715,10 @@ Em nome de Jesus, Amém.`;
                       type="button"
                       onClick={() => setBibleTestamentTab(tb.id)}
                       style={{
-                        padding: '8px 6px',
+                        padding: '9px 6px',
                         borderRadius: '10px',
                         border: bibleTestamentTab === tb.id ? '1.5px solid var(--orange)' : '1px solid rgba(148,163,184,0.25)',
-                        background: bibleTestamentTab === tb.id ? 'rgba(249,115,22,0.16)' : 'transparent',
+                        background: bibleTestamentTab === tb.id ? 'rgba(249,115,22,0.16)' : 'rgba(148,163,184,0.06)',
                         color: bibleTestamentTab === tb.id ? 'var(--orange)' : 'var(--text-secondary)',
                         fontWeight: '700',
                         fontSize: '0.78rem',
@@ -3733,23 +3733,23 @@ Em nome de Jesus, Amém.`;
 
               {/* Painel Resumo Global */}
               {!qNorm && bibleTestamentTab === 'all' && (
-                <div style={{ margin: '0 0 16px 0', padding: '14px 16px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ margin: '0 0 18px 0', padding: '14px 16px', background: 'rgba(148,163,184,0.08)', borderRadius: '14px', border: '1px solid rgba(148,163,184,0.18)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Progresso Total da Bíblia</span>
-                    <span style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--orange)' }}>{totalPercent}%</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Progresso Total da Bíblia</span>
+                    <span style={{ fontSize: '1.05rem', fontWeight: '800', color: 'var(--orange)' }}>{totalPercent}%</span>
                   </div>
-                  <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '99px', overflow: 'hidden', marginBottom: '12px' }}>
+                  <div style={{ height: '6px', background: 'rgba(148,163,184,0.2)', borderRadius: '99px', overflow: 'hidden', marginBottom: '12px' }}>
                     <div style={{ height: '100%', width: `${totalPercent}%`, background: 'linear-gradient(90deg, var(--orange), #f97316)', borderRadius: '99px', transition: 'width 0.5s ease' }} />
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                    <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div style={{ textAlign: 'center', padding: '10px 8px', background: 'rgba(148,163,184,0.08)', borderRadius: '10px' }}>
                       <div style={{ fontSize: '1rem', fontWeight: '700', color: '#f59e0b' }}>{atPercent}%</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Antigo Testamento</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>Antigo Testamento</div>
                       <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{atStats.read}/{atStats.total} capítulos</div>
                     </div>
-                    <div style={{ textAlign: 'center', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px' }}>
+                    <div style={{ textAlign: 'center', padding: '10px 8px', background: 'rgba(148,163,184,0.08)', borderRadius: '10px' }}>
                       <div style={{ fontSize: '1rem', fontWeight: '700', color: '#3b82f6' }}>{ntPercent}%</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Novo Testamento</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>Novo Testamento</div>
                       <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>{ntStats.read}/{ntStats.total} capítulos</div>
                     </div>
                   </div>
@@ -3759,20 +3759,20 @@ Em nome de Jesus, Amém.`;
               {filteredAt.length > 0 && (
                 <>
                   <div className="bible-testament-title">Antigo Testamento</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '8px', marginBottom: '14px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', marginBottom: '18px' }}>
                     {filteredAt.map((bk, idx) => {
                       const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
                       const prog = calcBookProgress(bk.livro_abrev, total);
                       const isDone = prog.percent === 100;
                       const isCurrent = bibleSelectedBook.livro_abrev === bk.livro_abrev;
                       return (
-                        <div key={idx} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.06)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(148,163,184,0.14)', transition: 'all 0.2s' }}
+                        <div key={idx} style={{ minWidth: 0, padding: '11px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.07)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.28)' : '1px solid rgba(148,163,184,0.18)', transition: 'all 0.2s' }}
                           onClick={() => { setBibleSelectedBook(bk); setBibleBookFilter(''); setBibleViewMode('select-chapter'); }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                            <span style={{ fontSize: '0.9rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
-                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                            <span style={{ fontSize: '0.88rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{bk.livro_nome}</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)', flexShrink: 0 }}>{prog.percent}%</span>
                           </div>
-                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.18)', borderRadius: '99px', overflow: 'hidden' }}>
+                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.2)', borderRadius: '99px', overflow: 'hidden' }}>
                             <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : 'var(--orange)', borderRadius: '99px' }} />
                           </div>
                         </div>
@@ -3784,21 +3784,21 @@ Em nome de Jesus, Amém.`;
 
               {filteredNt.length > 0 && (
                 <>
-                  <div className="bible-testament-title" style={{ marginTop: '4px' }}>Novo Testamento</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '8px' }}>
+                  <div className="bible-testament-title">Novo Testamento</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
                     {filteredNt.map((bk, idx) => {
                       const total = chaptersPerBook[bk.livro_abrev] || bk.capitulos || 0;
                       const prog = calcBookProgress(bk.livro_abrev, total);
                       const isDone = prog.percent === 100;
                       const isCurrent = bibleSelectedBook.livro_abrev === bk.livro_abrev;
                       return (
-                        <div key={idx} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.06)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(148,163,184,0.14)', transition: 'all 0.2s' }}
+                        <div key={idx} style={{ minWidth: 0, padding: '11px 12px', cursor: 'pointer', borderRadius: '12px', background: isCurrent ? 'rgba(249,115,22,0.16)' : isDone ? 'rgba(34,197,94,0.08)' : 'rgba(148,163,184,0.07)', border: isCurrent ? '1.5px solid var(--orange)' : isDone ? '1px solid rgba(34,197,94,0.28)' : '1px solid rgba(148,163,184,0.18)', transition: 'all 0.2s' }}
                           onClick={() => { setBibleSelectedBook(bk); setBibleBookFilter(''); setBibleViewMode('select-chapter'); }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                            <span style={{ fontSize: '0.9rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)' }}>{bk.livro_nome}</span>
-                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)' }}>{prog.percent}%</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                            <span style={{ fontSize: '0.88rem', fontWeight: (isCurrent || isDone) ? '700' : '600', color: isCurrent ? 'var(--orange)' : isDone ? '#22c55e' : 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{bk.livro_nome}</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: '700', color: isDone ? '#22c55e' : 'var(--text-muted)', flexShrink: 0 }}>{prog.percent}%</span>
                           </div>
-                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.18)', borderRadius: '99px', overflow: 'hidden' }}>
+                          <div style={{ height: '3px', background: 'rgba(148,163,184,0.2)', borderRadius: '99px', overflow: 'hidden' }}>
                             <div style={{ height: '100%', width: `${prog.percent}%`, background: isDone ? '#22c55e' : '#3b82f6', borderRadius: '99px' }} />
                           </div>
                         </div>
@@ -3819,42 +3819,43 @@ Em nome de Jesus, Amém.`;
         return (
           <div className="bible-modal-overlay">
             <div className="bible-modal-header">
-              <button className="btn-secondary" style={{ padding: '6px 14px', fontSize: '0.85rem' }} onClick={() => setBibleViewMode('select-book')}>← Livros</button>
-              <h3 style={{ margin: 0, fontSize: '1.05rem' }}>{bibleSelectedBook.livro_nome}</h3>
-              <div style={{ width: '72px' }} />
+              <button className="btn-secondary" style={{ padding: '7px 14px', fontSize: '0.85rem', borderRadius: '10px' }} onClick={() => setBibleViewMode('select-book')}>← Livros</button>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', textAlign: 'center', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{bibleSelectedBook.livro_nome}</h3>
+              <button className="btn-secondary" style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }} onClick={() => setBibleViewMode('reading')} aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div className="bible-modal-content">
               {/* Barra de progresso do livro */}
-              <div style={{ padding: '8px 4px 16px' }}>
+              <div style={{ padding: '4px 0 16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>{prog.readCount} de {total} capítulos lidos</span>
-                  <span style={{ fontSize: '0.78rem', fontWeight: '700', color: prog.percent === 100 ? '#22c55e' : 'var(--orange)' }}>{prog.percent}%</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{prog.readCount} de {total} capítulos lidos</span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: prog.percent === 100 ? '#22c55e' : 'var(--orange)' }}>{prog.percent}%</span>
                 </div>
-                <div style={{ height: '5px', background: 'rgba(255,255,255,0.07)', borderRadius: '99px', overflow: 'hidden' }}>
+                <div style={{ height: '6px', background: 'rgba(148,163,184,0.2)', borderRadius: '99px', overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: `${prog.percent}%`, background: prog.percent === 100 ? '#22c55e' : 'var(--orange)', borderRadius: '99px', transition: 'width 0.4s ease' }} />
                 </div>
               </div>
-              <div className="bible-chapter-grid">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(48px, 1fr))', gap: '10px' }}>
                 {Array.from({ length: bibleChaptersCount }).map((_, i) => {
                   const chNum = i + 1;
                   const read = isChapterRead(bibleSelectedBook.livro_abrev, chNum);
+                  const isCurrentCh = bibleSelectedChapter === chNum;
                   return (
                     <div key={i}
                       onClick={() => { setBibleSelectedChapter(chNum); setBibleViewMode('reading'); }}
                       style={{
                         position: 'relative',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: '44px', height: '44px', borderRadius: '10px',
-                        cursor: 'pointer', fontSize: '0.9rem', fontWeight: '600',
-                        background: read ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)',
-                        border: read ? '1.5px solid rgba(34,197,94,0.4)' : '1px solid rgba(255,255,255,0.06)',
-                        color: read ? '#22c55e' : 'var(--text-primary)',
+                        height: '46px', borderRadius: '12px',
+                        cursor: 'pointer', fontSize: '0.95rem', fontWeight: isCurrentCh ? '800' : '600',
+                        background: isCurrentCh ? 'rgba(249,115,22,0.18)' : read ? 'rgba(34,197,94,0.14)' : 'rgba(148,163,184,0.08)',
+                        border: isCurrentCh ? '1.5px solid var(--orange)' : read ? '1.5px solid rgba(34,197,94,0.4)' : '1px solid rgba(148,163,184,0.2)',
+                        color: isCurrentCh ? 'var(--orange)' : read ? '#22c55e' : 'var(--text-primary)',
                         transition: 'all 0.2s'
                       }}
                     >
                       {chNum}
                       {read && (
-                        <div style={{ position: 'absolute', top: '2px', right: '2px', width: '10px', height: '10px', borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ position: 'absolute', top: '3px', right: '3px', width: '10px', height: '10px', borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
                       )}
