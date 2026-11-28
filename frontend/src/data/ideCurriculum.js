@@ -1916,7 +1916,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "O que significa para a sua identidade hoje saber que você já é cidadão de um Reino que nunca será destruído?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_12.jpg",
+    "bannerImage": "/images/ide/aula_11.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, vivemos em um mundo onde governos, economias e impérios humanos parecem fortes, mas mudam o tempo todo e geram tanta incerteza. Como a Bíblia retrata a fragilidade desses reinos em contraste com o plano de Deus?",
@@ -2252,7 +2252,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Você já sentiu o peso de tentar misturar a antiga lógica da cobrança com a nova vida no Espírito? O que muda ao abraçar integralmente a Nova Aliança?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhuma barreira ou requisito humano impedindo você de se entregar a Jesus hoje. O Rei eterno prometido pelos profetas já inaugurou a Nova Aliança. Creia de todo o coração e dê o passo livre do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_01.jpg",
+    "bannerImage": "/images/ide/aula_13.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, na aula passada conversamos sobre a promessa da Nova Aliança. Mas confesso que, para muita gente, surge uma dúvida sincera: por que a Antiga Aliança precisou ser substituída? Afinal, ela não veio de Deus?",
@@ -2614,7 +2614,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Como a verdade de que Cristo é o fim da Lei para justiça traz descanso para quem se sentia sempre insuficiente diante de Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_03.jpg",
+    "bannerImage": "/images/ide/aula_15.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, eu confesso que muitas pessoas se confundem com essa questão da Lei de Moisés na Bíblia. Alguns acham que Jesus veio apagar tudo, enquanto outros acham que ainda precisamos cumprir rituais antigos para alcançar o favor de Deus. Afinal de contas, qual foi o verdadeiro propósito da vinda de Jesus em relação à Lei?",
@@ -2777,7 +2777,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "O que muda em sua oração hoje saber que o véu foi rasgado de alto a baixo e que você pode se aproximar de Deus sem medo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_04.jpg",
+    "bannerImage": "/images/ide/aula_16.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, hoje vamos falar de um dos momentos mais profundos e definitivos de toda a história humana. Para quem muitas vezes carrega um peso enorme de culpa ou sente que precisa fazer algo mais para alcançar o perdão de Deus, o que aconteceu de fato no momento derradeiro da crucificação?",
@@ -2939,7 +2939,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Que alívio espiritual traz ao seu coração saber que a expiação foi finalizada uma vez por todas e que Cristo já se assentou à direita de Deus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_05.jpg",
+    "bannerImage": "/images/ide/aula_17.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, para começarmos nossa conversa de hoje, eu me lembro de como o sistema do santuário terrestre no Antigo Testamento era intenso: sangue correndo, animais sendo sacrificados o tempo todo e os sacerdotes em pé, trabalhando dia após dia sem parar. Mas qual é a grande diferença quando olhamos para Jesus no santuário celestial?",
@@ -3106,7 +3106,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "O que significa na prática descansar das suas próprias obras e abraçar Jesus como o verdadeiro descanso da sua alma todos os dias?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_06.jpg",
+    "bannerImage": "/images/ide/aula_18.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, lá no comecinho da nossa jornada, na criação, vimos o descanso de Deus no sétimo dia. Mas hoje o tema nos leva a um entendimento ainda mais profundo. Por que tantas pessoas na época apostólica continuavam presas a regras de dias, festas e calendários religiosos, sem conseguir experimentar uma paz verdadeira?",
@@ -3273,7 +3273,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Como saber que o Selo de Deus é a presença viva do Espírito Santo em você traz segurança e paz diante de ensinamentos baseados no medo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_07.jpg",
+    "bannerImage": "/images/ide/aula_19.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, confesso que esse tema gera muitas dúvidas nas pessoas. Muita gente já ficou aflita ouvindo teorias complicadas, dizendo que o selo de Deus seria um dia específico do calendário ou uma marca física misteriosa no futuro. Mas afinal, o que a Bíblia diz de forma clara sobre o que é o Selo de Deus na Nova Aliança?",
@@ -3435,7 +3435,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Qual aspecto do fruto do Espírito (amor, alegria, paz, paciência, bondade, mansidão...) você mais deseja ver florescendo nesta fase da sua vida?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_08.jpg",
+    "bannerImage": "/images/ide/aula_20.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, para começar nossa aula de hoje, quero te fazer uma pergunta bem sincera. Muita gente tenta viver o cristianismo na base da força de vontade, tentando cumprir uma lista interminável de regras para se sentir aceito por Deus. Mas qual é a real diferença entre tentar fabricar santidade por fora e a verdadeira transformação que a Bíblia propõe?",
@@ -3594,7 +3594,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Ao concluir o Bloco 3, o que significa para você viver hoje como embaixador da paz e da graça de Cristo onde você estuda, trabalha e convive?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "A obra de Cristo foi consumada na cruz — o véu rasgou e o acesso ao Pai está completamente aberto. Não existe nenhum impedimento nem etapa pendente para você ser salvo hoje. Creia de todo o coração e seja batizado (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_09.jpg",
+    "bannerImage": "/images/ide/aula_21.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, muita gente carrega o peso do passado, de erros e escolhas que parecem definir quem elas são para sempre. Mas a Bíblia traz uma promessa impressionante de recomeço. Afinal, o que significa de fato ter uma nova identidade em Cristo?",
@@ -3757,7 +3757,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "O que mais atrai seu coração na visão bíblica da Igreja como uma família acolhedora que proclama a luz de Cristo?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_10.jpg",
+    "bannerImage": "/images/ide/aula_22.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, quando a gente olha para a história da Igreja no Novo Testamento, percebe que ela não nasceu de acordos políticos, estratégias humanas ou grandes construções de pedra. Ela nasceu de um transbordamento espiritual. Como tudo isso começou no dia do Pentecostes?",
@@ -3920,7 +3920,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Existe algum receio ou mito que até hoje impediu você de dar o passo do batismo? Como os relatos de Atos 8 e 10 falam ao seu coração?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_12.jpg",
+    "bannerImage": "/images/ide/aula_23.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, eu quero começar fazendo uma pergunta que mexe com muita gente. Às vezes, as pessoas acham que para dar o passo do batismo é preciso primeiro alcançar uma perfeição inalcançável ou passar por um processo cheio de regras criadas pelos homens. Mas o que a Bíblia realmente diz sobre as exigências para o batismo? Como Jesus resumiu esse convite?",
@@ -4094,7 +4094,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "O que você gostaria de deixar definitivamente sepultado para trás ao caminhar na novidade de vida que Jesus oferece?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_14.jpg",
+    "bannerImage": "/images/ide/aula_24.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, a nossa aula de hoje fala sobre um assunto lindíssimo e muito transformador: o batismo. Mas muitas pessoas se perguntam qual é o significado real desse mergulho nas águas. O que a Bíblia realmente quer nos ensinar através desse ato?",
@@ -4257,7 +4257,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Como a certeza de Romanos 8:1 e João 5:24 muda a sua paz emocional e a alegria de servir a Deus todos os dias?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_01.jpg",
+    "bannerImage": "/images/ide/aula_25.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, confesso que essa aula toca fundo no meu coração. Muita gente passa anos vivendo numa verdadeira montanha-russa espiritual: num dia acham que estão salvos, mas no dia seguinte, ao tropeçarem ou errarem, sentem que perderam tudo e que Deus está zangado. Afinal, a salvação depende do nosso desempenho diário ou existe uma segurança real que vem de Deus?",
@@ -4420,7 +4420,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Quando você pensa na volta de Jesus hoje, sente mais temor ou alegria? Como Tito 2:13 renova a sua esperança?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_02.jpg",
+    "bannerImage": "/images/ide/aula_26.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, confesso que essa aula mexe muito comigo. Infelizmente, muita gente cresceu ouvindo falar da volta de Jesus em um tom de terror e pânico, como se Ele fosse um fiscal severo pronto para nos pegar no erro, quase fazendo a gente desejar que Ele demorasse mais um pouco. Mas a Bíblia diz algo totalmente diferente, não diz?",
@@ -4590,7 +4590,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Que consolo traz ao seu coração saber que a morte e o mal terão um fim definitivo no triunfo de Jesus?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Não há nenhum impedimento para a sua salvação hoje. O Rei está voltando para buscar Seus filhos amados em esperança e alegria. Creia de todo o coração e dê o passo simples, livre e público do batismo (Marcos 16:15–16).",
-    "bannerImage": "/images/ide/aula_03.jpg",
+    "bannerImage": "/images/ide/aula_27.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, quando olhamos ao nosso redor e vemos tanta injustiça, dor, violência e despedidas neste mundo, é inevitável que o nosso coração clame e pergunte: será que o mal vai vencer para sempre? A história caminha para o caos ou existe uma esperança segura?",
@@ -4773,7 +4773,7 @@ export const IDE_LESSONS = [
     "reflectionPrompt": "Ao completar os 28 estudos de Gênesis ao Apocalipse, como você resume hoje o que Jesus significa para a sua Identidade, o seu Destino e a sua Eternidade?",
     "appealHeadline": "Não existe nenhum impedimento entre você e Deus hoje.",
     "appealBody": "Você percorreu toda a história da Graça de Gênesis ao Apocalipse! Não existe nenhum impedimento entre você e Deus hoje. O sacrifício e a obra de Jesus já bastam. Creia de todo o coração e dê o passo público do batismo (Marcos 16:15–16), mergulhando nessa nova vida eterna!",
-    "bannerImage": "/images/ide/aula_04.jpg",
+    "bannerImage": "/images/ide/aula_28.jpg",
     "questionsAndAnswers": [
       {
         "question": "Pedro, chegamos ao final do nosso Guia de Estudos e é impossível não lembrar de onde viemos. Na Aula 1, vimos o Éden perfeito onde Deus habitava com o homem. E agora, como a Bíblia conclui a história da humanidade? O que nos aguarda no final de tudo?",
