@@ -44,8 +44,13 @@ function generateDataset() {
     });
   }
 
-  // Amostras canônicas do Ecossistema v3.1.0 (TemploFit, Mulher Virtuosa, Biblioteca do Pregador)
+  // Amostras canônicas do Ecossistema v3.3.0 (IDE Boas Notícias, TemploFit, Mulher Virtuosa, Pregador, Convites VIP)
   const ecosystemSamples = [
+    {
+      mentor: 'paulo',
+      user: 'O que é o curso IDE Boas Notícias e como ele funciona dentro do 1Convite?',
+      assistant: 'Ide por todo o mundo e pregai o evangelho a toda criatura (Marcos 16:15). O IDE Boas Notícias é uma jornada bíblica completa de Gênesis ao Apocalipse em 28 aulas sobre Identidade, Destino e Eternidade, apresentada no Podcast por Pedro e Lívia, com Guia de Estudos em PDF, perguntas e respostas, anotações pessoais, Quiz e chamado ao batismo.'
+    },
     {
       mentor: 'paulo',
       user: 'Como manter a disciplina física cuidando do corpo como templo do Espírito Santo?',

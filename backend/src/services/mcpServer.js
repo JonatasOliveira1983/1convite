@@ -8,6 +8,30 @@ import { LAYA_MENTORES, LayaEngine } from './layaEngine.js';
 import { PLANOS_1CONVITE, FUNNEL_OFFERS, isAsaasConfigured, isSandboxKey } from './asaasService.js';
 import { isResendConfigured } from './resendService.js';
 import pool from '../database/pool.js';
+import { existsSync, readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __mcpDirname = dirname(fileURLToPath(import.meta.url));
+let cachedIdeLessons = null;
+
+function getIdeLessonsCatalog() {
+  if (cachedIdeLessons) return cachedIdeLessons;
+  try {
+    const p = join(__mcpDirname, '../../../frontend/src/data/ideCurriculum.js');
+    if (existsSync(p)) {
+      const raw = readFileSync(p, 'utf-8');
+      const m = raw.match(/export const IDE_LESSONS = (\[[\s\S]*\]);/);
+      if (m) {
+        cachedIdeLessons = JSON.parse(m[1]);
+        return cachedIdeLessons;
+      }
+    }
+  } catch (e) {
+    console.warn('[MCP] Aviso ao carregar ideCurriculum.js:', e.message);
+  }
+  return [];
+}
 
 export const MCP_TOOLS_CATALOG = [
   {
@@ -131,6 +155,18 @@ export const MCP_TOOLS_CATALOG = [
     inputSchema: {
       type: 'object',
       properties: {}
+    }
+  },
+  {
+    name: 'search_ide_lessons',
+    description: 'Pesquisa nos 28 estudos bíblicos e episódios do Podcast IDE Boas Notícias (Pedro & Lívia — Identidade, Destino e Eternidade).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'Tema, pergunta ou referência bíblica do estudo IDE' },
+        block: { type: 'integer', description: 'Filtro opcional por bloco (1 a 4)' },
+        limit: { type: 'integer', default: 5 }
+      }
     }
   }
 ];
@@ -287,9 +323,21 @@ class McpServer {
 
           result = {
             status: 'online',
-            version: '3.2.0',
+            version: '3.3.0',
             service: '1Convite Core Engine & MCP Server',
             protocol_version: '2024-11-05',
+            modulos_ativos: [
+              'biblia_acf',
+              'cafe_com_deus_365',
+              'ide_boas_noticias_28_aulas',
+              'templofit',
+              'mentores_laya',
+              'ebooks_premium',
+              'mulher_virtuosa',
+              'biblioteca_pregador',
+              'convites_vip',
+              'painel_adm_integrado'
+            ],
             database: {
               provider: 'Turso (LibSQL Cloud São Paulo)',
               status: dbStatus,
@@ -371,6 +419,40 @@ class McpServer {
             jornada_casa: 'Jornada TemploFit 6 Meses (30 treinos diários sem equipamentos)',
             programas_opengym: 19,
             sessoes_registradas_turso: totalSessoes
+          };
+          break;
+        }
+
+        case 'search_ide_lessons': {
+          const q = ragService.normalize(String(args.query || ''));
+          const blockFilter = parseInt(args.block, 10) || 0;
+          const lim = Math.min(Math.max(1, parseInt(args.limit, 10) || 5), 28);
+          const lessons = getIdeLessonsCatalog();
+          const filtered = lessons
+            .filter((l) => (blockFilter > 0 ? l.blockNumber === blockFilter : true))
+            .filter((l) => {
+              if (!q) return true;
+              const hay = ragService.normalize(
+                `${l.title} ${l.summary} ${l.overview} ${(l.bibleReferences || []).join(' ')}`
+              );
+              return q.split(' ').some((tok) => tok.length > 1 && hay.includes(tok));
+            })
+            .slice(0, lim)
+            .map((l) => ({
+              aula: l.lessonNumber,
+              bloco: l.blockNumber,
+              titulo: l.title,
+              resumo: l.summary,
+              referencias: l.bibleReferences,
+              audioUrl: l.audioUrl,
+              perguntas_respostas: (l.questionsAndAnswers || []).length
+            }));
+
+          result = {
+            curso: 'IDE Boas Notícias — Identidade, Destino e Eternidade',
+            apresentadores: ['Pedro (Instrutor)', 'Lívia (Perguntas & Leitura)'],
+            total_encontrado: filtered.length,
+            aulas: filtered
           };
           break;
         }

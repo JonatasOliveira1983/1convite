@@ -23,7 +23,28 @@ class RagService {
     this.avgDocLength = 0;
     this.isIndexed = false;
     this.theologicalTerms = [];
-    this.knowledgeDocs = [];
+    this.knowledgeDocs = [
+      {
+        title: 'IDE Boas Notícias — Bloco 1: O Reino Original, a Queda e a Promessa pela Graça',
+        category: 'IDE Boas Notícias (Aulas 1–7)',
+        content: 'Da criação perfeita e do descanso original no Éden até a libertação pela graça, Abraão, Páscoa, Sinai e o propósito da Lei como tutor até Cristo.'
+      },
+      {
+        title: 'IDE Boas Notícias — Bloco 2: O Reino em Israel, os Profetas e a Nova Aliança',
+        category: 'IDE Boas Notícias (Aulas 8–14)',
+        content: 'A aliança com Davi, o verdadeiro adorador, o Servo Sofredor, o Filho do Homem, a promessa da Nova Aliança escrita no coração e a vinda do Rei Jesus.'
+      },
+      {
+        title: 'IDE Boas Notícias — Bloco 3: O Rei Jesus, a Obra Consumada e a Vida no Espírito',
+        category: 'IDE Boas Notícias (Aulas 15–21)',
+        content: 'Cristo como cumprimento da Lei, a cruz e o véu rasgado, o Sumo Sacerdote no Santuário Celestial, o verdadeiro descanso e o Selo do Espírito Santo.'
+      },
+      {
+        title: 'IDE Boas Notícias — Bloco 4: A Igreja, o Batismo e a Consumação do Reino Eterno',
+        category: 'IDE Boas Notícias (Aulas 22–28)',
+        content: 'O nascimento da Igreja, crer e ser batizado sem barreiras (Marcos 16:15-16), sepultados e ressuscitados com Cristo, nenhuma condenação, volta do Rei e Novos Céus e Nova Terra.'
+      }
+    ];
     this.k1 = 1.5;
     this.b = 0.75;
   }

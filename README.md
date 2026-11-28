@@ -1,4 +1,4 @@
-# 1Convite (`v3.2.0`) — Ecossistema Completo
+# 1Convite (`v3.3.0`) — Ecossistema Completo
 
 Plataforma cristã completa que integra a Palavra de Deus, devocionais diários, saúde física (TemploFit), mentoria bíblica (LAYA + RAG BM25), biblioteca do pregador, planner feminino e multiplicação do Reino via Convites VIP.
 
@@ -23,6 +23,8 @@ Plataforma cristã completa que integra a Palavra de Deus, devocionais diários,
 
 ## Principais Módulos
 
+- **IDE Boas Notícias (28 Aulas + Podcast Pedro & Lívia):** Jornada bíblica completa de Gênesis ao Apocalipse (**I**dentidade, **D**estino e **E**ternidade), liberada para todos os usuários ativos, com 27 episódios em MP3 gerados via Gemini Studio, Guia de Estudos em lista vertical com Perguntas & Respostas (respostas em vermelho), PDF A4 multi-páginas, Anotações (`Meu Diário`), Quiz, aba separada `Igrejas & Batismo` (GPS + OpenStreetMap + Marco Zero) e Certificado.
+- **Navegação Unificada & Tema:** Menu Lateral retrátil único (`☰`) para Desktop, Mobile e Android, com controle centralizado de **Modo Claro / Modo Escuro**, **Painel ADM** e **Sair da Conta**.
 - **Acesso Fechado & Convites VIP:** Entrada no `/app` exclusiva para assinantes (e-mail e senha de compra ativa) ou portadores de **Código de Convite VIP** (180 dias gratuitos). Inclui gerador de **Voucher Vertical de Luxo** (PNG, PDF e compartilhamento rico no WhatsApp) e compra avulsa ou em pacotes (`Sementeira`, `Colheita`, `Embaixadores`).
 - **Bíblia Sagrada (ACF):** 31.106 versículos com áudio neural por capítulo, paisagens sonoras simultâneas (Chuva, Ondas, Piano), destaques e anotações.
 - **Café com Deus (365 Dias), Desafio do Dia & Trilha 30 Dias:** Meditações guiadas e sistema de **Chaminhas** isolado por conta.
