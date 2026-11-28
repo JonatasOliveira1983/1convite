@@ -42,6 +42,7 @@ import conviteVipCardBg from './assets/landing/convite_vip.jpg';
 const TreinoTemploView = lazy(() => import('./components/TreinoTemplo/TreinoTemploView'));
 import LoginPage from './components/Auth/LoginPage';
 const AdminPanel = lazy(() => import('./components/Admin/AdminPanel'));
+const IdeEstudosView = lazy(() => import('./components/Ide/IdeEstudosView'));
 import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
@@ -3240,6 +3241,11 @@ Em nome de Jesus, Amém.`;
                 id: 'cafe-com-deus',
                 label: 'Café com Deus',
                 icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+              },
+              {
+                id: 'ide-estudos',
+                label: 'I.D.E. Boas Notícias',
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
               },
               {
                 id: 'treino-templo',
@@ -9737,6 +9743,20 @@ Em nome de Jesus, Amém.`;
         {activeTab === 'ebooks-premium' && (
           <BibliotecaEbooksView 
             onBack={() => setActiveTab('dashboard')} 
+          />
+        )}
+
+        {/* ════════════ ABA I.D.E. BOAS NOTÍCIAS (28 AULAS + PODCAST PEDRO & LÍVIA) ════════════ */}
+        {activeTab === 'ide-estudos' && (
+          <IdeEstudosView
+            userEmail={profileEmail}
+            userName={profileName}
+            onBack={() => setActiveTab('dashboard')}
+            onOpenBible={() => {
+              setActiveTab('biblia');
+              setBibleViewMode('reading');
+              setBibleSelectedVerse(null);
+            }}
           />
         )}
 
