@@ -3,17 +3,33 @@ import './IdeEstudosView.css';
 import { IDE_BLOCKS, IDE_LESSONS } from '../../data/ideCurriculum';
 import ideLogo from '../../assets/ide/ide-logo.jpg';
 import ideStudioImg from '../../assets/ide/ide-podcast-studio.jpg';
+import BaptismMap from './BaptismMap';
+
+function getIdeApiBase() {
+  const isCapacitor = Boolean(
+    (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
+      window.location.protocol === 'capacitor:' ||
+      window.location.protocol === 'file:' ||
+      (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('Capacitor'))
+  );
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  return isLocalhost && !isCapacitor
+    ? 'http://localhost:3001/api/v1'
+    : import.meta.env.VITE_API_URL || 'https://oneconvite.onrender.com/api/v1';
+}
 
 const MARCO_ZERO = {
   id: 'marco_zero_iasd_parque_claudia',
   name: 'IASD Parque Cláudia (Marco Zero)',
-  denominationOrNote: 'Marco Zero do Projeto 1Convite / IDE • Comunidade Cristã',
-  address: 'Parque Cláudia — Zona Sul de São Paulo, SP',
+  denominationOrNote: 'Marco Zero do Projeto 1Convite / IDE • Igreja Adventista do Sétimo Dia',
+  address: 'Rua Durval Guerra de Azevedo, 1177 — Parque Santo Antônio / Parque Cláudia, São Paulo - SP, CEP 05852-440',
   lat: -23.7042,
   lon: -46.7628,
   nextBaptismInfo: 'Celebrações batismais mensais • Agendamento pastoral aberto',
-  pastoralContact: '1convite.com.br • Recepção Pastoral Parque Cláudia',
+  pastoralContact: 'Recepção Pastoral Parque Cláudia • Facebook Oficial',
+  facebookUrl: 'https://web.facebook.com/IasdPqClaudia/',
   isMarcoZero: true,
+  isAdventist: true,
 };
 
 const CURATED_CHURCHES = [
@@ -131,6 +147,10 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
   const [geoLoading, setGeoLoading] = useState(false);
   const [geoError, setGeoError] = useState('');
   const [userCoords, setUserCoords] = useState(null);
+  const [addressInput, setAddressInput] = useState('');
+  const [searchRadius, setSearchRadius] = useState(15);
+  const [onlyAdventist, setOnlyAdventist] = useState(false);
+  const [originLabel, setOriginLabel] = useState('');
   const [churches, setChurches] = useState(() =>
     CURATED_CHURCHES.map((c) => ({ ...c, distanceKm: null }))
   );
@@ -209,81 +229,80 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
     setCurrentTime(next);
   };
 
+  const fetchChurchesFromApi = async ({ lat, lon, cep, q, radius = searchRadius, adventist = onlyAdventist }) => {
+    setGeoLoading(true);
+    setGeoError('');
+    try {
+      const params = new URLSearchParams();
+      if (lat != null && lon != null) {
+        params.set('lat', String(lat));
+        params.set('lon', String(lon));
+      }
+      if (cep) params.set('cep', cep);
+      if (q) params.set('q', q);
+      params.set('radius', String(radius));
+      if (adventist) params.set('adventist', 'true');
+
+      const resp = await fetch(`${getIdeApiBase()}/igrejas/proximas?${params.toString()}`);
+      const data = await resp.json();
+      if (data?.success && Array.isArray(data.churches) && data.churches.length > 0) {
+        if (data.originCoords) setUserCoords(data.originCoords);
+        if (data.originLabel) setOriginLabel(data.originLabel);
+        setChurches(data.churches);
+        const firstNonMarco = data.churches.find((c) => !c.isMarcoZero) || data.churches[0];
+        setSelectedChurch(firstNonMarco);
+      } else {
+        setGeoError(data?.message || 'Nenhuma igreja encontrada nessa região.');
+      }
+    } catch {
+      if (lat != null && lon != null) {
+        const fallback = CURATED_CHURCHES.map((c) => ({
+          ...c,
+          distanceKm: haversineKm(lat, lon, c.lat, c.lon),
+        })).sort((a, b) => a.distanceKm - b.distanceKm);
+        setChurches(fallback);
+        setSelectedChurch(fallback[0]);
+      } else {
+        setGeoError('Erro de conexão ao consultar igrejas próximas.');
+      }
+    } finally {
+      setGeoLoading(false);
+    }
+  };
+
   const handleLocateChurches = () => {
     if (!navigator.geolocation) {
-      setGeoError('Seu navegador não suporta geolocalização. Exibindo igrejas de referência.');
+      setGeoError('Seu navegador não suporta geolocalização. Digite seu CEP ou cidade abaixo.');
       return;
     }
     setGeoLoading(true);
     setGeoError('');
     navigator.geolocation.getCurrentPosition(
-      async (pos) => {
+      (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
         setUserCoords({ lat, lon });
-
-        const marcoZeroWithDist = {
-          ...MARCO_ZERO,
-          distanceKm: haversineKm(lat, lon, MARCO_ZERO.lat, MARCO_ZERO.lon),
-        };
-
-        try {
-          const query = `[out:json][timeout:12];(node["amenity"="place_of_worship"]["religion"="christian"](around:12000,${lat},${lon});way["amenity"="place_of_worship"]["religion"="christian"](around:12000,${lat},${lon}););out center 18;`;
-          const resp = await fetch('https://overpass-api.de/api/interpreter', {
-            method: 'POST',
-            body: query,
-          });
-          const data = await resp.json();
-          const elements = Array.isArray(data?.elements) ? data.elements : [];
-          const found = elements
-            .map((el, idx) => {
-              const cLat = el.lat ?? el.center?.lat;
-              const cLon = el.lon ?? el.center?.lon;
-              if (cLat == null || cLon == null) return null;
-              const tags = el.tags || {};
-              const name = tags.name || 'Comunidade Cristã Local';
-              const addrParts = [tags['addr:street'], tags['addr:housenumber'], tags['addr:suburb'], tags['addr:city']]
-                .filter(Boolean);
-              const address = addrParts.length ? addrParts.join(', ') : 'Endereço aproximado no mapa';
-              return {
-                id: `osm_${el.id || idx}`,
-                name,
-                denominationOrNote: tags.denomination
-                  ? `Comunidade Cristã • ${tags.denomination}`
-                  : 'Igreja Cristã Local',
-                address,
-                lat: cLat,
-                lon: cLon,
-                distanceKm: haversineKm(lat, lon, cLat, cLon),
-                nextBaptismInfo: 'Consulte a secretaria local sobre o próximo batismo',
-                pastoralContact: tags.phone || tags['contact:phone'] || tags.website || 'Contato presencial no endereço',
-                isMarcoZero: false,
-              };
-            })
-            .filter(Boolean)
-            .sort((a, b) => a.distanceKm - b.distanceKm)
-            .slice(0, 12);
-
-          const merged = [marcoZeroWithDist, ...found];
-          setChurches(merged);
-          setSelectedChurch(found[0] || marcoZeroWithDist);
-        } catch {
-          const fallback = CURATED_CHURCHES.map((c) => ({
-            ...c,
-            distanceKm: haversineKm(lat, lon, c.lat, c.lon),
-          })).sort((a, b) => a.distanceKm - b.distanceKm);
-          setChurches(fallback);
-          setSelectedChurch(fallback[0]);
-        } finally {
-          setGeoLoading(false);
-        }
+        setOriginLabel('Sua localização atual (GPS)');
+        fetchChurchesFromApi({ lat, lon });
       },
       () => {
         setGeoLoading(false);
-        setGeoError('Não foi possível acessar sua localização. Permita o GPS no navegador ou escolha uma igreja abaixo.');
+        setGeoError('Não foi possível acessar o GPS. Digite seu CEP ou cidade abaixo para buscar igrejas.');
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
+  };
+
+  const handleSearchByAddress = (e) => {
+    if (e) e.preventDefault();
+    const raw = addressInput.trim();
+    if (!raw) return;
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length === 8) {
+      fetchChurchesFromApi({ cep: digits });
+    } else {
+      fetchChurchesFromApi({ q: raw });
+    }
   };
 
   const handlePrintLesson = (lesson) => {
@@ -949,7 +968,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
             <div>
               <h2>“Quem crer e for batizado será salvo” (Marcos 16:16)</h2>
               <p>
-                Use sua localização atual para encontrar igrejas cristãs perto de você, ver o endereço no mapa, conferir a distância até a <strong>Igreja Marco Zero</strong> e falar com a recepção pastoral.
+                Encontre igrejas cristãs perto de você pelo <strong>GPS</strong> ou digitando seu <strong>CEP / Cidade</strong>, veja todas no mapa interativo, confira a distância até a <strong>Igreja Marco Zero (IASD Parque Cláudia)</strong> e acesse o contato pastoral.
               </p>
             </div>
             <button
@@ -958,8 +977,51 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
               disabled={geoLoading}
               onClick={handleLocateChurches}
             >
-              {geoLoading ? 'Buscando igrejas próximas...' : '📍 Usar Minha Localização (GPS)'}
+              {geoLoading ? 'Buscando igrejas...' : '📍 Usar Minha Localização (GPS)'}
             </button>
+          </div>
+
+          <div className="ide-baptism-controls">
+            <form onSubmit={handleSearchByAddress} className="ide-baptism-search-row">
+              <input
+                type="text"
+                placeholder="Digite seu CEP (ex: 05852-440) ou Cidade / Bairro..."
+                value={addressInput}
+                onChange={(e) => setAddressInput(e.target.value)}
+              />
+              <button type="submit" className="ide-btn-gold" disabled={geoLoading}>
+                Buscar Endereço
+              </button>
+            </form>
+
+            <div className="ide-baptism-filters-row">
+              {[5, 15, 30].map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  className={`ide-filter-chip ${searchRadius === r ? 'active' : ''}`}
+                  onClick={() => {
+                    setSearchRadius(r);
+                    if (userCoords) fetchChurchesFromApi({ lat: userCoords.lat, lon: userCoords.lon, radius: r });
+                  }}
+                >
+                  Raio {r} km
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`ide-filter-chip ${onlyAdventist ? 'active' : ''}`}
+                onClick={() => {
+                  const nextAdv = !onlyAdventist;
+                  setOnlyAdventist(nextAdv);
+                  if (userCoords) {
+                    fetchChurchesFromApi({ lat: userCoords.lat, lon: userCoords.lon, adventist: nextAdv });
+                  }
+                }}
+              >
+                {onlyAdventist ? '✓ Somente Adventistas (IASD)' : 'Filtrar: Adventistas (IASD)'}
+              </button>
+            </div>
           </div>
 
           {geoError && <div className="ide-geo-error">{geoError}</div>}
@@ -967,7 +1029,7 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
           {userCoords && (
             <div className="ide-marco-zero-bar">
               <span>
-                📌 Distância da sua localização até a <strong>Igreja Marco Zero (IASD Parque Cláudia)</strong>:{' '}
+                📌 <strong>{originLabel || 'Origem'}</strong> • Distância até a <strong>Igreja Marco Zero (IASD Parque Cláudia)</strong>:{' '}
                 <strong>{haversineKm(userCoords.lat, userCoords.lon, MARCO_ZERO.lat, MARCO_ZERO.lon).toFixed(1)} km</strong>
               </span>
             </div>
@@ -1000,13 +1062,12 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
               <div className="ide-map-panel">
                 <h3>{selectedChurch.name}</h3>
                 <p>{selectedChurch.address}</p>
-                <div className="ide-map-frame-wrap">
-                  <iframe
-                    title={`Mapa ${selectedChurch.name}`}
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedChurch.lon - 0.015}%2C${selectedChurch.lat - 0.012}%2C${selectedChurch.lon + 0.015}%2C${selectedChurch.lat + 0.012}&layer=mapnik&marker=${selectedChurch.lat}%2C${selectedChurch.lon}`}
-                    loading="lazy"
-                  />
-                </div>
+                <BaptismMap
+                  churches={churches}
+                  selectedChurch={selectedChurch}
+                  userCoords={userCoords}
+                  onSelectChurch={setSelectedChurch}
+                />
                 <div className="ide-map-actions">
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${selectedChurch.lat},${selectedChurch.lon}`}
@@ -1016,6 +1077,16 @@ export default function IdeEstudosView({ userEmail, userName, onBack, onOpenBibl
                   >
                     🗺️ Abrir Rota no Google Maps
                   </a>
+                  {selectedChurch.facebookUrl && (
+                    <a
+                      href={selectedChurch.facebookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ide-pdf-btn"
+                    >
+                      📘 Página Oficial (IASD Parque Cláudia)
+                    </a>
+                  )}
                 </div>
               </div>
             )}

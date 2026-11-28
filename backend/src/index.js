@@ -3551,6 +3551,179 @@ app.get('/api/v1/convites/meus', async (req, res) => {
   }
 });
 
+// ── LOCALIZADOR DE IGREJAS & BATISMO (MARCO ZERO + VIACEP + NOMINATIM + OVERPASS) ──
+const MARCO_ZERO_CHURCH = {
+  id: 'marco_zero_iasd_parque_claudia',
+  name: 'IASD Parque Cláudia (Marco Zero)',
+  denominationOrNote: 'Marco Zero do Projeto 1Convite / IDE • Igreja Adventista do Sétimo Dia',
+  address: 'Rua Durval Guerra de Azevedo, 1177 — Parque Santo Antônio / Parque Cláudia, São Paulo - SP, CEP 05852-440',
+  lat: -23.7042,
+  lon: -46.7628,
+  nextBaptismInfo: 'Celebrações batismais mensais • Agendamento pastoral aberto',
+  pastoralContact: 'https://web.facebook.com/IasdPqClaudia/ • Recepção Pastoral Parque Cláudia',
+  facebookUrl: 'https://web.facebook.com/IasdPqClaudia/',
+  isMarcoZero: true,
+  isAdventist: true,
+};
+
+const churchCache = new Map();
+
+function calcDistanceKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+app.get('/api/v1/igrejas/proximas', async (req, res) => {
+  try {
+    let lat = parseFloat(req.query.lat);
+    let lon = parseFloat(req.query.lon);
+    const cepRaw = String(req.query.cep || '').replace(/\D/g, '');
+    const queryText = String(req.query.q || '').trim();
+    const radiusKm = Math.min(Math.max(2, parseInt(req.query.radius, 10) || 15), 40);
+    const onlyAdventist = String(req.query.adventist || '').toLowerCase() === 'true';
+    let originLabel = 'Sua localização atual';
+
+    if ((!Number.isFinite(lat) || !Number.isFinite(lon)) && cepRaw.length === 8) {
+      const viaResp = await fetch(`https://viacep.com.br/ws/${cepRaw}/json/`);
+      const viaData = await viaResp.json();
+      if (viaData && !viaData.erro) {
+        const addrQuery = [viaData.logradouro, viaData.bairro, viaData.localidade, viaData.uf, 'Brasil']
+          .filter(Boolean)
+          .join(', ');
+        originLabel = `${viaData.localidade} - ${viaData.uf} (CEP ${cepRaw})`;
+        const nomResp = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(addrQuery)}`,
+          { headers: { 'User-Agent': '1Convite-IDE/3.3 (https://1convite.com.br)' } }
+        );
+        const nomList = await nomResp.json();
+        if (Array.isArray(nomList) && nomList[0]) {
+          lat = parseFloat(nomList[0].lat);
+          lon = parseFloat(nomList[0].lon);
+        }
+      }
+    } else if ((!Number.isFinite(lat) || !Number.isFinite(lon)) && queryText) {
+      const nomResp = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(`${queryText}, Brasil`)}`,
+        { headers: { 'User-Agent': '1Convite-IDE/3.3 (https://1convite.com.br)' } }
+      );
+      const nomList = await nomResp.json();
+      if (Array.isArray(nomList) && nomList[0]) {
+        lat = parseFloat(nomList[0].lat);
+        lon = parseFloat(nomList[0].lon);
+        originLabel = nomList[0].display_name?.split(',').slice(0, 3).join(', ') || queryText;
+      }
+    }
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+      return res.json({
+        success: false,
+        message: 'Não foi possível localizar esse endereço ou CEP. Tente informar cidade e estado ou usar o GPS.',
+        marcoZero: MARCO_ZERO_CHURCH,
+      });
+    }
+
+    const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${radiusKm}`;
+    const cached = churchCache.get(cacheKey);
+    let rawChurches;
+
+    if (cached && Date.now() - cached.ts < 15 * 60 * 1000) {
+      rawChurches = cached.data;
+    } else {
+      const radiusMeters = radiusKm * 1000;
+      const overpassQuery = `[out:json][timeout:14];(node["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon});way["amenity"="place_of_worship"]["religion"="christian"](around:${radiusMeters},${lat},${lon}););out center 45;`;
+      const overResp = await fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        body: overpassQuery,
+      });
+      const overData = await overResp.json();
+      const elements = Array.isArray(overData?.elements) ? overData.elements : [];
+      rawChurches = elements
+        .map((el, idx) => {
+          const cLat = el.lat ?? el.center?.lat;
+          const cLon = el.lon ?? el.center?.lon;
+          if (cLat == null || cLon == null) return null;
+          const tags = el.tags || {};
+          const name = tags.name || 'Comunidade Cristã Local';
+          const denom = String(tags.denomination || '').toLowerCase();
+          const nameLower = name.toLowerCase();
+          const isAdventist =
+            denom.includes('adventist') ||
+            nameLower.includes('adventista') ||
+            nameLower.includes('iasd');
+          const addrParts = [
+            tags['addr:street'],
+            tags['addr:housenumber'],
+            tags['addr:suburb'],
+            tags['addr:city'],
+          ].filter(Boolean);
+          const address = addrParts.length ? addrParts.join(', ') : 'Endereço aproximado no mapa';
+          return {
+            id: `osm_${el.id || idx}`,
+            name,
+            denominationOrNote: isAdventist
+              ? 'Igreja Adventista do Sétimo Dia'
+              : tags.denomination
+                ? `Comunidade Cristã • ${tags.denomination}`
+                : 'Igreja Cristã Local',
+            address,
+            lat: cLat,
+            lon: cLon,
+            nextBaptismInfo: isAdventist
+              ? 'Agendamento batismal aberto • Consulte a secretaria local'
+              : 'Consulte a secretaria local sobre o próximo batismo',
+            pastoralContact:
+              tags.phone || tags['contact:phone'] || tags.website || 'Contato presencial no endereço',
+            isMarcoZero: false,
+            isAdventist,
+          };
+        })
+        .filter(Boolean);
+
+      churchCache.set(cacheKey, { ts: Date.now(), data: rawChurches });
+    }
+
+    const marcoZeroWithDist = {
+      ...MARCO_ZERO_CHURCH,
+      distanceKm: calcDistanceKm(lat, lon, MARCO_ZERO_CHURCH.lat, MARCO_ZERO_CHURCH.lon),
+    };
+
+    const filtered = rawChurches
+      .filter((c) => (onlyAdventist ? c.isAdventist : true))
+      .map((c) => ({
+        ...c,
+        distanceKm: calcDistanceKm(lat, lon, c.lat, c.lon),
+      }))
+      .sort((a, b) => {
+        if (a.isAdventist !== b.isAdventist) return a.isAdventist ? -1 : 1;
+        return a.distanceKm - b.distanceKm;
+      })
+      .slice(0, 25);
+
+    res.json({
+      success: true,
+      originLabel,
+      originCoords: { lat, lon },
+      marcoZero: marcoZeroWithDist,
+      churches: [marcoZeroWithDist, ...filtered],
+    });
+  } catch (err) {
+    console.error('Erro em /igrejas/proximas:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao consultar igrejas próximas.',
+      marcoZero: MARCO_ZERO_CHURCH,
+    });
+  }
+});
+
 // ── ROTAS TEMPLOFIT (BANCO DE DADOS TURSO: SESSÕES, EVOLUÇÃO DE PESO E ROTINAS) ──
 function computeConsecutiveStreak(sessions = []) {
   if (!sessions.length) return 0;
