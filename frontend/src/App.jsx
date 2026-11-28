@@ -441,6 +441,8 @@ function App() {
   });
   const [isAdminMode, setIsAdminMode] = useState(() => adminAuthService.isCurrentSessionAdmin());
   const [showAdminPanel, setShowAdminPanel] = useState(() => adminAuthService.isCurrentSessionAdmin());
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [dailyPendingBadge, setDailyPendingBadge] = useState(() => syncAppBadge());
   const [legalModalTab, setLegalModalTab] = useState(() => {
     if (typeof window === 'undefined') return null;
@@ -3166,17 +3168,63 @@ Em nome de Jesus, Amém.`;
 
   return (
     <div 
-      className={`${isCapacitor ? 'app-container is-capacitor' : 'app-container'} ${darkMode ? 'dark-mode' : 'light-mode'} ${theme}`}
+      className={`${isCapacitor ? 'app-container is-capacitor' : 'app-container'} ${darkMode ? 'dark-mode' : 'light-mode'} ${theme} ${isSidebarCollapsed ? 'is-sidebar-collapsed' : ''}`}
       data-theme={darkMode ? 'dark' : 'light'}
     >
       <audio ref={ambientAudioRef} />
-      {!isCapacitor && (
-        <aside className="desktop-sidebar" aria-label="Navegação Desktop 1Convite">
-          <div className="desktop-sidebar-brand">
-            <img src={darkMode ? appLogomarcaDark : appLogomarcaLight} alt="1Convite" className="desktop-sidebar-logo" />
-          </div>
 
-          <nav className="desktop-sidebar-nav">
+      {/* Botão Hambúrguer Flutuante para Mobile / Capacitor */}
+      {!isSidebarOpen && (
+        <button
+          type="button"
+          className="mobile-menu-fab"
+          onClick={() => setIsSidebarOpen(true)}
+          aria-label="Abrir menu lateral"
+          title="Abrir menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+      )}
+
+      {isSidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setIsSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className={`desktop-sidebar ${isSidebarOpen ? 'is-open' : ''} ${isSidebarCollapsed ? 'is-collapsed' : ''}`} aria-label="Navegação 1Convite">
+        <div className="desktop-sidebar-brand">
+          {!isSidebarCollapsed && (
+            <img src={darkMode ? appLogomarcaDark : appLogomarcaLight} alt="1Convite" className="desktop-sidebar-logo" />
+          )}
+          <button
+            type="button"
+            className="sidebar-toggle-btn"
+            onClick={() => {
+              if (window.innerWidth < 960 || isCapacitor) {
+                setIsSidebarOpen(false);
+              } else {
+                setIsSidebarCollapsed((prev) => !prev);
+              }
+            }}
+            aria-label={isSidebarCollapsed ? 'Expandir menu' : 'Recolher menu'}
+            title={isSidebarCollapsed ? 'Expandir menu' : 'Recolher menu'}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="desktop-sidebar-nav">
             {[
               {
                 id: 'dashboard',
@@ -3242,38 +3290,42 @@ Em nome de Jesus, Amém.`;
                 onClick={() => {
                   if (item.entitlementKey && !hasModuleAccess(item.entitlementKey)) {
                     setUnlockOfferId(item.offerId);
+                    setIsSidebarOpen(false);
                     return;
                   }
                   setActiveTab(item.id);
+                  setIsSidebarOpen(false);
                   if (item.id === 'biblia') {
                     setBibleViewMode('reading');
                     setBibleSelectedVerse(null);
                   }
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
+                title={item.label}
               >
                 <span className="desktop-nav-icon">{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="desktop-nav-label">{item.label}</span>
               </button>
             ))}
 
             <div className="desktop-sidebar-divider" />
 
-            <a href="/blog/" className="desktop-nav-item">
+            <a href="/blog/" className="desktop-nav-item" onClick={() => setIsSidebarOpen(false)} title="Blog 1Convite">
               <span className="desktop-nav-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
               </span>
-              <span>Blog 1Convite</span>
+              <span className="desktop-nav-label">Blog 1Convite</span>
             </a>
             <button
               type="button"
               className="desktop-nav-item"
-              onClick={() => navigateAppRoute(false)}
+              onClick={() => { setIsSidebarOpen(false); navigateAppRoute(false); }}
+              title="Página Oficial & Planos"
             >
               <span className="desktop-nav-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               </span>
-              <span>Página Oficial & Planos</span>
+              <span className="desktop-nav-label">Página Oficial & Planos</span>
             </button>
             {(isAdminMode || adminAuthService.isCurrentSessionAdmin() || (profileEmail || '').trim().toLowerCase() === 'jonatasprojetos2013@gmail.com') && (
               <button
@@ -3282,33 +3334,37 @@ Em nome de Jesus, Amém.`;
                 onClick={() => {
                   setIsAdminMode(true);
                   setActiveTab('admin-panel');
+                  setIsSidebarOpen(false);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 style={{ color: '#fbbf24', marginTop: '4px' }}
+                title="Painel ADM"
               >
                 <span className="desktop-nav-icon">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </span>
-                <span>Painel ADM</span>
+                <span className="desktop-nav-label">Painel ADM</span>
               </button>
             )}
             <button
               type="button"
               className="desktop-nav-item"
-              onClick={handleLogout}
+              onClick={() => { setIsSidebarOpen(false); handleLogout(); }}
               style={{ color: '#f87171', marginTop: '4px' }}
+              title="Sair da Conta"
             >
               <span className="desktop-nav-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
               </span>
-              <span>Sair da Conta</span>
+              <span className="desktop-nav-label">Sair da Conta</span>
             </button>
           </nav>
 
           <button
             type="button"
             className="desktop-sidebar-user"
-            onClick={() => setActiveTab('conta')}
+            onClick={() => { setActiveTab('conta'); setIsSidebarOpen(false); }}
+            title="Minha Conta"
           >
             <img src={profileAvatar} alt={profileName} className="desktop-user-avatar" />
             <div className="desktop-user-meta">
@@ -3317,7 +3373,6 @@ Em nome de Jesus, Amém.`;
             </div>
           </button>
         </aside>
-      )}
       <header className="app-header" style={{
         display: (activeTab === 'cafe-com-deus' || activeTab === 'treino-templo' || activeTab === 'ebooks-premium') ? 'none' : 'flex',
         alignItems: 'center',
@@ -9714,149 +9769,6 @@ Em nome de Jesus, Amém.`;
 
         </Suspense>
       </main>
-
-      {/* ════════════ BOTTOM NAVIGATION BAR FLUTUANTE (GLASSMORPHISM) ════════════ */}
-      <nav 
-        className="floating-bottom-bar"
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          maxWidth: '100%',
-          minHeight: '64px',
-          background: 'rgba(13, 17, 26, 0.98)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: '20px 20px 0 0',
-          boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.55)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          padding: '6px 8px calc(env(safe-area-inset-bottom, 6px) + 6px)',
-          boxSizing: 'border-box',
-          zIndex: 999
-        }}
-      >
-        {[
-          { 
-            id: 'dashboard', 
-            label: 'Início', 
-            icon: (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-            )
-          },
-          { 
-            id: 'treino-templo', 
-            label: 'Corpo & Treino', 
-            accent: '#10B981',
-            icon: (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12"></path>
-              </svg>
-            )
-          },
-          { 
-            id: 'biblia', 
-            label: 'Bíblia', 
-            icon: (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-              </svg>
-            )
-          },
-          { 
-            id: 'chat', 
-            label: 'Mentores', 
-            icon: (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-            )
-          },
-          { 
-            id: 'conta', 
-            label: 'Conta', 
-            icon: (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            )
-          }
-        ].map(item => {
-          const isActive = activeTab === item.id;
-          const activeColor = item.accent || '#F97316';
-          return (
-            <button
-              key={item.id}
-              onClick={() => {
-                setActiveTab(item.id);
-                if (item.id === 'biblia') {
-                  setBibleViewMode('reading');
-                  setBibleSelectedVerse(null);
-                }
-              }}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '3px',
-                color: isActive ? activeColor : 'rgba(255, 255, 255, 0.45)',
-                cursor: 'pointer',
-                padding: '6px 6px',
-                minHeight: '48px',
-                minWidth: '46px',
-                borderRadius: '14px',
-                transition: 'all 0.2s ease',
-                transform: isActive ? 'scale(1.05)' : 'scale(1)'
-              }}
-            >
-              {item.icon}
-              <span style={{ fontSize: '0.64rem', fontWeight: isActive ? '800' : '600' }}>
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
-        <button
-          type="button"
-          onClick={handleLogout}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '3px',
-            color: '#f87171',
-            cursor: 'pointer',
-            padding: '6px 6px',
-            minHeight: '48px',
-            minWidth: '46px',
-            borderRadius: '14px'
-          }}
-        >
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          <span style={{ fontSize: '0.64rem', fontWeight: '700' }}>
-            Sair
-          </span>
-        </button>
-      </nav>
 
       {/* ════════════ MODAL DE UPGRADE & RESGATE DE VOUCHER ════════════ */}
       <Suspense fallback={null}>
