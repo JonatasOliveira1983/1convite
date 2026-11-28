@@ -43,6 +43,7 @@ const TreinoTemploView = lazy(() => import('./components/TreinoTemplo/TreinoTemp
 import LoginPage from './components/Auth/LoginPage';
 const AdminPanel = lazy(() => import('./components/Admin/AdminPanel'));
 const IdeEstudosView = lazy(() => import('./components/Ide/IdeEstudosView'));
+import './components/Ide/IdeEstudosView.css';
 import ConvitePortalLuz from './components/Convite/ConvitePortalLuz';
 import adminAuthService from './services/adminAuthService';
 import { syncAppBadge } from './utils/dailyBadgeTracker';
