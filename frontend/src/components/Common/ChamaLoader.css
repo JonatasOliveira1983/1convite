@@ -68,6 +68,16 @@
   letter-spacing: 0.04em;
 }
 
+body.light-mode .chama-loader-fullscreen,
+:root:not(.dark-mode) .chama-loader-fullscreen {
+  background: #ffffff !important;
+}
+
+body.light-mode .chama-loader-label,
+:root:not(.dark-mode) .chama-loader-label {
+  color: #111827;
+}
+
 @keyframes chamaRingSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
